@@ -1,0 +1,74 @@
+{
+  "page": {
+    "tagline": "The marketplace for a sustainable future",
+    "headline": "Sustainability starts here",
+    "loginCta": "Sign in to continue",
+    "loginSubtitle": "Log in to your account",
+    "registerCta": "Create your free account",
+    "registerSubtitle": "Create your account"
+  },
+  "form": {
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "firstName": "Name",
+    "firstNamePlaceholder": "Enter your name",
+    "lastName": "Last name(s)",
+    "lastNamePlaceholder": "Enter your last name(s)",
+    "displayName": "Display Name",
+    "displayNamePlaceholder": "Enter the name you want to display",
+    "businessName": "Business Name",
+    "businessNamePlaceholder": "Enter your business name",
+    "accountType": "Account Type",
+    "businessType": "Business Type"
+  },
+  "actions": {
+    "login": "Log In",
+    "register": "Sign Up",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "or": "or",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "goBackHome": "Go back to home",
+    "termsAcceptLabel": "I have read and accept the",
+    "termsAcceptLink": "Terms and Policies"
+  },
+  "accountTypes": {
+    "person": "Person",
+    "startup": "Startup",
+    "company": "Company"
+  },
+  "businessTypes": {
+    "retail": "Retail",
+    "services": "Services",
+    "mixed": "Mixed"
+  },
+  "a11y": {
+    "brandingSection": "Branding",
+    "authSection": "Authentication form",
+    "pageNav": "Page navigation",
+    "logoAlt": "Ekoru logo",
+    "required": "Required",
+    "loading": "Loading, please wait",
+    "formError": "Form contains errors"
+  },
+  "feedback": {
+    "errorTitle": "Error",
+    "successTitle": "Success",
+    "emailError": "Please enter a valid email address",
+    "passwordError": "Password must be at least 8 characters",
+    "confirmPasswordError": "Passwords do not match",
+    "passwordMismatch": "Passwords do not match",
+    "fieldsRequired": "Please enter your email and password",
+    "registerFieldsRequired": "Please fill in all required fields",
+    "invalidCredentials": "Invalid email or password",
+    "userNotFound": "User not found. Please try again.",
+    "networkError": "Network error. Please check your connection and try again.",
+    "registerSuccess": "Account created successfully. Please sign in.",
+    "termsRequired": "You must accept the Terms and Policies to continue"
+  }
+}

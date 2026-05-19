@@ -1,0 +1,74 @@
+{
+  "page": {
+    "tagline": "La marketplace pour un avenir durable",
+    "headline": "La durabilité commence ici",
+    "loginCta": "Connectez-vous pour continuer",
+    "loginSubtitle": "Connectez-vous à votre compte",
+    "registerCta": "Créez votre compte gratuitement",
+    "registerSubtitle": "Créez votre compte"
+  },
+  "form": {
+    "email": "Courriel",
+    "emailPlaceholder": "Entrez votre courriel",
+    "password": "Mot de passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+    "firstName": "Prénom",
+    "firstNamePlaceholder": "Entrez votre prénom",
+    "lastName": "Nom(s) de famille",
+    "lastNamePlaceholder": "Entrez votre(vos) nom(s) de famille",
+    "displayName": "Nom d'affichage",
+    "displayNamePlaceholder": "Entrez le nom que vous souhaitez afficher",
+    "businessName": "Nom de l'entreprise",
+    "businessNamePlaceholder": "Entrez le nom de votre entreprise",
+    "accountType": "Type de compte",
+    "businessType": "Type d'entreprise"
+  },
+  "actions": {
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "signIn": "Connectez-vous",
+    "signUp": "Inscrivez-vous",
+    "or": "ou",
+    "noAccount": "Vous n'avez pas de compte?",
+    "hasAccount": "Vous avez déjà un compte?",
+    "goBackHome": "Retour à l'accueil",
+    "termsAcceptLabel": "J'ai lu et j'accepte les",
+    "termsAcceptLink": "Termes et Politiques"
+  },
+  "accountTypes": {
+    "person": "Particulier",
+    "startup": "Startup",
+    "company": "Entreprise"
+  },
+  "businessTypes": {
+    "retail": "Commerce de détail",
+    "services": "Services",
+    "mixed": "Mixte"
+  },
+  "a11y": {
+    "brandingSection": "Marque",
+    "authSection": "Formulaire d'authentification",
+    "pageNav": "Navigation de la page",
+    "logoAlt": "Logo Ekoru",
+    "required": "Obligatoire",
+    "loading": "Chargement, veuillez patienter",
+    "formError": "Le formulaire contient des erreurs"
+  },
+  "feedback": {
+    "errorTitle": "Erreur",
+    "successTitle": "Succès",
+    "emailError": "Veuillez entrer une adresse courriel valide",
+    "passwordError": "Le mot de passe doit contenir au moins 8 caractères",
+    "confirmPasswordError": "Les mots de passe ne correspondent pas",
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "fieldsRequired": "Veuillez entrer votre courriel et mot de passe",
+    "registerFieldsRequired": "Veuillez remplir tous les champs requis",
+    "invalidCredentials": "Courriel ou mot de passe invalide",
+    "userNotFound": "Utilisateur introuvable. Veuillez réessayer.",
+    "networkError": "Erreur réseau. Veuillez vérifier votre connexion et réessayer.",
+    "registerSuccess": "Compte créé avec succès. Veuillez vous connecter.",
+    "termsRequired": "Vous devez accepter les Termes et Politiques pour continuer"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "page": {
+    "tagline": "El marketplace para un futuro sostenible",
+    "headline": "La sostenibilidad comienza aquí",
+    "loginCta": "Inicia sesión para continuar",
+    "loginSubtitle": "Inicia sesión en tu cuenta",
+    "registerCta": "Crea tu cuenta gratis",
+    "registerSubtitle": "Crea tu cuenta"
+  },
+  "form": {
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Ingresa tu correo",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Confirma tu contraseña",
+    "firstName": "Nombre",
+    "firstNamePlaceholder": "Ingresa tu nombre",
+    "lastName": "Apellido(s)",
+    "lastNamePlaceholder": "Ingresa tu(s) apellido(s)",
+    "displayName": "Nombre para mostrar",
+    "displayNamePlaceholder": "Ingresa el nombre que quieres mostrar",
+    "businessName": "Nombre de la empresa",
+    "businessNamePlaceholder": "Ingresa el nombre de tu empresa",
+    "accountType": "Tipo de cuenta",
+    "businessType": "Tipo de negocio"
+  },
+  "actions": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "signIn": "Inicia sesión",
+    "signUp": "Regístrate",
+    "or": "o",
+    "noAccount": "¿No tienes cuenta?",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "goBackHome": "Volver al inicio",
+    "termsAcceptLabel": "He leído y acepto los",
+    "termsAcceptLink": "Términos y Políticas"
+  },
+  "accountTypes": {
+    "person": "Persona",
+    "startup": "Startup",
+    "company": "Empresa"
+  },
+  "businessTypes": {
+    "retail": "Retail",
+    "services": "Servicios",
+    "mixed": "Mixto"
+  },
+  "a11y": {
+    "brandingSection": "Marca",
+    "authSection": "Formulario de autenticación",
+    "pageNav": "Navegación de página",
+    "logoAlt": "Logo de Ekoru",
+    "required": "Obligatorio",
+    "loading": "Cargando, por favor espera",
+    "formError": "El formulario contiene errores"
+  },
+  "feedback": {
+    "errorTitle": "Error",
+    "successTitle": "Éxito",
+    "emailError": "Por favor ingresa una dirección de correo válida",
+    "passwordError": "La contraseña debe tener al menos 8 caracteres",
+    "confirmPasswordError": "Las contraseñas no coinciden",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "fieldsRequired": "Por favor ingresa tu correo y contraseña",
+    "registerFieldsRequired": "Por favor completa todos los campos requeridos",
+    "invalidCredentials": "Correo o contraseña incorrectos",
+    "userNotFound": "Usuario no encontrado. Por favor, inténtalo de nuevo.",
+    "networkError": "Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.",
+    "registerSuccess": "Cuenta creada correctamente. Por favor, inicia sesión.",
+    "termsRequired": "Debes aceptar los Términos y Políticas para continuar"
+  }
+}

@@ -1,0 +1,36 @@
+name: "ekoru-app"
+
+services:
+  ekoru-app:
+    image: ekoru-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    container_name: ekoru-app
+    env_file:
+      - .env.prod
+    ports:
+      - "3000:3000"
+    networks:
+      - ekoru-network
+    volumes:
+      - /home/ekoru/images:/app/images
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          cpus: "0.5"
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 60s
+      timeout: 5s
+      retries: 2
+      start_period: 30s
+
+networks:
+  ekoru-network:
+    external: true

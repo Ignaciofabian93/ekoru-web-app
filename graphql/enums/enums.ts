@@ -1,0 +1,84 @@
+export enum Language {
+  ES = "ES",
+  EN = "EN",
+  FR = "FR",
+}
+
+export enum Badge {
+  POPULAR = "POPULAR",
+  DISCOUNTED = "DISCOUNTED",
+  WOMAN_OWNED = "WOMAN_OWNED",
+  BEST_SELLER = "BEST_SELLER",
+  TOP_RATED = "TOP_RATED",
+  COMMUNITY_FAVORITE = "COMMUNITY_FAVORITE",
+  LIMITED_TIME_OFFER = "LIMITED_TIME_OFFER",
+  FLASH_SALE = "FLASH_SALE",
+  BEST_VALUE = "BEST_VALUE",
+  HANDMADE = "HANDMADE",
+  SUSTAINABLE = "SUSTAINABLE",
+  SUPPORTS_CAUSE = "SUPPORTS_CAUSE",
+  FAMILY_BUSINESS = "FAMILY_BUSINESS",
+  CHARITY_SUPPORT = "CHARITY_SUPPORT",
+  LIMITED_STOCK = "LIMITED_STOCK",
+  SEASONAL = "SEASONAL",
+  FREE_SHIPPING = "FREE_SHIPPING",
+  FOR_REPAIR = "FOR_REPAIR",
+  REFURBISHED = "REFURBISHED",
+  EXCHANGEABLE = "EXCHANGEABLE",
+  LAST_PRICE = "LAST_PRICE",
+  FOR_GIFT = "FOR_GIFT",
+  OPEN_TO_OFFERS = "OPEN_TO_OFFERS",
+  OPEN_BOX = "OPEN_BOX",
+  CRUELTY_FREE = "CRUELTY_FREE",
+  DELIVERED_TO_HOME = "DELIVERED_TO_HOME",
+  IN_HOUSE_PICKUP = "IN_HOUSE_PICKUP",
+  IN_MID_POINT_PICKUP = "IN_MID_POINT_PICKUP",
+}
+
+export enum GqlProductCondition {
+  NEW = "NEW",
+  USED = "USED",
+  REFURBISHED = "REFURBISHED",
+}
+
+export enum ProductSize {
+  XS = "XS",
+  S = "S",
+  M = "M",
+  L = "L",
+  XL = "XL",
+}
+
+export enum WeightUnit {
+  KG = "KG",
+  LB = "LB",
+  OZ = "OZ",
+  G = "G",
+}
+
+export enum SortOrder {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+export enum GqlSellerType {
+  PERSON = "PERSON",
+  STARTUP = "STARTUP",
+  COMPANY = "COMPANY",
+}
+
+export enum BusinessType {
+  RETAIL = "RETAIL",
+  SERVICES = "SERVICES",
+  MIXED = "MIXED",
+}
+
+export enum ContactMethod {
+  EMAIL = "EMAIL",
+  PHONE = "PHONE",
+  WHATSAPP = "WHATSAPP",
+  INSTAGRAM = "INSTAGRAM",
+  FACEBOOK = "FACEBOOK",
+  WEBSITE = "WEBSITE",
+  TIKTOK = "TIKTOK",
+}
