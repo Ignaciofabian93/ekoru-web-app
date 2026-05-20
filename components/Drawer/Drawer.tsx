@@ -19,7 +19,11 @@ import { useRouter } from "next/navigation";
 
 import { useDrawer } from "@/context/DrawerContext";
 import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
-import useAuthStore, { useDisplayName, useInitials, useProfileImage } from "@/store/useAuthStore";
+import useAuthStore, {
+  useDisplayName,
+  useInitials,
+  useProfileImage,
+} from "@/store/useAuthStore";
 import { useDrawerMarketplace } from "./hooks/useDrawerMarketplace";
 
 import MainButton from "../Button/MainButton";
@@ -31,6 +35,7 @@ import { useDrawerBlogs } from "./hooks/useDrawerBlogs";
 import { useDrawerCommunity } from "./hooks/useDrawerCommunity";
 import { useDrawerServices } from "./hooks/useDrawerServices";
 import { useDrawerStores } from "./hooks/useDrawerStores";
+import Image from "next/image";
 
 const profileMenuItems = [
   { route: "/profile", label: "Profile", icon: User },
@@ -43,11 +48,7 @@ const supportMenuItems = [{ route: "/contact", label: "Contact", icon: Mail }];
 
 function SectionLabel({ label }: { label: string }) {
   return (
-    <Title
-      level="h6"
-      weight="semibold"
-      style={{ marginLeft: 4, marginTop: 8 }}
-    >
+    <Title level="h6" weight="semibold" style={{ marginLeft: 4, marginTop: 8 }}>
       {label}
     </Title>
   );
@@ -62,10 +63,7 @@ export default function Drawer() {
   const displayName = useDisplayName();
   const initials = useInitials();
 
-  const [hasOpened, setHasOpened] = useState(false);
-  useEffect(() => {
-    if (isOpen && !hasOpened) setHasOpened(true);
-  }, [isOpen, hasOpened]);
+  const [hasOpened] = useState(false);
 
   const { items: marketplaceItems } = useDrawerMarketplace(hasOpened);
   const { items: storeItems } = useDrawerStores(hasOpened);
@@ -80,35 +78,50 @@ export default function Drawer() {
         label: "Marketplace",
         icon: Package,
         baseRoute: "/marketplace",
-        items: marketplaceItems.length > 0 ? marketplaceItems : [{ label: "No marketplace categories available", route: "" }],
+        items:
+          marketplaceItems.length > 0
+            ? marketplaceItems
+            : [{ label: "No marketplace categories available", route: "" }],
       },
       {
         key: "stores",
         label: "Stores",
         icon: Store,
         baseRoute: "/stores",
-        items: storeItems.length > 0 ? storeItems : [{ label: "No store categories available", route: "" }],
+        items:
+          storeItems.length > 0
+            ? storeItems
+            : [{ label: "No store categories available", route: "" }],
       },
       {
         key: "services",
         label: "Services",
         icon: ScanBarcode,
         baseRoute: "/services",
-        items: serviceItems.length > 0 ? serviceItems : [{ label: "No service categories available", route: "" }],
+        items:
+          serviceItems.length > 0
+            ? serviceItems
+            : [{ label: "No service categories available", route: "" }],
       },
       {
         key: "community",
         label: "Community",
         icon: MessageSquare,
         baseRoute: "/community",
-        items: communityItems.length > 0 ? communityItems : [{ label: "No community sections available", route: "" }],
+        items:
+          communityItems.length > 0
+            ? communityItems
+            : [{ label: "No community sections available", route: "" }],
       },
       {
         key: "blog",
         label: "Blog",
         icon: BookOpen,
         baseRoute: "/blog",
-        items: blogItems.length > 0 ? blogItems : [{ label: "No blog sections available", route: "" }],
+        items:
+          blogItems.length > 0
+            ? blogItems
+            : [{ label: "No blog sections available", route: "" }],
       },
     ],
     [marketplaceItems, storeItems, serviceItems, communityItems, blogItems],
@@ -121,7 +134,9 @@ export default function Drawer() {
 
   // Close on Escape
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closeDrawer(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeDrawer();
+    };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [closeDrawer]);
@@ -230,10 +245,18 @@ export default function Drawer() {
               }}
             >
               {profileImage ? (
-                <img
+                <Image
                   src={profileImage}
                   alt="Profile"
-                  style={{ width: 130, height: 130, borderRadius: borderRadius.full, objectFit: "cover", flexShrink: 0 }}
+                  width={100}
+                  height={100}
+                  style={{
+                    width: 130,
+                    height: 130,
+                    borderRadius: borderRadius.full,
+                    objectFit: "cover",
+                    flexShrink: 0,
+                  }}
                 />
               ) : (
                 <div
@@ -248,12 +271,28 @@ export default function Drawer() {
                     flexShrink: 0,
                   }}
                 >
-                  <span style={{ fontSize: fontSize.lg, fontFamily: fontFamily.sans, fontWeight: 700, color: colors.onPrimary }}>
+                  <span
+                    style={{
+                      fontSize: fontSize.lg,
+                      fontFamily: fontFamily.sans,
+                      fontWeight: 700,
+                      color: colors.onPrimary,
+                    }}
+                  >
                     {initials || "?"}
                   </span>
                 </div>
               )}
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2, width: "100%", alignItems: "center" }}>
+              <div
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                  width: "100%",
+                  alignItems: "center",
+                }}
+              >
                 <span
                   style={{
                     fontSize: fontSize.base,
@@ -292,7 +331,14 @@ export default function Drawer() {
                     borderRadius: borderRadius["2xl"],
                   }}
                 >
-                  <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.primaryDark }}>
+                  <span
+                    style={{
+                      fontSize: fontSize.xs,
+                      fontFamily: fontFamily.sans,
+                      fontWeight: 600,
+                      color: colors.primaryDark,
+                    }}
+                  >
                     {seller.sellerType}
                   </span>
                 </div>
@@ -301,9 +347,23 @@ export default function Drawer() {
           )}
 
           {/* Account section */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 4, paddingInline: 16 }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              marginBottom: 4,
+              paddingInline: 16,
+            }}
+          >
             <SectionLabel label="Account" />
-            <div style={{ backgroundColor: colors.surface, borderRadius: borderRadius.lg, overflow: "hidden" }}>
+            <div
+              style={{
+                backgroundColor: colors.surface,
+                borderRadius: borderRadius.lg,
+                overflow: "hidden",
+              }}
+            >
               {profileMenuItems.map((item, index) => {
                 const Icon = item.icon;
                 return (
@@ -320,12 +380,35 @@ export default function Drawer() {
           </div>
 
           {/* Explore section */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 4, paddingInline: 16 }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              marginBottom: 4,
+              paddingInline: 16,
+            }}
+          >
             <SectionLabel label="Explore" />
-            <div style={{ backgroundColor: colors.surface, borderRadius: borderRadius.lg, overflow: "hidden" }}>
-              <MenuRow icon={House} label="Home" onPress={() => handleNavigate("/")} hasBorder />
+            <div
+              style={{
+                backgroundColor: colors.surface,
+                borderRadius: borderRadius.lg,
+                overflow: "hidden",
+              }}
+            >
+              <MenuRow
+                icon={House}
+                label="Home"
+                onPress={() => handleNavigate("/")}
+                hasBorder
+              />
               {accordionSections.map((section) => (
-                <Accordion key={section.key} section={section} onNavigate={handleNavigate} />
+                <Accordion
+                  key={section.key}
+                  section={section}
+                  onNavigate={handleNavigate}
+                />
               ))}
               <MenuRow
                 icon={PackagePlus}
@@ -337,9 +420,23 @@ export default function Drawer() {
           </div>
 
           {/* Support section */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 4, paddingInline: 16 }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              marginBottom: 4,
+              paddingInline: 16,
+            }}
+          >
             <SectionLabel label="Support" />
-            <div style={{ backgroundColor: colors.surface, borderRadius: borderRadius.lg, overflow: "hidden" }}>
+            <div
+              style={{
+                backgroundColor: colors.surface,
+                borderRadius: borderRadius.lg,
+                overflow: "hidden",
+              }}
+            >
               {supportMenuItems.map((item, index) => {
                 const Icon = item.icon;
                 return (

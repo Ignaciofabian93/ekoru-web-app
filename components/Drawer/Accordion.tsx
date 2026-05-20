@@ -1,10 +1,6 @@
 import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
-import {
-  ChevronDown,
-  ChevronRight,
-  type LucideIcon,
-} from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { ChevronDown, ChevronRight, type LucideIcon } from "lucide-react";
+import React, { useState } from "react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export type L3Item = { label: string; route: string };
@@ -20,12 +16,14 @@ export type AccordionSectionDef = {
 };
 
 // ── AccordionContent ──────────────────────────────────────────────────────────
-function AccordionContent({ isOpen, children }: { isOpen: boolean; children: React.ReactNode }) {
-  const [hasEverOpened, setHasEverOpened] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) setHasEverOpened(true);
-  }, [isOpen]);
+function AccordionContent({
+  isOpen,
+  children,
+}: {
+  isOpen: boolean;
+  children: React.ReactNode;
+}) {
+  const [hasEverOpened] = useState(false);
 
   if (!hasEverOpened || !isOpen) return null;
   return <div>{children}</div>;
@@ -55,15 +53,29 @@ function AccordionL2Row({
           paddingLeft: 32,
           paddingRight: 14,
           backgroundColor: colors.backgroundTertiary,
-          borderBottom: (!isLast || isOpen) ? `1px solid ${colors.borderStrong}` : "none",
+          borderBottom: !isLast || isOpen ? `1px solid ${colors.borderStrong}` : "none",
         }}
       >
         <button
           type="button"
           onClick={() => onNavigate(item.route)}
-          style={{ flex: 1, background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: 0 }}
+          style={{
+            flex: 1,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            textAlign: "left",
+            padding: 0,
+          }}
         >
-          <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary }}>
+          <span
+            style={{
+              fontSize: fontSize.xs,
+              fontFamily: fontFamily.sans,
+              fontWeight: 400,
+              color: colors.foregroundSecondary,
+            }}
+          >
             {item.label}
           </span>
         </button>
@@ -71,9 +83,20 @@ function AccordionL2Row({
           <button
             type="button"
             onClick={() => setIsOpen((v) => !v)}
-            style={{ background: "none", border: "none", cursor: "pointer", padding: "10px 6px", display: "flex" }}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "10px 6px",
+              display: "flex",
+            }}
           >
-            <div style={{ transform: `rotate(${isOpen ? "90deg" : "0deg"})`, transition: "transform 0.2s ease" }}>
+            <div
+              style={{
+                transform: `rotate(${isOpen ? "90deg" : "0deg"})`,
+                transition: "transform 0.2s ease",
+              }}
+            >
               <ChevronRight size={13} color={colors.foregroundMuted} strokeWidth={2} />
             </div>
           </button>
@@ -95,14 +118,25 @@ function AccordionL2Row({
                 paddingLeft: 46,
                 paddingRight: 14,
                 backgroundColor: colors.surfaceActive,
-                borderBottom: i < item.children!.length - 1 ? `1px solid ${colors.borderStrong}` : "none",
+                borderBottom:
+                  i < item.children!.length - 1
+                    ? `1px solid ${colors.borderStrong}`
+                    : "none",
                 width: "100%",
                 border: "none",
                 cursor: "pointer",
                 textAlign: "left",
               }}
             >
-              <span style={{ flex: 1, fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundTertiary }}>
+              <span
+                style={{
+                  flex: 1,
+                  fontSize: fontSize.xs,
+                  fontFamily: fontFamily.sans,
+                  fontWeight: 400,
+                  color: colors.foregroundTertiary,
+                }}
+              >
                 {l3.label}
               </span>
             </button>
@@ -137,15 +171,29 @@ function AccordionL1Row({
           paddingLeft: 18,
           paddingRight: 14,
           backgroundColor: colors.backgroundSecondary,
-          borderBottom: (!isLast || isOpen) ? `1px solid ${colors.borderStrong}` : "none",
+          borderBottom: !isLast || isOpen ? `1px solid ${colors.borderStrong}` : "none",
         }}
       >
         <button
           type="button"
           onClick={() => onNavigate(item.route)}
-          style={{ flex: 1, background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: 0 }}
+          style={{
+            flex: 1,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            textAlign: "left",
+            padding: 0,
+          }}
         >
-          <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 500, color: colors.foregroundSecondary }}>
+          <span
+            style={{
+              fontSize: fontSize.sm,
+              fontFamily: fontFamily.sans,
+              fontWeight: 500,
+              color: colors.foregroundSecondary,
+            }}
+          >
             {item.label}
           </span>
         </button>
@@ -153,9 +201,20 @@ function AccordionL1Row({
           <button
             type="button"
             onClick={() => setIsOpen((v) => !v)}
-            style={{ background: "none", border: "none", cursor: "pointer", padding: "10px 6px", display: "flex" }}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "10px 6px",
+              display: "flex",
+            }}
           >
-            <div style={{ transform: `rotate(${isOpen ? "90deg" : "0deg"})`, transition: "transform 0.2s ease" }}>
+            <div
+              style={{
+                transform: `rotate(${isOpen ? "90deg" : "0deg"})`,
+                transition: "transform 0.2s ease",
+              }}
+            >
               <ChevronRight size={14} color={colors.foregroundTertiary} strokeWidth={2} />
             </div>
           </button>
@@ -205,7 +264,17 @@ function AccordionSection({
         <button
           type="button"
           onClick={() => onNavigate(section.baseRoute)}
-          style={{ flex: 1, display: "flex", flexDirection: "row", alignItems: "center", gap: 12, background: "none", border: "none", cursor: "pointer", padding: 0 }}
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 12,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: 0,
+          }}
         >
           <div
             style={{
@@ -221,16 +290,34 @@ function AccordionSection({
           >
             <Icon size={18} strokeWidth={1.5} color={colors.primary} />
           </div>
-          <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 500, color: colors.foreground }}>
+          <span
+            style={{
+              fontSize: fontSize.sm,
+              fontFamily: fontFamily.sans,
+              fontWeight: 500,
+              color: colors.foreground,
+            }}
+          >
             {section.label}
           </span>
         </button>
         <button
           type="button"
           onClick={() => setIsOpen((v) => !v)}
-          style={{ background: "none", border: "none", cursor: "pointer", padding: "10px 6px", display: "flex" }}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: "10px 6px",
+            display: "flex",
+          }}
         >
-          <div style={{ transform: `rotate(${isOpen ? "180deg" : "0deg"})`, transition: "transform 0.2s ease" }}>
+          <div
+            style={{
+              transform: `rotate(${isOpen ? "180deg" : "0deg"})`,
+              transition: "transform 0.2s ease",
+            }}
+          >
             <ChevronDown size={16} color={colors.foregroundTertiary} strokeWidth={2} />
           </div>
         </button>

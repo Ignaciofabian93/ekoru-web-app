@@ -1,12 +1,14 @@
-import i18n from "@/i18n";
-import en from "./locales/en.json";
-import es from "./locales/es.json";
-import fr from "./locales/fr.json";
+import type { SupportedLanguage } from "@/constants/settings";
 
-const NAMESPACE = "drawer";
+const loaders = {
+  en: () => import("./locales/en.json").then((m) => m.default),
+  es: () => import("./locales/es.json").then((m) => m.default),
+  fr: () => import("./locales/fr.json").then((m) => m.default),
+} satisfies Record<SupportedLanguage, () => Promise<unknown>>;
 
-i18n.addResourceBundle("en", NAMESPACE, en);
-i18n.addResourceBundle("es", NAMESPACE, es);
-i18n.addResourceBundle("fr", NAMESPACE, fr);
+export const NAMESPACE = "drawer";
 
-export { NAMESPACE };
+export const getDrawerDictionary = (lang: SupportedLanguage) =>
+  loaders[lang]() as Promise<{
+    nav: string;
+  }>;
