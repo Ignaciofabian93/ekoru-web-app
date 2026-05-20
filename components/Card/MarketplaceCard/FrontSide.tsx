@@ -1,11 +1,8 @@
 "use client";
-
 import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
-import type { Product } from "@/features/marketplace/types/Product";
-import { conditionTranslate } from "@/utils/conditionTranslate";
-import { formatPrice } from "@/utils/formatPrice";
-import { getImageUrl } from "@/utils/getImageUrl";
+import type { Product } from "@/types/product";
 import { ImageOff, RotateCcw, ShoppingCart } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
 interface Props {
@@ -16,7 +13,7 @@ interface Props {
 
 export default function CardFrontSide({ product, onFlip, onPress }: Props) {
   const [imageError, setImageError] = useState(false);
-  const imageUri = getImageUrl(product.images?.[0]);
+  const imageUri = "";
 
   return (
     <button
@@ -38,11 +35,20 @@ export default function CardFrontSide({ product, onFlip, onPress }: Props) {
       }}
     >
       {/* Image */}
-      <div style={{ aspectRatio: "4/3", backgroundColor: colors.backgroundTertiary, position: "relative", flexShrink: 0 }}>
+      <div
+        style={{
+          aspectRatio: "4/3",
+          backgroundColor: colors.backgroundTertiary,
+          position: "relative",
+          flexShrink: 0,
+        }}
+      >
         {imageUri && !imageError ? (
-          <img
+          <Image
             src={imageUri}
             alt={product.name}
+            width={100}
+            height={100}
             onError={() => setImageError(true)}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
@@ -71,14 +77,25 @@ export default function CardFrontSide({ product, onFlip, onPress }: Props) {
             borderRadius: 4,
           }}
         >
-          <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 500, color: colors.foreground, textTransform: "capitalize" }}>
-            {conditionTranslate(product.condition)}
+          <span
+            style={{
+              fontSize: fontSize.xs,
+              fontFamily: fontFamily.sans,
+              fontWeight: 500,
+              color: colors.foreground,
+              textTransform: "capitalize",
+            }}
+          >
+            {product.condition}
           </span>
         </div>
 
         <button
           type="button"
-          onClick={(e) => { e.stopPropagation(); onFlip(); }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onFlip();
+          }}
           style={{
             position: "absolute",
             top: 8,
@@ -100,35 +117,106 @@ export default function CardFrontSide({ product, onFlip, onPress }: Props) {
       </div>
 
       {/* Info */}
-      <div style={{ padding: 12, flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+      <div
+        style={{
+          padding: 12,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
         <div>
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 4,
+            }}
+          >
             {product.brand && (
-              <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <span
+                style={{
+                  fontSize: fontSize.xs,
+                  fontFamily: fontFamily.sans,
+                  fontWeight: 400,
+                  color: colors.foregroundSecondary,
+                  flex: 1,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
                 {product.brand}
               </span>
             )}
             {product.color && (
-              <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary, marginLeft: 8 }}>
+              <span
+                style={{
+                  fontSize: fontSize.xs,
+                  fontFamily: fontFamily.sans,
+                  fontWeight: 400,
+                  color: colors.foregroundSecondary,
+                  marginLeft: 8,
+                }}
+              >
                 {product.color}
               </span>
             )}
           </div>
 
-          <p style={{ fontSize: fontSize.base, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.foreground, margin: "0 0 4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          <p
+            style={{
+              fontSize: fontSize.base,
+              fontFamily: fontFamily.sans,
+              fontWeight: 600,
+              color: colors.foreground,
+              margin: "0 0 4px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
             {product.name}
           </p>
 
           {product.description && (
-            <p style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary, margin: "0 0 8px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <p
+              style={{
+                fontSize: fontSize.sm,
+                fontFamily: fontFamily.sans,
+                fontWeight: 400,
+                color: colors.foregroundSecondary,
+                margin: "0 0 8px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
               {product.description}
             </p>
           )}
         </div>
 
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: fontSize.lg, fontFamily: fontFamily.sans, fontWeight: 700, color: colors.primary }}>
-            {formatPrice(product.price)}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <span
+            style={{
+              fontSize: fontSize.lg,
+              fontFamily: fontFamily.sans,
+              fontWeight: 700,
+              color: colors.primary,
+            }}
+          >
+            {product.price}
           </span>
           <div
             style={{

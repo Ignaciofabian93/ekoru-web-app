@@ -1,9 +1,9 @@
 "use client";
 
-import type { Product } from "@/features/marketplace/types/Product";
 import { useState } from "react";
 import CardBackSide from "./BackSide";
 import CardFrontSide from "./FrontSide";
+import type { Product } from "@/types/product";
 
 interface Props {
   product: Product;
