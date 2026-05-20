@@ -5,7 +5,6 @@ import { Text } from "@/components/Text/Text";
 import { colors } from "@/design/tokens";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import React from "react";
 
 export interface ErrorScreenProps {
   title: string;
