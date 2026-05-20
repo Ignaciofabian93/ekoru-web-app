@@ -2,7 +2,7 @@ pipeline {
   agent none
 
   environment {
-    SERVICE_NAME = 'informative-web'
+    SERVICE_NAME = 'ekoru-web-app'
   }
 
   stages {
@@ -37,7 +37,7 @@ pipeline {
       agent {
         docker {
           image 'node:22-alpine'
-          args "-u root -e RESEND_API_KEY=${env.RESEND_API_KEY}"
+          args '-u root'
         }
       }
       steps {
@@ -52,12 +52,12 @@ pipeline {
       when { branch 'main' }
       steps {
         sh '''
-          cp /opt/ekoru/secrets/informative-web/.env.staging ${WORKSPACE}/.env.staging
+          cp /opt/ekoru/secrets/ekoru-web-app/.env.staging ${WORKSPACE}/.env.staging
           docker compose -f compose.staging.yml build --no-cache
           docker compose -f compose.staging.yml up -d --force-recreate
           docker image prune -f
         '''
-        sshagent(['github-deploy-key-website']) {
+        sshagent(['github-deploy-key-web-app']) {
           sh '''
             git remote set-url origin "$(git remote get-url origin | sed 's|https://github.com/|git@github.com:|')"
             VERSION=$(grep -m1 '"version"' package.json | awk -F'"' '{print $4}')
@@ -86,12 +86,12 @@ pipeline {
       when { branch 'main' }
       steps {
         sh '''
-          cp /opt/ekoru/secrets/informative-web/.env.prod ${WORKSPACE}/.env.prod
+          cp /opt/ekoru/secrets/ekoru-web-app/.env.prod ${WORKSPACE}/.env.prod
           docker compose -f compose.prod.yml build --no-cache
           docker compose -f compose.prod.yml up -d --force-recreate
           docker image prune -f
         '''
-        sshagent(['github-deploy-key-website']) {
+        sshagent(['github-deploy-key-web-app']) {
           sh '''
             git remote set-url origin "$(git remote get-url origin | sed 's|https://github.com/|git@github.com:|')"
             VERSION=$(grep -m1 '"version"' package.json | awk -F'"' '{print $4}')
