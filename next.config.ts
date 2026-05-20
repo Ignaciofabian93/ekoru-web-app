@@ -10,10 +10,12 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "api.staging.ekoru.cl",
+        pathname: "/images/**",
       },
       {
         protocol: "https",
         hostname: "api.ekoru.cl",
+        pathname: "/images/**",
       },
     ],
   },
