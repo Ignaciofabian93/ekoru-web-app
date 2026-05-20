@@ -1,6 +1,14 @@
 "use client";
 
-import { borderRadius, colors, fontFamily, fontSize, input as inputTokens, shadows, spacing } from "@/design/tokens";
+import {
+  borderRadius,
+  colors,
+  fontFamily,
+  fontSize,
+  input as inputTokens,
+  shadows,
+  spacing,
+} from "@/design/tokens";
 import { Check, ChevronDown, Circle, type LucideIcon } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { Text } from "../Text/Text";
@@ -36,10 +44,28 @@ export interface SelectProps {
   noResultsText?: string;
 }
 
-const SIZE_MAP: Record<Size, { height: number; fontSize: number; px: number; iconSize: number }> = {
-  sm: { height: inputTokens.sm.height, fontSize: inputTokens.sm.fontSize, px: inputTokens.sm.paddingX, iconSize: inputTokens.sm.iconSize },
-  md: { height: inputTokens.md.height, fontSize: inputTokens.md.fontSize, px: inputTokens.md.paddingX, iconSize: inputTokens.md.iconSize },
-  lg: { height: inputTokens.lg.height, fontSize: inputTokens.lg.fontSize, px: inputTokens.lg.paddingX, iconSize: inputTokens.lg.iconSize },
+const SIZE_MAP: Record<
+  Size,
+  { height: number; fontSize: number; px: number; iconSize: number }
+> = {
+  sm: {
+    height: inputTokens.sm.height,
+    fontSize: inputTokens.sm.fontSize,
+    px: inputTokens.sm.paddingX,
+    iconSize: inputTokens.sm.iconSize,
+  },
+  md: {
+    height: inputTokens.md.height,
+    fontSize: inputTokens.md.fontSize,
+    px: inputTokens.md.paddingX,
+    iconSize: inputTokens.md.iconSize,
+  },
+  lg: {
+    height: inputTokens.lg.height,
+    fontSize: inputTokens.lg.fontSize,
+    px: inputTokens.lg.paddingX,
+    iconSize: inputTokens.lg.iconSize,
+  },
 };
 
 const WIDTH_MAP: Record<Width, string> = {
@@ -58,9 +84,27 @@ interface VariantStyle {
 }
 
 const VARIANT_MAP: Record<Variant, VariantStyle> = {
-  default: { bg: colors.inputBg, borderColor: colors.inputBorder, borderWidth: 2, focusedBorderColor: colors.inputBorderFocus, errorBorderColor: colors.danger },
-  filled: { bg: colors.backgroundSecondary, borderColor: "transparent", borderWidth: 2, focusedBorderColor: colors.inputBorderFocus, errorBorderColor: colors.danger },
-  outline: { bg: "transparent", borderColor: colors.primary, borderWidth: 2, focusedBorderColor: colors.primaryActive, errorBorderColor: colors.danger },
+  default: {
+    bg: colors.inputBg,
+    borderColor: colors.inputBorder,
+    borderWidth: 2,
+    focusedBorderColor: colors.inputBorderFocus,
+    errorBorderColor: colors.danger,
+  },
+  filled: {
+    bg: colors.backgroundSecondary,
+    borderColor: "transparent",
+    borderWidth: 2,
+    focusedBorderColor: colors.inputBorderFocus,
+    errorBorderColor: colors.danger,
+  },
+  outline: {
+    bg: "transparent",
+    borderColor: colors.primary,
+    borderWidth: 2,
+    focusedBorderColor: colors.primaryActive,
+    errorBorderColor: colors.danger,
+  },
 };
 
 const Select = React.forwardRef<HTMLDivElement, SelectProps>(
@@ -135,7 +179,11 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       handleClose();
     };
 
-    const borderColor = hasError ? v.errorBorderColor : isOpen ? v.focusedBorderColor : v.borderColor;
+    const borderColor = hasError
+      ? v.errorBorderColor
+      : isOpen
+        ? v.focusedBorderColor
+        : v.borderColor;
 
     const renderColorCircle = (option?: Option) => {
       if (!showColorIcon || !option?.iconColor) return null;
@@ -160,12 +208,21 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
         ref={(node) => {
           (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+          else if (ref)
+            (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
         }}
-        style={{ display: "flex", flexDirection: "column", gap: 1, width: WIDTH_MAP[width], position: "relative" }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+          width: WIDTH_MAP[width],
+          position: "relative",
+        }}
       >
         {label && (
-          <Text style={{ fontSize: fontSize.sm, fontWeight: 500, color: colors.foreground }}>
+          <Text
+            style={{ fontSize: fontSize.sm, fontWeight: 500, color: colors.foreground }}
+          >
             {label}
           </Text>
         )}
@@ -243,14 +300,27 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
           >
             <ChevronDown
               size={s.iconSize}
-              color={hasError ? colors.danger : isOpen ? colors.primary : colors.foregroundTertiary}
+              color={
+                hasError
+                  ? colors.danger
+                  : isOpen
+                    ? colors.primary
+                    : colors.foregroundTertiary
+              }
               strokeWidth={2}
             />
           </span>
         </button>
 
         {errorMessage && (
-          <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.danger }}>
+          <span
+            style={{
+              fontSize: fontSize.xs,
+              fontFamily: fontFamily.sans,
+              fontWeight: 400,
+              color: colors.danger,
+            }}
+          >
             {errorMessage}
           </span>
         )}
@@ -289,7 +359,6 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                   fontSize: fontSize.base,
                   paddingInline: spacing[4],
                   paddingBlock: spacing[2],
-                  borderBottom: `1px solid ${colors.borderLight}`,
                   color: colors.inputText,
                   background: "none",
                   border: "none",
@@ -329,7 +398,10 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                         textAlign: "left",
                         background: isSelected ? `${colors.primary}1A` : "none",
                         border: "none",
-                        borderBottom: i < filteredOptions.length - 1 ? `1px solid ${colors.borderLight}` : "none",
+                        borderBottom:
+                          i < filteredOptions.length - 1
+                            ? `1px solid ${colors.borderLight}`
+                            : "none",
                         cursor: "pointer",
                         padding: 0,
                       }}
@@ -361,7 +433,9 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                           >
                             {item.label}
                           </span>
-                          {isSelected && <Check size={16} color={colors.primary} strokeWidth={2.5} />}
+                          {isSelected && (
+                            <Check size={16} color={colors.primary} strokeWidth={2.5} />
+                          )}
                         </span>
                       )}
                     </button>
