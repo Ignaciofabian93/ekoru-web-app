@@ -14,8 +14,12 @@ export async function Register({ lang }: { lang: SupportedLanguage }) {
       <AuthShell
         lang={lang}
         logo={<EkoruLogo lang={lang} width={4096} height={996} className="w-32" />}
-        subtitleKey="registerCta"
-        footer={{ textKey: "hasAccount", linkKey: "signIn", href: `/${lang}/login` }}
+        subtitleKey="page.registerCta"
+        footer={{
+          textKey: "actions.hasAccount",
+          linkKey: "actions.signIn",
+          href: `/${lang}/login`,
+        }}
       >
         <RegisterForm />
       </AuthShell>
