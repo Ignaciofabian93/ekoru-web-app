@@ -1,0 +1,30 @@
+{
+  "title": "",
+  "header": {
+    "sellerType": {
+      "person": "Cuenta Personal",
+      "startup": "Cuenta Emprendimiento",
+      "company": "Cuenta Empresarial"
+    }
+  },
+  "details": {
+    "title": "Detalles",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "county": "Comuna",
+    "city": "Ciudad",
+    "region": "Región",
+    "country": "País"
+  },
+  "account": {
+    "title": "Mi Cuenta",
+    "editProfile": "Editar Perfil",
+    "changePassword": "Cambiar Contraseña",
+    "orderHistory": "Historial de Pedidos",
+    "favorites": "Favoritos",
+    "environmentalImpact": "Impacto Ambiental",
+    "subscription": "Suscripción",
+    "settings": "Ajustes"
+  },
+  "logout": "Cerrar Sesión"
+}

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import {
   type AdminPermission,
   type AdminRole,
@@ -207,7 +206,7 @@ export type MembershipTranslation = {
 
 export type PersonMembership = {
   id: string;
-  membershipType: import("./enums").PersonSubscriptionPlan;
+  membershipType: PersonSubscriptionPlan;
   durationMonths: number;
   isActive: boolean;
   pricing: MembershipPricing | null;
@@ -216,7 +215,7 @@ export type PersonMembership = {
 
 export type BusinessMembership = {
   id: string;
-  membershipType: import("./enums").BusinessSubscriptionPlan;
+  membershipType: BusinessSubscriptionPlan;
   durationMonths: number;
   isActive: boolean;
   pricing: MembershipPricing | null;
@@ -253,5 +252,5 @@ export type Session = {
   token: string;
   createdAt: string;
   expiresAt: string;
-  sellerId: string; // Changed from userId to sellerId
+  sellerId: string;
 };

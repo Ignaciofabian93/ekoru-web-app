@@ -120,6 +120,10 @@ export const useDisplayName = () =>
     return profile.businessName ?? s.seller?.email ?? "";
   });
 
+export const useSellerEmail = () => useAuthStore((s) => s.seller?.email);
+
+export const useSellerPoints = () => useAuthStore((s) => s.seller?.points ?? 0);
+
 export const useProfileImage = () =>
   useAuthStore((s) => {
     const profile = s.seller?.profile;

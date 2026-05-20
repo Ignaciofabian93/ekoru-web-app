@@ -1,3 +1,15 @@
 {
-  "nav": ""
+  "nav": "",
+  "marketplace": "Marketplace",
+  "stores": "Tiendas",
+  "services": "Servicios",
+  "community": "Comunidad",
+  "blog": "Blog",
+  "searchPlaceholder": "Buscar en EKORU",
+  "dropdown": {
+    "myProfile": "Mi Perfil",
+    "recycle": "Reciclar",
+    "publish": "Publicar",
+    "notifications": "Notificaciones"
+  }
 }

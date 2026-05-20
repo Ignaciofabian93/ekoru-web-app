@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { SupportedLanguage } from "@/constants/settings";
 
 const loaders = {

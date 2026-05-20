@@ -1,45 +1,66 @@
 "use client";
+import clsx from "clsx";
 import { useDrawer } from "@/context/DrawerContext";
-import { Fragment } from "react";
-import { Menu, ShoppingCart, UserRound } from "lucide-react";
-import MainButton from "../Button/MainButton";
-import Link from "next/link";
-import { Text } from "../Text/Text";
-import { useNavigation } from "@/hooks/useNavigation";
-import { useParams } from "next/navigation";
+import { Menu, ShoppingCart } from "lucide-react";
+import ProfileDropdown from "./ProfileDropdown";
 
-export default function HeaderRight() {
+interface CartButtonProps {
+  itemCount?: number;
+}
+
+function CartButton({ itemCount = 0 }: CartButtonProps) {
+  return (
+    <button
+      type="button"
+      aria-label={`Shopping cart${itemCount > 0 ? `, ${itemCount} items` : ""}`}
+      className="relative flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-white/25 bg-white/10 outline-none transition-all duration-150 hover:border-white/50 hover:bg-white/20 active:scale-95 active:bg-white/30"
+    >
+      <ShoppingCart size={18} color="#fff" strokeWidth={1.6} />
+      {itemCount > 0 && (
+        <span
+          className={clsx(
+            "absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full border border-lime-800 bg-amber-500 font-bold leading-none text-gray-800",
+            "text-[10px]",
+            itemCount > 9 ? "px-1" : "px-0",
+          )}
+        >
+          {itemCount > 99 ? "99+" : itemCount}
+        </span>
+      )}
+    </button>
+  );
+}
+
+const MobileHeader = () => {
   const { openDrawer } = useDrawer();
-  const { navigateTo } = useNavigation();
-  const params = useParams();
-  const lang = typeof params?.lang === "string" ? params.lang : "es";
-
-  const isLoggedIn = false;
 
   return (
+    <div className="flex items-center gap-3 md:hidden">
+      <CartButton />
+      <button
+        type="button"
+        onClick={openDrawer}
+        aria-label="Open menu"
+        className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-white/25 bg-white/10 outline-none transition-all duration-150 hover:border-white/50 hover:bg-white/20 active:scale-95"
+      >
+        <Menu size={18} color="white" strokeWidth={1.6} />
+      </button>
+    </div>
+  );
+};
+
+const DesktopHeader = () => (
+  <div className="hidden md:flex items-center gap-3">
+    <CartButton />
+    <ProfileDropdown />
+  </div>
+);
+
+export default function HeaderRight() {
+  return (
     <div className="flex items-center gap-4">
-      {!isLoggedIn && (
-        <MainButton
-          text="Ingresar"
-          size="sm"
-          variant="outline"
-          rightIcon={UserRound}
-          onClick={() => navigateTo({ route: `/${lang}/login` })}
-        />
-      )}
-      {isLoggedIn && (
-        <Fragment>
-          <ShoppingCart color="#fff" />
-          <Link href="/profile">
-            <Text variant="span" size="base" weight="semibold" color="white">
-              Hola Ignacio!
-            </Text>
-          </Link>
-          <div className="flex lg:hidden items-center justify-center cursor-pointer">
-            <Menu onClick={openDrawer} />
-          </div>
-        </Fragment>
-      )}
+      <MobileHeader />
+      <DesktopHeader />
     </div>
   );
 }

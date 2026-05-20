@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { SupportedLanguage } from "@/constants/settings";
 
 const loaders = {
@@ -12,6 +10,17 @@ export const NAMESPACE = "navigation";
 
 export const getNavigationDictionary = (lang: SupportedLanguage) =>
   loaders[lang]() as Promise<{
-    alt: string;
-    ariaLabel: string;
+    nav: string;
+    marketplace: string;
+    stores: string;
+    services: string;
+    community: string;
+    blog: string;
+    searchPlaceholder: string;
+    dropdown: {
+      myProfile: string;
+      recycle: string;
+      publish: string;
+      notifications: string;
+    };
   }>;

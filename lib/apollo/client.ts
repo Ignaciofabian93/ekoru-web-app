@@ -1,40 +1,44 @@
-import { ApolloClient, HttpLink, InMemoryCache, from } from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
-import { setContext } from "@apollo/client/link/context";
+import { ApolloClient, CombinedGraphQLErrors, HttpLink, InMemoryCache } from "@apollo/client";
+import { ErrorLink } from "@apollo/client/link/error";
+import { from, switchMap } from "rxjs";
 
-const GRAPHQL_URL =
-  process.env.NEXT_PUBLIC_GRAPHQL_URL ??
-  process.env.GRAPHQL_URL ??
-  "http://localhost:4000/graphql";
+const httpLink = new HttpLink({ uri: "/api/graphql", credentials: "same-origin" });
 
-const httpLink = new HttpLink({ uri: GRAPHQL_URL });
+const errorLink = new ErrorLink(({ error, operation, forward }) => {
+  if (CombinedGraphQLErrors.is(error)) {
+    const isUnauthorized = error.errors.some(
+      (e) =>
+        e.message === "No autorizado" ||
+        e.extensions?.code === "UNAUTHENTICATED" ||
+        (e.extensions?.code as number) === 401,
+    );
 
-const errorLink = onError(({ error, operation }) => {
-  console.error(`[Apollo error] Operation: ${operation.operationName}`, error);
-});
+    if (isUnauthorized && !operation.getContext().refreshAttempted) {
+      return from(
+        fetch("/api/auth/refresh", { method: "POST", credentials: "include" }).then((res) => {
+          if (!res.ok) throw new Error("Refresh failed");
+        }),
+      ).pipe(
+        switchMap(() => {
+          operation.setContext({ refreshAttempted: true });
+          return forward(operation);
+        }),
+      );
+    }
 
-const authLink = setContext((_, { headers }) => {
-  const token =
-    typeof document !== "undefined"
-      ? document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("ekoru_token="))
-          ?.split("=")[1]
-      : undefined;
-
-  return {
-    headers: {
-      ...headers,
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-  };
+    for (const e of error.errors) {
+      console.error(`[Apollo error] Operation: ${operation.operationName}`, e);
+    }
+  } else if (error) {
+    console.error(`[Apollo network error] Operation: ${operation.operationName}`, error);
+  }
 });
 
 let browserClient: ApolloClient | undefined;
 
 function makeClient() {
   return new ApolloClient({
-    link: from([errorLink, authLink, httpLink]),
+    link: errorLink.concat(httpLink),
     cache: new InMemoryCache(),
     defaultOptions: {
       watchQuery: { fetchPolicy: "cache-and-network" },

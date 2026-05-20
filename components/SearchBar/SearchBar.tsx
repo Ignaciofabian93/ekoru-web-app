@@ -1,6 +1,6 @@
 "use client";
 
-import { borderRadius, colors, fontSize, iconSize, spacing } from "@/design/tokens";
+import clsx from "clsx";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
@@ -8,14 +8,14 @@ interface SearchBarProps {
   value?: string;
   onChange?: (value: string) => void;
   placeholder?: string;
-  style?: React.CSSProperties;
+  className?: string;
 }
 
 export default function SearchBar({
   value: controlledValue,
   onChange,
   placeholder = "Search...",
-  style,
+  className,
 }: SearchBarProps) {
   const [internalValue, setInternalValue] = useState("");
   const isControlled = controlledValue !== undefined;
@@ -27,42 +27,26 @@ export default function SearchBar({
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "transparent",
-        paddingInline: spacing[4],
-        paddingTop: spacing[1],
-        paddingBottom: spacing[3],
-        ...style,
-      }}
-    >
+    <div className={clsx("bg-transparent pt-1 pb-3", className)}>
       <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: colors.surface,
-          borderRadius: borderRadius.md,
-          paddingInline: spacing[3],
-          height: spacing[10],
-          gap: spacing[2],
-        }}
+        className={clsx(
+          "flex flex-row items-center bg-surface rounded-md px-3 h-10 gap-2",
+        )}
       >
-        <Search size={iconSize.md} color={colors.inputPlaceholder} strokeWidth={2} />
+        <Search
+          size={20}
+          className={clsx("text-input-placeholder shrink-0")}
+          strokeWidth={2}
+        />
         <input
           type="search"
           value={query}
           onChange={handleChange}
           placeholder={placeholder}
-          style={{
-            flex: 1,
-            fontSize: fontSize.base,
-            color: colors.foreground,
-            background: "none",
-            border: "none",
-            outline: "none",
-            padding: 0,
-          }}
+          className={clsx(
+            "flex-1 text-base bg-transparent border-none outline-none p-0",
+            "text-foreground placeholder:text-input-placeholder",
+          )}
         />
       </div>
     </div>

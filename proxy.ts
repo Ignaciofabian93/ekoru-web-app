@@ -1,32 +1,51 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-
+import { NextResponse, type NextRequest } from "next/server";
 import { DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES } from "@/constants/settings";
+
+// Patterns evaluated AFTER the leading `/[lang]` segment is stripped.
+const PROTECTED_PATTERNS: RegExp[] = [
+  /^\/profile(\/|$)/,
+  /^\/cart\/checkout(\/|$)/,
+  /^\/cart\/confirmation(\/|$)/,
+  /^\/publish(\/|$)/,
+];
+
+const SUPPORTED = SUPPORTED_LANGUAGES as readonly string[];
 
 function getLocale(request: NextRequest): string {
   const acceptLang = request.headers.get("Accept-Language") ?? "";
-  // Parse the first language code from Accept-Language header
-  const firstCode =
-    acceptLang.split(",")[0]?.split("-")[0]?.trim().toLowerCase() ?? "";
-  return (SUPPORTED_LANGUAGES as readonly string[]).includes(firstCode)
-    ? firstCode
-    : DEFAULT_LANGUAGE;
+  const firstCode = acceptLang.split(",")[0]?.split("-")[0]?.trim().toLowerCase() ?? "";
+  return SUPPORTED.includes(firstCode) ? firstCode : DEFAULT_LANGUAGE;
 }
 
 export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
 
-  const pathnameHasLocale = (SUPPORTED_LANGUAGES as readonly string[]).some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-  );
+  const segments = pathname.split("/");
+  const maybeLang = segments[1] ?? "";
+  const hasLangPrefix = SUPPORTED.includes(maybeLang);
 
-  if (pathnameHasLocale) return;
+  if (!hasLangPrefix) {
+    const locale = getLocale(request);
+    request.nextUrl.pathname = `/${locale}${pathname}`;
+    return NextResponse.redirect(request.nextUrl);
+  }
 
-  const locale = getLocale(request);
-  request.nextUrl.pathname = `/${locale}${pathname}`;
-  return NextResponse.redirect(request.nextUrl);
+  const rest = `/${segments.slice(2).join("/")}`;
+  const isProtected = PROTECTED_PATTERNS.some((rx) => rx.test(rest));
+  if (!isProtected) return NextResponse.next();
+
+  // Either cookie is enough: if only `refreshToken` is present, the axios
+  // client will exchange it for a fresh `token` on the first 401.
+  const hasSession = request.cookies.has("token") || request.cookies.has("refreshToken");
+  if (hasSession) return NextResponse.next();
+
+  const loginUrl = request.nextUrl.clone();
+  loginUrl.pathname = `/${maybeLang}/login`;
+  loginUrl.search = "";
+  loginUrl.searchParams.set("redirectTo", pathname + search);
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|favicon.ico|.*\\..*).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
 };
