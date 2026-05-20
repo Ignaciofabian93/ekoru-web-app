@@ -1,3 +1,42 @@
 {
-  "title": ""
+  "header": {
+    "sellerType": {
+      "person": "Personal Account",
+      "startup": "Startup Account",
+      "company": "Business Account"
+    }
+  },
+  "details": {
+    "title": "Details",
+    "phone": "Phone",
+    "address": "Address",
+    "county": "County",
+    "city": "City",
+    "region": "Region",
+    "country": "Country"
+  },
+  "account": {
+    "title": "My Account",
+    "editProfile": "Edit Profile",
+    "changePassword": "Change Password",
+    "orderHistory": "Order History",
+    "favorites": "Favorites",
+    "environmentalImpact": "Environmental Impact",
+    "subscription": "Subscription",
+    "settings": "Settings"
+  },
+  "settings": {
+    "preferences": "Preferences",
+    "language": "Language",
+    "currency": "Currency",
+    "notifications": "Notifications",
+    "emailNotifications": "Email Notifications",
+    "emailNotificationsDescription": "Receive order updates and promotions by email",
+    "pushNotifications": "Push Notifications",
+    "pushNotificationsDescription": "Receive real-time alerts on your device",
+    "dangerZone": "Danger Zone",
+    "deleteAccount": "Delete Account",
+    "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone."
+  },
+  "logout": "Log Out"
 }

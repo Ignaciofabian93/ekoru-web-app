@@ -10,6 +10,8 @@
     "myProfile": "Mon Profil",
     "recycle": "Recycler",
     "publish": "Publier",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "signIn": "Se Connecter",
+    "signUp": "S'inscrire"
   }
 }

@@ -1,5 +1,4 @@
 {
-  "title": "",
   "header": {
     "sellerType": {
       "person": "Cuenta Personal",
@@ -24,7 +23,20 @@
     "favorites": "Favoritos",
     "environmentalImpact": "Impacto Ambiental",
     "subscription": "Suscripción",
-    "settings": "Ajustes"
+    "settings": "Configuración"
+  },
+  "settings": {
+    "preferences": "Preferencias",
+    "language": "Idioma",
+    "currency": "Moneda",
+    "notifications": "Notificaciones",
+    "emailNotifications": "Notificaciones por Email",
+    "emailNotificationsDescription": "Recibe actualizaciones de pedidos y promociones por email",
+    "pushNotifications": "Notificaciones Push",
+    "pushNotificationsDescription": "Recibe alertas en tiempo real en tu dispositivo",
+    "dangerZone": "Zona de Peligro",
+    "deleteAccount": "Eliminar Cuenta",
+    "deleteAccountDescription": "Elimina permanentemente tu cuenta y todos los datos asociados. Esta acción no se puede deshacer."
   },
   "logout": "Cerrar Sesión"
 }

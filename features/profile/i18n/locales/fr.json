@@ -1,3 +1,42 @@
 {
-  "title": ""
+  "header": {
+    "sellerType": {
+      "person": "Compte Personnel",
+      "startup": "Compte Startup",
+      "company": "Compte Entreprise"
+    }
+  },
+  "details": {
+    "title": "Détails",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "county": "Arrondissement",
+    "city": "Ville",
+    "region": "Région",
+    "country": "Pays"
+  },
+  "account": {
+    "title": "Mon Compte",
+    "editProfile": "Modifier le Profil",
+    "changePassword": "Changer le Mot de Passe",
+    "orderHistory": "Historique des Commandes",
+    "favorites": "Favoris",
+    "environmentalImpact": "Impact Environnemental",
+    "subscription": "Abonnement",
+    "settings": "Paramètres"
+  },
+  "settings": {
+    "preferences": "Préférences",
+    "language": "Langue",
+    "currency": "Devise",
+    "notifications": "Notifications",
+    "emailNotifications": "Notifications par Email",
+    "emailNotificationsDescription": "Recevez des mises à jour de commandes et des promotions par email",
+    "pushNotifications": "Notifications Push",
+    "pushNotificationsDescription": "Recevez des alertes en temps réel sur votre appareil",
+    "dangerZone": "Zone Dangereuse",
+    "deleteAccount": "Supprimer le Compte",
+    "deleteAccountDescription": "Supprimez définitivement votre compte et toutes les données associées. Cette action est irréversible."
+  },
+  "logout": "Se Déconnecter"
 }

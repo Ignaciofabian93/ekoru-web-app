@@ -22,5 +22,7 @@ export const getNavigationDictionary = (lang: SupportedLanguage) =>
       recycle: string;
       publish: string;
       notifications: string;
+      signIn: string;
+      signUp: string;
     };
   }>;

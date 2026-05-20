@@ -4,7 +4,7 @@ import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import {
   ChevronRight,
-  Diamond,
+  Gem,
   Heart,
   KeyRound,
   Leaf,
@@ -52,7 +52,7 @@ export function Account() {
     {
       key: "subscription",
       route: `/profile/subscription`,
-      icon: Diamond,
+      icon: Gem,
       label: t("account.subscription"),
     },
     {
