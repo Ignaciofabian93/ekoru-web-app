@@ -1,7 +1,6 @@
 "use client";
 
 import { conditionLabel, formatPrice } from "@/data/products";
-import useCartStore from "@/store/useCartStore";
 import type { Product } from "@/types/product";
 import {
   Droplets,
@@ -30,11 +29,9 @@ const SELLER_TYPE_LABELS: Record<string, string> = {
 };
 
 export function ProductDetail({ product, lang }: { product: Product; lang: string }) {
-  const addItem = useCartStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
 
   function handleAddToCart() {
-    addItem(product);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   }
@@ -42,9 +39,11 @@ export function ProductDetail({ product, lang }: { product: Product; lang: strin
   return (
     <div className="flex-1 bg-background">
       {/* Image */}
-      <div className="w-full aspect-[4/3] md:aspect-[16/7] bg-background-secondary flex items-center justify-center relative max-h-96">
+      <div className="w-full aspect-4/3 md:aspect-16/7 bg-background-secondary flex items-center justify-center relative max-h-96">
         <ImageOff size={56} className="text-foreground-muted" strokeWidth={1.5} />
-        <span className={`absolute bottom-3 left-3 text-xs font-medium px-2.5 py-1 rounded-md ${CONDITION_COLORS[product.condition] ?? "bg-border text-foreground"}`}>
+        <span
+          className={`absolute bottom-3 left-3 text-xs font-medium px-2.5 py-1 rounded-md ${CONDITION_COLORS[product.condition] ?? "bg-border text-foreground"}`}
+        >
           {conditionLabel(product.condition)}
         </span>
       </div>
@@ -56,14 +55,20 @@ export function ProductDetail({ product, lang }: { product: Product; lang: strin
             {product.brand && (
               <p className="text-sm text-foreground-secondary mb-1">{product.brand}</p>
             )}
-            <h1 className="text-2xl font-bold text-foreground leading-tight">{product.name}</h1>
+            <h1 className="text-2xl font-bold text-foreground leading-tight">
+              {product.name}
+            </h1>
           </div>
-          <span className="text-2xl font-bold text-primary shrink-0">{formatPrice(product.price)}</span>
+          <span className="text-2xl font-bold text-primary shrink-0">
+            {formatPrice(product.price)}
+          </span>
         </div>
 
         {/* Description */}
         {product.description && (
-          <p className="text-foreground-secondary leading-relaxed">{product.description}</p>
+          <p className="text-foreground-secondary leading-relaxed">
+            {product.description}
+          </p>
         )}
 
         {/* Details */}
@@ -73,12 +78,16 @@ export function ProductDetail({ product, lang }: { product: Product; lang: strin
             {product.color && (
               <div className="flex justify-between py-2.5">
                 <span className="text-sm text-foreground-secondary">Color</span>
-                <span className="text-sm font-medium text-foreground">{product.color}</span>
+                <span className="text-sm font-medium text-foreground">
+                  {product.color}
+                </span>
               </div>
             )}
             <div className="flex justify-between py-2.5">
               <span className="text-sm text-foreground-secondary">Condition</span>
-              <span className="text-sm font-medium text-foreground">{conditionLabel(product.condition)}</span>
+              <span className="text-sm font-medium text-foreground">
+                {conditionLabel(product.condition)}
+              </span>
             </div>
           </div>
         </div>
@@ -86,27 +95,41 @@ export function ProductDetail({ product, lang }: { product: Product; lang: strin
         {/* Environmental Impact */}
         {product.environmentalImpact && (
           <div>
-            <h2 className="text-base font-semibold text-foreground mb-3">Environmental Impact</h2>
+            <h2 className="text-base font-semibold text-foreground mb-3">
+              Environmental Impact
+            </h2>
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div className="bg-background-secondary border border-border-light rounded-xl p-4 flex flex-col items-center gap-1.5">
                 <Leaf size={20} className="text-primary" strokeWidth={1.5} />
-                <span className="text-lg font-bold text-foreground">{product.environmentalImpact.totalCo2SavingsKG} kg</span>
-                <span className="text-xs text-foreground-secondary text-center">CO₂ saved</span>
+                <span className="text-lg font-bold text-foreground">
+                  {product.environmentalImpact.totalCo2SavingsKG} kg
+                </span>
+                <span className="text-xs text-foreground-secondary text-center">
+                  CO₂ saved
+                </span>
               </div>
               <div className="bg-background-secondary border border-border-light rounded-xl p-4 flex flex-col items-center gap-1.5">
                 <Droplets size={20} className="text-secondary" strokeWidth={1.5} />
-                <span className="text-lg font-bold text-foreground">{product.environmentalImpact.totalWaterSavingsLT} L</span>
-                <span className="text-xs text-foreground-secondary text-center">Water saved</span>
+                <span className="text-lg font-bold text-foreground">
+                  {product.environmentalImpact.totalWaterSavingsLT} L
+                </span>
+                <span className="text-xs text-foreground-secondary text-center">
+                  Water saved
+                </span>
               </div>
             </div>
             {product.environmentalImpact.materialBreakdown.length > 0 && (
               <div>
-                <p className="text-sm font-medium text-foreground-secondary mb-2">Materials</p>
+                <p className="text-sm font-medium text-foreground-secondary mb-2">
+                  Materials
+                </p>
                 <div className="flex flex-col divide-y divide-border-light">
                   {product.environmentalImpact.materialBreakdown.map((m) => (
                     <div key={m.materialType} className="flex justify-between py-2">
                       <span className="text-sm text-foreground">{m.materialType}</span>
-                      <span className="text-sm font-medium text-foreground-secondary">{m.percentage}%</span>
+                      <span className="text-sm font-medium text-foreground-secondary">
+                        {m.percentage}%
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -122,15 +145,21 @@ export function ProductDetail({ product, lang }: { product: Product; lang: strin
             <div className="bg-background-secondary border border-border-light rounded-xl p-4 flex flex-col gap-2.5">
               <div className="flex items-center gap-2">
                 <User size={16} className="text-foreground-secondary" strokeWidth={1.5} />
-                <span className="text-sm font-semibold text-foreground flex-1">{product.seller.name}</span>
+                <span className="text-sm font-semibold text-foreground flex-1">
+                  {product.seller.address}
+                </span>
                 <span className="text-xs font-medium bg-primary-dark text-white px-2 py-0.5 rounded">
-                  {SELLER_TYPE_LABELS[product.seller.sellerType] ?? product.seller.sellerType}
+                  {SELLER_TYPE_LABELS[product.seller.sellerType] ??
+                    product.seller.sellerType}
                 </span>
               </div>
               {product.seller.county && (
                 <div className="flex items-center gap-2 text-foreground-secondary">
                   <MapPin size={16} strokeWidth={1.5} />
-                  <span className="text-sm">{product.seller.county}{product.seller.address ? ` · ${product.seller.address}` : ""}</span>
+                  <span className="text-sm">
+                    {product.seller.address}
+                    {product.seller.address ? ` · ${product.seller.address}` : ""}
+                  </span>
                 </div>
               )}
               {product.seller.phone && (

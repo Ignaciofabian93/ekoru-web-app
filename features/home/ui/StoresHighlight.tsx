@@ -1,13 +1,16 @@
 import { MapPin, ShieldCheck, Star } from "lucide-react";
 import Link from "next/link";
 
-const DUMMY_STORES = [
-  { id: "1", name: "Verde Market", rating: 4.9, county: "Providencia", category: "Organic", isVerified: true },
-  { id: "2", name: "EcoWear Boutique", rating: 4.8, county: "Ñuñoa", category: "Fashion", isVerified: true },
-  { id: "3", name: "Green Roots", rating: 4.7, county: "Las Condes", category: "Home", isVerified: true },
-];
+type Store = {
+  id: string;
+  name: string;
+  rating: number;
+  county: string;
+  category: string;
+  isVerified: boolean;
+};
 
-export function StoresHighlight({ lang }: { lang: string }) {
+export function StoresHighlight({ lang, stores }: { lang: string; stores: Store[] }) {
   return (
     <div className="my-10">
       <div className="flex items-center justify-between mb-5">
@@ -21,7 +24,7 @@ export function StoresHighlight({ lang }: { lang: string }) {
       </div>
 
       <div className="flex flex-col gap-3">
-        {DUMMY_STORES.map((store) => (
+        {stores.map((store) => (
           <Link
             key={store.id}
             href={`/${lang}/stores/${store.id}`}

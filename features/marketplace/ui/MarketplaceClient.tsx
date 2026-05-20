@@ -1,16 +1,16 @@
 "use client";
 
-import { DUMMY_PRODUCTS } from "@/data/products";
 import { DepartmentsSection } from "./DepartmentsSection";
 import { ProductGrid } from "./ProductGrid";
 import { useState } from "react";
+import type { Product } from "@/types/product";
 
-export function MarketplaceClient({ lang }: { lang: string }) {
+export function MarketplaceClient({ lang, products }: { lang: string; products: Product[] }) {
   const [department, setDepartment] = useState("all");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const filtered = DUMMY_PRODUCTS.filter((p) =>
+  const filtered = products.filter((p) =>
     search ? p.name.toLowerCase().includes(search.toLowerCase()) : true,
   );
 

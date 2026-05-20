@@ -18,7 +18,7 @@ export default async function MarketplacePage({
       </div>
 
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <MarketplaceClient lang={lang} />
+        <MarketplaceClient lang={lang} products={[]} />
       </div>
     </main>
   );
