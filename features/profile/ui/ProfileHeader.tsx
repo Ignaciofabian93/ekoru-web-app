@@ -22,6 +22,8 @@ export function ProfileHeader() {
   const email = useSellerEmail();
   const sellerType = useSellerType();
   const points = useSellerPoints();
+  console.log("PROFILE:: ", profileImage);
+  console.log("COVER:: ", coverImage);
 
   const wallpaperImage = coverImage ?? "/brand/logo.webp";
   const userImage = profileImage ?? "/brand/icon.webp";

@@ -26,6 +26,8 @@ const getEndpoints = () => {
 };
 
 const endpoints = getEndpoints();
+console.log("ENV:: ", ENVIRONMENT);
+console.log("ENDPOINTS:: ", endpoints);
 
 export const GATEWAY_BASE_URL = endpoints.base;
 export const GRAPHQL_URL = endpoints.graphql;
