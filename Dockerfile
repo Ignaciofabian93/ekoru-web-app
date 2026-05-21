@@ -47,6 +47,8 @@ RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 # Copy built application from builder stage
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
+# next start reads next.config at runtime to resolve images.remotePatterns
+COPY --from=builder /app/next.config.ts ./next.config.ts
 
 CMD [ "pnpm", "start" ]
 
