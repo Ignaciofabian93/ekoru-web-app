@@ -16,6 +16,11 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY . .
 
+# NEXT_PUBLIC_* vars are inlined into the client bundle at build time.
+# Pass the target environment so resolveImageUrl uses the correct API base URL.
+ARG NEXT_PUBLIC_ENVIRONMENT
+ENV NEXT_PUBLIC_ENVIRONMENT=$NEXT_PUBLIC_ENVIRONMENT
+
 # Build the application
 RUN pnpm run build
 
