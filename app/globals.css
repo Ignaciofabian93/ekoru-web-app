@@ -136,3 +136,35 @@ body {
 .animate-marquee {
   animation: marquee 18s linear infinite;
 }
+
+/* ── Multi-step wizard transitions (Register form) ──────────── */
+@keyframes step-in-forward {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes step-in-back {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-step-forward {
+  animation: step-in-forward 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-step-back {
+  animation: step-in-back 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fade-up 0.3s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-step-forward,
+  .animate-step-back,
+  .animate-fade-up {
+    animation: none;
+  }
+}

@@ -13,7 +13,7 @@ export async function Register({ lang }: { lang: SupportedLanguage }) {
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
       <AuthShell
         lang={lang}
-        logo={<EkoruLogo lang={lang} width={4096} height={996} className="w-32" />}
+        logo={<EkoruLogo lang={lang} width={4096} height={996} className="w-48" />}
         subtitleKey="page.registerCta"
         footer={{
           textKey: "actions.hasAccount",

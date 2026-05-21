@@ -28,6 +28,8 @@
   "actions": {
     "login": "Se connecter",
     "register": "S'inscrire",
+    "continue": "Continuer",
+    "back": "Retour",
     "signIn": "Connectez-vous",
     "signUp": "Inscrivez-vous",
     "or": "ou",
@@ -41,6 +43,18 @@
     "person": "Particulier",
     "startup": "Startup",
     "company": "Entreprise"
+  },
+  "register": {
+    "step": "Étape {{current}} sur {{total}}",
+    "accountTypeTitle": "Quel type de compte voulez-vous créer?",
+    "accountTypeSubtitle": "Choisissez l'option qui vous décrit le mieux",
+    "detailsTitle": "Vos informations",
+    "detailsSubtitle": "Entrez vos coordonnées",
+    "securityTitle": "Créez votre mot de passe",
+    "securitySubtitle": "Protégez votre compte avec un mot de passe sécurisé",
+    "personDesc": "Un compte personnel",
+    "startupDesc": "Pour les entreprises en croissance",
+    "companyDesc": "Pour les entreprises établies"
   },
   "businessTypes": {
     "retail": "Commerce de détail",

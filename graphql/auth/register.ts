@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const REGISTER_PERSON = gql`
-  mutation RegisterPerson($input: RegisterPersonInput!) {
-    registerPerson(input: $input) {
+  mutation RegisterPerson($input: RegisterPersonInput!, $language: Language = ES) {
+    registerPerson(input: $input, language: $language) {
       id
       email
       sellerType
@@ -13,8 +13,8 @@ export const REGISTER_PERSON = gql`
 `;
 
 export const REGISTER_BUSINESS = gql`
-  mutation RegisterBusiness($input: RegisterBusinessInput!) {
-    registerBusiness(input: $input) {
+  mutation RegisterBusiness($input: RegisterBusinessInput!, $language: Language = ES) {
+    registerBusiness(input: $input, language: $language) {
       id
       email
       sellerType

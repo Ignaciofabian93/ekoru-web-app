@@ -1,8 +1,10 @@
 "use client";
 import MainButton from "@/components/Button/MainButton";
 import Input from "@/components/Input/Input";
+import { Text } from "@/components/Text/Text";
 import { useTranslation } from "@/i18n/context";
 import { ArrowRight, Lock, Mail } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useLogin } from "../hooks/useLogin";
 import { isMinLength, isValidEmail } from "@/utils/inputValidations";
 
@@ -10,8 +12,18 @@ export function LoginForm() {
   const { t } = useTranslation("auth");
   const { handleSubmit, email, setEmail, password, setPassword, loading } = useLogin();
 
+  const searchParams = useSearchParams();
+  const justRegistered = searchParams.get("registered") === "1";
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      {justRegistered && (
+        <div role="status">
+          <Text variant="small" color="success">
+            {t("feedback.registerSuccess")}
+          </Text>
+        </div>
+      )}
       <Input
         name="email"
         label={t("form.email")}

@@ -16,12 +16,12 @@ export function useLogout() {
     setLoading(true);
     try {
       // Best-effort: even if the server call fails (network, already expired),
-      // we still drop local state and route to login so the user isn't stuck.
+      // we still drop local state and route home so the user isn't stuck.
       await Logout().catch(() => undefined);
     } finally {
       clearSeller();
       const lang = params.lang ?? DEFAULT_LANGUAGE;
-      router.push(`/${lang}/login`);
+      router.push(`/${lang}`);
       router.refresh();
       setLoading(false);
     }
