@@ -35,7 +35,7 @@ export function Details() {
   ];
 
   return (
-    <section className="w-full max-w-3xl mx-auto my-8 px-8">
+    <section className="w-full max-w-4xl mx-auto my-8 px-8">
       <div className="mb-4">
         <Title level="h5" size="h5">
           {t("details.title")}

@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES } from "@/constants/settings";
+import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE, SUPPORTED_LANGUAGES } from "@/constants/settings";
 
 // Patterns evaluated AFTER the leading `/[lang]` segment is stripped.
 const PROTECTED_PATTERNS: RegExp[] = [
@@ -12,6 +12,10 @@ const PROTECTED_PATTERNS: RegExp[] = [
 const SUPPORTED = SUPPORTED_LANGUAGES as readonly string[];
 
 function getLocale(request: NextRequest): string {
+  // A saved choice wins over the browser's Accept-Language preference.
+  const cookieLang = request.cookies.get(LANGUAGE_COOKIE)?.value ?? "";
+  if (SUPPORTED.includes(cookieLang)) return cookieLang;
+
   const acceptLang = request.headers.get("Accept-Language") ?? "";
   const firstCode = acceptLang.split(",")[0]?.split("-")[0]?.trim().toLowerCase() ?? "";
   return SUPPORTED.includes(firstCode) ? firstCode : DEFAULT_LANGUAGE;

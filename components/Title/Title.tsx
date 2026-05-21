@@ -10,7 +10,8 @@ type TitleColor =
   | "tertiary"
   | "error"
   | "success"
-  | "warning";
+  | "warning"
+  | "white";
 type Align = "left" | "center" | "right";
 
 export interface TitleProps {
@@ -53,6 +54,7 @@ const COLOR_MAP: Record<TitleColor, string> = {
   error: colors.danger,
   success: colors.success,
   warning: colors.warning,
+  white: colors.white,
 };
 
 const Title = React.forwardRef<HTMLHeadingElement, TitleProps>(
@@ -92,7 +94,12 @@ const Title = React.forwardRef<HTMLHeadingElement, TitleProps>(
 
     const Tag = level;
     return (
-      <Tag ref={ref} style={{ ...computed, ...style }} className={className} onClick={onClick}>
+      <Tag
+        ref={ref}
+        style={{ ...computed, ...style }}
+        className={className}
+        onClick={onClick}
+      >
         {children}
       </Tag>
     );

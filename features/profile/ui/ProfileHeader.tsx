@@ -22,8 +22,6 @@ export function ProfileHeader() {
   const email = useSellerEmail();
   const sellerType = useSellerType();
   const points = useSellerPoints();
-  console.log("PROFILE:: ", profileImage);
-  console.log("COVER:: ", coverImage);
 
   const wallpaperImage = coverImage ?? "/brand/logo.webp";
   const userImage = profileImage ?? "/brand/icon.webp";
@@ -35,7 +33,7 @@ export function ProfileHeader() {
   };
 
   return (
-    <section className="w-full max-w-5xl mx-auto">
+    <section className="w-full max-w-4xl mx-auto">
       <div className="relative w-full">
         <Image
           src={wallpaperImage}

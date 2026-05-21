@@ -3,6 +3,8 @@ export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 export const DEFAULT_LANGUAGE: SupportedLanguage = "es";
 export const LANGUAGE_STORAGE_KEY = "app_language";
+/** Cookie that persists the user's locale choice so middleware can read it server-side. */
+export const LANGUAGE_COOKIE = "NEXT_LOCALE";
 
 export const hasLocale = (locale: string): locale is SupportedLanguage =>
   (SUPPORTED_LANGUAGES as readonly string[]).includes(locale);
@@ -38,3 +40,10 @@ export const CURRENCIES_SUPPORTED = [
 ] as const;
 
 export type Currency = (typeof CURRENCIES_SUPPORTED)[number];
+
+export const DEFAULT_CURRENCY: Currency = "USD";
+/** Cookie that persists the user's currency choice. */
+export const CURRENCY_COOKIE = "ekoru_currency";
+
+export const hasCurrency = (value: string): value is Currency =>
+  (CURRENCIES_SUPPORTED as readonly string[]).includes(value);

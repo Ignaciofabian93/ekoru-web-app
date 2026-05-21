@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { useDrawer } from "@/context/DrawerContext";
 import { Menu, ShoppingCart } from "lucide-react";
 import ProfileDropdown from "./ProfileDropdown";
+import LanguageDropdown from "./LanguageDropdown";
 
 interface CartButtonProps {
   itemCount?: number;
@@ -36,6 +37,7 @@ const MobileHeader = () => {
 
   return (
     <div className="flex items-center gap-3 md:hidden">
+      <LanguageDropdown />
       <CartButton />
       <button
         type="button"
@@ -51,6 +53,7 @@ const MobileHeader = () => {
 
 const DesktopHeader = () => (
   <div className="hidden md:flex items-center gap-3">
+    <LanguageDropdown />
     <CartButton />
     <ProfileDropdown />
   </div>
