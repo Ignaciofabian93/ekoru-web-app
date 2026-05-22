@@ -1,0 +1,109 @@
+{
+  "page": {
+    "title": "Publish",
+    "marketplaceSubtitle": "List a second-hand item on the marketplace",
+    "storeSubtitle": "Add a product to your store",
+    "serviceSubtitle": "Offer a new service",
+    "chooseSubtitle": "Choose what you'd like to publish"
+  },
+  "step": "Step {{current}} of {{total}}",
+  "steps": {
+    "targetTitle": "What do you want to publish?",
+    "targetSubtitle": "Choose where this listing will go",
+    "detailsTitle": "Listing details",
+    "detailsSubtitle": "Describe what you're offering",
+    "pricingTitle": "Pricing & options",
+    "pricingSubtitle": "Set your price and preferences",
+    "inventoryTitle": "Inventory",
+    "inventorySubtitle": "Stock and identifiers",
+    "reviewTitle": "Review & publish",
+    "reviewSubtitle": "Check that everything looks right"
+  },
+  "targets": {
+    "store": "Store product",
+    "storeDesc": "A new item sold from your store",
+    "service": "Service",
+    "serviceDesc": "A service you offer to customers"
+  },
+  "targetNames": {
+    "MARKETPLACE": "Marketplace",
+    "STORE": "Store",
+    "SERVICE": "Services"
+  },
+  "form": {
+    "name": "Title",
+    "namePlaceholder": "e.g. Vintage wooden chair",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe condition, materials, dimensions...",
+    "brand": "Brand",
+    "brandPlaceholder": "e.g. Ikea (optional)",
+    "category": "Category",
+    "categoryPlaceholder": "Select a category",
+    "condition": "Condition",
+    "conditionPlaceholder": "Select condition",
+    "conditionDescription": "Condition details",
+    "conditionDescriptionPlaceholder": "Any wear, marks or repairs (optional)",
+    "price": "Price",
+    "pricePlaceholder": "0",
+    "stock": "Stock",
+    "stockPlaceholder": "Available units",
+    "sku": "SKU",
+    "skuPlaceholder": "Internal code (optional)",
+    "servicePricing": "Pricing type",
+    "servicePricingPlaceholder": "Select pricing type",
+    "isExchangeable": "Open to exchanges",
+    "isExchangeableHint": "Let buyers propose item swaps",
+    "images": "Photos",
+    "imagesHint": "Add 1 to 3 photos. The first one is the cover.",
+    "addPhoto": "Add photo"
+  },
+  "conditions": {
+    "new": "New",
+    "open_box": "Open box",
+    "like_new": "Like new",
+    "fair": "Fair",
+    "poor": "Poor",
+    "for_parts": "For parts",
+    "refurbished": "Refurbished"
+  },
+  "servicePricingTypes": {
+    "fixed": "Fixed price",
+    "quotation": "By quotation",
+    "hourly": "Hourly",
+    "package": "Package"
+  },
+  "categories": {
+    "clothing": "Clothing",
+    "furniture": "Furniture",
+    "electronics": "Electronics",
+    "books": "Books",
+    "home": "Home & Garden",
+    "sports": "Sports",
+    "toys": "Toys",
+    "other": "Other"
+  },
+  "review": {
+    "target": "Publishing to",
+    "title": "Title",
+    "price": "Price",
+    "category": "Category",
+    "condition": "Condition",
+    "empty": "Not set"
+  },
+  "actions": {
+    "continue": "Continue",
+    "back": "Back",
+    "publish": "Publish",
+    "goBackHome": "Go back to home"
+  },
+  "feedback": {
+    "fieldsRequired": "Please fill in all required fields",
+    "priceRequired": "Please enter a valid price",
+    "imagesRequired": "Add at least one photo",
+    "publishSuccess": "Your listing has been published",
+    "comingSoon": "Publishing to {{target}} is coming soon"
+  },
+  "a11y": {
+    "section": "Publish form"
+  }
+}

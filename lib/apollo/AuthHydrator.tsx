@@ -23,6 +23,8 @@ export default function AuthHydrator() {
       })
       .catch(() => {})
       .finally(() => setHydrated(true));
+    // Hydrate auth state once on mount; guarded by isHydrated above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

@@ -7,7 +7,7 @@ import type { Product } from "@/types/product";
 
 export function MarketplaceClient({ lang, products }: { lang: string; products: Product[] }) {
   const [department, setDepartment] = useState("all");
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [, setFiltersOpen] = useState(false);
   const [search, setSearch] = useState("");
 
   const filtered = products.filter((p) =>

@@ -1,0 +1,109 @@
+{
+  "page": {
+    "title": "Publier",
+    "marketplaceSubtitle": "Mettez en vente un article d'occasion sur la marketplace",
+    "storeSubtitle": "Ajoutez un produit à votre boutique",
+    "serviceSubtitle": "Proposez un nouveau service",
+    "chooseSubtitle": "Choisissez ce que vous souhaitez publier"
+  },
+  "step": "Étape {{current}} sur {{total}}",
+  "steps": {
+    "targetTitle": "Que voulez-vous publier ?",
+    "targetSubtitle": "Choisissez où cette annonce apparaîtra",
+    "detailsTitle": "Détails de l'annonce",
+    "detailsSubtitle": "Décrivez ce que vous proposez",
+    "pricingTitle": "Prix et options",
+    "pricingSubtitle": "Définissez votre prix et vos préférences",
+    "inventoryTitle": "Inventaire",
+    "inventorySubtitle": "Stock et identifiants",
+    "reviewTitle": "Vérifier et publier",
+    "reviewSubtitle": "Vérifiez que tout est correct"
+  },
+  "targets": {
+    "store": "Produit de boutique",
+    "storeDesc": "Un nouvel article vendu depuis votre boutique",
+    "service": "Service",
+    "serviceDesc": "Un service que vous proposez à vos clients"
+  },
+  "targetNames": {
+    "MARKETPLACE": "Marketplace",
+    "STORE": "Boutique",
+    "SERVICE": "Services"
+  },
+  "form": {
+    "name": "Titre",
+    "namePlaceholder": "Ex : Chaise en bois vintage",
+    "description": "Description",
+    "descriptionPlaceholder": "Décrivez l'état, les matériaux, les dimensions...",
+    "brand": "Marque",
+    "brandPlaceholder": "Ex : Ikea (facultatif)",
+    "category": "Catégorie",
+    "categoryPlaceholder": "Sélectionnez une catégorie",
+    "condition": "État",
+    "conditionPlaceholder": "Sélectionnez l'état",
+    "conditionDescription": "Détails de l'état",
+    "conditionDescriptionPlaceholder": "Usure, marques ou réparations (facultatif)",
+    "price": "Prix",
+    "pricePlaceholder": "0",
+    "stock": "Stock",
+    "stockPlaceholder": "Unités disponibles",
+    "sku": "SKU",
+    "skuPlaceholder": "Code interne (facultatif)",
+    "servicePricing": "Type de tarification",
+    "servicePricingPlaceholder": "Sélectionnez le type de tarification",
+    "isExchangeable": "Ouvert aux échanges",
+    "isExchangeableHint": "Laissez les acheteurs proposer des échanges",
+    "images": "Photos",
+    "imagesHint": "Ajoutez 1 à 3 photos. La première sera la couverture.",
+    "addPhoto": "Ajouter une photo"
+  },
+  "conditions": {
+    "new": "Neuf",
+    "open_box": "Boîte ouverte",
+    "like_new": "Comme neuf",
+    "fair": "Correct",
+    "poor": "Usé",
+    "for_parts": "Pour pièces",
+    "refurbished": "Reconditionné"
+  },
+  "servicePricingTypes": {
+    "fixed": "Prix fixe",
+    "quotation": "Sur devis",
+    "hourly": "Horaire",
+    "package": "Forfait"
+  },
+  "categories": {
+    "clothing": "Vêtements",
+    "furniture": "Meubles",
+    "electronics": "Électronique",
+    "books": "Livres",
+    "home": "Maison et jardin",
+    "sports": "Sports",
+    "toys": "Jouets",
+    "other": "Autres"
+  },
+  "review": {
+    "target": "Publication sur",
+    "title": "Titre",
+    "price": "Prix",
+    "category": "Catégorie",
+    "condition": "État",
+    "empty": "Non défini"
+  },
+  "actions": {
+    "continue": "Continuer",
+    "back": "Retour",
+    "publish": "Publier",
+    "goBackHome": "Retour à l'accueil"
+  },
+  "feedback": {
+    "fieldsRequired": "Veuillez remplir tous les champs obligatoires",
+    "priceRequired": "Veuillez saisir un prix valide",
+    "imagesRequired": "Ajoutez au moins une photo",
+    "publishSuccess": "Votre annonce a été publiée",
+    "comingSoon": "La publication sur {{target}} arrive bientôt"
+  },
+  "a11y": {
+    "section": "Formulaire de publication"
+  }
+}

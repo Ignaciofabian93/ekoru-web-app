@@ -7,9 +7,9 @@ const loaders = {
   fr: () => import("./locales/fr.json").then((m) => m.default),
 } satisfies Record<SupportedLanguage, () => Promise<unknown>>;
 
-export const NAMESPACE = "auth";
+export const NAMESPACE = "publish";
 
-export type AuthDictionary = typeof en;
+export type PublishDictionary = typeof en;
 
 type NestedKeyOf<T extends object> = {
   [K in keyof T & string]: T[K] extends object
@@ -17,7 +17,7 @@ type NestedKeyOf<T extends object> = {
     : `${K}`;
 }[keyof T & string];
 
-export type AuthKey = NestedKeyOf<AuthDictionary>;
+export type PublishKey = NestedKeyOf<PublishDictionary>;
 
-export const getAuthDictionary = (lang: SupportedLanguage) =>
-  loaders[lang]() as Promise<AuthDictionary>;
+export const getPublishDictionary = (lang: SupportedLanguage) =>
+  loaders[lang]() as Promise<PublishDictionary>;
