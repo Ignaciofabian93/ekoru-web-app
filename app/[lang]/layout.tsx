@@ -5,6 +5,12 @@ import { hasLocale, SUPPORTED_LANGUAGES } from "@/constants/settings";
 import { getDictionary } from "@/i18n/dictionaries";
 import { DictionaryProvider } from "@/i18n/context";
 import { ApolloWrapper } from "@/lib/apollo/ApolloWrapper";
+import { DrawerProvider } from "@/context/DrawerContext";
+import Drawer from "@/components/Drawer/Drawer";
+import {
+  getDrawerDictionary,
+  NAMESPACE as DRAWER_NAMESPACE,
+} from "@/components/Drawer/i18n";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ekoru.cl";
 
@@ -89,11 +95,21 @@ export default async function RootLayout({
 
   if (!hasLocale(lang)) notFound();
 
-  const dict = await getDictionary(lang);
+  const [dict, drawerDict] = await Promise.all([
+    getDictionary(lang),
+    getDrawerDictionary(lang),
+  ]);
 
   return (
     <ApolloWrapper>
-      <DictionaryProvider dictionary={dict}>{children}</DictionaryProvider>
+      <DictionaryProvider dictionary={dict}>
+        <DictionaryProvider dictionary={{ [DRAWER_NAMESPACE]: drawerDict }}>
+          <DrawerProvider>
+            {children}
+            <Drawer />
+          </DrawerProvider>
+        </DictionaryProvider>
+      </DictionaryProvider>
     </ApolloWrapper>
   );
 }

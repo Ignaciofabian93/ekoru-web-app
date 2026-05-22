@@ -1,4 +1,4 @@
-import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
+import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
 import React from "react";
 
@@ -17,45 +17,15 @@ export default function MenuRow({
     <button
       type="button"
       onClick={onPress}
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        paddingBlock: 13,
-        paddingInline: 14,
-        gap: 12,
-        width: "100%",
-        background: "none",
-        border: "none",
-        borderBottom: hasBorder ? `1px solid ${colors.borderStrong}` : "none",
-        cursor: "pointer",
-        textAlign: "left",
-      }}
+      className={clsx(
+        "flex w-full cursor-pointer flex-row items-center gap-3 px-3.5 py-3.25 text-left",
+        hasBorder && "border-b border-border-strong",
+      )}
     >
-      <div
-        style={{
-          width: 32,
-          height: 32,
-          borderRadius: borderRadius.sm,
-          backgroundColor: `${colors.primary}18`,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0,
-        }}
-      >
-        <Icon size={18} strokeWidth={1.5} color={colors.primary} />
+      <div className="flex size-8 shrink-0 items-center justify-center rounded-sm bg-primary/10 text-primary">
+        <Icon size={18} strokeWidth={1.5} color="currentColor" />
       </div>
-      <span
-        style={{
-          fontSize: fontSize.sm,
-          fontFamily: fontFamily.sans,
-          fontWeight: 500,
-          color: colors.foreground,
-        }}
-      >
-        {label}
-      </span>
+      <span className="font-sans text-sm font-medium text-foreground">{label}</span>
     </button>
   );
 }

@@ -1,4 +1,4 @@
-import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
+import clsx from "clsx";
 import React from "react";
 
 type Variant = "primary" | "secondary" | "outlined" | "ghost";
@@ -13,112 +13,60 @@ export interface BannerProps {
   className?: string;
 }
 
-const VARIANT_CONFIG = {
-  primary: {
-    gradient: `linear-gradient(to right, ${colors.primaryDark}, ${colors.primary}, ${colors.primaryDark})`,
-    textColor: colors.onPrimary,
-    dotColor: colors.onPrimary,
-    borderWidth: 0,
-    borderColor: "transparent",
-    shadow: true,
-  },
-  secondary: {
-    gradient: `linear-gradient(to right, ${colors.secondaryDark}, ${colors.secondary}, ${colors.secondaryDark})`,
-    textColor: colors.onPrimary,
-    dotColor: colors.onPrimary,
-    borderWidth: 0,
-    borderColor: "transparent",
-    shadow: true,
-  },
-  outlined: {
-    gradient: null,
-    textColor: colors.foreground,
-    dotColor: colors.primary,
-    borderWidth: 2,
-    borderColor: colors.primary,
-    shadow: true,
-  },
-  ghost: {
-    gradient: null,
-    textColor: colors.foreground,
-    dotColor: colors.foregroundSecondary,
-    borderWidth: 0,
-    borderColor: "transparent",
-    shadow: false,
-  },
-} as const;
+const CONTAINER_CLASS: Record<Variant, string> = {
+  primary: "bg-linear-to-r from-primary-dark via-primary to-primary-dark shadow-lg",
+  secondary: "bg-linear-to-r from-secondary-dark via-secondary to-secondary-dark shadow-lg",
+  outlined: "border-2 border-solid border-primary bg-background shadow-lg",
+  ghost: "bg-white/50",
+};
+
+const TEXT_CLASS: Record<Variant, string> = {
+  primary: "text-on-primary",
+  secondary: "text-on-primary",
+  outlined: "text-foreground",
+  ghost: "text-foreground",
+};
+
+const DOT_CLASS: Record<Variant, string> = {
+  primary: "bg-on-primary",
+  secondary: "bg-on-primary",
+  outlined: "bg-primary",
+  ghost: "bg-foreground-secondary",
+};
 
 const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
-  ({ title, description, variant = "primary", showDots = true, animated: _animated, style, className }, ref) => {
-    const config = VARIANT_CONFIG[variant];
-
-    const containerStyle: React.CSSProperties = {
-      paddingInline: 20,
-      paddingBlock: 14,
-      borderRadius: borderRadius.lg,
-      width: "100%",
-      alignSelf: "center",
-      overflow: "hidden",
-      boxShadow: config.shadow ? shadows.lg : undefined,
-      borderWidth: config.borderWidth,
-      borderStyle: config.borderWidth > 0 ? "solid" : undefined,
-      borderColor: config.borderColor,
-      background: config.gradient
-        ? config.gradient
-        : variant === "ghost"
-          ? "rgba(255,255,255,0.5)"
-          : colors.background,
-      boxSizing: "border-box",
-      ...style,
-    };
-
+  (
+    { title, description, variant = "primary", showDots = true, animated: _animated, style, className },
+    ref,
+  ) => {
     return (
-      <div ref={ref} style={containerStyle} className={className}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            marginBottom: 8,
-          }}
-        >
-          {showDots && (
-            <div
-              style={{ width: 8, height: 8, borderRadius: borderRadius.sm, backgroundColor: config.dotColor }}
-            />
-          )}
+      <div
+        ref={ref}
+        style={style}
+        className={clsx(
+          "box-border w-full self-center overflow-hidden rounded-lg px-5 py-3.5",
+          CONTAINER_CLASS[variant],
+          className,
+        )}
+      >
+        <div className="mb-2 flex flex-row items-center justify-center gap-2">
+          {showDots && <div className={clsx("size-2 rounded-sm", DOT_CLASS[variant])} />}
           <span
-            style={{
-              fontSize: fontSize.base,
-              fontFamily: fontFamily.sans,
-              fontWeight: 700,
-              color: config.textColor,
-              textAlign: "center",
-              letterSpacing: -0.3,
-              flexShrink: 1,
-            }}
+            className={clsx(
+              "shrink text-center font-sans text-base font-bold tracking-[-0.3px]",
+              TEXT_CLASS[variant],
+            )}
           >
             {title}
           </span>
-          {showDots && (
-            <div
-              style={{ width: 8, height: 8, borderRadius: borderRadius.sm, backgroundColor: config.dotColor }}
-            />
-          )}
+          {showDots && <div className={clsx("size-2 rounded-sm", DOT_CLASS[variant])} />}
         </div>
 
         <p
-          style={{
-            fontSize: fontSize.sm,
-            fontFamily: fontFamily.sans,
-            fontWeight: 400,
-            color: config.textColor,
-            textAlign: "center",
-            lineHeight: "20px",
-            margin: 0,
-          }}
+          className={clsx(
+            "m-0 text-center font-sans text-sm font-normal leading-5",
+            TEXT_CLASS[variant],
+          )}
         >
           {description}
         </p>

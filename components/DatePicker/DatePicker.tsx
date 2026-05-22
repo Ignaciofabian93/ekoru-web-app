@@ -1,6 +1,6 @@
 "use client";
 
-import { borderRadius, colors, fontFamily, fontSize, spacing } from "@/design/tokens";
+import clsx from "clsx";
 import { Calendar } from "lucide-react";
 
 function parseDate(str: string): string {
@@ -40,37 +40,16 @@ export default function DatePicker({
   const dateValue = parseDate(value);
   const displayValue = formatDisplay(dateValue);
 
-  const maxAttr = maximumDate
-    ? maximumDate.toISOString().split("T")[0]
-    : undefined;
-  const minAttr = minimumDate
-    ? minimumDate.toISOString().split("T")[0]
-    : undefined;
+  const maxAttr = maximumDate ? maximumDate.toISOString().split("T")[0] : undefined;
+  const minAttr = minimumDate ? minimumDate.toISOString().split("T")[0] : undefined;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-      <label
-        style={{
-          fontSize: fontSize.sm,
-          fontFamily: fontFamily.sans,
-          fontWeight: 500,
-          color: colors.foreground,
-        }}
-      >
-        {label}
-      </label>
+    <div className="flex flex-col gap-1.5">
+      <label className="font-sans text-sm font-medium text-foreground">{label}</label>
 
-      <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-        <div
-          style={{
-            position: "absolute",
-            left: spacing[3],
-            display: "flex",
-            pointerEvents: "none",
-            zIndex: 1,
-          }}
-        >
-          <Calendar size={18} color={colors.foregroundTertiary} strokeWidth={2} />
+      <div className="relative flex items-center">
+        <div className="pointer-events-none absolute left-3 z-1 flex text-foreground-tertiary">
+          <Calendar size={18} color="currentColor" strokeWidth={2} />
         </div>
 
         {/* Invisible native date input for picker functionality */}
@@ -80,44 +59,16 @@ export default function DatePicker({
           onChange={(e) => onChange(e.target.value)}
           min={minAttr}
           max={maxAttr}
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0,
-            cursor: "pointer",
-            zIndex: 2,
-            width: "100%",
-          }}
+          className="absolute inset-0 z-2 w-full cursor-pointer opacity-0"
         />
 
         {/* Visual display */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            height: 44,
-            backgroundColor: colors.inputBg,
-            borderWidth: 2,
-            borderStyle: "solid",
-            borderColor: colors.inputBorder,
-            borderRadius: borderRadius.md,
-            paddingInline: spacing[3],
-            paddingLeft: spacing[3] + 18 + 8,
-            gap: spacing[2],
-            width: "100%",
-            boxSizing: "border-box",
-            cursor: "pointer",
-          }}
-        >
+        <div className="box-border flex h-11 w-full cursor-pointer flex-row items-center gap-2 rounded-md border-2 border-solid border-input-border bg-input-bg pr-3 pl-9.5">
           <span
-            style={{
-              flex: 1,
-              fontSize: fontSize.base,
-              fontFamily: fontFamily.sans,
-              fontWeight: 400,
-              color: displayValue ? colors.inputText : colors.inputPlaceholder,
-            }}
+            className={clsx(
+              "flex-1 font-sans text-base font-normal",
+              displayValue ? "text-input-text" : "text-input-placeholder",
+            )}
           >
             {displayValue || placeholder || "Select a date"}
           </span>

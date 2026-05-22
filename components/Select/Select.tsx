@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  borderRadius,
-  colors,
-  fontFamily,
-  fontSize,
-  input as inputTokens,
-  shadows,
-  spacing,
-} from "@/design/tokens";
+import clsx from "clsx";
 import { Check, ChevronDown, Circle, type LucideIcon } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { Text } from "../Text/Text";
@@ -44,67 +36,38 @@ export interface SelectProps {
   noResultsText?: string;
 }
 
-const SIZE_MAP: Record<
+const SIZE_CLASS: Record<
   Size,
-  { height: number; fontSize: number; px: number; iconSize: number }
+  { h: string; text: string; px: string; padLeft: string; icon: number }
 > = {
-  sm: {
-    height: inputTokens.sm.height,
-    fontSize: inputTokens.sm.fontSize,
-    px: inputTokens.sm.paddingX,
-    iconSize: inputTokens.sm.iconSize,
-  },
-  md: {
-    height: inputTokens.md.height,
-    fontSize: inputTokens.md.fontSize,
-    px: inputTokens.md.paddingX,
-    iconSize: inputTokens.md.iconSize,
-  },
-  lg: {
-    height: inputTokens.lg.height,
-    fontSize: inputTokens.lg.fontSize,
-    px: inputTokens.lg.paddingX,
-    iconSize: inputTokens.lg.iconSize,
-  },
+  sm: { h: "h-9", text: "text-xs", px: "px-2.5", padLeft: "pl-5.5", icon: 14 },
+  md: { h: "h-11", text: "text-base", px: "px-3", padLeft: "pl-6", icon: 16 },
+  lg: { h: "h-14", text: "text-lg", px: "px-3.5", padLeft: "pl-6.5", icon: 18 },
 };
 
-const WIDTH_MAP: Record<Width, string> = {
-  sm: "33%",
-  md: "50%",
-  lg: "66%",
-  full: "100%",
+const WIDTH_CLASS: Record<Width, string> = {
+  sm: "w-1/3",
+  md: "w-1/2",
+  lg: "w-2/3",
+  full: "w-full",
 };
 
-interface VariantStyle {
-  bg: string;
-  borderColor: string;
-  borderWidth: number;
-  focusedBorderColor: string;
-  errorBorderColor: string;
-}
+const VARIANT_BG: Record<Variant, string> = {
+  default: "bg-input-bg",
+  filled: "bg-background-secondary",
+  outline: "bg-transparent",
+};
 
-const VARIANT_MAP: Record<Variant, VariantStyle> = {
-  default: {
-    bg: colors.inputBg,
-    borderColor: colors.inputBorder,
-    borderWidth: 2,
-    focusedBorderColor: colors.inputBorderFocus,
-    errorBorderColor: colors.danger,
-  },
-  filled: {
-    bg: colors.backgroundSecondary,
-    borderColor: "transparent",
-    borderWidth: 2,
-    focusedBorderColor: colors.inputBorderFocus,
-    errorBorderColor: colors.danger,
-  },
-  outline: {
-    bg: "transparent",
-    borderColor: colors.primary,
-    borderWidth: 2,
-    focusedBorderColor: colors.primaryActive,
-    errorBorderColor: colors.danger,
-  },
+const VARIANT_IDLE_BORDER: Record<Variant, string> = {
+  default: "border-input-border",
+  filled: "border-transparent",
+  outline: "border-primary",
+};
+
+const VARIANT_FOCUS_BORDER: Record<Variant, string> = {
+  default: "border-input-border-focus",
+  filled: "border-input-border-focus",
+  outline: "border-primary-active",
 };
 
 const Select = React.forwardRef<HTMLDivElement, SelectProps>(
@@ -131,8 +94,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
     },
     ref,
   ) => {
-    const s = SIZE_MAP[size];
-    const v = VARIANT_MAP[variant];
+    const s = SIZE_CLASS[size];
     const hasError = !!errorMessage;
 
     const [isOpen, setIsOpen] = useState(false);
@@ -179,12 +141,6 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       handleClose();
     };
 
-    const borderColor = hasError
-      ? v.errorBorderColor
-      : isOpen
-        ? v.focusedBorderColor
-        : v.borderColor;
-
     const renderColorCircle = (option?: Option) => {
       if (!showColorIcon || !option?.iconColor) return null;
       return (
@@ -198,11 +154,6 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       );
     };
 
-    const dropdownPositionStyle: React.CSSProperties =
-      dropdownDirection === "up"
-        ? { bottom: "100%", marginBottom: 8 }
-        : { top: "100%", marginTop: 8 };
-
     return (
       <div
         ref={(node) => {
@@ -211,18 +162,10 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
           else if (ref)
             (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
         }}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-          width: WIDTH_MAP[width],
-          position: "relative",
-        }}
+        className={clsx("relative flex flex-col gap-px", WIDTH_CLASS[width])}
       >
         {label && (
-          <Text
-            style={{ fontSize: fontSize.sm, fontWeight: 500, color: colors.foreground }}
-          >
+          <Text size="sm" weight="medium">
             {label}
           </Text>
         )}
@@ -232,119 +175,70 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
           type="button"
           onClick={handleOpen}
           disabled={disabled || readOnly}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            height: s.height,
-            paddingInline: s.px,
-            backgroundColor: v.bg,
-            borderWidth: v.borderWidth,
-            borderStyle: "solid",
-            borderColor,
-            borderRadius: borderRadius.md,
-            cursor: disabled || readOnly ? "not-allowed" : "pointer",
-            opacity: disabled || readOnly ? 0.5 : 1,
-            gap: spacing[2],
-            transition: "border-color 0.15s ease",
-            outline: "none",
-            position: "relative",
-            boxSizing: "border-box",
-          }}
+          className={clsx(
+            "relative box-border flex flex-row items-center gap-2 rounded-md border-2 border-solid outline-none transition-[border-color] duration-150",
+            s.h,
+            s.px,
+            VARIANT_BG[variant],
+            hasError
+              ? "border-danger"
+              : isOpen
+                ? VARIANT_FOCUS_BORDER[variant]
+                : VARIANT_IDLE_BORDER[variant],
+            disabled || readOnly ? "cursor-not-allowed opacity-50" : "cursor-pointer",
+          )}
         >
           {LeftIcon && (
-            <span style={{ position: "absolute", left: spacing[3], display: "flex" }}>
-              <LeftIcon
-                size={s.iconSize}
-                color={isOpen ? colors.primary : colors.foregroundTertiary}
-                strokeWidth={2}
-              />
+            <span
+              className={clsx(
+                "absolute left-3 flex",
+                isOpen ? "text-primary" : "text-foreground-tertiary",
+              )}
+            >
+              <LeftIcon size={s.icon} color="currentColor" strokeWidth={2} />
             </span>
           )}
 
           <span
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: spacing[2],
-              paddingLeft: LeftIcon ? s.iconSize + 8 : 0,
-              overflow: "hidden",
-            }}
+            className={clsx(
+              "flex flex-1 flex-row items-center gap-2 overflow-hidden",
+              LeftIcon && s.padLeft,
+            )}
           >
             {renderColorCircle(selectedOption)}
             <span
-              style={{
-                flex: 1,
-                fontFamily: fontFamily.sans,
-                fontWeight: 400,
-                fontSize: s.fontSize,
-                color: selectedOption ? colors.inputText : colors.inputPlaceholder,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                textAlign: "left",
-              }}
+              className={clsx(
+                "flex-1 truncate text-left font-sans font-normal",
+                s.text,
+                selectedOption ? "text-input-text" : "text-input-placeholder",
+              )}
             >
               {selectedOption?.label ?? placeholder}
             </span>
           </span>
 
           <span
-            style={{
-              transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-              transition: "transform 0.2s ease",
-              display: "flex",
-            }}
+            className={clsx(
+              "flex transition-transform duration-200",
+              isOpen ? "rotate-180" : "rotate-0",
+              hasError ? "text-danger" : isOpen ? "text-primary" : "text-foreground-tertiary",
+            )}
           >
-            <ChevronDown
-              size={s.iconSize}
-              color={
-                hasError
-                  ? colors.danger
-                  : isOpen
-                    ? colors.primary
-                    : colors.foregroundTertiary
-              }
-              strokeWidth={2}
-            />
+            <ChevronDown size={s.icon} color="currentColor" strokeWidth={2} />
           </span>
         </button>
 
         {errorMessage && (
-          <span
-            style={{
-              fontSize: fontSize.xs,
-              fontFamily: fontFamily.sans,
-              fontWeight: 400,
-              color: colors.danger,
-            }}
-          >
-            {errorMessage}
-          </span>
+          <span className="font-sans text-xs font-normal text-danger">{errorMessage}</span>
         )}
 
         {/* Dropdown */}
         {isOpen && (
           <div
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              zIndex: 10,
-              backgroundColor: colors.surface,
-              borderWidth: 1.5,
-              borderStyle: "solid",
-              borderColor: colors.borderLight,
-              borderRadius: borderRadius.lg,
-              overflow: "hidden",
-              maxHeight: 320,
-              boxShadow: shadows.md,
-              display: "flex",
-              flexDirection: "column",
-              ...dropdownPositionStyle,
-            }}
+            className={clsx(
+              "absolute right-0 left-0 z-10 flex max-h-80 flex-col overflow-hidden rounded-lg border-[1.5px] border-solid border-border-light bg-surface shadow-md",
+              dropdownDirection === "up" ? "bottom-full mb-2" : "top-full mt-2",
+            )}
           >
             {searchEnabled && (
               <input
@@ -353,35 +247,12 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                 placeholder="Search..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                style={{
-                  fontFamily: fontFamily.sans,
-                  fontWeight: 400,
-                  fontSize: fontSize.base,
-                  paddingInline: spacing[4],
-                  paddingBlock: spacing[2],
-                  color: colors.inputText,
-                  background: "none",
-                  border: "none",
-                  borderBottom: `1px solid ${colors.borderLight}`,
-                  outline: "none",
-                  flexShrink: 0,
-                }}
+                className="shrink-0 border-b border-border-light px-4 py-2 font-sans text-base font-normal text-input-text outline-none"
               />
             )}
-            <div style={{ overflowY: "auto", maxHeight: 268 }}>
+            <div className="max-h-67 overflow-y-auto">
               {filteredOptions.length === 0 ? (
-                <span
-                  style={{
-                    display: "block",
-                    paddingInline: spacing[4],
-                    paddingBlock: spacing[3],
-                    fontSize: fontSize.sm,
-                    fontFamily: fontFamily.sans,
-                    fontWeight: 400,
-                    color: colors.foregroundSecondary,
-                    fontStyle: "italic",
-                  }}
-                >
+                <span className="block px-4 py-3 font-sans text-sm font-normal italic text-foreground-secondary">
                   {noResultsText}
                 </span>
               ) : (
@@ -392,49 +263,30 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                       key={String(item.value)}
                       type="button"
                       onClick={() => handleSelect(item.value)}
-                      style={{
-                        display: "flex",
-                        width: "100%",
-                        textAlign: "left",
-                        background: isSelected ? `${colors.primary}1A` : "none",
-                        border: "none",
-                        borderBottom:
-                          i < filteredOptions.length - 1
-                            ? `1px solid ${colors.borderLight}`
-                            : "none",
-                        cursor: "pointer",
-                        padding: 0,
-                      }}
+                      className={clsx(
+                        "flex w-full cursor-pointer p-0 text-left",
+                        isSelected && "bg-primary/10",
+                        i < filteredOptions.length - 1 && "border-b border-border-light",
+                      )}
                     >
                       {renderOption ? (
                         renderOption(item, isSelected)
                       ) : (
-                        <span
-                          style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            paddingInline: 16,
-                            paddingBlock: 14,
-                            gap: 10,
-                            flex: 1,
-                          }}
-                        >
+                        <span className="flex flex-1 flex-row items-center gap-2.5 px-4 py-3.5">
                           {renderColorCircle(item)}
                           <span
-                            style={{
-                              flex: 1,
-                              fontFamily: fontFamily.sans,
-                              fontWeight: isSelected ? 600 : 400,
-                              color: isSelected ? colors.primary : colors.foreground,
-                              fontSize: s.fontSize,
-                              lineHeight: "20px",
-                            }}
+                            className={clsx(
+                              "flex-1 font-sans leading-5",
+                              s.text,
+                              isSelected
+                                ? "font-semibold text-primary"
+                                : "font-normal text-foreground",
+                            )}
                           >
                             {item.label}
                           </span>
                           {isSelected && (
-                            <Check size={16} color={colors.primary} strokeWidth={2.5} />
+                            <Check size={16} color="currentColor" strokeWidth={2.5} className="text-primary" />
                           )}
                         </span>
                       )}

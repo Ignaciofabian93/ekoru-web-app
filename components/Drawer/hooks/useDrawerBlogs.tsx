@@ -36,12 +36,8 @@ export function useDrawerBlogs(enabled: boolean) {
   );
 
   const items = useMemo<L1Item[]>(
-    () =>
-      data?.getBlogCatalog
-        ? mapCatalogToAccordion(data.getBlogCatalog)
-        : [],
-     
-    [data?.getBlogCatalog],
+    () => (data?.getBlogCatalog ? mapCatalogToAccordion(data.getBlogCatalog) : []),
+    [data],
   );
 
   return { items };

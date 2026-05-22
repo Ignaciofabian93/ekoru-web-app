@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import { useState } from "react";
 import CardBackSide from "./BackSide";
 import CardFrontSide from "./FrontSide";
@@ -23,26 +24,20 @@ export default function MarketplaceCard({
   const flip = () => setIsFlipped((prev) => !prev);
 
   return (
-    <div style={{ width: 174, height: 300, position: "relative", ...style }}>
+    <div style={style} className="relative h-75 w-43.5">
       <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: isFlipped ? 0 : 1,
-          pointerEvents: isFlipped ? "none" : "auto",
-          transition: "opacity 0.15s ease",
-        }}
+        className={clsx(
+          "absolute inset-0 transition-opacity duration-150",
+          isFlipped ? "pointer-events-none opacity-0" : "opacity-100",
+        )}
       >
         <CardFrontSide product={product} onFlip={flip} onPress={onPress} />
       </div>
       <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: isFlipped ? 1 : 0,
-          pointerEvents: isFlipped ? "auto" : "none",
-          transition: "opacity 0.15s ease",
-        }}
+        className={clsx(
+          "absolute inset-0 transition-opacity duration-150",
+          isFlipped ? "opacity-100" : "pointer-events-none opacity-0",
+        )}
       >
         <CardBackSide product={product} onFlip={flip} onShowImpact={onShowImpact} />
       </div>

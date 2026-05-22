@@ -1,5 +1,4 @@
 "use client";
-import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
 import type { Product } from "@/types/product";
 import { ImageOff, RotateCcw, ShoppingCart } from "lucide-react";
 import Image from "next/image";
@@ -19,30 +18,10 @@ export default function CardFrontSide({ product, onFlip, onPress }: Props) {
     <button
       type="button"
       onClick={onPress}
-      style={{
-        width: "100%",
-        height: "100%",
-        backgroundColor: colors.surface,
-        borderRadius: borderRadius.lg,
-        overflow: "hidden",
-        border: `1px solid ${colors.borderStrong}`,
-        boxShadow: shadows.sm,
-        display: "flex",
-        flexDirection: "column",
-        cursor: "pointer",
-        padding: 0,
-        textAlign: "left",
-      }}
+      className="flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-lg border border-border-strong bg-surface p-0 text-left shadow-sm"
     >
       {/* Image */}
-      <div
-        style={{
-          aspectRatio: "4/3",
-          backgroundColor: colors.backgroundTertiary,
-          position: "relative",
-          flexShrink: 0,
-        }}
-      >
+      <div className="relative aspect-4/3 shrink-0 bg-background-tertiary">
         {imageUri && !imageError ? (
           <Image
             src={imageUri}
@@ -50,42 +29,21 @@ export default function CardFrontSide({ product, onFlip, onPress }: Props) {
             width={100}
             height={100}
             onError={() => setImageError(true)}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            className="h-full w-full object-cover"
           />
         ) : (
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <ImageOff size={40} color={colors.foregroundTertiary} strokeWidth={1.5} />
+          <div className="flex h-full w-full items-center justify-center">
+            <ImageOff
+              size={40}
+              color="currentColor"
+              strokeWidth={1.5}
+              className="text-foreground-tertiary"
+            />
           </div>
         )}
 
-        <div
-          style={{
-            position: "absolute",
-            bottom: 8,
-            left: 8,
-            backgroundColor: "rgba(255,255,255,0.9)",
-            paddingInline: 8,
-            paddingBlock: 4,
-            borderRadius: 4,
-          }}
-        >
-          <span
-            style={{
-              fontSize: fontSize.xs,
-              fontFamily: fontFamily.sans,
-              fontWeight: 500,
-              color: colors.foreground,
-              textTransform: "capitalize",
-            }}
-          >
+        <div className="absolute bottom-2 left-2 rounded-[4px] bg-white/90 px-2 py-1">
+          <span className="font-sans text-xs font-medium capitalize text-foreground">
             {product.condition}
           </span>
         </div>
@@ -96,140 +54,43 @@ export default function CardFrontSide({ product, onFlip, onPress }: Props) {
             e.stopPropagation();
             onFlip();
           }}
-          style={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            backgroundColor: colors.primary,
-            width: 28,
-            height: 28,
-            borderRadius: borderRadius.full,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "none",
-            cursor: "pointer",
-            boxShadow: shadows.sm,
-          }}
+          className="absolute top-2 right-2 flex size-7 cursor-pointer items-center justify-center rounded-full bg-primary text-on-primary shadow-sm"
         >
-          <RotateCcw size={12} color={colors.onPrimary} strokeWidth={2.5} />
+          <RotateCcw size={12} color="currentColor" strokeWidth={2.5} />
         </button>
       </div>
 
       {/* Info */}
-      <div
-        style={{
-          padding: 12,
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className="flex flex-1 flex-col justify-between p-3">
         <div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: 4,
-            }}
-          >
+          <div className="mb-1 flex flex-row items-center justify-between">
             {product.brand && (
-              <span
-                style={{
-                  fontSize: fontSize.xs,
-                  fontFamily: fontFamily.sans,
-                  fontWeight: 400,
-                  color: colors.foregroundSecondary,
-                  flex: 1,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
+              <span className="flex-1 truncate font-sans text-xs font-normal text-foreground-secondary">
                 {product.brand}
               </span>
             )}
             {product.color && (
-              <span
-                style={{
-                  fontSize: fontSize.xs,
-                  fontFamily: fontFamily.sans,
-                  fontWeight: 400,
-                  color: colors.foregroundSecondary,
-                  marginLeft: 8,
-                }}
-              >
+              <span className="ml-2 font-sans text-xs font-normal text-foreground-secondary">
                 {product.color}
               </span>
             )}
           </div>
 
-          <p
-            style={{
-              fontSize: fontSize.base,
-              fontFamily: fontFamily.sans,
-              fontWeight: 600,
-              color: colors.foreground,
-              margin: "0 0 4px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          >
+          <p className="m-0 mb-1 truncate font-sans text-base font-semibold text-foreground">
             {product.name}
           </p>
 
           {product.description && (
-            <p
-              style={{
-                fontSize: fontSize.sm,
-                fontFamily: fontFamily.sans,
-                fontWeight: 400,
-                color: colors.foregroundSecondary,
-                margin: "0 0 8px",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
+            <p className="m-0 mb-2 truncate font-sans text-sm font-normal text-foreground-secondary">
               {product.description}
             </p>
           )}
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <span
-            style={{
-              fontSize: fontSize.lg,
-              fontFamily: fontFamily.sans,
-              fontWeight: 700,
-              color: colors.primary,
-            }}
-          >
-            {product.price}
-          </span>
-          <div
-            style={{
-              backgroundColor: colors.primary,
-              width: 32,
-              height: 32,
-              borderRadius: borderRadius.sm,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <ShoppingCart size={16} color={colors.onPrimary} strokeWidth={2} />
+        <div className="flex flex-row items-center justify-between">
+          <span className="font-sans text-lg font-bold text-primary">{product.price}</span>
+          <div className="flex size-8 items-center justify-center rounded-sm bg-primary text-on-primary">
+            <ShoppingCart size={16} color="currentColor" strokeWidth={2} />
           </div>
         </div>
       </div>

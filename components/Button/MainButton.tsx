@@ -1,8 +1,8 @@
 "use client";
 
-import { button as buttonTokens, colors, fontFamily, spacing } from "@/design/tokens";
+import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 
 type Variant =
   | "primary"
@@ -34,60 +34,28 @@ export interface MainButtonProps {
   className?: string;
 }
 
-const SIZE_MAP = {
-  sm: {
-    paddingBlock: spacing[2],
-    paddingInline: buttonTokens.sm.paddingX,
-    fontSize: buttonTokens.sm.fontSize,
-    iconSize: buttonTokens.sm.iconSize,
-    gap: spacing[1],
-    radius: buttonTokens.sm.borderRadius,
-    minHeight: buttonTokens.sm.minHeight,
-  },
-  md: {
-    paddingBlock: spacing[3],
-    paddingInline: buttonTokens.md.paddingX,
-    fontSize: buttonTokens.md.fontSize,
-    iconSize: buttonTokens.md.iconSize,
-    gap: spacing[2],
-    radius: buttonTokens.md.borderRadius,
-    minHeight: buttonTokens.md.minHeight,
-  },
-  lg: {
-    paddingBlock: spacing[4],
-    paddingInline: buttonTokens.lg.paddingX,
-    fontSize: buttonTokens.lg.fontSize,
-    iconSize: buttonTokens.lg.iconSize,
-    gap: spacing[2],
-    radius: buttonTokens.lg.borderRadius,
-    minHeight: buttonTokens.lg.minHeight,
-  },
-} as const;
-
-interface VariantStyle {
-  bg: string;
-  border: string;
-  textColor: string;
-  spinnerColor: string;
-  iconColor: string;
-}
-
-const VARIANT_MAP: Record<Variant, VariantStyle> = {
-  primary: { bg: colors.primary, border: colors.primary, textColor: colors.onPrimary, spinnerColor: colors.onPrimary, iconColor: colors.onPrimary },
-  filled: { bg: colors.primary, border: colors.primary, textColor: colors.onPrimary, spinnerColor: colors.onPrimary, iconColor: colors.onPrimary },
-  secondary: { bg: colors.secondary, border: colors.secondary, textColor: colors.onPrimary, spinnerColor: colors.onPrimary, iconColor: colors.onPrimary },
-  secondary_outline: { bg: colors.surface, border: colors.secondary, textColor: colors.secondary, spinnerColor: colors.secondary, iconColor: colors.secondary },
-  outline: { bg: colors.surface, border: colors.primary, textColor: colors.primary, spinnerColor: colors.primary, iconColor: colors.primary },
-  ghost: { bg: "transparent", border: "transparent", textColor: colors.primary, spinnerColor: colors.primary, iconColor: colors.primary },
-  success: { bg: colors.success, border: colors.success, textColor: colors.onPrimary, spinnerColor: colors.onPrimary, iconColor: colors.onPrimary },
-  warning: { bg: colors.warning, border: colors.warning, textColor: colors.onPrimary, spinnerColor: colors.onPrimary, iconColor: colors.onPrimary },
-  error: { bg: colors.danger, border: colors.danger, textColor: colors.onPrimary, spinnerColor: colors.onPrimary, iconColor: colors.onPrimary },
+const SIZE_CLASS: Record<Size, { box: string; gap: string; text: string; icon: number }> = {
+  sm: { box: "min-h-8 rounded-sm px-3.5 py-2", gap: "gap-1", text: "text-sm", icon: 16 },
+  md: { box: "min-h-10 rounded-md px-5 py-3", gap: "gap-2", text: "text-base", icon: 18 },
+  lg: { box: "min-h-12 rounded-md px-6 py-4", gap: "gap-2", text: "text-base", icon: 20 },
 };
 
-function renderIcon(icon: LucideIcon | React.ReactElement, size: number, color: string): React.ReactNode {
+const VARIANT_CLASS: Record<Variant, string> = {
+  primary: "bg-primary border-primary text-on-primary",
+  filled: "bg-primary border-primary text-on-primary",
+  secondary: "bg-secondary border-secondary text-on-primary",
+  secondary_outline: "bg-surface border-secondary text-secondary",
+  outline: "bg-surface border-primary text-primary",
+  ghost: "bg-transparent border-transparent text-primary",
+  success: "bg-success border-success text-on-primary",
+  warning: "bg-warning border-warning text-on-primary",
+  error: "bg-danger border-danger text-on-primary",
+};
+
+function renderIcon(icon: LucideIcon | React.ReactElement, size: number): React.ReactNode {
   if (React.isValidElement(icon)) return icon;
   const Icon = icon as LucideIcon;
-  return <Icon size={size} color={color} strokeWidth={2} />;
+  return <Icon size={size} color="currentColor" strokeWidth={2} />;
 }
 
 const MainButton = React.forwardRef<HTMLButtonElement, MainButtonProps>(
@@ -104,50 +72,21 @@ const MainButton = React.forwardRef<HTMLButtonElement, MainButtonProps>(
       leftIcon,
       rightIcon,
       fullWidth = false,
-      style: customStyle,
+      style,
       type = "button",
       className,
     },
     ref,
   ) => {
-    const s = SIZE_MAP[size];
-    const v = VARIANT_MAP[variant];
+    const s = SIZE_CLASS[size];
     const isDisabled = disabled || loading;
     const label = loading && loadingText ? loadingText : text;
-    const [pressed, setPressed] = useState(false);
-
-    const hasBorder = variant === "outline" || variant === "secondary_outline" || variant === "ghost";
+    const hasBorder =
+      variant === "outline" || variant === "secondary_outline" || variant === "ghost";
 
     const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
       onClick?.(e);
       onPress?.();
-    };
-
-    const buttonStyle: React.CSSProperties = {
-      display: "inline-flex",
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      position: "relative",
-      minWidth: 140,
-      paddingBlock: s.paddingBlock,
-      paddingInline: s.paddingInline,
-      borderRadius: s.radius,
-      minHeight: s.minHeight,
-      backgroundColor: v.bg,
-      borderWidth: hasBorder ? 2 : 0,
-      borderStyle: "solid",
-      borderColor: v.border,
-      opacity: isDisabled ? 0.5 : 1,
-      cursor: isDisabled ? "not-allowed" : "pointer",
-      transform: pressed && !isDisabled ? "scale(0.96)" : "scale(1)",
-      transition: "transform 0.1s ease",
-      width: fullWidth ? "100%" : undefined,
-      outline: "none",
-      userSelect: "none",
-      gap: s.gap,
-      boxSizing: "border-box",
-      ...customStyle,
     };
 
     return (
@@ -156,48 +95,26 @@ const MainButton = React.forwardRef<HTMLButtonElement, MainButtonProps>(
         type={type}
         onClick={handleClick}
         disabled={isDisabled}
-        onMouseDown={() => setPressed(true)}
-        onMouseUp={() => setPressed(false)}
-        onMouseLeave={() => setPressed(false)}
-        style={buttonStyle}
-        className={className}
+        style={style}
+        className={clsx(
+          "relative box-border inline-flex flex-row items-center justify-center min-w-35 cursor-pointer select-none border-solid outline-none transition-transform duration-100 active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-50",
+          s.box,
+          VARIANT_CLASS[variant],
+          hasBorder ? "border-2" : "border-0",
+          fullWidth && "w-full",
+          className,
+        )}
       >
         <span
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: s.gap,
-            opacity: loading ? 0 : 1,
-          }}
+          className={clsx("flex flex-row items-center", s.gap, loading && "opacity-0")}
         >
-          {leftIcon && renderIcon(leftIcon, s.iconSize, v.iconColor)}
-          <span
-            style={{
-              fontFamily: fontFamily.sans,
-              fontWeight: 700,
-              fontSize: s.fontSize,
-              color: v.textColor,
-              textAlign: "center",
-            }}
-          >
-            {label}
-          </span>
-          {rightIcon && renderIcon(rightIcon, s.iconSize, v.iconColor)}
+          {leftIcon && renderIcon(leftIcon, s.icon)}
+          <span className={clsx("text-center font-sans font-bold", s.text)}>{label}</span>
+          {rightIcon && renderIcon(rightIcon, s.icon)}
         </span>
 
         {loading && (
-          <span
-            className="animate-spin"
-            style={{
-              position: "absolute",
-              width: 16,
-              height: 16,
-              border: `2px solid ${v.spinnerColor}`,
-              borderTopColor: "transparent",
-              borderRadius: "50%",
-            }}
-          />
+          <span className="absolute size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
         )}
       </button>
     );

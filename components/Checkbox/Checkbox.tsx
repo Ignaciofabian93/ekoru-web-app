@@ -1,6 +1,6 @@
 "use client";
 
-import { colors, fontFamily, fontSize } from "@/design/tokens";
+import clsx from "clsx";
 import { Check } from "lucide-react";
 import React from "react";
 
@@ -21,16 +21,16 @@ export interface CheckboxProps {
   className?: string;
 }
 
-const SIZE_MAP: Record<Size, { box: number; icon: number; radius: number }> = {
-  sm: { box: 18, icon: 12, radius: 4 },
-  md: { box: 22, icon: 16, radius: 5 },
-  lg: { box: 26, icon: 20, radius: 6 },
+const SIZE_CLASS: Record<Size, { box: string; icon: number }> = {
+  sm: { box: "size-4.5 rounded-[4px]", icon: 12 },
+  md: { box: "size-5.5 rounded-[5px]", icon: 16 },
+  lg: { box: "size-6.5 rounded-[6px]", icon: 20 },
 };
 
-const VARIANT_IDLE: Record<Variant, { borderColor: string; bg: string }> = {
-  default: { borderColor: colors.inputBorder, bg: colors.surface },
-  filled: { borderColor: "transparent", bg: colors.backgroundSecondary },
-  outline: { borderColor: colors.primary, bg: "transparent" },
+const VARIANT_IDLE: Record<Variant, string> = {
+  default: "border-input-border bg-surface",
+  filled: "border-transparent bg-background-secondary",
+  outline: "border-primary bg-transparent",
 };
 
 const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
@@ -50,8 +50,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
     },
     ref,
   ) => {
-    const s = SIZE_MAP[size];
-    const idle = VARIANT_IDLE[variant];
+    const s = SIZE_CLASS[size];
 
     const handlePress = () => {
       if (disabled) return;
@@ -60,78 +59,51 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
     };
 
     const hasLabel = label || description;
-    const labelColor = errorMessage
-      ? colors.danger
-      : disabled
-        ? colors.foregroundTertiary
-        : colors.foreground;
 
     return (
-      <div ref={ref} style={{ display: "flex", flexDirection: "column", gap: 4, ...style }} className={className}>
+      <div ref={ref} style={style} className={clsx("flex flex-col gap-1", className)}>
         <button
           type="button"
           onClick={handlePress}
           disabled={disabled}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-start",
-            gap: 12,
-            background: "none",
-            border: "none",
-            padding: 0,
-            cursor: disabled ? "not-allowed" : "pointer",
-            opacity: disabled ? 0.5 : 1,
-            textAlign: "left",
-          }}
+          className="flex cursor-pointer flex-row items-start gap-3 p-0 text-left disabled:cursor-not-allowed disabled:opacity-50"
         >
           {/* Box */}
           <div
-            style={{
-              width: s.box,
-              height: s.box,
-              borderRadius: s.radius,
-              borderWidth: 2,
-              borderStyle: "solid",
-              borderColor: checked ? colors.primary : idle.borderColor,
-              backgroundColor: checked ? colors.primary : idle.bg,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-              marginTop: 1,
-              transition: "background-color 0.15s ease, border-color 0.15s ease",
-            }}
+            className={clsx(
+              "mt-px flex shrink-0 items-center justify-center border-2 border-solid transition-[background-color,border-color] duration-150",
+              s.box,
+              checked ? "border-primary bg-primary" : VARIANT_IDLE[variant],
+            )}
           >
-            <span style={{ opacity: checked ? 1 : 0, transition: "opacity 0.1s ease" }}>
-              <Check size={s.icon} color={colors.onPrimary} strokeWidth={3} />
+            <span
+              className={clsx(
+                "text-on-primary transition-opacity duration-100",
+                checked ? "opacity-100" : "opacity-0",
+              )}
+            >
+              <Check size={s.icon} color="currentColor" strokeWidth={3} />
             </span>
           </div>
 
           {hasLabel && (
-            <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 2 }}>
+            <div className="flex flex-1 flex-col gap-0.5">
               {label && (
                 <span
-                  style={{
-                    fontSize: fontSize.sm,
-                    fontFamily: fontFamily.sans,
-                    fontWeight: 500,
-                    color: labelColor,
-                  }}
+                  className={clsx(
+                    "font-sans text-sm font-medium",
+                    errorMessage
+                      ? "text-danger"
+                      : disabled
+                        ? "text-foreground-tertiary"
+                        : "text-foreground",
+                  )}
                 >
                   {label}
                 </span>
               )}
               {description && (
-                <span
-                  style={{
-                    fontSize: fontSize.sm,
-                    fontFamily: fontFamily.sans,
-                    fontWeight: 400,
-                    color: colors.foregroundSecondary,
-                    lineHeight: "18px",
-                  }}
-                >
+                <span className="font-sans text-sm font-normal leading-4.5 text-foreground-secondary">
                   {description}
                 </span>
               )}
@@ -140,15 +112,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
         </button>
 
         {errorMessage && (
-          <span
-            style={{
-              paddingLeft: 34,
-              fontSize: fontSize.xs,
-              fontFamily: fontFamily.sans,
-              fontWeight: 400,
-              color: colors.danger,
-            }}
-          >
+          <span className="pl-8.5 font-sans text-xs font-normal text-danger">
             {errorMessage}
           </span>
         )}

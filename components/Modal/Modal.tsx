@@ -1,6 +1,6 @@
 "use client";
 
-import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
+import clsx from "clsx";
 import { X } from "lucide-react";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -18,12 +18,12 @@ export interface ModalProps {
   style?: React.CSSProperties;
 }
 
-const SIZE_MAP: Record<Size, string> = {
-  sm: "448px",
-  md: "512px",
-  lg: "672px",
-  xl: "896px",
-  full: "calc(100% - 32px)",
+const SIZE_CLASS: Record<Size, string> = {
+  sm: "max-w-md",
+  md: "max-w-lg",
+  lg: "max-w-2xl",
+  xl: "max-w-4xl",
+  full: "max-w-[calc(100%-32px)]",
 };
 
 export default function Modal({
@@ -59,60 +59,21 @@ export default function Modal({
     <div
       role="dialog"
       aria-modal
-      style={{
-        position: "fixed",
-        inset: 0,
-        backgroundColor: "rgba(0,0,0,0.55)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 16,
-        zIndex: 40,
-      }}
+      className="fixed inset-0 z-40 flex items-center justify-center bg-black/55 p-4"
       onClick={closeOnOverlayClick ? onClose : undefined}
     >
       <div
-        style={{
-          width: "100%",
-          maxWidth: SIZE_MAP[size],
-          maxHeight: "90vh",
-          backgroundColor: colors.surface,
-          borderRadius: borderRadius["2xl"],
-          overflow: "hidden",
-          boxShadow: shadows.xl,
-          display: "flex",
-          flexDirection: "column",
-          ...style,
-        }}
+        style={style}
+        className={clsx(
+          "flex max-h-[90vh] w-full flex-col overflow-hidden rounded-2xl bg-surface shadow-xl",
+          SIZE_CLASS[size],
+        )}
         onClick={(e) => e.stopPropagation()}
       >
         {(title || showCloseButton) && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingInline: 20,
-              paddingBlock: 16,
-              borderBottom: `1px solid ${colors.borderLight}`,
-              gap: 12,
-              flexShrink: 0,
-            }}
-          >
+          <div className="flex shrink-0 flex-row items-center justify-between gap-3 border-b border-border-light px-5 py-4">
             {title ? (
-              <span
-                style={{
-                  flex: 1,
-                  fontSize: fontSize.lg,
-                  fontFamily: fontFamily.sans,
-                  fontWeight: 600,
-                  color: colors.foreground,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
+              <span className="flex-1 truncate font-sans text-lg font-semibold text-foreground">
                 {title}
               </span>
             ) : (
@@ -122,25 +83,15 @@ export default function Modal({
               <button
                 onClick={onClose}
                 aria-label="Close"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 4,
-                  borderRadius: borderRadius.sm,
-                  backgroundColor: "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                  flexShrink: 0,
-                }}
+                className="flex shrink-0 cursor-pointer items-center justify-center rounded-sm bg-transparent p-1 text-foreground-secondary"
               >
-                <X size={20} color={colors.foregroundSecondary} strokeWidth={2} />
+                <X size={20} color="currentColor" strokeWidth={2} />
               </button>
             )}
           </div>
         )}
 
-        <div style={{ overflowY: "auto", padding: 20, flex: 1 }}>{children}</div>
+        <div className="flex-1 overflow-y-auto p-5">{children}</div>
       </div>
     </div>,
     document.body,

@@ -1,6 +1,6 @@
 "use client";
 
-import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
+import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
 import Select from "../Select/Select";
@@ -37,6 +37,9 @@ function getPageNumbers(current: number, total: number, max: number): (number | 
   return pages;
 }
 
+const CHEVRON_BTN =
+  "flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-sm border border-border-light bg-background-secondary text-foreground disabled:cursor-not-allowed disabled:opacity-35";
+
 const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
   (
     {
@@ -56,54 +59,18 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
   ) => {
     const pages = getPageNumbers(currentPage, totalPages, maxPageButtons);
 
-    const chevronBtnStyle = (disabled: boolean): React.CSSProperties => ({
-      width: 36,
-      height: 36,
-      borderRadius: borderRadius.sm,
-      backgroundColor: colors.backgroundSecondary,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      border: `1px solid ${colors.borderLight}`,
-      cursor: disabled ? "not-allowed" : "pointer",
-      opacity: disabled ? 0.35 : 1,
-      flexShrink: 0,
-    });
-
     return (
       <div
         ref={ref}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-          marginBlock: 32,
-          borderTop: `1px solid ${colors.borderStrong}`,
-          paddingTop: 8,
-          ...style,
-        }}
-        className={className}
+        style={style}
+        className={clsx(
+          "my-8 flex flex-col gap-3 border-t border-border-strong pt-2",
+          className,
+        )}
       >
         {showItemsPerPage && onItemsPerPageChange && (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-              gap: 8,
-              marginBlock: 12,
-            }}
-          >
-            <span
-              style={{
-                fontSize: fontSize.sm,
-                fontFamily: fontFamily.sans,
-                fontWeight: 500,
-                color: colors.foregroundSecondary,
-                textTransform: "capitalize",
-                letterSpacing: 0.6,
-              }}
-            >
+          <div className="my-3 flex flex-col items-end gap-2">
+            <span className="font-sans text-sm font-medium capitalize tracking-[0.6px] text-foreground-secondary">
               {rowsLabel}
             </span>
             <Select
@@ -118,37 +85,22 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
           </div>
         )}
 
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 6, marginBlock: 12 }}>
+        <div className="my-3 flex flex-row items-center gap-1.5">
           <button
             type="button"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            style={chevronBtnStyle(currentPage === 1)}
+            className={CHEVRON_BTN}
           >
-            <ChevronLeft size={20} color={colors.foreground} strokeWidth={2} />
+            <ChevronLeft size={20} color="currentColor" strokeWidth={2} />
           </button>
 
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 4,
-              overflowX: "auto",
-            }}
-          >
+          <div className="flex flex-1 flex-row items-center justify-center gap-1 overflow-x-auto">
             {pages.map((page, i) =>
               page === "..." ? (
                 <span
                   key={`ellipsis-${i}`}
-                  style={{
-                    fontSize: fontSize.sm,
-                    color: colors.foregroundTertiary,
-                    paddingInline: 4,
-                    lineHeight: "36px",
-                  }}
+                  className="px-1 text-sm leading-9 text-foreground-tertiary"
                 >
                   …
                 </span>
@@ -157,27 +109,16 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
                   key={String(page)}
                   type="button"
                   onClick={() => onPageChange(page)}
-                  style={{
-                    minWidth: 36,
-                    height: 36,
-                    borderRadius: borderRadius.sm,
-                    paddingInline: 12,
-                    backgroundColor: page === currentPage ? colors.primary : colors.surface,
-                    border: `1.5px solid ${colors.primary}`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    flexShrink: 0,
-                  }}
+                  className={clsx(
+                    "flex h-9 min-w-9 shrink-0 cursor-pointer items-center justify-center rounded-sm border-[1.5px] border-primary px-3",
+                    page === currentPage ? "bg-primary" : "bg-surface",
+                  )}
                 >
                   <span
-                    style={{
-                      fontSize: fontSize.sm,
-                      fontFamily: fontFamily.sans,
-                      fontWeight: 600,
-                      color: page === currentPage ? colors.onPrimary : colors.foreground,
-                    }}
+                    className={clsx(
+                      "font-sans text-sm font-semibold",
+                      page === currentPage ? "text-on-primary" : "text-foreground",
+                    )}
                   >
                     {page}
                   </span>
@@ -190,9 +131,9 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
             type="button"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            style={chevronBtnStyle(currentPage === totalPages)}
+            className={CHEVRON_BTN}
           >
-            <ChevronRight size={20} color={colors.foreground} strokeWidth={2} />
+            <ChevronRight size={20} color="currentColor" strokeWidth={2} />
           </button>
         </div>
       </div>

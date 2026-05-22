@@ -1,6 +1,5 @@
 "use client";
 
-import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
 import { Lock } from "lucide-react";
 import React, { useState } from "react";
 
@@ -29,11 +28,26 @@ function detectCardType(number: string): CardType {
 
 type GradientTuple = [string, string, string];
 const CARD_THEMES: Record<CardType, { front: GradientTuple; back: GradientTuple }> = {
-  visa: { front: ["#1a1f71", "#1565c0", "#1976d2"], back: ["#0d1245", "#0d3d7a", "#0f4a8c"] },
-  mastercard: { front: ["#1a1a2e", "#16213e", "#0f3460"], back: ["#0d0d1a", "#0a1225", "#08203e"] },
-  amex: { front: ["#006747", "#007a55", "#00a878"], back: ["#004a33", "#005a3d", "#006747"] },
-  discover: { front: ["#7c3a00", "#b05400", "#d97706"], back: ["#4a2200", "#6b3300", "#8b4500"] },
-  unknown: { front: ["#0c4a6e", "#0369a1", "#06b6d4"], back: ["#1e3a5f", "#0c4a6e", "#075985"] },
+  visa: {
+    front: ["#1a1f71", "#1565c0", "#1976d2"],
+    back: ["#0d1245", "#0d3d7a", "#0f4a8c"],
+  },
+  mastercard: {
+    front: ["#1a1a2e", "#16213e", "#0f3460"],
+    back: ["#0d0d1a", "#0a1225", "#08203e"],
+  },
+  amex: {
+    front: ["#006747", "#007a55", "#00a878"],
+    back: ["#004a33", "#005a3d", "#006747"],
+  },
+  discover: {
+    front: ["#7c3a00", "#b05400", "#d97706"],
+    back: ["#4a2200", "#6b3300", "#8b4500"],
+  },
+  unknown: {
+    front: ["#0c4a6e", "#0369a1", "#06b6d4"],
+    back: ["#1e3a5f", "#0c4a6e", "#075985"],
+  },
 };
 
 function formatExpiry(raw: string): string {
@@ -47,7 +61,10 @@ function buildMaskedDisplay(raw: string, type: CardType): string {
   const maxLen = isAmex ? 15 : 16;
   const digits = raw.replace(/\D/g, "").slice(0, maxLen);
   const padded = digits.padEnd(maxLen, "•");
-  const masked = padded.split("").map((ch, i) => (i < maxLen - 4 ? "•" : ch)).join("");
+  const masked = padded
+    .split("")
+    .map((ch, i) => (i < maxLen - 4 ? "•" : ch))
+    .join("");
   if (isAmex) return `${masked.slice(0, 4)}  ${masked.slice(4, 10)}  ${masked.slice(10)}`;
   return masked.match(/.{1,4}/g)?.join("  ") ?? "••••  ••••  ••••  ••••";
 }
@@ -59,51 +76,43 @@ function formatCardNumberInput(digits: string, type: CardType): string {
     if (d.length <= 10) return `${d.slice(0, 4)} ${d.slice(4)}`;
     return `${d.slice(0, 4)} ${d.slice(4, 10)} ${d.slice(10)}`;
   }
-  return digits.slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
+  return digits
+    .slice(0, 16)
+    .replace(/(.{4})/g, "$1 ")
+    .trim();
 }
 
 function NetworkBadge({ type }: { type: CardType }) {
-  if (type === "visa") return <span style={{ fontFamily: fontFamily.sans, fontWeight: 700, fontSize: 22, color: "#fff", fontStyle: "italic", letterSpacing: 1 }}>VISA</span>;
-  if (type === "mastercard") return (
-    <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-      <div style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: "#eb001b", opacity: 0.9 }} />
-      <div style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: "#f79e1b", opacity: 0.9, marginLeft: -10 }} />
-    </div>
-  );
-  if (type === "amex") return (
-    <div style={{ backgroundColor: "rgba(255,255,255,0.2)", paddingInline: 8, paddingBlock: 4, borderRadius: 4 }}>
-      <span style={{ fontFamily: fontFamily.sans, fontWeight: 700, fontSize: 12, color: "#fff", letterSpacing: 2 }}>AMEX</span>
-    </div>
-  );
+  if (type === "visa")
+    return (
+      <span className="font-sans text-[22px] font-bold italic tracking-[1px] text-white">
+        VISA
+      </span>
+    );
+  if (type === "mastercard")
+    return (
+      <div className="flex flex-row items-center">
+        <div className="size-7 rounded-full bg-[#eb001b]/90" />
+        <div className="-ml-2.5 size-7 rounded-full bg-[#f79e1b]/90" />
+      </div>
+    );
+  if (type === "amex")
+    return (
+      <div className="rounded-[4px] bg-white/20 px-2 py-1">
+        <span className="font-sans text-xs font-bold tracking-[2px] text-white">
+          AMEX
+        </span>
+      </div>
+    );
   return null;
 }
 
-const inputStyle: React.CSSProperties = {
-  height: 48,
-  border: `1.5px solid ${colors.inputBorder}`,
-  borderRadius: borderRadius.md,
-  paddingInline: 14,
-  fontFamily: fontFamily.sans,
-  fontWeight: 500,
-  fontSize: fontSize.base,
-  color: colors.inputText,
-  backgroundColor: colors.inputBg,
-  width: "100%",
-  boxSizing: "border-box",
-  outline: "none",
-};
-
-const labelStyle: React.CSSProperties = {
-  fontSize: fontSize.xs,
-  fontFamily: fontFamily.sans,
-  fontWeight: 600,
-  color: colors.foregroundSecondary,
-  marginBottom: 6,
-  marginTop: 12,
-  textTransform: "uppercase",
-  letterSpacing: 0.6,
-  display: "block",
-};
+const INPUT_CLASS =
+  "box-border h-12 w-full rounded-md border-[1.5px] border-solid border-input-border bg-input-bg px-3.5 font-sans text-base font-medium text-input-text outline-none";
+const LABEL_CLASS =
+  "mt-3 mb-1.5 block font-sans text-xs font-semibold uppercase tracking-[0.6px] text-foreground-secondary";
+const CARD_FACE =
+  "absolute top-0 left-0 box-border flex h-50 w-full flex-col justify-between overflow-hidden rounded-2xl p-5.5 [backface-visibility:hidden] transition-transform duration-500";
 
 export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
   const [card, setCard] = useState<CardData>({
@@ -124,52 +133,43 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
   const displayExpiry = card.expiry || "MM/YY";
   const displayHolder = card.holder || "FULL NAME";
 
-  const cardBaseStyle: React.CSSProperties = {
-    width: "100%",
-    height: 200,
-    borderRadius: borderRadius["2xl"],
-    padding: 22,
-    overflow: "hidden",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    boxSizing: "border-box",
-    backfaceVisibility: "hidden",
-    transition: "transform 0.5s ease",
-  };
-
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+    <div className="flex flex-col gap-6">
       {/* Card preview */}
-      <div style={{ height: 200, position: "relative", perspective: 1200 }}>
-        {/* Front */}
+      <div className="relative h-50 perspective-distant">
+        {/* Front — gradient is theme-driven, transform/z-index depend on flip state */}
         <div
+          className={CARD_FACE}
           style={{
-            ...cardBaseStyle,
             background: `linear-gradient(135deg, ${theme.front[0]}, ${theme.front[1]}, ${theme.front[2]})`,
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
             zIndex: isFlipped ? 0 : 1,
           }}
         >
-          <div style={{ position: "absolute", width: 220, height: 220, borderRadius: borderRadius.full, backgroundColor: "rgba(255,255,255,0.05)", top: -60, right: -60 }} />
-          <div style={{ position: "absolute", width: 160, height: 160, borderRadius: borderRadius.full, backgroundColor: "rgba(255,255,255,0.05)", bottom: -50, left: -30 }} />
-          <div style={{ width: 42, height: 32, borderRadius: borderRadius.sm, backgroundColor: "#d4a843", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <div style={{ width: 28, height: 20, borderRadius: 4, border: "1px solid #b8922d" }} />
+          <div className="absolute -top-15 -right-15 size-55 rounded-full bg-white/5" />
+          <div className="absolute -bottom-12.5 -left-7.5 size-40 rounded-full bg-white/5" />
+          <div className="flex h-8 w-10.5 items-center justify-center rounded-sm bg-[#d4a843]">
+            <div className="h-5 w-7 rounded-[4px] border border-[#b8922d]" />
           </div>
-          <span style={{ fontFamily: fontFamily.sans, fontWeight: 500, fontSize: fontSize.xl, letterSpacing: 3, color: colors.onPrimary, marginTop: 14 }}>
+          <span className="mt-3.5 font-sans text-xl font-medium tracking-[3px] text-on-primary">
             {maskedNumber}
           </span>
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between" }}>
+          <div className="flex flex-row items-end justify-between">
             <div>
-              <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 600, color: "rgba(255,255,255,0.6)", letterSpacing: 1.2, display: "block", marginBottom: 3 }}>CARD HOLDER</span>
-              <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.onPrimary, letterSpacing: 0.5 }}>{displayHolder}</span>
+              <span className="mb-0.75 block font-sans text-xs font-semibold tracking-[1.2px] text-white/60">
+                CARD HOLDER
+              </span>
+              <span className="font-sans text-sm font-semibold tracking-[0.5px] text-on-primary">
+                {displayHolder}
+              </span>
             </div>
             <div>
-              <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 600, color: "rgba(255,255,255,0.6)", letterSpacing: 1.2, display: "block", marginBottom: 3 }}>EXPIRES</span>
-              <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.onPrimary, letterSpacing: 0.5 }}>{displayExpiry}</span>
+              <span className="mb-0.75 block font-sans text-xs font-semibold tracking-[1.2px] text-white/60">
+                EXPIRES
+              </span>
+              <span className="font-sans text-sm font-semibold tracking-[0.5px] text-on-primary">
+                {displayExpiry}
+              </span>
             </div>
             <NetworkBadge type={cardType} />
           </div>
@@ -177,81 +177,95 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
 
         {/* Back */}
         <div
+          className={CARD_FACE}
           style={{
-            ...cardBaseStyle,
             background: `linear-gradient(135deg, ${theme.back[0]}, ${theme.back[1]}, ${theme.back[2]})`,
             transform: isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)",
             zIndex: isFlipped ? 1 : 0,
           }}
         >
-          <div style={{ position: "absolute", width: 220, height: 220, borderRadius: borderRadius.full, backgroundColor: "rgba(255,255,255,0.05)", top: -60, right: -60 }} />
-          <div style={{ height: 44, backgroundColor: "#111", marginInline: -22, marginTop: 4 }} />
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10, marginTop: 16 }}>
-            <div style={{ flex: 1, height: 36, backgroundColor: "rgba(255,255,255,0.9)", borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "flex-end", paddingInline: 12 }}>
-              <span style={{ fontFamily: fontFamily.sans, fontWeight: 700, fontSize: fontSize.base, color: colors.foreground, letterSpacing: 3 }}>
+          <div className="absolute -top-15 -right-15 size-55 rounded-full bg-white/5" />
+          <div className="-mx-5.5 mt-1 h-11 bg-[#111]" />
+          <div className="mt-4 flex flex-row items-center gap-2.5">
+            <div className="flex h-9 flex-1 items-center justify-end rounded-[4px] bg-white/90 px-3">
+              <span className="font-sans text-base font-bold tracking-[3px] text-foreground">
                 {card.cvv ? "•".repeat(card.cvv.length) : "•••"}
               </span>
             </div>
-            <div style={{ backgroundColor: "rgba(255,255,255,0.15)", borderRadius: borderRadius.sm, paddingInline: 10, paddingBlock: 6 }}>
-              <span style={{ fontFamily: fontFamily.sans, fontWeight: 700, fontSize: fontSize.xs, color: colors.onPrimary, letterSpacing: 1 }}>CVV</span>
+            <div className="rounded-sm bg-white/15 px-2.5 py-1.5">
+              <span className="font-sans text-xs font-bold tracking-[1px] text-on-primary">
+                CVV
+              </span>
             </div>
           </div>
-          <p style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: "rgba(255,255,255,0.4)", textAlign: "center", lineHeight: "12px", margin: 0 }}>
+          <p className="m-0 text-center font-sans text-xs font-normal leading-3 text-white/40">
             This card is issued subject to the conditions of the cardholder agreement.
           </p>
         </div>
       </div>
 
       {/* Form */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-        <label style={labelStyle}>Card Number</label>
+      <div className="flex flex-col gap-1">
+        <label className={LABEL_CLASS}>Card Number</label>
         <input
           type="text"
           inputMode="numeric"
           placeholder="1234 5678 9012 3456"
           maxLength={numberMaxLen}
-          value={card.number ? formatCardNumberInput(card.number.replace(/\D/g, ""), cardType) : ""}
-          onChange={(e) => setCard((c) => ({ ...c, number: e.target.value.replace(/\D/g, "") }))}
+          value={
+            card.number
+              ? formatCardNumberInput(card.number.replace(/\D/g, ""), cardType)
+              : ""
+          }
+          onChange={(e) =>
+            setCard((c) => ({ ...c, number: e.target.value.replace(/\D/g, "") }))
+          }
           onFocus={() => setIsFlipped(false)}
-          style={inputStyle}
+          className={INPUT_CLASS}
         />
 
-        <label style={labelStyle}>Cardholder Name</label>
+        <label className={LABEL_CLASS}>Cardholder Name</label>
         <input
           type="text"
           placeholder="Full Name"
           value={card.holder}
-          onChange={(e) => setCard((c) => ({ ...c, holder: e.target.value.toUpperCase() }))}
+          onChange={(e) =>
+            setCard((c) => ({ ...c, holder: e.target.value.toUpperCase() }))
+          }
           onFocus={() => setIsFlipped(false)}
-          style={inputStyle}
+          className={INPUT_CLASS}
         />
 
-        <div style={{ display: "flex", flexDirection: "row", gap: 12 }}>
-          <div style={{ flex: 1 }}>
-            <label style={labelStyle}>Expiry Date</label>
+        <div className="flex flex-row gap-3">
+          <div className="flex-1">
+            <label className={LABEL_CLASS}>Expiry Date</label>
             <input
               type="text"
               inputMode="numeric"
               placeholder="MM/YY"
               maxLength={5}
               value={formatExpiry(card.expiry.replace(/\D/g, ""))}
-              onChange={(e) => setCard((c) => ({ ...c, expiry: e.target.value.replace(/[^\d/]/g, "") }))}
+              onChange={(e) =>
+                setCard((c) => ({ ...c, expiry: e.target.value.replace(/[^\d/]/g, "") }))
+              }
               onFocus={() => setIsFlipped(false)}
-              style={inputStyle}
+              className={INPUT_CLASS}
             />
           </div>
-          <div style={{ flex: 1 }}>
-            <label style={labelStyle}>CVV</label>
+          <div className="flex-1">
+            <label className={LABEL_CLASS}>CVV</label>
             <input
               type="password"
               inputMode="numeric"
               placeholder={isAmex ? "••••" : "•••"}
               maxLength={cvvMaxLen}
               value={card.cvv}
-              onChange={(e) => setCard((c) => ({ ...c, cvv: e.target.value.replace(/\D/g, "") }))}
+              onChange={(e) =>
+                setCard((c) => ({ ...c, cvv: e.target.value.replace(/\D/g, "") }))
+              }
               onFocus={() => setIsFlipped(true)}
               onBlur={() => setIsFlipped(false)}
-              style={inputStyle}
+              className={INPUT_CLASS}
             />
           </div>
         </div>
@@ -259,25 +273,10 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
         <button
           type="button"
           onClick={() => onSave?.(card)}
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            marginTop: 20,
-            paddingBlock: 14,
-            borderRadius: borderRadius.lg,
-            backgroundColor: colors.primary,
-            border: "none",
-            cursor: "pointer",
-            width: "100%",
-          }}
+          className="mt-5 flex w-full cursor-pointer flex-row items-center justify-center gap-2 rounded-lg bg-primary py-3.5 text-on-primary"
         >
-          <Lock size={15} color={colors.onPrimary} strokeWidth={2.5} />
-          <span style={{ fontFamily: fontFamily.sans, fontWeight: 700, fontSize: fontSize.base, color: colors.onPrimary }}>
-            Save Card
-          </span>
+          <Lock size={15} color="currentColor" strokeWidth={2.5} />
+          <span className="font-sans text-base font-bold text-on-primary">Save Card</span>
         </button>
       </div>
     </div>

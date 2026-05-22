@@ -14,23 +14,26 @@ import {
   User,
   X,
 } from "lucide-react";
-import React, { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 
+import clsx from "clsx";
+
+import { DEFAULT_LANGUAGE } from "@/constants/settings";
 import { useDrawer } from "@/context/DrawerContext";
-import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
+import { useTranslation } from "@/i18n/context";
 import useAuthStore, {
   useDisplayName,
   useInitials,
   useProfileImage,
 } from "@/store/useAuthStore";
+import { NAMESPACE } from "./i18n";
 import { useDrawerMarketplace } from "./hooks/useDrawerMarketplace";
 
 import MainButton from "../Button/MainButton";
 import { Title } from "../Title/Title";
 import { Accordion, type AccordionSectionDef } from "./Accordion";
 import MenuRow from "./MenuRow";
-import { DRAWER_WIDTH } from "./constants/data";
 import { useDrawerBlogs } from "./hooks/useDrawerBlogs";
 import { useDrawerCommunity } from "./hooks/useDrawerCommunity";
 import { useDrawerServices } from "./hooks/useDrawerServices";
@@ -38,17 +41,17 @@ import { useDrawerStores } from "./hooks/useDrawerStores";
 import Image from "next/image";
 
 const profileMenuItems = [
-  { route: "/profile", label: "Profile", icon: User },
-  { route: "/profile/settings", label: "Settings", icon: Settings },
-  { route: "/profile/orders", label: "Orders", icon: Package },
-  { route: "/profile/environmental-impact", label: "Environmental Impact", icon: Leaf },
+  { route: "/profile", tKey: "profile", icon: User },
+  { route: "/profile/settings", tKey: "settings", icon: Settings },
+  { route: "/profile/orders", tKey: "orders", icon: Package },
+  { route: "/profile/environmental-impact", tKey: "environmentalImpact", icon: Leaf },
 ];
 
-const supportMenuItems = [{ route: "/contact", label: "Contact", icon: Mail }];
+const supportMenuItems = [{ route: "/contact", tKey: "contact", icon: Mail }];
 
 function SectionLabel({ label }: { label: string }) {
   return (
-    <Title level="h6" weight="semibold" style={{ marginLeft: 4, marginTop: 8 }}>
+    <Title level="h6" weight="semibold" className="mt-2 ml-1">
       {label}
     </Title>
   );
@@ -57,13 +60,21 @@ function SectionLabel({ label }: { label: string }) {
 export default function Drawer() {
   const { isOpen, closeDrawer } = useDrawer();
   const router = useRouter();
+  const params = useParams();
+  const lang = typeof params?.lang === "string" ? params.lang : DEFAULT_LANGUAGE;
+  const { t } = useTranslation(NAMESPACE);
   const profileImage = useProfileImage();
   const seller = useAuthStore((s) => s.seller);
   const logout = useAuthStore((s) => s.logout);
   const displayName = useDisplayName();
   const initials = useInitials();
 
-  const [hasOpened] = useState(false);
+  // Defer the catalog queries until the drawer is opened for the first time.
+  // The Drawer is always mounted in the layout tree, so without this the
+  // queries would fire on every page load. Latching during render (instead of
+  // in an effect) is the React-recommended way to adjust state from props.
+  const [hasOpened, setHasOpened] = useState(false);
+  if (isOpen && !hasOpened) setHasOpened(true);
 
   const { items: marketplaceItems } = useDrawerMarketplace(hasOpened);
   const { items: storeItems } = useDrawerStores(hasOpened);
@@ -75,7 +86,7 @@ export default function Drawer() {
     (): AccordionSectionDef[] => [
       {
         key: "marketplace",
-        label: "Marketplace",
+        label: t("marketplace"),
         icon: Package,
         baseRoute: "/marketplace",
         items:
@@ -85,7 +96,7 @@ export default function Drawer() {
       },
       {
         key: "stores",
-        label: "Stores",
+        label: t("stores"),
         icon: Store,
         baseRoute: "/stores",
         items:
@@ -95,7 +106,7 @@ export default function Drawer() {
       },
       {
         key: "services",
-        label: "Services",
+        label: t("services"),
         icon: ScanBarcode,
         baseRoute: "/services",
         items:
@@ -105,7 +116,7 @@ export default function Drawer() {
       },
       {
         key: "community",
-        label: "Community",
+        label: t("community"),
         icon: MessageSquare,
         baseRoute: "/community",
         items:
@@ -115,7 +126,7 @@ export default function Drawer() {
       },
       {
         key: "blog",
-        label: "Blog",
+        label: t("blog"),
         icon: BookOpen,
         baseRoute: "/blog",
         items:
@@ -124,12 +135,16 @@ export default function Drawer() {
             : [{ label: "No blog sections available", route: "" }],
       },
     ],
-    [marketplaceItems, storeItems, serviceItems, communityItems, blogItems],
+    [marketplaceItems, storeItems, serviceItems, communityItems, blogItems, t],
   );
 
   const handleNavigate = (route: string) => {
+    // Fallback "no items available" rows carry an empty route — ignore them.
+    if (!route) return;
     closeDrawer();
-    router.push(route);
+    // Routes are declared without the locale segment; prefix the active locale
+    // so they resolve under the `/[lang]` route group.
+    router.push(route.startsWith("/") ? `/${lang}${route}` : route);
   };
 
   // Close on Escape
@@ -146,200 +161,63 @@ export default function Drawer() {
       {/* Backdrop */}
       <div
         onClick={closeDrawer}
-        style={{
-          position: "fixed",
-          inset: 0,
-          backgroundColor: "rgba(0,0,0,0.4)",
-          zIndex: 100,
-          opacity: isOpen ? 1 : 0,
-          pointerEvents: isOpen ? "auto" : "none",
-          transition: "opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)",
-        }}
+        className={clsx(
+          "fixed inset-0 z-100 bg-black/40 transition-opacity duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]",
+          isOpen ? "opacity-100" : "pointer-events-none opacity-0",
+        )}
       />
 
       {/* Drawer panel */}
       <div
-        style={{
-          position: "fixed",
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: DRAWER_WIDTH,
-          zIndex: 101,
-          backgroundColor: colors.surface,
-          boxShadow: shadows.lg,
-          display: "flex",
-          flexDirection: "column",
-          transform: isOpen ? "translateX(0)" : `translateX(${DRAWER_WIDTH}px)`,
-          transition: "transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)",
-        }}
+        className={clsx(
+          "fixed inset-y-0 right-0 z-101 flex w-80 flex-col bg-surface shadow-lg transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]",
+          isOpen ? "translate-x-0" : "translate-x-full",
+        )}
       >
         {/* Header */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingInline: 20,
-            paddingTop: 10,
-            paddingBottom: 16,
-            backgroundColor: colors.surface,
-            borderBottom: `1px solid ${colors.borderStrong}`,
-          }}
-        >
-          <span
-            style={{
-              fontSize: fontSize.xl,
-              fontFamily: fontFamily.sans,
-              fontWeight: 700,
-              color: colors.primary,
-              letterSpacing: 1,
-            }}
-          >
-            Menu
+        <div className="flex flex-row items-center justify-between border-b border-border-strong bg-surface px-5 pt-2.5 pb-4">
+          <span className="font-sans text-xl font-bold tracking-[1px] text-primary">
+            {t("header")}
           </span>
           <button
             type="button"
             onClick={closeDrawer}
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: borderRadius.sm,
-              backgroundColor: colors.backgroundTertiary,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "none",
-              cursor: "pointer",
-            }}
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm bg-background-tertiary text-foreground-secondary"
           >
-            <X size={20} color={colors.foregroundSecondary} strokeWidth={2} />
+            <X size={20} color="currentColor" strokeWidth={2} />
           </button>
         </div>
 
         {/* Scrollable content */}
-        <div
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            display: "flex",
-            flexDirection: "column",
-            gap: 4,
-            paddingBottom: 32,
-          }}
-        >
+        <div className="flex flex-1 flex-col gap-1 overflow-y-auto pb-8">
           {/* User identity */}
           {seller && (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 12,
-                backgroundColor: `${colors.secondary}10`,
-                borderRadius: borderRadius.lg,
-                padding: 14,
-                marginBottom: 8,
-                margin: 12,
-              }}
-            >
+            <div className="m-3 flex flex-col items-center gap-3 rounded-lg bg-secondary/10 p-3.5">
               {profileImage ? (
                 <Image
                   src={profileImage}
                   alt="Profile"
                   width={100}
                   height={100}
-                  style={{
-                    width: 130,
-                    height: 130,
-                    borderRadius: borderRadius.full,
-                    objectFit: "cover",
-                    flexShrink: 0,
-                  }}
+                  className="size-32.5 shrink-0 rounded-full object-cover"
                 />
               ) : (
-                <div
-                  style={{
-                    width: 52,
-                    height: 52,
-                    borderRadius: borderRadius.full,
-                    backgroundColor: colors.primary,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: fontSize.lg,
-                      fontFamily: fontFamily.sans,
-                      fontWeight: 700,
-                      color: colors.onPrimary,
-                    }}
-                  >
+                <div className="flex size-13 shrink-0 items-center justify-center rounded-full bg-primary">
+                  <span className="font-sans text-lg font-bold text-on-primary">
                     {initials || "?"}
                   </span>
                 </div>
               )}
-              <div
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 2,
-                  width: "100%",
-                  alignItems: "center",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: fontSize.base,
-                    fontFamily: fontFamily.sans,
-                    fontWeight: 700,
-                    color: colors.foreground,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    maxWidth: "100%",
-                  }}
-                >
+              <div className="flex w-full flex-1 flex-col items-center gap-0.5">
+                <span className="max-w-full truncate font-sans text-base font-bold text-foreground">
                   {displayName}
                 </span>
-                <span
-                  style={{
-                    fontSize: fontSize.xs,
-                    fontFamily: fontFamily.sans,
-                    fontWeight: 400,
-                    color: colors.foregroundSecondary,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    maxWidth: "100%",
-                  }}
-                >
+                <span className="max-w-full truncate font-sans text-xs font-normal text-foreground-secondary">
                   {seller.email}
                 </span>
-                <div
-                  style={{
-                    alignSelf: "flex-start",
-                    marginTop: 4,
-                    backgroundColor: `${colors.primary}22`,
-                    paddingInline: 8,
-                    paddingBlock: 2,
-                    borderRadius: borderRadius["2xl"],
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: fontSize.xs,
-                      fontFamily: fontFamily.sans,
-                      fontWeight: 600,
-                      color: colors.primaryDark,
-                    }}
-                  >
-                    {seller.sellerType}
+                <div className="mt-1 self-start rounded-2xl bg-primary/15 px-2 py-0.5">
+                  <span className="font-sans text-xs font-semibold text-primary-dark">
+                    {t(`sellerType.${seller.sellerType}`)}
                   </span>
                 </div>
               </div>
@@ -347,30 +225,16 @@ export default function Drawer() {
           )}
 
           {/* Account section */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 6,
-              marginBottom: 4,
-              paddingInline: 16,
-            }}
-          >
-            <SectionLabel label="Account" />
-            <div
-              style={{
-                backgroundColor: colors.surface,
-                borderRadius: borderRadius.lg,
-                overflow: "hidden",
-              }}
-            >
+          <div className="mb-1 flex flex-col gap-1.5 px-4">
+            <SectionLabel label={t("sections.account")} />
+            <div className="overflow-hidden rounded-lg bg-surface">
               {profileMenuItems.map((item, index) => {
                 const Icon = item.icon;
                 return (
                   <MenuRow
                     key={item.route}
                     icon={Icon}
-                    label={item.label}
+                    label={t(item.tKey)}
                     onPress={() => handleNavigate(item.route)}
                     hasBorder={index < profileMenuItems.length - 1}
                   />
@@ -380,26 +244,12 @@ export default function Drawer() {
           </div>
 
           {/* Explore section */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 6,
-              marginBottom: 4,
-              paddingInline: 16,
-            }}
-          >
-            <SectionLabel label="Explore" />
-            <div
-              style={{
-                backgroundColor: colors.surface,
-                borderRadius: borderRadius.lg,
-                overflow: "hidden",
-              }}
-            >
+          <div className="mb-1 flex flex-col gap-1.5 px-4">
+            <SectionLabel label={t("sections.explore")} />
+            <div className="overflow-hidden rounded-lg bg-surface">
               <MenuRow
                 icon={House}
-                label="Home"
+                label={t("home")}
                 onPress={() => handleNavigate("/")}
                 hasBorder
               />
@@ -412,7 +262,7 @@ export default function Drawer() {
               ))}
               <MenuRow
                 icon={PackagePlus}
-                label="Publish"
+                label={t("upload")}
                 onPress={() => handleNavigate("/publish")}
                 hasBorder={false}
               />
@@ -420,30 +270,16 @@ export default function Drawer() {
           </div>
 
           {/* Support section */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 6,
-              marginBottom: 4,
-              paddingInline: 16,
-            }}
-          >
-            <SectionLabel label="Support" />
-            <div
-              style={{
-                backgroundColor: colors.surface,
-                borderRadius: borderRadius.lg,
-                overflow: "hidden",
-              }}
-            >
+          <div className="mb-1 flex flex-col gap-1.5 px-4">
+            <SectionLabel label={t("sections.support")} />
+            <div className="overflow-hidden rounded-lg bg-surface">
               {supportMenuItems.map((item, index) => {
                 const Icon = item.icon;
                 return (
                   <MenuRow
                     key={item.route}
                     icon={Icon}
-                    label={item.label}
+                    label={t(item.tKey)}
                     onPress={() => handleNavigate(item.route)}
                     hasBorder={index < supportMenuItems.length - 1}
                   />
@@ -453,23 +289,23 @@ export default function Drawer() {
           </div>
 
           {/* Auth action */}
-          <div style={{ marginTop: 12 }}>
+          <div className="mt-3">
             {seller ? (
               <MainButton
                 variant="error"
-                text="Log Out"
-                style={{ marginInline: 16, marginTop: 12 }}
+                text={t("logOut")}
+                className="mx-4 mt-3"
                 onPress={async () => {
                   await logout();
                   closeDrawer();
-                  router.push("/auth");
+                  router.push(`/${lang}/login`);
                 }}
               />
             ) : (
               <MainButton
-                text="Log In"
-                style={{ marginInline: 16, marginTop: 12 }}
-                onPress={() => handleNavigate("/auth")}
+                text={t("logIn")}
+                className="mx-4 mt-3"
+                onPress={() => handleNavigate("/login")}
               />
             )}
           </div>

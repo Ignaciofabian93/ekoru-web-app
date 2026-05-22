@@ -1,6 +1,6 @@
 "use client";
 
-import { borderRadius, colors } from "@/design/tokens";
+import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
 import { Text } from "../Text/Text";
 
@@ -25,36 +25,15 @@ export default function UploadImageCard({
       type="button"
       onClick={onPress}
       disabled={disabled}
-      style={{
-        flex: 1,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "none",
-        border: "none",
-        padding: 0,
-        cursor: disabled ? "not-allowed" : "pointer",
-      }}
+      className="flex flex-1 cursor-pointer items-center justify-center p-0 disabled:cursor-not-allowed"
     >
       <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 6,
-          backgroundColor: colors.surface,
-          borderRadius: borderRadius.xl,
-          paddingBlock: 20,
-          paddingInline: 12,
-          borderWidth: 1.5,
-          borderStyle: "solid",
-          borderColor: `${iconColor}33`,
-          boxShadow: disabled ? "none" : "0 2px 8px rgba(0,0,0,0.08)",
-          opacity: disabled ? 0.4 : 1,
-          filter: disabled ? "grayscale(100%)" : "none",
-          width: "100%",
-        }}
+        // borderColor is derived from the runtime `iconColor` prop, so it stays inline.
+        style={{ borderColor: `${iconColor}33` }}
+        className={clsx(
+          "flex w-full flex-col items-center justify-center gap-1.5 rounded-xl border-[1.5px] border-solid bg-surface px-3 py-5",
+          disabled ? "opacity-40 grayscale" : "shadow-[0_2px_8px_rgba(0,0,0,0.08)]",
+        )}
       >
         <Icon size={40} color={iconColor} strokeWidth={1.75} />
         <Text size="sm" weight="semibold" align="center">

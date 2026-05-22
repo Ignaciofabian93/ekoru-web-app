@@ -1,17 +1,17 @@
 import { gql } from "@apollo/client";
 
 export const GET_SERVICES_CATALOG = gql`
-  query GetServicesCatalog($language: Language = ES) {
-    getServicesCatalog(language: $language) {
+  query GetServiceCatalog($language: Language = ES) {
+    getServiceCatalog(language: $language) {
       id
       name
-      slug
       href
+      slug
       subCategoryItems {
         id
         name
-        slug
         href
+        slug
       }
     }
   }

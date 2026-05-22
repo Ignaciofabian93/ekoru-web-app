@@ -1,4 +1,4 @@
-import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
+import clsx from "clsx";
 import { ChevronDown, ChevronRight, type LucideIcon } from "lucide-react";
 import React, { useState } from "react";
 
@@ -23,7 +23,11 @@ function AccordionContent({
   isOpen: boolean;
   children: React.ReactNode;
 }) {
-  const [hasEverOpened] = useState(false);
+  const [hasEverOpened, setHasEverOpened] = useState(false);
+
+  // Latch open-state during render so content stays mounted after the first
+  // open (cheap re-renders on toggle) while staying lazy until then.
+  if (isOpen && !hasEverOpened) setHasEverOpened(true);
 
   if (!hasEverOpened || !isOpen) return null;
   return <div>{children}</div>;
@@ -45,37 +49,17 @@ function AccordionL2Row({
   return (
     <div>
       <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          paddingBlock: 10,
-          paddingLeft: 32,
-          paddingRight: 14,
-          backgroundColor: colors.backgroundTertiary,
-          borderBottom: !isLast || isOpen ? `1px solid ${colors.borderStrong}` : "none",
-        }}
+        className={clsx(
+          "flex flex-row items-center bg-background-tertiary py-2.5 pr-3.5 pl-8",
+          (!isLast || isOpen) && "border-b border-border-strong",
+        )}
       >
         <button
           type="button"
           onClick={() => onNavigate(item.route)}
-          style={{
-            flex: 1,
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            textAlign: "left",
-            padding: 0,
-          }}
+          className="flex-1 cursor-pointer p-0 text-left"
         >
-          <span
-            style={{
-              fontSize: fontSize.xs,
-              fontFamily: fontFamily.sans,
-              fontWeight: 400,
-              color: colors.foregroundSecondary,
-            }}
-          >
+          <span className="font-sans text-xs font-normal text-foreground-secondary">
             {item.label}
           </span>
         </button>
@@ -83,21 +67,15 @@ function AccordionL2Row({
           <button
             type="button"
             onClick={() => setIsOpen((v) => !v)}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: "10px 6px",
-              display: "flex",
-            }}
+            className="flex cursor-pointer px-1.5 py-2.5"
           >
             <div
-              style={{
-                transform: `rotate(${isOpen ? "90deg" : "0deg"})`,
-                transition: "transform 0.2s ease",
-              }}
+              className={clsx(
+                "text-foreground-muted transition-transform duration-200",
+                isOpen ? "rotate-90" : "rotate-0",
+              )}
             >
-              <ChevronRight size={13} color={colors.foregroundMuted} strokeWidth={2} />
+              <ChevronRight size={13} color="currentColor" strokeWidth={2} />
             </div>
           </button>
         )}
@@ -110,33 +88,12 @@ function AccordionL2Row({
               key={l3.route}
               type="button"
               onClick={() => onNavigate(l3.route)}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                paddingBlock: 9,
-                paddingLeft: 46,
-                paddingRight: 14,
-                backgroundColor: colors.surfaceActive,
-                borderBottom:
-                  i < item.children!.length - 1
-                    ? `1px solid ${colors.borderStrong}`
-                    : "none",
-                width: "100%",
-                border: "none",
-                cursor: "pointer",
-                textAlign: "left",
-              }}
+              className={clsx(
+                "flex w-full cursor-pointer flex-row items-center bg-surface-active py-2.25 pr-3.5 pl-11.5 text-left",
+                i < item.children!.length - 1 && "border-b border-border-strong",
+              )}
             >
-              <span
-                style={{
-                  flex: 1,
-                  fontSize: fontSize.xs,
-                  fontFamily: fontFamily.sans,
-                  fontWeight: 400,
-                  color: colors.foregroundTertiary,
-                }}
-              >
+              <span className="flex-1 font-sans text-xs font-normal text-foreground-tertiary">
                 {l3.label}
               </span>
             </button>
@@ -163,37 +120,17 @@ function AccordionL1Row({
   return (
     <div>
       <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          paddingBlock: 11,
-          paddingLeft: 18,
-          paddingRight: 14,
-          backgroundColor: colors.backgroundSecondary,
-          borderBottom: !isLast || isOpen ? `1px solid ${colors.borderStrong}` : "none",
-        }}
+        className={clsx(
+          "flex flex-row items-center bg-background-secondary py-2.75 pr-3.5 pl-4.5",
+          (!isLast || isOpen) && "border-b border-border-strong",
+        )}
       >
         <button
           type="button"
           onClick={() => onNavigate(item.route)}
-          style={{
-            flex: 1,
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            textAlign: "left",
-            padding: 0,
-          }}
+          className="flex-1 cursor-pointer p-0 text-left"
         >
-          <span
-            style={{
-              fontSize: fontSize.sm,
-              fontFamily: fontFamily.sans,
-              fontWeight: 500,
-              color: colors.foregroundSecondary,
-            }}
-          >
+          <span className="font-sans text-sm font-medium text-foreground-secondary">
             {item.label}
           </span>
         </button>
@@ -201,21 +138,15 @@ function AccordionL1Row({
           <button
             type="button"
             onClick={() => setIsOpen((v) => !v)}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: "10px 6px",
-              display: "flex",
-            }}
+            className="flex cursor-pointer px-1.5 py-2.5"
           >
             <div
-              style={{
-                transform: `rotate(${isOpen ? "90deg" : "0deg"})`,
-                transition: "transform 0.2s ease",
-              }}
+              className={clsx(
+                "text-foreground-tertiary transition-transform duration-200",
+                isOpen ? "rotate-90" : "rotate-0",
+              )}
             >
-              <ChevronRight size={14} color={colors.foregroundTertiary} strokeWidth={2} />
+              <ChevronRight size={14} color="currentColor" strokeWidth={2} />
             </div>
           </button>
         )}
@@ -250,75 +181,31 @@ function AccordionSection({
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          paddingBlock: 13,
-          paddingInline: 14,
-          gap: 12,
-          borderBottom: `1px solid ${colors.borderStrong}`,
-        }}
-      >
+      <div className="flex flex-row items-center gap-3 border-b border-border-strong px-3.5 py-3.25">
         <button
           type="button"
           onClick={() => onNavigate(section.baseRoute)}
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 12,
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            padding: 0,
-          }}
+          className="flex flex-1 cursor-pointer flex-row items-center gap-3 p-0"
         >
-          <div
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: borderRadius.sm,
-              backgroundColor: `${colors.primary}18`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-            }}
-          >
-            <Icon size={18} strokeWidth={1.5} color={colors.primary} />
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-sm bg-primary/10 text-primary">
+            <Icon size={18} strokeWidth={1.5} color="currentColor" />
           </div>
-          <span
-            style={{
-              fontSize: fontSize.sm,
-              fontFamily: fontFamily.sans,
-              fontWeight: 500,
-              color: colors.foreground,
-            }}
-          >
+          <span className="font-sans text-sm font-medium text-foreground">
             {section.label}
           </span>
         </button>
         <button
           type="button"
           onClick={() => setIsOpen((v) => !v)}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            padding: "10px 6px",
-            display: "flex",
-          }}
+          className="flex cursor-pointer px-1.5 py-2.5"
         >
           <div
-            style={{
-              transform: `rotate(${isOpen ? "180deg" : "0deg"})`,
-              transition: "transform 0.2s ease",
-            }}
+            className={clsx(
+              "text-foreground-tertiary transition-transform duration-200",
+              isOpen ? "rotate-180" : "rotate-0",
+            )}
           >
-            <ChevronDown size={16} color={colors.foregroundTertiary} strokeWidth={2} />
+            <ChevronDown size={16} color="currentColor" strokeWidth={2} />
           </div>
         </button>
       </div>

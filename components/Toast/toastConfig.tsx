@@ -1,5 +1,5 @@
-import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
-import { AlertCircle, CheckCircle, Info } from "lucide-react";
+import clsx from "clsx";
+import { AlertCircle, CheckCircle, Info, type LucideIcon } from "lucide-react";
 import React from "react";
 
 export interface ToastProps {
@@ -9,43 +9,35 @@ export interface ToastProps {
   style?: React.CSSProperties;
 }
 
-const TOAST_CONFIG = {
-  success: { accentColor: colors.success, icon: <CheckCircle size={20} color={colors.success} strokeWidth={2} /> },
-  error: { accentColor: colors.danger, icon: <AlertCircle size={20} color={colors.danger} strokeWidth={2} /> },
-  info: { accentColor: colors.primary, icon: <Info size={20} color={colors.primary} strokeWidth={2} /> },
+const TOAST_CONFIG: Record<
+  NonNullable<ToastProps["type"]>,
+  { border: string; text: string; Icon: LucideIcon }
+> = {
+  success: { border: "border-l-success", text: "text-success", Icon: CheckCircle },
+  error: { border: "border-l-danger", text: "text-danger", Icon: AlertCircle },
+  info: { border: "border-l-primary", text: "text-primary", Icon: Info },
 };
 
 export function Toast({ text1, text2, type = "info", style }: ToastProps) {
-  const config = TOAST_CONFIG[type];
+  const { border, text, Icon } = TOAST_CONFIG[type];
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: colors.surface,
-        borderRadius: borderRadius.md,
-        borderLeft: `4px solid ${config.accentColor}`,
-        paddingInline: 14,
-        paddingBlock: 12,
-        gap: 12,
-        boxShadow: shadows.md,
-        width: "90%",
-        maxWidth: 400,
-        boxSizing: "border-box",
-        ...style,
-      }}
+      style={style}
+      className={clsx(
+        "box-border flex w-[90%] max-w-100 flex-row items-center gap-3 rounded-md border-l-4 bg-surface px-3.5 py-3 shadow-md",
+        border,
+      )}
     >
-      <span style={{ flexShrink: 0 }}>{config.icon}</span>
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+      <span className={clsx("shrink-0", text)}>
+        <Icon size={20} color="currentColor" strokeWidth={2} />
+      </span>
+      <div className="flex flex-1 flex-col gap-0.5">
         {text1 && (
-          <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.foreground }}>
-            {text1}
-          </span>
+          <span className="font-sans text-sm font-semibold text-foreground">{text1}</span>
         )}
         {text2 && (
-          <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary }}>
+          <span className="font-sans text-sm font-normal text-foreground-secondary">
             {text2}
           </span>
         )}

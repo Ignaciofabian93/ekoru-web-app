@@ -4,14 +4,16 @@ export const GET_COMMUNITY_CATALOG = gql`
   query GetCommunityCatalog($language: Language = ES) {
     getCommunityCatalog(language: $language) {
       id
-      name
+      category
       slug
       href
-      subCategoryItems {
+      description
+      subcategories {
         id
-        name
+        subcategory
         slug
         href
+        description
       }
     }
   }

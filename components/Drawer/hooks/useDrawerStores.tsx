@@ -57,8 +57,7 @@ export function useDrawerStores(enabled: boolean) {
   const items = useMemo<L1Item[]>(
     () =>
       data?.getStoreCatalog ? mapCatalogToAccordion(data.getStoreCatalog) : [],
-     
-    [data?.getStoreCatalog],
+    [data],
   );
 
   return { items };

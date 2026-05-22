@@ -1,4 +1,5 @@
 "use client";
+import clsx from "clsx";
 import MainButton from "@/components/Button/MainButton";
 import Input from "@/components/Input/Input";
 import { Text } from "@/components/Text/Text";
@@ -52,7 +53,6 @@ export function RegisterForm() {
     confirmPassword,
     setConfirmPassword,
     loading,
-    error,
     handleRegister,
   } = useRegister();
 
@@ -119,11 +119,10 @@ export function RegisterForm() {
           {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
             <span
               key={i}
-              className="h-1.5 flex-1 rounded-full transition-colors duration-300"
-              style={{
-                backgroundColor:
-                  i <= step ? "var(--color-primary)" : "var(--color-border-light)",
-              }}
+              className={clsx(
+                "h-1.5 flex-1 rounded-full transition-colors duration-300",
+                i <= step ? "bg-primary" : "bg-border-light",
+              )}
             />
           ))}
         </div>
@@ -162,29 +161,22 @@ export function RegisterForm() {
                     type="button"
                     onClick={() => handleSellerType(value)}
                     aria-pressed={selected}
-                    className="flex items-center gap-4 rounded-xl border-2 p-4 text-left transition-all duration-200"
-                    style={{
-                      borderColor: selected
-                        ? "var(--color-primary)"
-                        : "var(--color-input-border)",
-                      backgroundColor: selected
-                        ? "var(--color-primary-light-bg)"
-                        : "var(--color-surface)",
-                    }}
+                    className={clsx(
+                      "flex items-center gap-4 rounded-xl border-2 p-4 text-left transition-all duration-200",
+                      selected
+                        ? "border-primary bg-primary-light-bg"
+                        : "border-input-border bg-surface",
+                    )}
                   >
                     <span
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors duration-200"
-                      style={{
-                        backgroundColor: selected
-                          ? "var(--color-primary)"
-                          : "var(--color-background-tertiary)",
-                      }}
+                      className={clsx(
+                        "flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors duration-200",
+                        selected
+                          ? "bg-primary text-white"
+                          : "bg-background-tertiary text-foreground-tertiary",
+                      )}
                     >
-                      <Icon
-                        size={20}
-                        color={selected ? "#ffffff" : "var(--color-foreground-tertiary)"}
-                        strokeWidth={2}
-                      />
+                      <Icon size={20} color="currentColor" strokeWidth={2} />
                     </span>
                     <span className="flex flex-1 flex-col">
                       <Text variant="span" weight="bold">
@@ -195,15 +187,12 @@ export function RegisterForm() {
                       </Text>
                     </span>
                     <span
-                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-200"
-                      style={{
-                        borderColor: selected
-                          ? "var(--color-primary)"
-                          : "var(--color-border-strong)",
-                        backgroundColor: selected
-                          ? "var(--color-primary)"
-                          : "transparent",
-                      }}
+                      className={clsx(
+                        "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-200",
+                        selected
+                          ? "border-primary bg-primary"
+                          : "border-border-strong bg-transparent",
+                      )}
                     >
                       {selected && <Check size={12} color="#ffffff" strokeWidth={3} />}
                     </span>
@@ -253,15 +242,12 @@ export function RegisterForm() {
                             type="button"
                             onClick={() => setBusinessType(type)}
                             aria-pressed={selected}
-                            className="rounded-xl border-2 px-3 py-2.5 text-center transition-all duration-200"
-                            style={{
-                              borderColor: selected
-                                ? "var(--color-primary)"
-                                : "var(--color-input-border)",
-                              backgroundColor: selected
-                                ? "var(--color-primary-light-bg)"
-                                : "var(--color-surface)",
-                            }}
+                            className={clsx(
+                              "rounded-xl border-2 px-3 py-2.5 text-center transition-all duration-200",
+                              selected
+                                ? "border-primary bg-primary-light-bg"
+                                : "border-input-border bg-surface",
+                            )}
                           >
                             <Text
                               variant="small"
@@ -348,15 +334,6 @@ export function RegisterForm() {
             </div>
           )}
         </div>
-
-        {/* Submission error */}
-        {error && step === TOTAL_STEPS - 1 && (
-          <div role="alert">
-            <Text variant="small" color="error">
-              {error}
-            </Text>
-          </div>
-        )}
 
         {/* Navigation */}
         <div className="flex items-center gap-3">

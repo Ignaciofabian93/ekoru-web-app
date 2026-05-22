@@ -5,17 +5,19 @@ import { GET_COMMUNITY_CATALOG } from "@/graphql/community/queries";
 
 type CommunitySubCategoryItem = {
   id: number;
-  name: string;
+  subcategory: string;
   slug: string;
   href: string;
+  description?: string;
 };
 
 type CommunityCatalogItem = {
   id: number;
-  name: string;
+  category: string;
   slug: string;
   href: string;
-  subCategoryItems: CommunitySubCategoryItem[];
+  description?: string;
+  subcategories: CommunitySubCategoryItem[];
 };
 
 type L2Item = { label: string; route: string };
@@ -25,10 +27,10 @@ export type L1Item = { label: string; route: string; children?: L2Item[] };
 //   CommunityCatalogItem > CommunitySubCategoryItem
 function mapCatalogToAccordion(items: CommunityCatalogItem[]): L1Item[] {
   return items.map((cat) => ({
-    label: cat.name,
+    label: cat.category,
     route: `/community?cat=${cat.slug}`,
-    children: cat.subCategoryItems.map((sub) => ({
-      label: sub.name,
+    children: (cat.subcategories ?? []).map((sub) => ({
+      label: sub.subcategory,
       route: `/community?sub=${sub.slug}`,
     })),
   }));
@@ -51,11 +53,8 @@ export function useDrawerCommunity(enabled: boolean) {
 
   const items = useMemo<L1Item[]>(
     () =>
-      data?.getCommunityCatalog
-        ? mapCatalogToAccordion(data.getCommunityCatalog)
-        : [],
-     
-    [data?.getCommunityCatalog],
+      data?.getCommunityCatalog ? mapCatalogToAccordion(data.getCommunityCatalog) : [],
+    [data],
   );
 
   return { items };

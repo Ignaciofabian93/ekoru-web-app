@@ -7,6 +7,7 @@ import { Login } from "@/lib/api/auth";
 import { GET_ME } from "@/graphql/auth/login";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { useNavigation } from "@/hooks/useNavigation";
+import { useToast } from "@/hooks/useToast";
 import useAuthStore from "@/store/useAuthStore";
 import type { Seller } from "@/types/user";
 
@@ -15,11 +16,11 @@ export function useLogin() {
   const params = useParams<{ lang?: SupportedLanguage }>();
   const searchParams = useSearchParams();
   const setSeller = useAuthStore((s) => s.setSeller);
+  const toast = useToast();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const [fetchMe] = useLazyQuery<{ me: Seller }>(GET_ME, {
     fetchPolicy: "network-only",
@@ -27,7 +28,6 @@ export function useLogin() {
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null);
     setLoading(true);
     try {
       await Login({ email, password });
@@ -42,7 +42,7 @@ export function useLogin() {
         ? ((err.response?.data as { message?: string } | undefined)?.message ??
           err.message)
         : "Unexpected error";
-      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -54,7 +54,6 @@ export function useLogin() {
     password,
     setPassword,
     loading,
-    error,
     handleSubmit,
   };
 }

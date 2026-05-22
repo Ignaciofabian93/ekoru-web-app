@@ -1,4 +1,4 @@
-import { colors, fontFamily } from "@/design/tokens";
+import clsx from "clsx";
 import React from "react";
 
 type Level = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
@@ -29,32 +29,38 @@ export interface TitleProps {
   onClick?: React.MouseEventHandler;
 }
 
-const LEVEL_MAP: Record<Level, number> = {
-  h1: 36,
-  h2: 30,
-  h3: 26,
-  h4: 22,
-  h5: 19,
-  h6: 17,
+const SIZE_CLASS: Record<Level, string> = {
+  h1: "text-[36px]",
+  h2: "text-[30px]",
+  h3: "text-[26px]",
+  h4: "text-[22px]",
+  h5: "text-[19px]",
+  h6: "text-[17px]",
 };
 
-const WEIGHT_MAP: Record<Weight, number> = {
-  normal: 400,
-  medium: 500,
-  semibold: 600,
-  bold: 700,
-  extrabold: 700,
+const WEIGHT_CLASS: Record<Weight, string> = {
+  normal: "font-normal",
+  medium: "font-medium",
+  semibold: "font-semibold",
+  bold: "font-bold",
+  extrabold: "font-bold",
 };
 
-const COLOR_MAP: Record<TitleColor, string> = {
-  default: colors.foreground,
-  primary: colors.primary,
-  secondary: colors.foregroundSecondary,
-  tertiary: colors.foregroundTertiary,
-  error: colors.danger,
-  success: colors.success,
-  warning: colors.warning,
-  white: colors.white,
+const COLOR_CLASS: Record<TitleColor, string> = {
+  default: "text-foreground",
+  primary: "text-primary",
+  secondary: "text-foreground-secondary",
+  tertiary: "text-foreground-tertiary",
+  error: "text-danger",
+  success: "text-success",
+  warning: "text-warning",
+  white: "text-white",
+};
+
+const ALIGN_CLASS: Record<Align, string> = {
+  left: "text-left",
+  center: "text-center",
+  right: "text-right",
 };
 
 const Title = React.forwardRef<HTMLHeadingElement, TitleProps>(
@@ -73,31 +79,20 @@ const Title = React.forwardRef<HTMLHeadingElement, TitleProps>(
     },
     ref,
   ) => {
-    const fs = LEVEL_MAP[size ?? level];
-
-    const lineClamp: React.CSSProperties =
-      numberOfLines === 1
-        ? { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }
-        : {};
-
-    const computed: React.CSSProperties = {
-      fontFamily: fontFamily.sans,
-      fontWeight: WEIGHT_MAP[weight],
-      fontSize: fs,
-      color: COLOR_MAP[color],
-      textAlign: align,
-      letterSpacing: -0.4,
-      lineHeight: `${fs * 1.2}px`,
-      margin: 0,
-      ...lineClamp,
-    };
-
     const Tag = level;
     return (
       <Tag
         ref={ref}
-        style={{ ...computed, ...style }}
-        className={className}
+        style={style}
+        className={clsx(
+          "m-0 font-sans leading-[1.2] tracking-[-0.4px]",
+          SIZE_CLASS[size ?? level],
+          WEIGHT_CLASS[weight],
+          COLOR_CLASS[color],
+          ALIGN_CLASS[align],
+          numberOfLines === 1 && "truncate",
+          className,
+        )}
         onClick={onClick}
       >
         {children}

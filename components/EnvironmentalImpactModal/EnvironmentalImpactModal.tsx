@@ -1,4 +1,3 @@
-import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
 import { Droplets, Info, Leaf } from "lucide-react";
 import React from "react";
 import Modal from "../Modal/Modal";
@@ -36,22 +35,9 @@ function formatNumber(num: number): string {
 
 function ProgressBar({ percentage }: { percentage: number }) {
   return (
-    <div
-      style={{
-        height: 6,
-        backgroundColor: `${colors.primary}1A`,
-        borderRadius: borderRadius.full,
-        overflow: "hidden",
-      }}
-    >
-      <div
-        style={{
-          height: "100%",
-          backgroundColor: colors.primary,
-          borderRadius: borderRadius.full,
-          width: `${percentage}%`,
-        }}
-      />
+    <div className="h-1.5 overflow-hidden rounded-full bg-primary/10">
+      {/* width is data-driven, so it stays inline */}
+      <div className="h-full rounded-full bg-primary" style={{ width: `${percentage}%` }} />
     </div>
   );
 }
@@ -74,117 +60,91 @@ export default function EnvironmentalImpactModal({
 }: EnvironmentalImpactModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Detailed Environmental Impact" size="md">
-      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-
+      <div className="flex flex-col gap-5">
         {/* Summary cards */}
-        <div style={{ display: "flex", flexDirection: "row", gap: 12 }}>
+        <div className="flex flex-row gap-3">
           {/* CO₂ card */}
-          <div
-            style={{
-              flex: 1,
-              borderRadius: borderRadius.md,
-              padding: 14,
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-              backgroundColor: `${colors.success}1A`,
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 4 }}>
-              <Leaf size={18} color={colors.success} strokeWidth={2} />
-              <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 500, color: colors.foregroundSecondary, flex: 1, minWidth: 0 }}>
+          <div className="flex flex-1 flex-col gap-1 rounded-md bg-success/10 p-3.5">
+            <div className="mb-1 flex flex-row items-center gap-1.5">
+              <Leaf size={18} color="currentColor" strokeWidth={2} className="text-success" />
+              <span className="min-w-0 flex-1 font-sans text-sm font-medium text-foreground-secondary">
                 {co2SavingsTitle}
               </span>
             </div>
-            <span style={{ fontSize: fontSize.xl, fontFamily: fontFamily.sans, fontWeight: 700, letterSpacing: -0.5, color: colors.success }}>
+            <span className="font-sans text-xl font-bold tracking-[-0.5px] text-success">
               {formatNumber(environmentalImpact.totalCo2SavingsKG)} kg
             </span>
-            <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary, lineHeight: "15px" }}>
-              {co2EquivalenceLabel} {formatNumber(environmentalImpact.totalCo2SavingsKG * 4.5)} km{carDistanceLabel}
+            <span className="font-sans text-xs font-normal leading-3.75 text-foreground-secondary">
+              {co2EquivalenceLabel} {formatNumber(environmentalImpact.totalCo2SavingsKG * 4.5)} km
+              {carDistanceLabel}
             </span>
           </div>
 
           {/* Water card */}
-          <div
-            style={{
-              flex: 1,
-              borderRadius: borderRadius.md,
-              padding: 14,
-              display: "flex",
-              flexDirection: "column",
-              gap: 4,
-              backgroundColor: `${colors.info}1A`,
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 4 }}>
-              <Droplets size={18} color={colors.info} strokeWidth={2} />
-              <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 500, color: colors.foregroundSecondary, flex: 1, minWidth: 0 }}>
+          <div className="flex flex-1 flex-col gap-1 rounded-md bg-info/10 p-3.5">
+            <div className="mb-1 flex flex-row items-center gap-1.5">
+              <Droplets size={18} color="currentColor" strokeWidth={2} className="text-info" />
+              <span className="min-w-0 flex-1 font-sans text-sm font-medium text-foreground-secondary">
                 {waterSavingsTitle}
               </span>
             </div>
-            <span style={{ fontSize: fontSize.xl, fontFamily: fontFamily.sans, fontWeight: 700, letterSpacing: -0.5, color: colors.info }}>
+            <span className="font-sans text-xl font-bold tracking-[-0.5px] text-info">
               {formatNumber(environmentalImpact.totalWaterSavingsLT)} L
             </span>
-            <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary, lineHeight: "15px" }}>
-              {waterEquivalenceLabel} {formatNumber(environmentalImpact.totalWaterSavingsLT / 8)}{showerCountLabel}
+            <span className="font-sans text-xs font-normal leading-3.75 text-foreground-secondary">
+              {waterEquivalenceLabel} {formatNumber(environmentalImpact.totalWaterSavingsLT / 8)}
+              {showerCountLabel}
             </span>
           </div>
         </div>
 
         {/* Material breakdown */}
         {environmentalImpact.materialBreakdown.length > 0 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-              <Info size={18} color={colors.foreground} strokeWidth={2} />
-              <span style={{ fontSize: fontSize.base, fontFamily: fontFamily.sans, fontWeight: 700, color: colors.foreground }}>
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-row items-center gap-2">
+              <Info size={18} color="currentColor" strokeWidth={2} className="text-foreground" />
+              <span className="font-sans text-base font-bold text-foreground">
                 {materialBreakdownLabel}
               </span>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div className="flex flex-col gap-2.5">
               {environmentalImpact.materialBreakdown.map((material, index) => (
                 <div
                   key={index}
-                  style={{
-                    border: `1px solid ${colors.borderLight}`,
-                    borderRadius: borderRadius.md,
-                    padding: 14,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 10,
-                  }}
+                  className="flex flex-col gap-2.5 rounded-md border border-border-light p-3.5"
                 >
-                  <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.foreground, flex: 1 }}>
+                  <div className="flex flex-row items-center justify-between">
+                    <span className="flex-1 font-sans text-sm font-semibold text-foreground">
                       {material.materialType}
                     </span>
-                    <span style={{ fontSize: fontSize.base, fontFamily: fontFamily.sans, fontWeight: 700, color: colors.primary }}>
+                    <span className="font-sans text-base font-bold text-primary">
                       {material.percentage.toFixed(1)}%
                     </span>
                   </div>
 
-                  <div style={{ display: "flex", flexDirection: "row", gap: 8 }}>
-                    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
-                      <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary }}>
+                  <div className="flex flex-row gap-2">
+                    <div className="flex flex-1 flex-col gap-0.5">
+                      <span className="font-sans text-xs font-normal text-foreground-secondary">
                         {weightLabel}
                       </span>
-                      <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.foreground }}>
+                      <span className="font-sans text-sm font-semibold text-foreground">
                         {formatNumber(material.weightKG)} kg
                       </span>
                     </div>
-                    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
-                      <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary }}>
+                    <div className="flex flex-1 flex-col gap-0.5">
+                      <span className="font-sans text-xs font-normal text-foreground-secondary">
                         {co2SavingsLabel}
                       </span>
-                      <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.success }}>
+                      <span className="font-sans text-sm font-semibold text-success">
                         {formatNumber(material.co2SavingsKG)} kg
                       </span>
                     </div>
-                    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
-                      <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary }}>
+                    <div className="flex flex-1 flex-col gap-0.5">
+                      <span className="font-sans text-xs font-normal text-foreground-secondary">
                         {waterSavingsLabel}
                       </span>
-                      <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.info }}>
+                      <span className="font-sans text-sm font-semibold text-info">
                         {formatNumber(material.waterSavingsLT)} L
                       </span>
                     </div>
@@ -198,25 +158,14 @@ export default function EnvironmentalImpactModal({
         )}
 
         {/* Info footer */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-start",
-            gap: 8,
-            backgroundColor: `${colors.primary}0D`,
-            borderRadius: borderRadius.md,
-            padding: 14,
-          }}
-        >
-          <div style={{ marginTop: 1, flexShrink: 0 }}>
-            <Info size={14} color={colors.primary} strokeWidth={2} />
+        <div className="flex flex-row items-start gap-2 rounded-md bg-primary/5 p-3.5">
+          <div className="mt-px shrink-0 text-primary">
+            <Info size={14} color="currentColor" strokeWidth={2} />
           </div>
-          <span style={{ flex: 1, fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 400, color: colors.foregroundSecondary, lineHeight: "18px" }}>
+          <span className="flex-1 font-sans text-xs font-normal leading-4.5 text-foreground-secondary">
             {infoText}
           </span>
         </div>
-
       </div>
     </Modal>
   );

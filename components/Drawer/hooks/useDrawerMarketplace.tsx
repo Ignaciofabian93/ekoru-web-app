@@ -56,17 +56,23 @@ export function useDrawerMarketplace(enabled: boolean) {
   const lang = typeof params?.lang === "string" ? params.lang : "es";
   const language = lang.toUpperCase() as "ES" | "EN" | "FR";
 
-  const { data } = useQuery<{ getMarketplaceCatalog: CatalogItem[] }>(GET_MARKETPLACE_CATALOG, {
-    variables: { language },
-    fetchPolicy: "cache-first",
-    skip: !enabled,
-  });
+  const { data } = useQuery<{ getMarketplaceCatalog: CatalogItem[] }>(
+    GET_MARKETPLACE_CATALOG,
+    {
+      variables: { language },
+      fetchPolicy: "cache-first",
+      skip: !enabled,
+    },
+  );
+
   // Memoize the mapped result so the array reference is stable between renders.
   // mapCatalogToAccordion is only re-run when the raw API data actually changes.
   const items = useMemo<L1Item[]>(
-    () => (data?.getMarketplaceCatalog ? mapCatalogToAccordion(data.getMarketplaceCatalog) : []),
-
-    [data?.getMarketplaceCatalog],
+    () =>
+      data?.getMarketplaceCatalog
+        ? mapCatalogToAccordion(data.getMarketplaceCatalog)
+        : [],
+    [data],
   );
 
   return { items };

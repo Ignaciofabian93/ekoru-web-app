@@ -6,6 +6,8 @@ import {
   type SupportedLanguage,
 } from "@/constants/settings";
 import { useNavigation } from "@/hooks/useNavigation";
+import { useToast } from "@/hooks/useToast";
+import { useTranslation } from "@/i18n/context";
 import type { BusinessType, SellerType } from "@/types/enums";
 import { getCookie } from "@/utils/cookies";
 import { sanitizeOnSubmit } from "@/utils/inputValidations";
@@ -16,6 +18,8 @@ import { useState } from "react";
 export function useRegister() {
   const { replace } = useNavigation();
   const params = useParams<{ lang?: SupportedLanguage }>();
+  const toast = useToast();
+  const { t } = useTranslation("auth");
 
   const [sellerType, setSellerType] = useState<SellerType>("PERSON");
   const handleSellerType = (type: SellerType) => setSellerType(type);
@@ -28,7 +32,6 @@ export function useRegister() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
 
   const [registerPerson, { loading: personLoading }] = useMutation(REGISTER_PERSON);
   const [registerBusiness, { loading: businessLoading }] = useMutation(REGISTER_BUSINESS);
@@ -36,8 +39,6 @@ export function useRegister() {
   const loading = personLoading || businessLoading;
 
   const handleRegister = async (): Promise<boolean> => {
-    setError(null);
-
     // The active locale comes from the URL; fall back to the persisted cookie.
     const storedLanguage = params.lang ?? getCookie(LANGUAGE_COOKIE) ?? undefined;
 
@@ -71,11 +72,12 @@ export function useRegister() {
         });
       }
 
+      toast.success(t("feedback.registerSuccess"));
       const lang = storedLanguage ?? DEFAULT_LANGUAGE;
-      replace({ route: `/${lang}/login?registered=1` });
+      replace({ route: `/${lang}/login` });
       return true;
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Unexpected error");
+      toast.error(err instanceof Error ? err.message : "Unexpected error");
       return false;
     }
   };
@@ -100,7 +102,6 @@ export function useRegister() {
     confirmPassword,
     setConfirmPassword,
     loading,
-    error,
     handleRegister,
   };
 }

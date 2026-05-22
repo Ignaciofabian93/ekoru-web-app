@@ -2,7 +2,6 @@
 
 import { MainButton } from "@/components/Button/MainButton";
 import { Text } from "@/components/Text/Text";
-import { colors } from "@/design/tokens";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -24,33 +23,14 @@ export default function ErrorScreen({
   const router = useRouter();
 
   return (
-    <div
-      style={{
-        flex: 1,
-        minHeight: "100vh",
-        backgroundColor: colors.background,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingInline: 32,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 12,
-          maxWidth: 400,
-          width: "100%",
-        }}
-      >
+    <div className="flex min-h-screen items-center justify-center bg-background px-8">
+      <div className="flex w-full max-w-100 flex-col items-center gap-3">
         <Image
           src="/assets/images/logo.png"
           alt="Ekoru"
           width={72}
           height={72}
-          style={{ marginBottom: 16, opacity: 0.5, objectFit: "contain" }}
+          className="mb-4 object-contain opacity-50"
         />
 
         <Text size="xl" weight="bold" align="center">

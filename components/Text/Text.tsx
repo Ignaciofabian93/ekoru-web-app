@@ -1,8 +1,8 @@
-import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
+import clsx from "clsx";
 import React from "react";
 
 type Variant = "p" | "span" | "label" | "blockquote" | "small" | "code";
-type Size = keyof typeof fontSize;
+type Size = "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
 type Weight = "normal" | "medium" | "semibold" | "bold";
 type TextColor =
   | "default"
@@ -31,26 +31,51 @@ export interface TextProps {
   onClick?: React.MouseEventHandler;
 }
 
-const SIZE_MAP = fontSize;
-
-const WEIGHT_MAP: Record<Weight, number> = {
-  normal: 400,
-  medium: 500,
-  semibold: 600,
-  bold: 700,
+const SIZE_CLASS: Record<Size, string> = {
+  xs: "text-xs",
+  sm: "text-sm",
+  base: "text-base",
+  lg: "text-lg",
+  xl: "text-xl",
+  "2xl": "text-2xl",
+  "3xl": "text-3xl",
+  "4xl": "text-4xl",
 };
 
-const COLOR_MAP: Record<TextColor, string> = {
-  default: colors.foreground,
-  primary: colors.primary,
-  primaryDark: colors.primaryDark,
-  secondary: colors.foregroundSecondary,
-  tertiary: colors.foregroundTertiary,
-  muted: colors.foregroundMuted,
-  error: colors.danger,
-  success: colors.success,
-  warning: colors.warning,
-  white: colors.white,
+const WEIGHT_CLASS: Record<Weight, string> = {
+  normal: "font-normal",
+  medium: "font-medium",
+  semibold: "font-semibold",
+  bold: "font-bold",
+};
+
+const COLOR_CLASS: Record<TextColor, string> = {
+  default: "text-foreground",
+  primary: "text-primary",
+  primaryDark: "text-primary-dark",
+  secondary: "text-foreground-secondary",
+  tertiary: "text-foreground-tertiary",
+  muted: "text-foreground-muted",
+  error: "text-danger",
+  success: "text-success",
+  warning: "text-warning",
+  white: "text-white",
+};
+
+const ALIGN_CLASS: Record<Align, string> = {
+  left: "text-left",
+  center: "text-center",
+  right: "text-right",
+  justify: "text-justify",
+};
+
+const LINE_CLAMP_CLASS: Record<number, string> = {
+  1: "truncate",
+  2: "line-clamp-2",
+  3: "line-clamp-3",
+  4: "line-clamp-4",
+  5: "line-clamp-5",
+  6: "line-clamp-6",
 };
 
 const VARIANT_DEFAULTS: Partial<Record<Variant, { size?: Size; weight?: Weight }>> = {
@@ -79,50 +104,28 @@ const Text = React.forwardRef<HTMLElement, TextProps>(
     const resolvedSize = size ?? defaults.size ?? "base";
     const resolvedWeight = weight ?? defaults.weight ?? "normal";
 
-    const lineClamp: React.CSSProperties =
-      numberOfLines === 1
-        ? { overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }
-        : numberOfLines && numberOfLines > 1
-          ? {
-              display: "-webkit-box",
-              WebkitLineClamp: numberOfLines,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-            }
-          : {};
+    const computed = clsx(
+      "m-0 font-sans",
+      SIZE_CLASS[resolvedSize],
+      WEIGHT_CLASS[resolvedWeight],
+      COLOR_CLASS[color],
+      ALIGN_CLASS[align],
+      numberOfLines && LINE_CLAMP_CLASS[numberOfLines],
+      variant === "blockquote" && "italic pl-3",
+      variant === "code" && "font-mono bg-background-secondary rounded-[4px] px-1 py-0.5",
+    );
 
-    const computed: React.CSSProperties = {
-      fontFamily: fontFamily.sans,
-      fontWeight: WEIGHT_MAP[resolvedWeight],
-      fontSize: SIZE_MAP[resolvedSize],
-      color: COLOR_MAP[color],
-      textAlign: align,
-      margin: 0,
-      ...lineClamp,
-      ...(variant === "blockquote" && { fontStyle: "italic", paddingLeft: 12 }),
-      ...(variant === "code" && {
-        fontFamily: "monospace",
-        backgroundColor: colors.backgroundSecondary,
-        borderRadius: borderRadius.sm / 2,
-        paddingInline: 4,
-        paddingBlock: 2,
-      }),
+    const sharedProps = {
+      ref: ref as never,
+      style,
+      className: clsx(computed, className),
+      onClick,
     };
-
-    const flatStyle: React.CSSProperties = { ...computed, ...style };
-    const sharedProps = { ref: ref as never, style: flatStyle, className, onClick };
 
     if (variant === "blockquote") {
       return (
-        <div style={{ display: "flex", alignItems: "stretch", gap: 10, paddingBlock: 2 }}>
-          <div
-            style={{
-              width: 3,
-              borderRadius: borderRadius.sm / 4,
-              backgroundColor: colors.primary,
-              flexShrink: 0,
-            }}
-          />
+        <div className="flex items-stretch gap-2.5 py-0.5">
+          <div className="w-0.75 shrink-0 rounded-xs bg-primary" />
           <blockquote {...sharedProps}>{children}</blockquote>
         </div>
       );

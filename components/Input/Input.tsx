@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  borderRadius,
-  colors,
-  fontFamily,
-  fontSize,
-  input as inputTokens,
-  spacing,
-} from "@/design/tokens";
+import clsx from "clsx";
 import { Eye, EyeOff, type LucideIcon } from "lucide-react";
 import React, { useState } from "react";
 
@@ -32,67 +25,27 @@ export interface InputProps extends Omit<
   onChangeText?: (value: string) => void;
 }
 
-const SIZE_MAP: Record<
+const SIZE_CLASS: Record<
   Size,
-  { height: number; fontSize: number; iconSize: number; px: number }
+  { h: string; text: string; px: string; padLeft: string; padRight: string; icon: number }
 > = {
-  sm: {
-    height: inputTokens.sm.height,
-    fontSize: inputTokens.sm.fontSize,
-    iconSize: inputTokens.sm.iconSize,
-    px: inputTokens.sm.paddingX,
-  },
-  md: {
-    height: inputTokens.md.height,
-    fontSize: inputTokens.md.fontSize,
-    iconSize: inputTokens.md.iconSize,
-    px: inputTokens.md.paddingX,
-  },
-  lg: {
-    height: inputTokens.lg.height,
-    fontSize: inputTokens.lg.fontSize,
-    iconSize: inputTokens.lg.iconSize,
-    px: inputTokens.lg.paddingX,
-  },
+  sm: { h: "h-9", text: "text-xs", px: "px-2.5", padLeft: "pl-8", padRight: "pr-8", icon: 14 },
+  md: { h: "h-11", text: "text-base", px: "px-3", padLeft: "pl-9", padRight: "pr-9", icon: 16 },
+  lg: { h: "h-14", text: "text-lg", px: "px-3.5", padLeft: "pl-10", padRight: "pr-10", icon: 18 },
 };
 
-const WIDTH_MAP: Record<Width, string> = {
-  sm: "33%",
-  md: "50%",
-  lg: "66%",
-  full: "100%",
+const WIDTH_CLASS: Record<Width, string> = {
+  sm: "w-1/3",
+  md: "w-1/2",
+  lg: "w-2/3",
+  full: "w-full",
 };
 
-interface VariantStyle {
-  bg: string;
-  borderColor: string;
-  borderWidth: number;
-  focusedBg: string;
-  focusedBorderColor: string;
-}
-
-const VARIANT_MAP: Record<Variant, VariantStyle> = {
-  default: {
-    bg: colors.inputBg,
-    borderColor: colors.inputBorder,
-    borderWidth: 2,
-    focusedBg: colors.inputBg,
-    focusedBorderColor: colors.inputBorderFocus,
-  },
-  filled: {
-    bg: colors.backgroundSecondary,
-    borderColor: "transparent",
-    borderWidth: 2,
-    focusedBg: colors.inputBg,
-    focusedBorderColor: colors.inputBorderFocus,
-  },
-  outline: {
-    bg: "transparent",
-    borderColor: colors.primary,
-    borderWidth: 2,
-    focusedBg: `${colors.primary}0D`,
-    focusedBorderColor: colors.primaryActive,
-  },
+const VARIANT_CLASS: Record<Variant, string> = {
+  default: "bg-input-bg border-input-border focus:border-input-border-focus",
+  filled:
+    "bg-background-secondary border-transparent focus:bg-input-bg focus:border-input-border-focus",
+  outline: "bg-transparent border-primary focus:bg-primary/5 focus:border-primary-active",
 };
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -117,75 +70,37 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
-    const s = SIZE_MAP[size];
-    const v = VARIANT_MAP[variant];
+    const s = SIZE_CLASS[size];
     const showError = hasError || isInvalid;
 
-    const [focused, setFocused] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const isPassword = type === "password";
     const resolvedType = isPassword ? (showPassword ? "text" : "password") : type;
-
-    const bg = focused ? v.focusedBg : v.bg;
-    const resolvedBorderColor = showError
-      ? colors.danger
-      : focused
-        ? v.focusedBorderColor
-        : v.borderColor;
-    const iconColor = showError
-      ? colors.danger
-      : focused
-        ? colors.primary
-        : colors.foregroundTertiary;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       onChangeText?.(e.target.value);
     };
 
     return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-          position: "relative",
-          width: WIDTH_MAP[width],
-        }}
-      >
+      <div className={clsx("relative flex flex-col gap-px", WIDTH_CLASS[width])}>
         {label && (
-          <label
-            htmlFor={name}
-            style={{
-              fontSize: fontSize.sm,
-              fontFamily: fontFamily.sans,
-              fontWeight: 500,
-              color: colors.foreground,
-            }}
-          >
+          <label htmlFor={name} className="font-sans text-sm font-medium text-foreground">
             {label}
           </label>
         )}
 
-        <div
-          style={{
-            position: "relative",
-            height: s.height,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
+        <div className={clsx("group relative flex items-center", s.h)}>
           {LeftIcon && (
             <div
-              style={{
-                position: "absolute",
-                left: spacing[3],
-                zIndex: 1,
-                display: "flex",
-                pointerEvents: "none",
-              }}
+              className={clsx(
+                "pointer-events-none absolute left-3 z-1 flex",
+                showError
+                  ? "text-danger"
+                  : "text-foreground-tertiary group-focus-within:text-primary",
+              )}
             >
-              <LeftIcon size={s.iconSize} color={iconColor} strokeWidth={2} />
+              <LeftIcon size={s.icon} color="currentColor" strokeWidth={2} />
             </div>
           )}
 
@@ -196,34 +111,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             type={resolvedType}
             placeholder={placeholder}
             maxLength={maxLength}
-            onFocus={(e) => {
-              setFocused(true);
-              onFocus?.(e);
-            }}
-            onBlur={(e) => {
-              setFocused(false);
-              onBlur?.(e);
-            }}
+            onFocus={onFocus}
+            onBlur={onBlur}
             onChange={handleChange}
-            style={{
-              width: "100%",
-              height: "100%",
-              fontSize: s.fontSize,
-              paddingInline: s.px,
-              paddingLeft: LeftIcon ? s.px + s.iconSize + 8 : s.px,
-              paddingRight: isPassword ? s.px + s.iconSize + 8 : s.px,
-              backgroundColor: bg,
-              borderWidth: v.borderWidth,
-              borderStyle: "solid",
-              borderColor: resolvedBorderColor,
-              borderRadius: borderRadius.md,
-              fontFamily: fontFamily.sans,
-              fontWeight: 400,
-              color: colors.inputText,
-              outline: "none",
-              transition: "border-color 0.15s ease, background-color 0.15s ease",
-              boxSizing: "border-box",
-            }}
+            className={clsx(
+              "box-border h-full w-full rounded-md border-2 border-solid font-sans font-normal text-input-text outline-none transition-[border-color,background-color] duration-150",
+              s.text,
+              s.px,
+              LeftIcon && s.padLeft,
+              isPassword && s.padRight,
+              showError ? "border-danger" : VARIANT_CLASS[variant],
+            )}
             {...rest}
           />
 
@@ -231,46 +129,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <button
               type="button"
               onClick={() => setShowPassword((p) => !p)}
-              style={{
-                position: "absolute",
-                right: spacing[3],
-                display: "flex",
-                alignItems: "center",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: 0,
-                transition: "opacity 0.08s ease",
-              }}
+              className="absolute right-3 flex cursor-pointer items-center p-0 text-foreground-tertiary transition-opacity duration-75"
             >
               {showPassword ? (
-                <EyeOff
-                  size={s.iconSize}
-                  color={colors.foregroundTertiary}
-                  strokeWidth={2}
-                />
+                <EyeOff size={s.icon} color="currentColor" strokeWidth={2} />
               ) : (
-                <Eye
-                  size={s.iconSize}
-                  color={colors.foregroundTertiary}
-                  strokeWidth={2}
-                />
+                <Eye size={s.icon} color="currentColor" strokeWidth={2} />
               )}
             </button>
           )}
         </div>
 
         {showError && errorMessage && (
-          <span
-            style={{
-              position: "absolute",
-              bottom: -18,
-              fontSize: fontSize.xs,
-              fontFamily: fontFamily.sans,
-              fontWeight: 400,
-              color: colors.danger,
-            }}
-          >
+          <span className="absolute -bottom-4.5 font-sans text-xs font-normal text-danger">
             {errorMessage}
           </span>
         )}

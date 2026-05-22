@@ -40,7 +40,7 @@ export function useDrawerServices(enabled: boolean) {
   const lang = typeof params?.lang === "string" ? params.lang : "es";
   const language = lang.toUpperCase() as "ES" | "EN" | "FR";
 
-  const { data } = useQuery<{ getServicesCatalog: ServiceCatalogItem[] }>(
+  const { data } = useQuery<{ getServiceCatalog: ServiceCatalogItem[] }>(
     GET_SERVICES_CATALOG,
     {
       variables: { language },
@@ -51,11 +51,9 @@ export function useDrawerServices(enabled: boolean) {
 
   const items = useMemo<L1Item[]>(
     () =>
-      data?.getServicesCatalog
-        ? mapCatalogToAccordion(data.getServicesCatalog)
-        : [],
-     
-    [data?.getServicesCatalog],
+      data?.getServiceCatalog ? mapCatalogToAccordion(data.getServiceCatalog) : [],
+
+    [data],
   );
 
   return { items };

@@ -1,8 +1,15 @@
 "use client";
 
-import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
-import { ArrowRight, Footprints, Globe, Leaf, Store, type LucideIcon } from "lucide-react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import clsx from "clsx";
+import {
+  ArrowRight,
+  Footprints,
+  Globe,
+  Leaf,
+  Store,
+  type LucideIcon,
+} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const AUTO_PLAY_INTERVAL = 4500;
 
@@ -22,7 +29,7 @@ const SLIDES: SlideData[] = [
     label: "Marketplace",
     title: "Shop Sustainably",
     subtitle: "Discover pre-loved products that care for the planet",
-    gradient: [colors.primaryDark, "#2d6a0f", colors.primary],
+    gradient: ["var(--color-primary-dark)", "#2d6a0f", "var(--color-primary)"],
     Icon: Leaf,
     cta: "Explore Now",
   },
@@ -31,7 +38,7 @@ const SLIDES: SlideData[] = [
     label: "Eco Stores",
     title: "Local & Verified",
     subtitle: "Shop from sustainable businesses in your community",
-    gradient: [colors.secondaryDark, "#0c7b95", "#14b8a6"],
+    gradient: ["var(--color-secondary-dark)", "#0c7b95", "#14b8a6"],
     Icon: Store,
     cta: "Find Stores",
   },
@@ -49,7 +56,7 @@ const SLIDES: SlideData[] = [
     label: "Circular",
     title: "Close the Loop",
     subtitle: "Sell, swap & repair — give your items a second life",
-    gradient: [colors.primaryDark, "#1e4d10", colors.secondaryDark],
+    gradient: ["var(--color-primary-dark)", "#1e4d10", "var(--color-secondary-dark)"],
     Icon: Footprints,
     cta: "Join Now",
   },
@@ -59,65 +66,48 @@ function SlideItem({ item }: { item: SlideData }) {
   const { Icon } = item;
   return (
     <div
+      // gradient is per-slide data, so the background stays inline
       style={{
-        minWidth: "100%",
-        height: "100%",
-        position: "relative",
-        overflow: "hidden",
         background: `linear-gradient(135deg, ${item.gradient[0]}, ${item.gradient[1]}, ${item.gradient[2]})`,
-        display: "flex",
-        flexDirection: "column",
       }}
+      className="relative flex h-full min-w-full flex-col overflow-hidden"
     >
       {/* Decorative circles */}
-      <div style={{ position: "absolute", width: 300, height: 300, borderRadius: borderRadius.full, backgroundColor: "rgba(255,255,255,0.07)", top: -100, right: -80 }} />
-      <div style={{ position: "absolute", width: 220, height: 220, borderRadius: borderRadius.full, backgroundColor: "rgba(255,255,255,0.07)", bottom: -70, left: -70 }} />
-      <div style={{ position: "absolute", width: 100, height: 100, borderRadius: borderRadius.full, backgroundColor: "rgba(255,255,255,0.035)", top: "28%", right: "22%" }} />
+      <div className="absolute -top-25 -right-20 size-75 rounded-full bg-white/7" />
+      <div className="absolute -bottom-17.5 -left-17.5 size-55 rounded-full bg-white/7" />
+      <div className="absolute top-[28%] right-[22%] size-25 rounded-full bg-white/3.5" />
 
       {/* Bottom scrim */}
-      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "65%", background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.52))", pointerEvents: "none" }} />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[65%] bg-linear-to-b from-transparent to-black/52" />
 
       {/* Content */}
-      <div style={{ flex: 1, padding: 20, paddingBottom: 46, display: "flex", flexDirection: "column", justifyContent: "space-between", position: "relative" }}>
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 10 }}>
-          <div style={{ width: 38, height: 38, borderRadius: borderRadius.lg, backgroundColor: "rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.25)" }}>
-            <Icon size={18} color={colors.onPrimary} strokeWidth={1.5} />
+      <div className="relative flex flex-1 flex-col justify-between p-5 pb-11.5">
+        <div className="flex flex-row items-center gap-2.5">
+          <div className="flex size-9.5 items-center justify-center rounded-lg border border-white/25 bg-white/18 text-on-primary">
+            <Icon size={18} color="currentColor" strokeWidth={1.5} />
           </div>
-          <div style={{ backgroundColor: "rgba(255,255,255,0.18)", paddingInline: 12, paddingBlock: 5, borderRadius: borderRadius["2xl"], border: "1px solid rgba(255,255,255,0.3)" }}>
-            <span style={{ fontSize: fontSize.xs, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.onPrimary, letterSpacing: 0.3 }}>
+          <div className="rounded-2xl border border-white/30 bg-white/18 px-3 py-1.25">
+            <span className="font-sans text-xs font-semibold tracking-[0.3px] text-on-primary">
               {item.label}
             </span>
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          <span style={{ fontSize: fontSize["3xl"], fontFamily: fontFamily.sans, fontWeight: 700, color: colors.onPrimary, letterSpacing: -0.5, lineHeight: "34px" }}>
+        <div className="flex flex-col gap-1.5">
+          <span className="font-sans text-3xl font-bold leading-8.5 tracking-[-0.5px] text-on-primary">
             {item.title}
           </span>
-          <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 400, color: "rgba(255,255,255,0.82)", lineHeight: "20px" }}>
+          <span className="font-sans text-sm font-normal leading-5 text-white/82">
             {item.subtitle}
           </span>
           <button
             type="button"
-            style={{
-              display: "inline-flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 5,
-              alignSelf: "flex-start",
-              backgroundColor: "rgba(255,255,255,0.18)",
-              border: "1px solid rgba(255,255,255,0.35)",
-              paddingInline: 14,
-              paddingBlock: 8,
-              borderRadius: borderRadius["2xl"],
-              marginTop: 2,
-              cursor: "pointer",
-            }}
+            className="mt-0.5 inline-flex flex-row items-center gap-1.25 self-start rounded-2xl border border-white/35 bg-white/18 px-3.5 py-2 text-on-primary"
           >
-            <span style={{ fontSize: fontSize.sm, fontFamily: fontFamily.sans, fontWeight: 600, color: colors.onPrimary }}>
+            <span className="font-sans text-sm font-semibold text-on-primary">
               {item.cta}
             </span>
-            <ArrowRight size={13} color={colors.onPrimary} strokeWidth={2.5} />
+            <ArrowRight size={13} color="currentColor" strokeWidth={2.5} />
           </button>
         </div>
       </div>
@@ -133,7 +123,10 @@ export default function HeroCarousel() {
 
   const scrollToIndex = useCallback((index: number) => {
     if (trackRef.current) {
-      trackRef.current.scrollTo({ left: index * trackRef.current.offsetWidth, behavior: "smooth" });
+      trackRef.current.scrollTo({
+        left: index * trackRef.current.offsetWidth,
+        behavior: "smooth",
+      });
     }
   }, []);
 
@@ -151,7 +144,9 @@ export default function HeroCarousel() {
 
   useEffect(() => {
     startAutoPlay();
-    return () => { if (autoPlayRef.current) clearInterval(autoPlayRef.current); };
+    return () => {
+      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+    };
   }, [startAutoPlay]);
 
   const handleScroll = () => {
@@ -161,52 +156,35 @@ export default function HeroCarousel() {
   };
 
   return (
-    <div style={{ height: "40vh", minHeight: 240, position: "relative", overflow: "hidden" }}>
+    <div className="relative h-[40vh] min-h-60 overflow-hidden">
       <div
         ref={trackRef}
         onScroll={handleScroll}
-        onMouseEnter={() => { isUserScrolling.current = true; }}
-        onMouseLeave={() => { isUserScrolling.current = false; startAutoPlay(); }}
-        style={{
-          display: "flex",
-          height: "100%",
-          overflowX: "scroll",
-          scrollSnapType: "x mandatory",
-          scrollBehavior: "smooth",
-          scrollbarWidth: "none",
+        onMouseEnter={() => {
+          isUserScrolling.current = true;
         }}
+        onMouseLeave={() => {
+          isUserScrolling.current = false;
+          startAutoPlay();
+        }}
+        className="flex h-full snap-x snap-mandatory scroll-smooth overflow-x-scroll scrollbar-none"
       >
         {SLIDES.map((slide) => (
-          <div key={slide.id} style={{ minWidth: "100%", height: "100%", scrollSnapAlign: "start" }}>
+          <div key={slide.id} className="h-full min-w-full snap-start">
             <SlideItem item={slide} />
           </div>
         ))}
       </div>
 
       {/* Dot indicators */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 16,
-          right: 20,
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 5,
-          pointerEvents: "none",
-        }}
-      >
+      <div className="pointer-events-none absolute right-5 bottom-4 flex flex-row items-center gap-1.25">
         {SLIDES.map((_, index) => (
           <div
             key={index}
-            style={{
-              height: 4,
-              borderRadius: 2,
-              backgroundColor: colors.onPrimary,
-              width: index === currentIndex ? 20 : 6,
-              opacity: index === currentIndex ? 1 : 0.4,
-              transition: "width 0.3s ease, opacity 0.3s ease",
-            }}
+            className={clsx(
+              "h-1 rounded-xs bg-on-primary transition-[width,opacity] duration-300",
+              index === currentIndex ? "w-5 opacity-100" : "w-1.5 opacity-40",
+            )}
           />
         ))}
       </div>

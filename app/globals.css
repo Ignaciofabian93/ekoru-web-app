@@ -1,7 +1,17 @@
 @import "tailwindcss";
+@import "react-toastify/ReactToastify.css";
 
 html {
   scroll-behavior: smooth;
+}
+
+/* ── react-toastify: remap colored-theme palette to brand colors ──── */
+:root {
+  --toastify-color-success: #22c55e; /* --color-success */
+  --toastify-color-error: #ef4444;   /* --color-danger */
+  --toastify-color-warning: #eab308; /* --color-warning */
+  --toastify-color-info: #3b82f6;    /* --color-info */
+  --toastify-z-index: 9999;          /* always on top of modals/overlays */
 }
 
 @theme {
