@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "api.staging.ekoru.cl",
+        hostname: "staging-api.ekoru.cl",
         pathname: "/images/**",
       },
       {
