@@ -106,17 +106,25 @@ export function usePublish() {
 
     try {
       if (target === "MARKETPLACE") {
-        // Upload photos in parallel, then create the product with their URLs.
+        if (!sellerId) {
+          toast.error(t("feedback.publishSignInRequired"));
+          return false;
+        }
+
+        // Upload photos in parallel under the seller's namespace, then create
+        // the product with the returned R2 keys. The marketplace subgraph
+        // persists keys verbatim; the web/mobile clients resolve them to CDN
+        // URLs at render time via resolveImageUrl.
         setUploading(true);
-        const imageUrls = await Promise.all(
-          form.images.map((file) => uploadProductImage(file)),
+        const uploads = await Promise.all(
+          form.images.map((file) => uploadProductImage(file, sellerId)),
         );
         setUploading(false);
 
         await addProduct({
           variables: {
             input: {
-              ...(sellerId ? { sellerId } : {}),
+              sellerId,
               name: sanitizeOnSubmit(form.name),
               description: sanitizeOnSubmit(form.description),
               brand: sanitizeOnSubmit(form.brand),
@@ -125,7 +133,7 @@ export function usePublish() {
               condition: form.condition || undefined,
               conditionDescription: sanitizeOnSubmit(form.conditionDescription) || undefined,
               isExchangeable: form.isExchangeable,
-              images: imageUrls,
+              images: uploads.map((u) => u.key),
               badges: [],
               interests: [],
             },

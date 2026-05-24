@@ -1,288 +1,189 @@
-# Product Images on Cloudflare R2 — Setup Guide
+# Image Upload & Serving — End-to-End Flow
 
-End-to-end guide to store and serve Ekoru product images from Cloudflare R2.
+Three repositories cooperate to handle every image in the platform:
 
-## 0. Which approach (read this first)
+| Repo | Role |
+|---|---|
+| `ekoru-web-app` | Next.js frontend — same-origin proxy routes + client functions |
+| `ekoru-gateway` | NestJS API gateway — auth, DB writes, forwards to image processor |
+| `ekoru-image-processor` | Rust microservice — resizes to WebP, stores in Cloudflare R2 |
 
-Your **gateway already processes images** (resize/compress — it returns
-`originalSize`/`processedSize`). So you have two options:
-
-| Approach | Upload path | Server-side processing? | Effort |
-| --- | --- | --- | --- |
-| **A. Gateway → R2 (recommended)** | browser → gateway → R2 | ✅ keep it | low |
-| B. Presigned direct upload | browser → R2 directly | ❌ must move to the edge | higher |
-
-**Use Approach A now.** Upload traffic is tiny; the cost that made S3 expensive
-is *serving* egress — and that is eliminated as long as images are **served from
-an R2 custom domain**, regardless of how they were uploaded. Approach B is a
-later optimization (see §9).
-
-The golden rule: **store in R2, serve from R2's edge. Never pipe image bytes
-back out through your gateway/Next server** — that reintroduces egress cost.
+The browser never talks to R2 directly. R2 credentials live only inside the image processor.
 
 ---
 
-## 1. Enable R2 on your account
+## Upload flow (all image types)
 
-1. Cloudflare dashboard → left sidebar → **R2 Object Storage**.
-2. First time only: click **Purchase R2** / **Get started** and **add a payment
-   method**. R2 requires a card on file to activate, but the **free tier**
-   (10 GB storage, 1M Class A writes, 10M Class B reads per month) means you pay
-   **$0** until you exceed it, and **egress is always free**.
-
----
-
-## 2. Create the bucket
-
-1. R2 → **Create bucket**.
-2. **Name:** `ekoru-product-images` (lowercase, DNS-safe; this is permanent).
-3. **Location:** `Automatic` is fine, or pick a **Location Hint**/jurisdiction
-   (e.g. EU) if you have data-residency needs.
-4. **Create bucket.** It's private by default — good.
-
-> Tip: create a second bucket `ekoru-product-images-staging` so staging and prod
-> never share objects.
-
----
-
-## 3. Get S3 API credentials
-
-R2 is S3-compatible, so the gateway talks to it with the normal AWS SDK.
-
-1. On the R2 overview page note your **Account ID** and the **S3 endpoint**:
-   `https://<ACCOUNT_ID>.r2.cloudflarestorage.com`
-2. Click **Manage R2 API Tokens** → **Create API token**.
-3. Configure:
-   - **Name:** `ekoru-gateway`
-   - **Permissions:** `Object Read & Write`
-   - **Specify bucket(s):** apply to `ekoru-product-images` only
-   - **TTL:** Forever (or rotate on a schedule)
-4. **Create.** Copy the **Access Key ID** and **Secret Access Key** now — the
-   secret is shown only once.
-
-You now have everything the SDK needs: endpoint, access key, secret, bucket.
-
----
-
-## 4. Set up the public serving domain
-
-This is the step that gives you free, CDN-cached egress.
-
-### Production — custom domain (do this)
-
-1. Bucket → **Settings** → **Public access** → **Custom Domains** →
-   **Connect Domain**.
-2. Enter `images.ekoru.cl` (the domain must be in this Cloudflare account).
-3. Cloudflare auto-creates the DNS record and fronts the bucket with its CDN
-   (caching + free egress). Wait until status is **Active**.
-
-Public objects are then served at `https://images.ekoru.cl/<key>`.
-
-### Dev/testing — r2.dev URL (don't use in prod)
-
-Bucket → Settings → **Public Development URL** → **Enable**. Gives
-`https://pub-<hash>.r2.dev/...`. It's rate-limited and uncacheable — fine for a
-quick test, not for real traffic.
-
----
-
-## 5. CORS
-
-Only required if the **browser** talks to R2 directly (Approach B, or if you
-ever `fetch()` objects cross-origin). For Approach A you can skip this.
-
-Bucket → Settings → **CORS Policy** → add:
-
-```json
-[
-  {
-    "AllowedOrigins": [
-      "https://ekoru.cl",
-      "https://staging.ekoru.cl",
-      "http://localhost:3000"
-    ],
-    "AllowedMethods": ["GET", "PUT"],
-    "AllowedHeaders": ["Content-Type"],
-    "MaxAgeSeconds": 3600
-  }
-]
+```
+Browser
+  │
+  │  POST /api/profile/avatar    (or /cover, /products/images)
+  │  Content-Type: multipart/form-data
+  ▼
+Next.js API route  (app/api/…/route.ts)
+  │  reads HttpOnly `token` cookie
+  │  rebuilds FormData, adds Authorization: Bearer <token>
+  │  POST gateway /api/profile-image  (or /cover-image, /images/upload/product)
+  ▼
+ekoru-gateway  (NestJS, :4000)
+  │  JwtAuthGuard validates Bearer token → extracts sellerId
+  │  looks up existing image key in Prisma DB
+  │  DELETE old R2 key via image-processor (fire-and-warn)
+  │  POST /process to image-processor with X-Internal-Token
+  ▼
+ekoru-image-processor  (Rust, :8090 — internal only)
+  │  validates X-Internal-Token
+  │  decodes image, resizes with Lanczos3 filter, encodes as WebP
+  │  PUT object to Cloudflare R2 (S3-compatible API)
+  │  returns { key, url, original_size, processed_size, width, height }
+  ▼
+ekoru-gateway  (continues)
+  │  writes R2 key to Prisma DB (not the URL — keys are CDN-agnostic)
+  │  returns { key, imageUrl, … } to the Next.js proxy
+  ▼
+Next.js API route
+  │  passes response through unchanged
+  ▼
+Browser
 ```
 
 ---
 
-## 6. Gateway integration (Approach A)
+## Image types and gateway endpoints
 
-Examples assume a Node gateway (NestJS/Express). Adapt names to your framework.
+| Image type | Next.js proxy route | Gateway endpoint | Gateway controller | Entity sent to processor | Auth |
+|---|---|---|---|---|---|
+| Profile avatar | `POST /api/profile/avatar` | `POST /api/profile-image` | `ProfileImageController` | `user_avatar` | JWT required |
+| Cover image | `POST /api/profile/cover` | `POST /api/cover-image` | `CoverImageController` | `user_cover` | JWT required |
+| Product image (publish flow) | `POST /api/products/images` | `POST /api/images/upload/product` | `ImagesController` | `product` | optional |
+| Store product / service image | _(direct from server context)_ | `POST /api/business-image` | `BusinessImageController` | `product` or `service` | none |
 
-### 6.1 Install
+### FormData field names
 
-```bash
-npm i @aws-sdk/client-s3
-# (only if you later add presigned uploads:)
-# npm i @aws-sdk/s3-request-presigner
-```
-
-### 6.2 Environment variables
-
-```dotenv
-R2_ACCOUNT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-R2_ACCESS_KEY_ID=xxxxxxxxxxxxxxxxxxxx
-R2_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-R2_BUCKET=ekoru-product-images
-R2_PUBLIC_BASE_URL=https://images.ekoru.cl
-```
-
-Use the staging bucket + a `*.staging.ekoru.cl` domain in the staging env file.
-
-### 6.3 S3 client
-
-```ts
-import { S3Client } from "@aws-sdk/client-s3";
-
-export const r2 = new S3Client({
-  region: "auto", // R2 ignores region; "auto" is the convention
-  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-  credentials: {
-    accessKeyId: process.env.R2_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
-  },
-});
-```
-
-### 6.4 Replace local storage with an R2 upload
-
-In your existing `POST /api/images/upload/product` handler, keep the
-resize/compress step, then write the processed buffer to R2 instead of disk:
-
-```ts
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { randomUUID } from "crypto";
-
-export async function storeProductImage(processed: Buffer): Promise<{
-  imagePath: string;
-  imageUrl: string;
-}> {
-  const key = `products/${randomUUID()}.webp`;
-
-  await r2.send(
-    new PutObjectCommand({
-      Bucket: process.env.R2_BUCKET,
-      Key: key,
-      Body: processed,
-      ContentType: "image/webp",
-      CacheControl: "public, max-age=31536000, immutable",
-    }),
-  );
-
-  return {
-    imagePath: `/${key}`,
-    imageUrl: `${process.env.R2_PUBLIC_BASE_URL}/${key}`, // https://images.ekoru.cl/products/<uuid>.webp
-  };
-}
-```
-
-Keep the existing JSON response shape (`{ message, imagePath, imageUrl,
-fileName, originalSize, processedSize }`) so **nothing in the web/mobile clients
-changes**. The important bit: `imageUrl` must point at `R2_PUBLIC_BASE_URL`, not
-at the gateway host.
+| Gateway endpoint | File field | Extra fields |
+|---|---|---|
+| `/api/profile-image` | `file` | _(none — sellerId comes from JWT)_ |
+| `/api/cover-image` | `file` | _(none — sellerId comes from JWT)_ |
+| `/api/images/upload/product` | `image` | `entityId` (seller ID) |
+| `/api/business-image` | `file` | `itemId`, `itemType` (`storeProduct`\|`service`) |
 
 ---
 
-## 7. Web app changes (minimal)
+## What the gateway persists
 
-The upload flow we built (`app/api/products/images/route.ts` →
-`lib/api/products.ts` → `usePublish`) keeps working unchanged. Two adjustments:
+The gateway writes the **R2 key** (e.g. `user_avatar/42/9f2a…webp`), not the full URL, into Postgres via Prisma. This keeps stored values stable across CDN domain changes.
 
-### 7.1 Pass through the gateway's R2 URL
+| Image | Prisma model | Field |
+|---|---|---|
+| Person avatar | `PersonProfile` | `profileImage` |
+| Person cover | `PersonProfile` | `coverImage` |
+| Business logo | `BusinessProfile` | `logo` |
+| Business cover | `BusinessProfile` | `coverImage` |
+| Product images | `Product` | `images` (String[]) |
+| Store product images | `StoreProduct` | `images` (String[]) |
+| Service images | `Service` | `images` (String[]) |
 
-`app/api/products/images/route.ts` currently rebuilds `imageUrl` from
-`GATEWAY_BASE_URL + imagePath`. Once images live on R2, **trust the gateway's
-`imageUrl`** instead of rebuilding it:
+---
 
-```ts
-const data = (await gatewayRes.json().catch(() => ({}))) as Record<string, unknown>;
-// Gateway already returns an absolute R2 URL — pass it through unchanged.
-return NextResponse.json(data, { status: gatewayRes.status });
+## Image processor resize presets
+
+| Entity | Max width | Max height | Notes |
+|---|---|---|---|
+| `user_avatar` | 400 | 400 | Profile photo |
+| `user_cover` | 1200 | 400 | Cover/banner |
+| `product` | 800 | 800 | Marketplace product |
+| `service` | 800 | 600 | Service listing |
+| `community` | 1000 | 700 | Community asset |
+| `asset` | 1920 | 1080 | Department/admin asset |
+
+Aspect ratio is always preserved (fit inside box, not cropped). Output is always WebP.
+
+R2 key format: `{entity}/{entity_id}/{uuid}.webp`
+
+---
+
+## Reading images (display flow)
+
+```
+GraphQL response
+  │  e.g. seller.profile.profileImage = "user_avatar/42/9f2a…webp"
+  │        (or legacy "/images/foo.jpg" for old rows)
+  ▼
+resolveImageUrl()  (utils/resolveImage.ts)
+  │  "http…"         → returned unchanged
+  │  "/images/…"     → GATEWAY_BASE_URL + path  (legacy, until backfilled)
+  │  bare R2 key     → IMAGES_PUBLIC_BASE_URL + "/" + key
+  ▼
+Fully-qualified CDN URL
+  e.g. https://staging-images.ekoru.cl/user_avatar/42/9f2a…webp
+  ▼
+next/image  (allowed by next.config.ts remotePatterns)
+  │  fetches from Cloudflare R2 custom domain
+  ▼
+Browser renders image
 ```
 
-### 7.2 Allow the R2 domain in next/image
+`IMAGES_PUBLIC_BASE_URL` is set per environment in `config/endpoints.ts`:
 
-Add the serving domain to `next.config.ts → images.remotePatterns`:
+| Environment | CDN host |
+|---|---|
+| production | `https://images.ekoru.cl` |
+| staging | `https://staging-images.ekoru.cl` |
+| development | `https://staging-images.ekoru.cl` (browser hits staging CDN; gateway is localhost) |
 
-```ts
-images: {
-  remotePatterns: [
-    { protocol: "https", hostname: "api.staging.ekoru.cl", pathname: "/images/**" },
-    { protocol: "https", hostname: "api.ekoru.cl", pathname: "/images/**" },
-    { protocol: "https", hostname: "images.ekoru.cl" },          // ← R2 prod
-    { protocol: "https", hostname: "pub-*.r2.dev" },             // ← R2 dev (optional)
-  ],
-},
+---
+
+## Web app source map
+
+| File | Purpose |
+|---|---|
+| `app/api/profile/avatar/route.ts` | Proxy → `POST /api/profile-image` |
+| `app/api/profile/cover/route.ts` | Proxy → `POST /api/cover-image` |
+| `app/api/products/images/route.ts` | Proxy → `POST /api/images/upload/product` |
+| `lib/api/profile.ts` | `uploadProfileImage()`, `uploadCoverImage()` |
+| `lib/api/products.ts` | `uploadProductImage()` |
+| `utils/resolveImage.ts` | R2 key / legacy path → CDN URL |
+| `config/endpoints.ts` | `GATEWAY_BASE_URL`, `IMAGES_PUBLIC_BASE_URL` |
+| `next.config.ts` | Allowlisted CDN + gateway hosts for next/image |
+| `store/useAuthStore.ts` | `useProfileImage()`, `useCoverImage()` selectors |
+
+---
+
+## Gateway source map
+
+| File | Purpose |
+|---|---|
+| `src/images/images.module.ts` | NestJS module wiring all image controllers |
+| `src/images/image-processor.client.ts` | HTTP client for the Rust service (`/process`, `/objects/:key`) |
+| `src/images/profile-image.controller.ts` | `POST /api/profile-image` — avatar, auth-gated |
+| `src/images/cover-image.controller.ts` | `POST /api/cover-image` — cover, auth-gated |
+| `src/images/images.controller.ts` | `POST /api/images/upload/product`, `/upload/user`, `/upload/department` |
+| `src/images/product-images.controller.ts` | `POST /api/product-images` — multi-file, updates product.images in DB |
+| `src/images/business-image.controller.ts` | `POST /api/business-image` — storeProduct or service image |
+
+---
+
+## Environment variables
+
+### ekoru-gateway
+```
+IMAGE_PROCESSOR_URL=http://localhost:8090          # dev
+# http://ekoru-image-processor-staging:8090        # staging (docker internal)
+# http://ekoru-image-processor:8090                # prod    (docker internal)
+IMAGE_PROCESSOR_TOKEN=<shared secret>              # must match INTERNAL_TOKEN in image-processor
 ```
 
-`resolveImageUrl()` already returns absolute URLs unchanged, so stored R2 URLs
-render without any other change.
+### ekoru-image-processor
+```
+R2_ACCOUNT_ID=<32-char hex from Cloudflare>
+R2_ACCESS_KEY_ID=<R2 API token key>
+R2_SECRET_ACCESS_KEY=<R2 API token secret>
+R2_BUCKET=ekoru-images-staging                     # or ekoru-images for prod
+R2_PUBLIC_BASE_URL=https://staging-images.ekoru.cl # or https://images.ekoru.cl
+INTERNAL_TOKEN=<same value as IMAGE_PROCESSOR_TOKEN in gateway>
+MAX_UPLOAD_BYTES=10485760                          # 10 MiB (optional, this is the default)
+```
 
----
-
-## 8. Test the round trip
-
-1. Set the env vars in the gateway (dev → staging bucket + domain).
-2. Publish a product from the web app with 1–3 photos.
-3. Confirm in the R2 dashboard the objects appear under `products/`.
-4. Confirm the product renders the image from `https://images.ekoru.cl/...`
-   (DevTools → Network → the image request hits the R2 domain, not the gateway).
-5. Reload and confirm a `cf-cache-status: HIT` header on the image response.
-
----
-
-## 9. Optional later: presigned direct uploads (Approach B)
-
-When upload volume grows, skip the gateway for the byte transfer:
-
-1. Gateway endpoint returns a presigned `PUT` URL + the object key:
-   ```ts
-   import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-   const key = `products/${randomUUID()}.jpg`;
-   const url = await getSignedUrl(
-     r2,
-     new PutObjectCommand({ Bucket: process.env.R2_BUCKET, Key: key }),
-     { expiresIn: 300 },
-   );
-   // return { uploadUrl: url, key, publicUrl: `${R2_PUBLIC_BASE_URL}/${key}` }
-   ```
-2. Browser `PUT`s the file straight to `uploadUrl` (requires the CORS policy in
-   §5), then sends `publicUrl`/`key` in the `ADD_PRODUCT` mutation.
-3. **Trade-off:** the gateway no longer sees the bytes, so move processing to the
-   edge — **Cloudflare Images** / **Image Resizing transformations** (resize and
-   reformat at serve time via URL params), or accept client-uploaded sizes.
-
-This removes upload load from the gateway entirely; serving stays on R2 either
-way.
-
----
-
-## 10. Cost & free tier recap
-
-- **Storage:** ~$0.015/GB-month (free up to 10 GB). 100k images ≈ a few GB.
-- **Writes (Class A):** free up to 1M/month.
-- **Reads (Class B):** free up to 10M/month.
-- **Egress:** **$0, always.**
-
-For Ekoru's expected volume this is **$0–$1/month** vs ~$45+/month on S3, where
-egress dominated.
-
----
-
-## 11. Checklist
-
-- [ ] R2 enabled (payment method added)
-- [ ] Bucket `ekoru-product-images` (+ staging) created
-- [ ] API token created; access key + secret stored in gateway secrets
-- [ ] Custom domain `images.ekoru.cl` connected and Active
-- [ ] CORS policy added (only if doing direct browser uploads)
-- [ ] Gateway env vars set; `storeProductImage` writes to R2
-- [ ] Gateway returns absolute R2 `imageUrl`
-- [ ] Web proxy route passes `imageUrl` through (no rebuild)
-- [ ] `next.config.ts` allows `images.ekoru.cl`
-- [ ] End-to-end publish test passes; image served from R2 with cache HIT
+### ekoru-web-app
+No R2 credentials needed. The only image config is `NEXT_PUBLIC_ENVIRONMENT`
+which drives `IMAGES_PUBLIC_BASE_URL` in `config/endpoints.ts`.

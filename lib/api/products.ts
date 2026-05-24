@@ -1,29 +1,29 @@
 import api from "./client";
 
 interface ProductImageUploadResponse {
-  message: string;
-  imagePath: string;
+  success: boolean;
+  key: string;
   imageUrl: string;
-  fileName: string;
-  originalSize: number;
-  processedSize: number;
 }
 
 /**
  * Uploads one product image through the same-origin `/api/products/images`
- * route (which forwards it to the gateway with the session cookie). Returns the
- * absolute image URL to persist on the product — mirrors the mobile client so
- * products created on web and mobile store the same value.
+ * route (which forwards it to the gateway with the session cookie). Returns
+ * the R2 object key, which is what the marketplace mutation persists on the
+ * product so the value is stable across CDN domain changes.
  */
-export async function uploadProductImage(file: File): Promise<string> {
+export async function uploadProductImage(
+  file: File,
+  entityId: string,
+): Promise<{ key: string; imageUrl: string }> {
   const formData = new FormData();
   formData.append("image", file);
+  formData.append("entityId", entityId);
 
-  // The browser sets the multipart Content-Type (with boundary) for FormData.
   const { data } = await api.post<ProductImageUploadResponse>(
     "/products/images",
     formData,
   );
 
-  return data.imageUrl;
+  return { key: data.key, imageUrl: data.imageUrl };
 }
