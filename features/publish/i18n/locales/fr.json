@@ -39,6 +39,21 @@
     "brandPlaceholder": "Ex : Ikea (facultatif)",
     "category": "Catégorie",
     "categoryPlaceholder": "Sélectionnez une catégorie",
+    "categoryLoading": "Chargement des catégories...",
+    "department": "Rayon",
+    "departmentPlaceholder": "Sélectionnez un rayon",
+    "departmentCategory": "Catégorie",
+    "departmentCategoryPlaceholder": "Sélectionnez une catégorie",
+    "productCategory": "Type de produit",
+    "productCategoryPlaceholder": "Sélectionnez un type de produit",
+    "storeCategory": "Catégorie de boutique",
+    "storeCategoryPlaceholder": "Sélectionnez une catégorie de boutique",
+    "storeSubCategory": "Sous-catégorie",
+    "storeSubCategoryPlaceholder": "Sélectionnez une sous-catégorie",
+    "serviceCategory": "Catégorie de service",
+    "serviceCategoryPlaceholder": "Sélectionnez une catégorie de service",
+    "serviceSubCategory": "Type de service",
+    "serviceSubCategoryPlaceholder": "Sélectionnez un type de service",
     "condition": "État",
     "conditionPlaceholder": "Sélectionnez l'état",
     "conditionDescription": "Détails de l'état",
@@ -88,6 +103,7 @@
     "price": "Prix",
     "category": "Catégorie",
     "condition": "État",
+    "stock": "Stock",
     "empty": "Non défini"
   },
   "actions": {
@@ -98,9 +114,12 @@
   },
   "feedback": {
     "fieldsRequired": "Veuillez remplir tous les champs obligatoires",
+    "fixHighlighted": "Veuillez corriger les champs en surbrillance pour continuer",
+    "descriptionMin": "La description doit comporter au moins {{min}} caractères",
     "priceRequired": "Veuillez saisir un prix valide",
     "imagesRequired": "Ajoutez au moins une photo",
     "publishSuccess": "Votre annonce a été publiée",
+    "publishSignInRequired": "Veuillez vous connecter pour publier",
     "comingSoon": "La publication sur {{target}} arrive bientôt"
   },
   "a11y": {

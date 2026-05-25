@@ -107,12 +107,10 @@ R2 key format: `{entity}/{entity_id}/{uuid}.webp`
 ```
 GraphQL response
   │  e.g. seller.profile.profileImage = "user_avatar/42/9f2a…webp"
-  │        (or legacy "/images/foo.jpg" for old rows)
   ▼
 resolveImageUrl()  (utils/resolveImage.ts)
-  │  "http…"         → returned unchanged
-  │  "/images/…"     → GATEWAY_BASE_URL + path  (legacy, until backfilled)
-  │  bare R2 key     → IMAGES_PUBLIC_BASE_URL + "/" + key
+  │  "http…"      → returned unchanged
+  │  bare R2 key  → IMAGES_PUBLIC_BASE_URL + "/" + key
   ▼
 Fully-qualified CDN URL
   e.g. https://staging-images.ekoru.cl/user_avatar/42/9f2a…webp

@@ -4,6 +4,13 @@
       "person": "Compte Personnel",
       "startup": "Compte Startup",
       "company": "Compte Entreprise"
+    },
+    "upload": {
+      "changeAvatar": "Changer la photo de profil",
+      "changeCover": "Changer la photo de couverture",
+      "success": "Image mise à jour",
+      "error": "Impossible de télécharger l'image",
+      "invalidType": "Veuillez choisir un fichier image"
     }
   },
   "details": {

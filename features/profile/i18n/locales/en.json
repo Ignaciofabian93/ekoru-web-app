@@ -4,6 +4,13 @@
       "person": "Personal Account",
       "startup": "Startup Account",
       "company": "Business Account"
+    },
+    "upload": {
+      "changeAvatar": "Change profile photo",
+      "changeCover": "Change cover photo",
+      "success": "Image updated",
+      "error": "Could not upload the image",
+      "invalidType": "Please choose an image file"
     }
   },
   "details": {

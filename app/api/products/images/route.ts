@@ -10,9 +10,10 @@ import { GATEWAY_BASE_URL } from "@/config/endpoints";
 // (lib/api/client.ts), which refreshes the token and retries.
 //
 // The gateway forwards the bytes to ekoru-image-processor, which writes the
-// final WebP to R2 and returns `{ key, imageUrl }` — the URL points at the
-// public CDN domain (cdn[-staging].ekoru.cl), not the gateway. We pass the
-// response through unchanged.
+// final WebP to R2 and returns `{ success, key, imageUrl }` — the URL points
+// at the public CDN domain (cdn[-staging].ekoru.cl). We surface a 502 if the
+// gateway response is missing a key so callers never silently get nulls in
+// the downstream GraphQL mutation.
 export async function POST(req: Request) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
@@ -38,12 +39,47 @@ export async function POST(req: Request) {
 
   // Do NOT set Content-Type — fetch derives the multipart boundary from the
   // FormData body automatically.
-  const gatewayRes = await fetch(`${GATEWAY_BASE_URL}/api/images/upload/product`, {
+  const gatewayUrl = `${GATEWAY_BASE_URL}/api/images/upload/product`;
+  const gatewayRes = await fetch(gatewayUrl, {
     method: "POST",
     headers: token ? { Authorization: `Bearer ${token}` } : {},
     body: forward,
   });
 
-  const data = (await gatewayRes.json().catch(() => ({}))) as Record<string, unknown>;
+  // Capture the raw text first so we can log it even when JSON parsing fails.
+  // This is the only place that sees the gateway's actual response.
+  const raw = await gatewayRes.text();
+  let data: Record<string, unknown> = {};
+  try {
+    data = raw ? (JSON.parse(raw) as Record<string, unknown>) : {};
+  } catch {
+    console.error(
+      `[products/images] gateway ${gatewayRes.status} returned non-JSON body from ${gatewayUrl}:`,
+      raw.slice(0, 500),
+    );
+    return NextResponse.json(
+      {
+        message: "Gateway returned a non-JSON response",
+        status: gatewayRes.status,
+        bodyPreview: raw.slice(0, 200),
+      },
+      { status: 502 },
+    );
+  }
+
+  if (gatewayRes.ok && (typeof data.key !== "string" || !data.key)) {
+    console.error(
+      `[products/images] gateway ${gatewayRes.status} returned 2xx without an R2 key from ${gatewayUrl}:`,
+      data,
+    );
+    return NextResponse.json(
+      {
+        message: "Gateway response missing R2 image key",
+        gatewayBody: data,
+      },
+      { status: 502 },
+    );
+  }
+
   return NextResponse.json(data, { status: gatewayRes.status });
 }

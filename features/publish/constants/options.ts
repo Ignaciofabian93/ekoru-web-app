@@ -45,16 +45,3 @@ export const SERVICE_PRICING_OPTIONS: { value: ServicePricing; labelKey: Publish
   { value: "HOURLY", labelKey: "servicePricingTypes.hourly" },
   { value: "PACKAGE", labelKey: "servicePricingTypes.package" },
 ];
-
-// TODO: replace with the real product-category query once it is wired into the
-// publish flow. These placeholder ids let the category Select work end to end.
-export const PRODUCT_CATEGORIES: { id: number; labelKey: PublishKey }[] = [
-  { id: 1, labelKey: "categories.clothing" },
-  { id: 2, labelKey: "categories.furniture" },
-  { id: 3, labelKey: "categories.electronics" },
-  { id: 4, labelKey: "categories.books" },
-  { id: 5, labelKey: "categories.home" },
-  { id: 6, labelKey: "categories.sports" },
-  { id: 7, labelKey: "categories.toys" },
-  { id: 8, labelKey: "categories.other" },
-];

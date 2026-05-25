@@ -5,6 +5,8 @@ import {
   type SupportedLanguage,
 } from "@/constants/settings";
 import { ADD_PRODUCT } from "@/graphql/marketplace/mutations";
+import { ADD_SERVICE } from "@/graphql/services/mutations";
+import { ADD_STORE_PRODUCT } from "@/graphql/stores/mutations";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useToast } from "@/hooks/useToast";
 import { useTranslation } from "@/i18n/context";
@@ -23,7 +25,12 @@ export interface PublishForm {
   name: string;
   description: string;
   brand: string;
+  // Marketplace leaf — set by useMarketplaceCategories cascade.
   productCategoryId: string;
+  // Store leaf — set by useStoreCategories cascade.
+  storeSubCategoryId: string;
+  // Service leaf — set by useServiceCategories cascade.
+  serviceSubcategoryId: string;
   condition: ProductCondition | "";
   conditionDescription: string;
   price: string;
@@ -39,6 +46,8 @@ const INITIAL_FORM: PublishForm = {
   description: "",
   brand: "",
   productCategoryId: "",
+  storeSubCategoryId: "",
+  serviceSubcategoryId: "",
   condition: "",
   conditionDescription: "",
   price: "",
@@ -96,44 +105,59 @@ export function usePublish() {
     [],
   );
 
-  const [addProduct, { loading: mutationLoading }] = useMutation(ADD_PRODUCT);
+  const [addProduct, { loading: marketplaceLoading }] = useMutation(ADD_PRODUCT);
+  const [addStoreProduct, { loading: storeLoading }] = useMutation(ADD_STORE_PRODUCT);
+  const [addService, { loading: serviceLoading }] = useMutation(ADD_SERVICE);
   const [uploading, setUploading] = useState(false);
-  const loading = uploading || mutationLoading;
+  const loading =
+    uploading || marketplaceLoading || storeLoading || serviceLoading;
+
+  // Upload images in parallel under the seller namespace and return the R2
+  // keys. The subgraphs persist keys verbatim; clients resolve to CDN URLs at
+  // render time via resolveImageUrl.
+  const uploadImages = useCallback(
+    async (images: File[], ownerId: string) => {
+      setUploading(true);
+      try {
+        const uploads = await Promise.all(
+          images.map((file) => uploadProductImage(file, ownerId)),
+        );
+        return uploads.map((u) => u.key);
+      } finally {
+        setUploading(false);
+      }
+    },
+    [],
+  );
 
   const handlePublish = useCallback(async (): Promise<boolean> => {
     const storedLanguage = params.lang ?? getCookie(LANGUAGE_COOKIE) ?? undefined;
     const lang = storedLanguage ?? DEFAULT_LANGUAGE;
 
+    if (!sellerId) {
+      toast.error(t("feedback.publishSignInRequired"));
+      return false;
+    }
+
     try {
       if (target === "MARKETPLACE") {
-        if (!sellerId) {
-          toast.error(t("feedback.publishSignInRequired"));
-          return false;
-        }
+        const imageKeys = await uploadImages(form.images, sellerId);
 
-        // Upload photos in parallel under the seller's namespace, then create
-        // the product with the returned R2 keys. The marketplace subgraph
-        // persists keys verbatim; the web/mobile clients resolve them to CDN
-        // URLs at render time via resolveImageUrl.
-        setUploading(true);
-        const uploads = await Promise.all(
-          form.images.map((file) => uploadProductImage(file, sellerId)),
-        );
-        setUploading(false);
-
+        // sellerId is injected by the marketplace subgraph from the session
+        // (`@CurrentSeller`); it is NOT part of AddProductInput.
         await addProduct({
           variables: {
             input: {
-              sellerId,
               name: sanitizeOnSubmit(form.name),
               description: sanitizeOnSubmit(form.description),
               brand: sanitizeOnSubmit(form.brand),
               price: Number(form.price),
               productCategoryId: Number(form.productCategoryId),
               condition: form.condition || undefined,
-              conditionDescription: sanitizeOnSubmit(form.conditionDescription) || undefined,
+              conditionDescription:
+                sanitizeOnSubmit(form.conditionDescription) || undefined,
               isExchangeable: form.isExchangeable,
-              images: uploads.map((u) => u.key),
+              images: imageKeys,
               badges: [],
               interests: [],
             },
@@ -145,19 +169,78 @@ export function usePublish() {
         return true;
       }
 
-      // TODO: wire the store / service publish mutations once the gateway
-      // exposes them. The wizard already collects the required fields.
-      toast.info(
-        t("feedback.comingSoon", { target: t(`targetNames.${target ?? "STORE"}`) }),
-      );
+      if (target === "STORE") {
+        const imageKeys = await uploadImages(form.images, sellerId);
+
+        // sellerId is injected by the stores subgraph from the session
+        // (`@CurrentSeller`); it is NOT part of AddStoreProductInput.
+        await addStoreProduct({
+          variables: {
+            input: {
+              name: sanitizeOnSubmit(form.name),
+              description: sanitizeOnSubmit(form.description),
+              stock: Number(form.stock),
+              price: Number(form.price),
+              subCategoryId: Number(form.storeSubCategoryId),
+              images: imageKeys,
+              sku: sanitizeOnSubmit(form.sku) || undefined,
+              brand: sanitizeOnSubmit(form.brand) || undefined,
+            },
+          },
+        });
+
+        toast.success(t("feedback.publishSuccess"));
+        navigateTo({ route: `/${lang}/stores` });
+        return true;
+      }
+
+      if (target === "SERVICE") {
+        // Services may have 0 images; only upload when present.
+        const imageKeys = form.images.length
+          ? await uploadImages(form.images, sellerId)
+          : [];
+
+        const isQuotation = form.servicePricing === "QUOTATION";
+
+        // Unlike products, the services subgraph DOES require sellerId in the
+        // input (no @CurrentSeller decorator on the resolver).
+        await addService({
+          variables: {
+            input: {
+              sellerId,
+              name: sanitizeOnSubmit(form.name),
+              description: sanitizeOnSubmit(form.description) || undefined,
+              subcategoryId: Number(form.serviceSubcategoryId),
+              pricingType: form.servicePricing,
+              images: imageKeys,
+              basePrice: isQuotation ? undefined : Number(form.price),
+            },
+          },
+        });
+
+        toast.success(t("feedback.publishSuccess"));
+        navigateTo({ route: `/${lang}/services` });
+        return true;
+      }
+
       return false;
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Unexpected error");
       return false;
-    } finally {
-      setUploading(false);
     }
-  }, [addProduct, form, navigateTo, params.lang, sellerId, t, target, toast]);
+  }, [
+    addProduct,
+    addService,
+    addStoreProduct,
+    form,
+    navigateTo,
+    params.lang,
+    sellerId,
+    t,
+    target,
+    toast,
+    uploadImages,
+  ]);
 
   return {
     isBusiness,

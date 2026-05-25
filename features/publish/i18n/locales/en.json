@@ -39,6 +39,21 @@
     "brandPlaceholder": "e.g. Ikea (optional)",
     "category": "Category",
     "categoryPlaceholder": "Select a category",
+    "categoryLoading": "Loading categories...",
+    "department": "Department",
+    "departmentPlaceholder": "Select a department",
+    "departmentCategory": "Category",
+    "departmentCategoryPlaceholder": "Select a category",
+    "productCategory": "Product type",
+    "productCategoryPlaceholder": "Select a product type",
+    "storeCategory": "Store category",
+    "storeCategoryPlaceholder": "Select a store category",
+    "storeSubCategory": "Store subcategory",
+    "storeSubCategoryPlaceholder": "Select a subcategory",
+    "serviceCategory": "Service category",
+    "serviceCategoryPlaceholder": "Select a service category",
+    "serviceSubCategory": "Service type",
+    "serviceSubCategoryPlaceholder": "Select a service type",
     "condition": "Condition",
     "conditionPlaceholder": "Select condition",
     "conditionDescription": "Condition details",
@@ -88,6 +103,7 @@
     "price": "Price",
     "category": "Category",
     "condition": "Condition",
+    "stock": "Stock",
     "empty": "Not set"
   },
   "actions": {
@@ -98,9 +114,12 @@
   },
   "feedback": {
     "fieldsRequired": "Please fill in all required fields",
+    "fixHighlighted": "Please fix the highlighted fields to continue",
+    "descriptionMin": "Description must be at least {{min}} characters",
     "priceRequired": "Please enter a valid price",
     "imagesRequired": "Add at least one photo",
     "publishSuccess": "Your listing has been published",
+    "publishSignInRequired": "Please sign in to publish",
     "comingSoon": "Publishing to {{target}} is coming soon"
   },
   "a11y": {

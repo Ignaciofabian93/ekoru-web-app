@@ -1,25 +1,22 @@
 "use client";
 import MainButton from "@/components/Button/MainButton";
-import Input from "@/components/Input/Input";
-import { Select } from "@/components/Select/Select";
 import { Text } from "@/components/Text/Text";
-import TextArea from "@/components/TextArea/TextArea";
 import { Title } from "@/components/Title/Title";
 import { useTranslation } from "@/i18n/context";
 import clsx from "clsx";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
-import { useMemo, useState } from "react";
+import { AlertCircle, ArrowLeft, ArrowRight } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
 
-import {
-  BUSINESS_TARGETS,
-  CONDITION_OPTIONS,
-  MAX_PRODUCT_IMAGES,
-  MIN_PRODUCT_IMAGES,
-  PRODUCT_CATEGORIES,
-  SERVICE_PRICING_OPTIONS,
-} from "../constants/options";
+import { MIN_PRODUCT_IMAGES } from "../constants/options";
+import { useMarketplaceCategories } from "../hooks/useMarketplaceCategories";
 import { usePublish } from "../hooks/usePublish";
-import { ImagePicker } from "./ImagePicker";
+import { useServiceCategories } from "../hooks/useServiceCategories";
+import { useStoreCategories } from "../hooks/useStoreCategories";
+import { DetailsStep } from "./steps/DetailsStep";
+import { InventoryStep } from "./steps/InventoryStep";
+import { PricingStep } from "./steps/PricingStep";
+import { ReviewStep } from "./steps/ReviewStep";
+import { TargetStep } from "./steps/TargetStep";
 
 type StepKey = "target" | "details" | "pricing" | "inventory" | "review";
 
@@ -43,6 +40,35 @@ export function PublishForm() {
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [submitted, setSubmitted] = useState(false);
 
+  // Category cascade hooks — each one writes its leaf into the matching form
+  // field through `onLeafChange`. They self-skip the network request until the
+  // user actually picks a matching target.
+  const setProductCategoryId = useCallback(
+    (id: string) => setField("productCategoryId", id),
+    [setField],
+  );
+  const setStoreSubCategoryId = useCallback(
+    (id: string) => setField("storeSubCategoryId", id),
+    [setField],
+  );
+  const setServiceSubcategoryId = useCallback(
+    (id: string) => setField("serviceSubcategoryId", id),
+    [setField],
+  );
+
+  const marketplaceCategories = useMarketplaceCategories({
+    enabled: target === "MARKETPLACE",
+    onLeafChange: setProductCategoryId,
+  });
+  const storeCategories = useStoreCategories({
+    enabled: target === "STORE",
+    onLeafChange: setStoreSubCategoryId,
+  });
+  const serviceCategories = useServiceCategories({
+    enabled: target === "SERVICE",
+    onLeafChange: setServiceSubcategoryId,
+  });
+
   const steps = useMemo<StepKey[]>(() => {
     if (!isBusiness) return ["details", "pricing", "review"];
     const mid: StepKey = target === "SERVICE" ? "pricing" : "inventory";
@@ -55,13 +81,23 @@ export function PublishForm() {
   // ── Field-level validity ──────────────────────────────────────────
   const nameValid = form.name.trim().length > 0;
   const descValid = form.description.trim().length >= DESCRIPTION_MIN;
-  const categoryValid = form.productCategoryId !== "";
   const conditionValid = form.condition !== "";
   const priceValid = Number(form.price) > 0;
   const stockValid = form.stock !== "" && Number(form.stock) >= 0;
+  const servicePricingValid = form.servicePricing !== "";
   const isServiceQuotation = target === "SERVICE" && form.servicePricing === "QUOTATION";
 
-  // Products (marketplace + store) require at least one photo; services don't.
+  const categoryIdForTarget =
+    target === "MARKETPLACE"
+      ? form.productCategoryId
+      : target === "STORE"
+        ? form.storeSubCategoryId
+        : target === "SERVICE"
+          ? form.serviceSubcategoryId
+          : "";
+  const categoryValid = categoryIdForTarget !== "";
+
+  // Products require at least one photo; services may have none.
   const imagesRequired = target === "MARKETPLACE" || target === "STORE";
   const imagesValid = !imagesRequired || form.images.length >= MIN_PRODUCT_IMAGES;
 
@@ -70,11 +106,11 @@ export function PublishForm() {
       ? nameValid && descValid && categoryValid && conditionValid && imagesValid
       : target === "STORE"
         ? nameValid && descValid && categoryValid && imagesValid
-        : nameValid && descValid;
+        : nameValid && categoryValid;
 
   const pricingValid =
     target === "SERVICE"
-      ? form.servicePricing !== "" && (isServiceQuotation || priceValid)
+      ? servicePricingValid && (isServiceQuotation || priceValid)
       : priceValid;
 
   const inventoryValid = stockValid && priceValid;
@@ -113,19 +149,6 @@ export function PublishForm() {
     await handlePublish();
   };
 
-  const categoryOptions = PRODUCT_CATEGORIES.map((c) => ({
-    value: c.id,
-    label: t(c.labelKey),
-  }));
-  const conditionOptions = CONDITION_OPTIONS.map((c) => ({
-    value: c.value,
-    label: t(c.labelKey),
-  }));
-  const servicePricingOptions = SERVICE_PRICING_OPTIONS.map((c) => ({
-    value: c.value,
-    label: t(c.labelKey),
-  }));
-
   const stepHeader: Record<StepKey, { title: string; subtitle: string }> = {
     target: { title: t("steps.targetTitle"), subtitle: t("steps.targetSubtitle") },
     details: { title: t("steps.detailsTitle"), subtitle: t("steps.detailsSubtitle") },
@@ -134,10 +157,14 @@ export function PublishForm() {
     review: { title: t("steps.reviewTitle"), subtitle: t("steps.reviewSubtitle") },
   };
 
-  const selectedCategoryLabel = PRODUCT_CATEGORIES.find(
-    (c) => String(c.id) === form.productCategoryId,
-  );
-  const selectedConditionLabel = CONDITION_OPTIONS.find((c) => c.value === form.condition);
+  const reviewCategoryLabel =
+    target === "MARKETPLACE"
+      ? marketplaceCategories.selectedLeafLabel
+      : target === "STORE"
+        ? storeCategories.selectedLeafLabel
+        : target === "SERVICE"
+          ? serviceCategories.selectedLeafLabel
+          : "";
 
   return (
     <div className="flex flex-col gap-6">
@@ -176,282 +203,73 @@ export function PublishForm() {
             </Text>
           </div>
 
-          {/* Target — business sellers only */}
           {currentKey === "target" && (
-            <div className="flex flex-col gap-3">
-              {BUSINESS_TARGETS.map(({ value, icon: Icon, labelKey, descKey }) => {
-                const selected = target === value;
-                return (
-                  <button
-                    key={value}
-                    type="button"
-                    onClick={() => setBusinessTarget(value)}
-                    aria-pressed={selected}
-                    className={clsx(
-                      "flex items-center gap-4 rounded-xl border-2 p-4 text-left transition-all duration-200",
-                      selected
-                        ? "border-primary bg-primary-light-bg"
-                        : "border-input-border bg-surface",
-                    )}
-                  >
-                    <span
-                      className={clsx(
-                        "flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors duration-200",
-                        selected
-                          ? "bg-primary text-white"
-                          : "bg-background-tertiary text-foreground-tertiary",
-                      )}
-                    >
-                      <Icon size={20} color="currentColor" strokeWidth={2} />
-                    </span>
-                    <span className="flex flex-1 flex-col">
-                      <Text variant="span" weight="bold">
-                        {t(labelKey)}
-                      </Text>
-                      <Text variant="small" color="tertiary">
-                        {t(descKey)}
-                      </Text>
-                    </span>
-                    <span
-                      className={clsx(
-                        "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors duration-200",
-                        selected
-                          ? "border-primary bg-primary"
-                          : "border-border-strong bg-transparent",
-                      )}
-                    >
-                      {selected && <Check size={12} color="#ffffff" strokeWidth={3} />}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            <TargetStep target={target} onSelect={setBusinessTarget} />
           )}
 
-          {/* Details */}
-          {currentKey === "details" && (
-            <div className="flex flex-col gap-5">
-              <Input
-                name="name"
-                label={t("form.name")}
-                placeholder={t("form.namePlaceholder")}
-                value={form.name}
-                onChangeText={(v) => setField("name", v)}
-                maxLength={120}
-                required
-                isInvalid={submitted && !nameValid}
-                errorMessage={t("feedback.fieldsRequired")}
-              />
-
-              {target !== "SERVICE" && (
-                <Select
-                  label={t("form.category")}
-                  placeholder={t("form.categoryPlaceholder")}
-                  options={categoryOptions}
-                  value={form.productCategoryId ? Number(form.productCategoryId) : undefined}
-                  onChange={(v) => setField("productCategoryId", String(v))}
-                  errorMessage={
-                    submitted && !categoryValid ? t("feedback.fieldsRequired") : undefined
-                  }
-                />
-              )}
-
-              {target === "MARKETPLACE" && (
-                <Select
-                  label={t("form.condition")}
-                  placeholder={t("form.conditionPlaceholder")}
-                  options={conditionOptions}
-                  value={form.condition || undefined}
-                  onChange={(v) => setField("condition", v as typeof form.condition)}
-                  searchEnabled={false}
-                  errorMessage={
-                    submitted && !conditionValid ? t("feedback.fieldsRequired") : undefined
-                  }
-                />
-              )}
-
-              <Input
-                name="brand"
-                label={t("form.brand")}
-                placeholder={t("form.brandPlaceholder")}
-                value={form.brand}
-                onChangeText={(v) => setField("brand", v)}
-                maxLength={60}
-              />
-
-              <TextArea
-                label={t("form.description")}
-                placeholder={t("form.descriptionPlaceholder")}
-                value={form.description}
-                onChangeText={(v) => setField("description", v)}
-                maxLength={1000}
-                rows={4}
-              />
-
-              {(target === "MARKETPLACE" || target === "STORE") && (
-                <ImagePicker
-                  images={form.images}
-                  onAdd={addImage}
-                  onRemove={removeImage}
-                  max={MAX_PRODUCT_IMAGES}
-                  label={t("form.images")}
-                  hint={t("form.imagesHint")}
-                  addLabel={t("form.addPhoto")}
-                  error={
-                    submitted && !imagesValid ? t("feedback.imagesRequired") : undefined
-                  }
-                />
-              )}
-            </div>
+          {currentKey === "details" && target && (
+            <DetailsStep
+              target={target}
+              form={form}
+              setField={setField}
+              addImage={addImage}
+              removeImage={removeImage}
+              marketplaceCategories={marketplaceCategories}
+              storeCategories={storeCategories}
+              serviceCategories={serviceCategories}
+              invalid={{
+                name: submitted && !nameValid,
+                description: submitted && !descValid,
+                category: submitted && !categoryValid,
+                condition: submitted && !conditionValid,
+                images: submitted && !imagesValid,
+              }}
+              descriptionMinLength={DESCRIPTION_MIN}
+            />
           )}
 
-          {/* Pricing (marketplace + service) */}
-          {currentKey === "pricing" && (
-            <div className="flex flex-col gap-5">
-              {target === "SERVICE" && (
-                <Select
-                  label={t("form.servicePricing")}
-                  placeholder={t("form.servicePricingPlaceholder")}
-                  options={servicePricingOptions}
-                  value={form.servicePricing || undefined}
-                  onChange={(v) => setField("servicePricing", v as typeof form.servicePricing)}
-                  searchEnabled={false}
-                  errorMessage={
-                    submitted && form.servicePricing === ""
-                      ? t("feedback.fieldsRequired")
-                      : undefined
-                  }
-                />
-              )}
-
-              {!isServiceQuotation && (
-                <Input
-                  name="price"
-                  label={t("form.price")}
-                  placeholder={t("form.pricePlaceholder")}
-                  type="number"
-                  value={form.price}
-                  onChangeText={(v) => setField("price", v)}
-                  required
-                  isInvalid={submitted && !priceValid}
-                  errorMessage={t("feedback.priceRequired")}
-                />
-              )}
-
-              {target === "MARKETPLACE" && (
-                <button
-                  type="button"
-                  onClick={() => setField("isExchangeable", !form.isExchangeable)}
-                  aria-pressed={form.isExchangeable}
-                  className={clsx(
-                    "flex items-center gap-3 rounded-xl border-2 p-4 text-left transition-all duration-200",
-                    form.isExchangeable
-                      ? "border-primary bg-primary-light-bg"
-                      : "border-input-border bg-surface",
-                  )}
-                >
-                  <span
-                    className={clsx(
-                      "flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-colors duration-200",
-                      form.isExchangeable
-                        ? "border-primary bg-primary"
-                        : "border-border-strong bg-transparent",
-                    )}
-                  >
-                    {form.isExchangeable && (
-                      <Check size={12} color="#ffffff" strokeWidth={3} />
-                    )}
-                  </span>
-                  <span className="flex flex-1 flex-col">
-                    <Text variant="span" weight="medium">
-                      {t("form.isExchangeable")}
-                    </Text>
-                    <Text variant="small" color="tertiary">
-                      {t("form.isExchangeableHint")}
-                    </Text>
-                  </span>
-                </button>
-              )}
-            </div>
+          {currentKey === "pricing" && target && (
+            <PricingStep
+              target={target}
+              form={form}
+              setField={setField}
+              invalid={{
+                price: submitted && !priceValid,
+                servicePricing: submitted && !servicePricingValid,
+              }}
+            />
           )}
 
-          {/* Inventory (store) */}
           {currentKey === "inventory" && (
-            <div className="flex flex-col gap-5">
-              <Input
-                name="price"
-                label={t("form.price")}
-                placeholder={t("form.pricePlaceholder")}
-                type="number"
-                value={form.price}
-                onChangeText={(v) => setField("price", v)}
-                required
-                isInvalid={submitted && !priceValid}
-                errorMessage={t("feedback.priceRequired")}
-              />
-              <Input
-                name="stock"
-                label={t("form.stock")}
-                placeholder={t("form.stockPlaceholder")}
-                type="number"
-                value={form.stock}
-                onChangeText={(v) => setField("stock", v)}
-                required
-                isInvalid={submitted && !stockValid}
-                errorMessage={t("feedback.fieldsRequired")}
-              />
-              <Input
-                name="sku"
-                label={t("form.sku")}
-                placeholder={t("form.skuPlaceholder")}
-                value={form.sku}
-                onChangeText={(v) => setField("sku", v)}
-                maxLength={60}
-              />
-            </div>
+            <InventoryStep
+              form={form}
+              setField={setField}
+              invalid={{
+                price: submitted && !priceValid,
+                stock: submitted && !stockValid,
+              }}
+            />
           )}
 
-          {/* Review */}
-          {currentKey === "review" && (
-            <dl className="flex flex-col divide-y divide-border-light rounded-xl border border-border-light bg-surface px-4">
-              {[
-                { label: t("review.target"), value: target ? t(`targetNames.${target}`) : "" },
-                { label: t("review.title"), value: form.name },
-                {
-                  label: t("review.price"),
-                  value: form.price ? `$${form.price}` : "",
-                },
-                target !== "SERVICE"
-                  ? {
-                      label: t("review.category"),
-                      value: selectedCategoryLabel ? t(selectedCategoryLabel.labelKey) : "",
-                    }
-                  : null,
-                target === "MARKETPLACE"
-                  ? {
-                      label: t("review.condition"),
-                      value: selectedConditionLabel ? t(selectedConditionLabel.labelKey) : "",
-                    }
-                  : null,
-              ]
-                .filter((row): row is { label: string; value: string } => row !== null)
-                .map((row) => (
-                  <div key={row.label} className="flex items-center justify-between gap-4 py-3">
-                    <dt>
-                      <Text variant="small" color="tertiary">
-                        {row.label}
-                      </Text>
-                    </dt>
-                    <dd className="text-right">
-                      <Text variant="span" weight="medium" numberOfLines={1}>
-                        {row.value || t("review.empty")}
-                      </Text>
-                    </dd>
-                  </div>
-                ))}
-            </dl>
+          {currentKey === "review" && target && (
+            <ReviewStep
+              target={target}
+              form={form}
+              categoryLabel={reviewCategoryLabel}
+            />
           )}
         </div>
+
+        {/* Step-level error — surfaces any silent validation failure so the
+            Continue button never appears to "do nothing" when blocked. */}
+        {submitted && !stepValid[currentKey] && (
+          <div className="flex items-center gap-2 rounded-md border border-danger/30 bg-danger/5 px-3 py-2">
+            <AlertCircle size={16} color="currentColor" className="text-danger" />
+            <Text variant="small" color="error">
+              {t("feedback.fixHighlighted")}
+            </Text>
+          </div>
+        )}
 
         {/* Navigation */}
         <div className="flex items-center gap-3">

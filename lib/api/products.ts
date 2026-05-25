@@ -1,16 +1,17 @@
 import api from "./client";
 
 interface ProductImageUploadResponse {
-  success: boolean;
-  key: string;
-  imageUrl: string;
+  success?: boolean;
+  key?: string | null;
+  imageUrl?: string | null;
 }
 
 /**
  * Uploads one product image through the same-origin `/api/products/images`
- * route (which forwards it to the gateway with the session cookie). Returns
- * the R2 object key, which is what the marketplace mutation persists on the
- * product so the value is stable across CDN domain changes.
+ * route, which forwards it to the gateway. The gateway resizes the file via
+ * ekoru-image-processor and stores the WebP in Cloudflare R2. Returns the R2
+ * object key — that's what the marketplace mutation persists on the product,
+ * so the stored value stays stable across CDN domain changes.
  */
 export async function uploadProductImage(
   file: File,
@@ -25,5 +26,12 @@ export async function uploadProductImage(
     formData,
   );
 
-  return { key: data.key, imageUrl: data.imageUrl };
+  if (typeof data?.key !== "string" || data.key.length === 0) {
+    console.error("[uploadProductImage] missing key in response:", data);
+    throw new Error(
+      `Image upload failed: no R2 key returned by the server (response: ${JSON.stringify(data)})`,
+    );
+  }
+
+  return { key: data.key, imageUrl: data.imageUrl ?? "" };
 }
