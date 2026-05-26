@@ -1,10 +1,20 @@
-export default function Page() {
+import { hasLocale } from "@/constants/settings";
+import { DepartmentCategory } from "@/features/marketplace/screens/DepartmentCategory";
+import { notFound } from "next/navigation";
+
+export default async function DepartmentCategoryPage({
+  params,
+}: {
+  params: Promise<{ lang: string; department: string; category: string }>;
+}) {
+  const { lang, department, category } = await params;
+  if (!hasLocale(lang)) notFound();
+
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4 py-16">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <h1 className="text-3xl font-bold text-foreground">Category</h1>
-        <p className="text-foreground-secondary">Coming soon</p>
-      </div>
-    </main>
+    <DepartmentCategory
+      lang={lang}
+      departmentSlug={department}
+      categorySlug={category}
+    />
   );
 }

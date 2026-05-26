@@ -10,7 +10,6 @@ import type { ReactNode } from "react";
 
 export function NavigationContent({
   logo,
-  lang,
 }: {
   logo: ReactNode;
   lang: SupportedLanguage;
@@ -20,24 +19,24 @@ export function NavigationContent({
   const SUBHEADER_LINKS = [
     {
       key: "marketplace",
-      route: `${lang}/marketplace`,
+      route: `/marketplace`,
       icon: Package,
       label: t("marketplace"),
     },
-    { key: "stores", route: `${lang}/stores`, icon: Store, label: t("stores") },
+    { key: "stores", route: `/stores`, icon: Store, label: t("stores") },
     {
       key: "services",
-      route: `${lang}/services`,
+      route: `/services`,
       icon: ScanBarcode,
       label: t("services"),
     },
     {
       key: "community",
-      route: `${lang}/community`,
+      route: `/community`,
       icon: UsersRound,
       label: t("community"),
     },
-    { key: "blog", route: `${lang}/blog`, icon: Newspaper, label: t("blog") },
+    { key: "blog", route: `/blog`, icon: Newspaper, label: t("blog") },
   ] as Item[];
 
   return (

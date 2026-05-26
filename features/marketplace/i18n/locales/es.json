@@ -1,0 +1,76 @@
+{
+  "page": {
+    "title": "Marketplace",
+    "subtitle": "Compra y vende artículos de segunda mano para una economía circular",
+    "departmentTitle": "{{name}}",
+    "departmentSubtitle": "Explora todas las categorías de {{name}}",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Descubre productos en {{name}}"
+  },
+  "sections": {
+    "departments": "Departamentos",
+    "categories": "Categorías",
+    "productCategories": "Tipos de producto",
+    "products": "Productos",
+    "allDepartments": "Todos los departamentos",
+    "allCategories": "Todas las categorías"
+  },
+  "filters": {
+    "title": "Filtros",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar productos...",
+    "sortBy": "Ordenar por",
+    "minPrice": "Precio mínimo",
+    "maxPrice": "Precio máximo",
+    "condition": "Condición",
+    "anyCondition": "Cualquier condición",
+    "exchangeableOnly": "Solo intercambiables",
+    "apply": "Aplicar",
+    "clear": "Limpiar",
+    "open": "Abrir filtros",
+    "close": "Cerrar",
+    "perPage": "Por página"
+  },
+  "sort": {
+    "newest": "Más recientes",
+    "oldest": "Más antiguos",
+    "priceAsc": "Precio: menor a mayor",
+    "priceDesc": "Precio: mayor a menor",
+    "popular": "Más vistos"
+  },
+  "conditions": {
+    "NEW": "Nuevo",
+    "LIKE_NEW": "Como nuevo",
+    "OPEN_BOX": "Caja abierta",
+    "GOOD": "Bueno",
+    "FAIR": "Aceptable",
+    "POOR": "Deteriorado",
+    "FOR_PARTS": "Para repuestos",
+    "REFURBISHED": "Reacondicionado"
+  },
+  "product": {
+    "addToCart": "Agregar al carro",
+    "added": "¡Agregado!",
+    "exchangeable": "Intercambiable",
+    "noImage": "Sin imagen"
+  },
+  "results": {
+    "count": "{{count}} producto",
+    "countPlural": "{{count}} productos",
+    "showing": "Mostrando {{from}}–{{to}} de {{total}}",
+    "empty": "No se encontraron productos",
+    "emptyHint": "Prueba ajustando los filtros",
+    "loading": "Cargando productos..."
+  },
+  "breadcrumbs": {
+    "marketplace": "Marketplace"
+  },
+  "feedback": {
+    "loadError": "No se pudo cargar el marketplace",
+    "notFound": "No pudimos encontrar esa página"
+  },
+  "actions": {
+    "viewAll": "Ver todo",
+    "goBack": "Volver"
+  }
+}

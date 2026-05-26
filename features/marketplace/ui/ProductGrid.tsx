@@ -1,14 +1,37 @@
 "use client";
-
-import { formatPrice, conditionLabel } from "@/data/products";
-import type { Product } from "@/types/product";
-import { Heart, ImageOff, ShoppingCart, Star } from "lucide-react";
+import { useTranslation } from "@/i18n/context";
+import { formatPrice } from "@/data/products";
+import { resolveImageUrl } from "@/utils/resolveImage";
+import { Heart, ImageOff, ShoppingCart } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-function ProductCard({ product, lang }: { product: Product; lang: string }) {
+import { NAMESPACE } from "../i18n";
+import type { MarketplaceProduct } from "../types";
+
+const CONDITION_COLORS: Record<string, string> = {
+  NEW: "bg-primary-light-bg text-primary",
+  LIKE_NEW: "bg-primary-light-bg text-primary",
+  OPEN_BOX: "bg-primary-light-bg text-primary",
+  REFURBISHED: "bg-primary-light-bg text-primary",
+  FAIR: "bg-amber-50 text-amber-700",
+  POOR: "bg-red-50 text-red-600",
+  FOR_PARTS: "bg-red-50 text-red-600",
+};
+
+function ProductCard({
+  product,
+  lang,
+}: {
+  product: MarketplaceProduct;
+  lang: string;
+}) {
+  const { t } = useTranslation(NAMESPACE);
   const [liked, setLiked] = useState(false);
   const [added, setAdded] = useState(false);
+
+  const cover = resolveImageUrl(product.images?.[0]);
 
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault();
@@ -16,101 +39,129 @@ function ProductCard({ product, lang }: { product: Product; lang: string }) {
     setTimeout(() => setAdded(false), 1500);
   }
 
-  const CONDITION_COLORS: Record<string, string> = {
-    NEW: "bg-primary-light-bg text-primary",
-    LIKE_NEW: "bg-primary-light-bg text-primary",
-    GOOD: "bg-amber-50 text-amber-700",
-    FAIR: "bg-amber-50 text-amber-700",
-    POOR: "bg-red-50 text-red-600",
-  };
-
   return (
     <Link
       href={`/${lang}/product/${product.id}`}
-      className="group relative bg-surface border border-border rounded-xl overflow-hidden hover:shadow-md transition-all"
+      className="group bg-surface relative overflow-hidden rounded-xl border border-border transition-all hover:shadow-md"
     >
-      {/* Image */}
-      <div className="aspect-square bg-background-secondary flex items-center justify-center relative">
-        <ImageOff size={36} className="text-foreground-muted" strokeWidth={1.5} />
-        {/* Condition badge */}
+      <div className="bg-background-secondary relative flex aspect-square items-center justify-center">
+        {cover ? (
+          <Image
+            src={cover}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover"
+          />
+        ) : (
+          <ImageOff
+            size={36}
+            className="text-foreground-muted"
+            strokeWidth={1.5}
+            aria-label={t("product.noImage")}
+          />
+        )}
+
         <span
-          className={`absolute bottom-2 left-2 text-xs font-medium px-2 py-0.5 rounded-md ${CONDITION_COLORS[product.condition] ?? "bg-border text-foreground"}`}
+          className={`absolute bottom-2 left-2 rounded-md px-2 py-0.5 text-xs font-medium ${
+            CONDITION_COLORS[product.condition] ?? "bg-border text-foreground"
+          }`}
         >
-          {conditionLabel(product.condition)}
+          {t(`conditions.${product.condition}`)}
         </span>
-        {/* Favorite */}
+
+        {product.isExchangeable && (
+          <span className="absolute top-2 left-2 rounded-md bg-secondary/90 px-2 py-0.5 text-xs font-medium text-white">
+            {t("product.exchangeable")}
+          </span>
+        )}
+
         <button
+          type="button"
           onClick={(e) => {
             e.preventDefault();
-            setLiked(!liked);
+            setLiked((v) => !v);
           }}
-          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center hover:bg-white transition-colors"
+          className="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
+          aria-pressed={liked}
         >
           <Heart
             size={15}
-            className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
+            className={
+              liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"
+            }
             strokeWidth={2}
           />
         </button>
       </div>
 
-      {/* Info */}
       <div className="p-3">
         {product.brand && (
-          <p className="text-xs text-foreground-tertiary uppercase tracking-wide truncate">
+          <p className="truncate text-xs tracking-wide text-foreground-tertiary uppercase">
             {product.brand}
           </p>
         )}
-        <p className="text-sm font-semibold text-foreground mt-0.5 line-clamp-2 leading-snug">
+        <p className="mt-0.5 line-clamp-2 text-sm leading-snug font-semibold text-foreground">
           {product.name}
         </p>
 
-        <div className="flex items-center justify-between mt-2">
+        <div className="mt-2 flex items-center justify-between">
           <span className="text-sm font-bold text-primary">
             {formatPrice(product.price)}
           </span>
-          {product && (
-            <span className="flex items-center gap-0.5 text-xs text-foreground-secondary">
-              <Star
-                size={11}
-                className="text-amber-400"
-                fill="currentColor"
-                strokeWidth={0}
-              />
-              {product.brand}
-            </span>
-          )}
         </div>
 
         <button
+          type="button"
           onClick={handleAddToCart}
-          className={`mt-2 w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+          className={`mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-colors ${
             added
               ? "bg-success/10 text-success"
               : "bg-primary-light-bg text-primary hover:bg-primary hover:text-white"
           }`}
         >
           <ShoppingCart size={13} strokeWidth={2} />
-          {added ? "Added!" : "Add to cart"}
+          {added ? t("product.added") : t("product.addToCart")}
         </button>
       </div>
     </Link>
   );
 }
 
-export function ProductGrid({ products, lang }: { products: Product[]; lang: string }) {
+interface Props {
+  products: MarketplaceProduct[];
+  lang: string;
+  loading?: boolean;
+}
+
+export function ProductGrid({ products, lang, loading }: Props) {
+  const { t } = useTranslation(NAMESPACE);
+
+  if (loading && products.length === 0) {
+    return (
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div
+            key={i}
+            className="bg-background-secondary aspect-3/4 animate-pulse rounded-xl"
+          />
+        ))}
+      </div>
+    );
+  }
+
   if (products.length === 0) {
     return (
-      <div className="text-center py-16 text-foreground-secondary">
+      <div className="text-foreground-secondary py-16 text-center">
         <ShoppingCart size={48} className="mx-auto mb-4 opacity-30" strokeWidth={1.5} />
-        <p className="font-semibold">No products found</p>
-        <p className="text-sm mt-1">Try adjusting your filters</p>
+        <p className="font-semibold">{t("results.empty")}</p>
+        <p className="mt-1 text-sm">{t("results.emptyHint")}</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} lang={lang} />
       ))}

@@ -1,0 +1,76 @@
+{
+  "page": {
+    "title": "Marketplace",
+    "subtitle": "Achetez et vendez des articles d'occasion pour une économie circulaire",
+    "departmentTitle": "{{name}}",
+    "departmentSubtitle": "Parcourez toutes les catégories de {{name}}",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Découvrez les articles dans {{name}}"
+  },
+  "sections": {
+    "departments": "Rayons",
+    "categories": "Catégories",
+    "productCategories": "Types de produit",
+    "products": "Produits",
+    "allDepartments": "Tous les rayons",
+    "allCategories": "Toutes les catégories"
+  },
+  "filters": {
+    "title": "Filtres",
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher des produits...",
+    "sortBy": "Trier par",
+    "minPrice": "Prix min",
+    "maxPrice": "Prix max",
+    "condition": "État",
+    "anyCondition": "Tous les états",
+    "exchangeableOnly": "Échangeables uniquement",
+    "apply": "Appliquer",
+    "clear": "Effacer",
+    "open": "Ouvrir les filtres",
+    "close": "Fermer",
+    "perPage": "Par page"
+  },
+  "sort": {
+    "newest": "Plus récents",
+    "oldest": "Plus anciens",
+    "priceAsc": "Prix : croissant",
+    "priceDesc": "Prix : décroissant",
+    "popular": "Plus vus"
+  },
+  "conditions": {
+    "NEW": "Neuf",
+    "LIKE_NEW": "Comme neuf",
+    "OPEN_BOX": "Boîte ouverte",
+    "GOOD": "Bon",
+    "FAIR": "Correct",
+    "POOR": "Usé",
+    "FOR_PARTS": "Pour pièces",
+    "REFURBISHED": "Reconditionné"
+  },
+  "product": {
+    "addToCart": "Ajouter au panier",
+    "added": "Ajouté !",
+    "exchangeable": "Échangeable",
+    "noImage": "Aucune image"
+  },
+  "results": {
+    "count": "{{count}} produit",
+    "countPlural": "{{count}} produits",
+    "showing": "Affichage {{from}}–{{to}} sur {{total}}",
+    "empty": "Aucun produit trouvé",
+    "emptyHint": "Essayez de modifier vos filtres",
+    "loading": "Chargement des produits..."
+  },
+  "breadcrumbs": {
+    "marketplace": "Marketplace"
+  },
+  "feedback": {
+    "loadError": "Impossible de charger le marketplace",
+    "notFound": "Page introuvable"
+  },
+  "actions": {
+    "viewAll": "Tout voir",
+    "goBack": "Retour"
+  }
+}

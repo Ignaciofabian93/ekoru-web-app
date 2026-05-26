@@ -1,0 +1,76 @@
+{
+  "page": {
+    "title": "Marketplace",
+    "subtitle": "Buy and sell pre-loved items for a circular economy",
+    "departmentTitle": "{{name}}",
+    "departmentSubtitle": "Browse all categories within {{name}}",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Discover items in {{name}}"
+  },
+  "sections": {
+    "departments": "Departments",
+    "categories": "Categories",
+    "productCategories": "Product types",
+    "products": "Products",
+    "allDepartments": "All departments",
+    "allCategories": "All categories"
+  },
+  "filters": {
+    "title": "Filters",
+    "search": "Search",
+    "searchPlaceholder": "Search products...",
+    "sortBy": "Sort by",
+    "minPrice": "Min price",
+    "maxPrice": "Max price",
+    "condition": "Condition",
+    "anyCondition": "Any condition",
+    "exchangeableOnly": "Exchangeable only",
+    "apply": "Apply",
+    "clear": "Clear",
+    "open": "Open filters",
+    "close": "Close",
+    "perPage": "Per page"
+  },
+  "sort": {
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "priceAsc": "Price: low to high",
+    "priceDesc": "Price: high to low",
+    "popular": "Most viewed"
+  },
+  "conditions": {
+    "NEW": "New",
+    "LIKE_NEW": "Like new",
+    "OPEN_BOX": "Open box",
+    "GOOD": "Good",
+    "FAIR": "Fair",
+    "POOR": "Poor",
+    "FOR_PARTS": "For parts",
+    "REFURBISHED": "Refurbished"
+  },
+  "product": {
+    "addToCart": "Add to cart",
+    "added": "Added!",
+    "exchangeable": "Exchangeable",
+    "noImage": "No image"
+  },
+  "results": {
+    "count": "{{count}} product",
+    "countPlural": "{{count}} products",
+    "showing": "Showing {{from}}–{{to}} of {{total}}",
+    "empty": "No products found",
+    "emptyHint": "Try adjusting your filters",
+    "loading": "Loading products..."
+  },
+  "breadcrumbs": {
+    "marketplace": "Marketplace"
+  },
+  "feedback": {
+    "loadError": "Could not load the marketplace",
+    "notFound": "We could not find that page"
+  },
+  "actions": {
+    "viewAll": "View all",
+    "goBack": "Go back"
+  }
+}
