@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import HeaderRight from "./HeaderRight";
 import type { ReactNode } from "react";
 
@@ -16,7 +17,7 @@ export function CustomHeader({ logo, searchBar, subHeader }: CustomHeaderProps) 
     >
       <nav className="w-full max-w-4xl flex flex-col mx-auto pt-3 px-6">
         <div className="flex items-center justify-between mb-2 px-2">
-          {logo}
+          <Link href="/">{logo}</Link>
           <HeaderRight />
         </div>
         {searchBar}

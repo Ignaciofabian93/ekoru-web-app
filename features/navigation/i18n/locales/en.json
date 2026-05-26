@@ -12,6 +12,7 @@
     "publish": "Publish",
     "notifications": "Notifications",
     "signIn": "Sign In",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "signOut": "Sign Out"
   }
 }

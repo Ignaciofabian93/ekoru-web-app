@@ -12,6 +12,7 @@
     "publish": "Publicar",
     "notifications": "Notificaciones",
     "signIn": "Iniciar Sesión",
-    "signUp": "Registrarse"
+    "signUp": "Registrarse",
+    "signOut": "Cerrar Sesión"
   }
 }

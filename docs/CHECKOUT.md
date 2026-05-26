@@ -1,15 +1,15 @@
 # Checkout & Payments
 
-This document covers the cart → checkout → payment → confirmation flow in
-`ekoru-web-app`, and the work still needed across `ekoru-transactions` and
-`ekoru-gateway` to wire real provider payments end-to-end.
+This doc covers the cart → checkout → payment → confirmation flow across
+`ekoru-web-app`, `ekoru-transactions`, and `ekoru-gateway`.
 
-Reading order: §1 explains what the web app does today, §2 audits the backend
-as of 2026-05-26, §3 is the plan to close the gap.
+Reading order: §1 explains the web-app side, §2 the transactions subgraph,
+§3 the gateway, §4 lists what still needs running locally before the flow
+is end-to-end live, §5 holds open product questions.
 
 ---
 
-## 1. Web app implementation
+## 1. Web app (`ekoru-web-app`)
 
 ### 1.1 Feature layout (`features/cart/`)
 
@@ -32,32 +32,23 @@ features/cart/
     OrderSummary.tsx
     ConfirmationScreen.tsx, ConfirmationStatus.tsx
   hooks/
-    useCart.ts          # selectors over the cart store
-    useCheckout.ts      # orchestrates createOrder → createPayment → redirect
-    usePaymentStatus.ts # polls payment status on the confirmation screen
-    useShippingQuote.ts # local quote (free/flat) + carrier=UNAVAILABLE
+    useCart.ts, useCheckout.ts, usePaymentStatus.ts, useShippingQuote.ts
   constants/
     shippingMethods.ts, paymentProviders.ts
 ```
 
 ### 1.2 Cart state
 
-[`store/useCartStore.ts`](../store/useCartStore.ts) is a Zustand store with
-`persist` to `localStorage` under the key `ekoru_cart`. Items carry
-`{ productId, name, image, unitPrice, quantity, currency, sellerId, sellerName,
-note? }`. Selectors: `useCartItems`, `useCartCount`, `useCartSubtotal`,
-`useCartCurrency`, `useCartIsEmpty`.
+[`store/useCartStore.ts`](../store/useCartStore.ts) — Zustand + `persist` to
+`localStorage` under `ekoru_cart`. Selectors: `useCartItems`, `useCartCount`,
+`useCartSubtotal`, `useCartCurrency`, `useCartIsEmpty`.
 
-Add-to-cart triggers live in:
+Add-to-cart wired in:
 
-- [`features/product/ui/ProductActions.tsx`](../features/product/ui/ProductActions.tsx) — the main product detail "Add to cart" / "Buy now" buttons.
-- [`features/marketplace/ui/ProductGrid.tsx`](../features/marketplace/ui/ProductGrid.tsx) — the per-card "Add to cart" button.
+- [`features/product/ui/ProductActions.tsx`](../features/product/ui/ProductActions.tsx) — main product page Add to cart / Buy now.
+- [`features/marketplace/ui/ProductGrid.tsx`](../features/marketplace/ui/ProductGrid.tsx) — grid card.
 
-Both default `currency` to `"CLP"` — `Product` doesn't carry a currency yet (see §3.6).
-
-### 1.3 GraphQL contract (proposed)
-
-The web app calls three operations under `graphql/checkout/`:
+### 1.3 GraphQL contract
 
 ```graphql
 mutation CreateOrder($input: CreateOrderInput!) {
@@ -79,375 +70,220 @@ mutation CreatePayment($input: CreatePaymentInput!) {
 }
 
 query GetPaymentStatus($paymentId: ID!) {
-  payment(id: $paymentId) { id status amount currency orderId provider providerTransactionId paidAt }
+  payment(id: $paymentId) { ... }
 }
 ```
 
-Inputs are in [`types/checkout.ts`](../types/checkout.ts). Note that
-`PaymentProviderId` is `"WEBPAY" | "KHIPU" | "MERCADOPAGO"` — wider than the
-backend's `ChileanPaymentProvider` enum today (see §3.1).
+Inputs in [`types/checkout.ts`](../types/checkout.ts). The matching backend
+implementation lives in §2 below.
 
-### 1.4 Provider redirect flow
+### 1.4 Redirect flow
 
-`useCheckout.pay()` runs:
+`useCheckout.pay()`:
 
-1. `createOrder({ items, shippingMethod, shippingAddress?, currency })` — the
-   server is the source of truth for totals; the client only sends ids and
-   quantities. **The client never sends prices.**
+1. `createOrder({ items, shippingMethod, shippingAddress?, currency })` — server owns totals.
 2. `createPayment({ orderId, provider, returnUrl })`.
-3. Hands off to the provider:
-   - `WEBPAY_FORM` → builds a hidden `<form method="POST">` with `name="token_ws"` and submits it to `redirect.url`. This is the only correct way to integrate Transbank Webpay Plus; you cannot use a GET redirect.
-   - `EXTERNAL` → `window.location.assign(redirect.url)`. Used by Khipu and MercadoPago.
+3. Provider hand-off:
+   - `WEBPAY_FORM` → hidden `<form method="POST">` with `name="token_ws"` submitted to `redirect.url`. (Webpay does **not** accept GET.)
+   - `EXTERNAL` → `window.location.assign(redirect.url)` for Khipu and MercadoPago.
+4. Confirmation screen polls `payment(id)` every 3s until status is terminal.
 
-`returnUrl` is the absolute URL `${origin}/${lang}/cart/confirmation`. Providers
-that take return URLs from the request use this; providers that need them
-pre-configured (Webpay) should use `${origin}/api/checkout/return/webpay`.
-
-### 1.5 Return endpoint
-
-[`app/api/checkout/return/[provider]/route.ts`](../app/api/checkout/return/[provider]/route.ts)
-accepts GET (Khipu, MercadoPago) and POST (Webpay) and proxies the entire
-request to `${GATEWAY_BASE_URL}/payments/return/:provider`. The gateway is the
-only thing that talks to the provider SDK — the proxy just hands off and mirrors
-the gateway's `Location` header (or builds a redirect to
-`/[lang]/cart/confirmation?paymentId=…` from a JSON `{ paymentId }` response).
-
-This route doesn't exist on the gateway yet — see §3.4.
-
-### 1.6 Confirmation polling
-
-`usePaymentStatus(paymentId)` queries `GET_PAYMENT_STATUS` with
-`pollInterval: 3000` and stops once status reaches a terminal state
-(`COMPLETED | FAILED | CANCELLED | REFUNDED | PARTIALLY_REFUNDED | EXPIRED`).
-The confirmation screen reads `paymentId`, `payment_id`, or `token_ws` from the
-URL so it doesn't matter which provider key the gateway echoes back.
+The `returnUrl` is `${origin}/api/checkout/return/<provider>` — the Next.js
+proxy at [`app/api/checkout/return/[provider]/route.ts`](../app/api/checkout/return/[provider]/route.ts)
+forwards to the gateway and mirrors its `Location` redirect.
 
 ---
 
-## 2. Backend audit (2026-05-26)
+## 2. Transactions subgraph (`ekoru-transactions`)
 
-### 2.1 `ekoru-transactions`
+### 2.1 Prisma schema changes
 
-Nest + Apollo Federation subgraph, Postgres via Prisma, BullMQ workers backed
-by Redis. Already has the right shape for an async payment processor.
+Master schema: [`prisma/schema.prisma`](../../prisma/schema.prisma) (the
+per-subgraph copy at `ekoru-transactions/prisma/schema.prisma` is also
+updated so `prisma generate` in the subgraph picks up the new client).
 
-**Prisma models** (`prisma/schema.prisma`):
+- New enums: `OrderStatus` (`PENDING_PAYMENT | PAID | CANCELED | REFUNDED`), `ShippingMethod` (`DELIVERED_TO_HOME | IN_HOUSE_PICKUP | IN_MID_POINT_PICKUP | CARRIER`).
+- `ChileanPaymentProvider` adds `MERCADOPAGO`.
+- New model `ShippingAddress` (`recipientName, phone, countryId, regionId, cityId, countyId, street, reference?, zipCode?`). FK relations to `Country/Region/City/County` exist in the master and are stripped from the transactions subgraph as usual (cross-subgraph relations are FKs only).
+- `Order` extended with: `buyerId`, `status`, `subtotal`, `shippingCost`, `taxAmount`, `total`, `currency`, `shippingMethod`, `shippingAddressId`. The `seller` Prisma relation is renamed to `seller_Order_sellerIdToSeller` because Order now has two relations to Seller (buyer + seller) and Prisma requires explicit relation names. **No SQL change** for the rename — Prisma relation names live in the client metadata, not Postgres.
+- Migration at [`prisma/migrations/20260526120000_checkout_orders_addresses/migration.sql`](../../prisma/migrations/20260526120000_checkout_orders_addresses/migration.sql). The migration backfills `buyerId = sellerId` and `status = PAID` for historical rows so the NOT NULL constraints apply.
 
-- `Order { id, sellerId, shippingStatusId, version, createdAt, updatedAt }` — **no totals, no currency, no shipping address, no order-level status field.**
-- `OrderItem { id, orderId, productId?, storeProductId?, quantity, price }` — `price: Int` is the price at order time. Supports both marketplace and store products.
-- `ShippingStatus { id, status: ShippingStage, ... }` — only `PREPARING|SHIPPED|DELIVERED|RETURNED|CANCELED`. Not a payment status.
-- `Payment { id, orderId?, quotationId?, amount, currency, status, paymentProvider, externalId?, externalToken?, fees?, netAmount?, payerId, receiverId, chileanConfigId, paymentType, ... }` — full model.
-- `ChileanPaymentConfig { sellerId, provider, merchantId, apiKey, secretKey, environment, isActive, webhookUrl, returnUrl, cancelUrl }` — per-seller per-provider creds.
-- `PaymentWebhook { paymentId?, provider, eventType, externalId, payload Json, processed, processingError, processedAt }`.
-- `PaymentRefund`, `PaymentTransaction` — refund + audit trail.
+### 2.2 GraphQL types
 
-**Enums** (`graphql/enums/`): `ChileanPaymentProvider = KHIPU | WEBPAY` — **MercadoPago is not in the enum yet.**
+- [`src/graphql/enums/index.ts`](../../ekoru-transactions/src/graphql/enums/index.ts) registers the new enums.
+- [`src/orders/entities/order.entity.ts`](../../ekoru-transactions/src/orders/entities/order.entity.ts) — extended with totals, status, shipping fields, and `@Field(() => Seller) buyer`.
+- [`src/orders/entities/shipping-address.entity.ts`](../../ekoru-transactions/src/orders/entities/shipping-address.entity.ts) — new entity.
+- [`src/payments/entities/payment-redirect.entity.ts`](../../ekoru-transactions/src/payments/entities/payment-redirect.entity.ts) — `WebpayRedirect | ExternalRedirect` union.
+- [`src/payments/entities/create-payment-result.entity.ts`](../../ekoru-transactions/src/payments/entities/create-payment-result.entity.ts) — the `createPayment` return shape.
 
-**GraphQL ops** ([`payments.resolver.ts`](../../ekoru-transactions/src/payments/payments.resolver.ts), [`orders.resolver.ts`](../../ekoru-transactions/src/orders/orders.resolver.ts)):
+### 2.3 `createOrder` — server-owned totals
 
-- `getPayment(id)`, `getPaymentsByPayer`, `getPaymentsByReceiver`, revenue analytics.
-- `createPayment(input: CreatePaymentInput)` — but the input requires `amount`, `payerId`, `receiverId`, `paymentProvider`, `paymentType`, `chileanConfigId` directly from the client. **Anyone could pass any amount.**
-- `getOrder(id)`, `getOrdersBySeller(sellerId)`.
-- `createOrder(input: CreateOrderInput)` — input has `sellerId` + items with `price` per item. **Client-provided prices** — security issue.
-- `refundPayment`, `createPaymentConfig`, `updateShipping`.
+[`src/orders/orders.service.ts`](../../ekoru-transactions/src/orders/orders.service.ts):
 
-**Provider integration** ([`queues/processors/payment.processor.ts`](../../ekoru-transactions/src/queues/processors/payment.processor.ts)):
+1. `buyerId` is taken from `@CurrentSeller()`. Never from input.
+2. [`MarketplaceClient`](../../ekoru-transactions/src/common/clients/marketplace.client.ts) looks up canonical product prices via a GraphQL query to the marketplace subgraph — see §4.4 for the resolver the marketplace needs to expose.
+3. Multi-seller carts are rejected with a clear error (single-seller v1 — see §5).
+4. Shipping cost from a flat-rate table (`DELIVERED_TO_HOME = 3990 CLP`, pickups free, carrier rejected until §4.5).
+5. Order is persisted atomically with `OrderItem`s, `ShippingStatus`, and (when applicable) `ShippingAddress`. Status starts at `PENDING_PAYMENT`.
 
-- BullMQ jobs: `initiate-payment`, `process-refund`, `process-webhook`. Structure is correct, but the bodies are **simulation stubs** — they don't call Khipu or Transbank, they return `khipu_sim_${paymentId}` / `webpay_sim_${paymentId}` and persist that as `externalId`. No `payment_url` is captured because no provider call is made.
-- The `handleWebhook` service method on `PaymentsService` exists, but **no HTTP controller exposes it**. Only `health.controller.ts` exists in the subgraph.
+DTO at [`src/orders/dto/create-order.input.ts`](../../ekoru-transactions/src/orders/dto/create-order.input.ts). Resolver at [`src/orders/orders.resolver.ts`](../../ekoru-transactions/src/orders/orders.resolver.ts) — also exposes a new `getOrdersByBuyer` query the web app's confirmation page links to.
 
-### 2.2 `ekoru-gateway`
+### 2.4 `createPayment` — synchronous redirect
 
-NestJS + Apollo Gateway federation. Routes HTTP-level auth concerns (cookies,
-JWT, refresh) but leaves business logic to subgraphs.
+[`src/payments/payments.service.ts`](../../ekoru-transactions/src/payments/payments.service.ts) `createPayment`:
 
-- [`app.module.ts:130`](../../ekoru-gateway/src/app.module.ts#L130) — **the `transactions` subgraph is commented out.** Only `marketplace` is federated today. So even if `ekoru-transactions` is running, the gateway doesn't expose its schema.
-- No REST controllers for payment returns or webhooks. Only `auth`, `images`, `health`.
+1. Loads the Order, checks `buyerId === payerId` (from JWT) and `status === PENDING_PAYMENT`.
+2. Resolves the seller's `ChileanPaymentConfig` for the chosen provider.
+3. Creates a Payment row in `PROCESSING`.
+4. Calls the provider adapter **synchronously** (the redirect URL IS what the user is waiting on; BullMQ is reserved for async reconciliation).
+5. Persists `externalId` / `externalToken` and returns the `CreatePaymentResult` union.
 
----
+DTO at [`src/payments/dto/create-payment.input.ts`](../../ekoru-transactions/src/payments/dto/create-payment.input.ts) — only `orderId`, `provider`, `returnUrl`. Amount/currency/receiver come from the Order.
 
-## 3. Gap plan
+### 2.5 Provider adapters
 
-In dependency order. Each step is bounded enough to land as its own PR.
+[`src/payments/providers/`](../../ekoru-transactions/src/payments/providers/):
 
-### 3.1 Add `MERCADOPAGO` to the provider enum
+- `provider-adapter.ts` — `ProviderAdapter` interface (`initiate`, `confirm`, `handleWebhook`) + shared arg shapes.
+- `webpay.adapter.ts` — Transbank SDK. Uses `IntegrationCommerceCodes.WEBPAY_PLUS` in SANDBOX, seller's own creds in PRODUCTION. `buyOrder` capped at 26 chars per Transbank rules. Webpay has no async webhook; the return URL POST IS the signal.
+- `khipu.adapter.ts` — Khipu v3 REST (`payment-api.khipu.com/v3/payments`). Returns `simplified_transfer_url` when present. HMAC-SHA256 signature verification helper for webhooks.
+- `mercadopago.adapter.ts` — Checkout Pro (Preference API). Uses `sandbox_init_point` when `environment === 'SANDBOX'`.
+- `index.ts` exports a `ProviderRegistry` that maps `ChileanPaymentProvider` → adapter.
 
-**Where:** `ekoru-transactions/src/graphql/enums/index.ts` (registerEnumType
-`ChileanPaymentProvider`) and `prisma/schema.prisma` enum block.
+Each adapter lazy-loads its SDK so the subgraph can boot without all three installed during the migration window.
 
-The web app already includes `MERCADOPAGO` in `PaymentProviderId` and the UI
-shows the tile. Until the enum is widened on the backend, picking MercadoPago
-will fail at validation time.
+### 2.6 Internal mutations for the gateway
 
-**Migration:** `ALTER TYPE "ChileanPaymentProvider" ADD VALUE 'MERCADOPAGO'`.
-Name on the enum is misleading now — consider renaming the type to
-`PaymentProvider` in a later cleanup, but that's not blocking.
-
-### 3.2 Make `Order` carry totals + currency + address + payment status
-
-`Order` today only carries `sellerId` and a `shippingStatusId`. The web app
-expects `subtotal`, `shippingCost`, `taxAmount`, `total`, `currency`, and a
-shipping address. It also needs an order-level status that's independent of
-shipping (e.g. `PENDING_PAYMENT | PAID | CANCELED | REFUNDED`).
-
-Minimum schema delta on `Order`:
-
-```prisma
-status            OrderStatus  @default(PENDING_PAYMENT)
-subtotal          Int
-shippingCost      Int          @default(0)
-taxAmount         Int          @default(0)
-total             Int
-currency          String       @default("CLP")
-shippingMethod    ShippingMethod
-shippingAddressId Int?
-buyerId           String                                   // = payerId on the Payment
-```
-
-Plus a new `ShippingAddress` model with `recipientName, phone, countryId,
-regionId, cityId, countyId, street, reference?, zipCode?`. Counties/cities/etc.
-are already exposed by another subgraph — keep just the IDs here and resolve
-via federation if needed.
-
-Plus a new enum `ShippingMethod = DELIVERED_TO_HOME | IN_HOUSE_PICKUP |
-IN_MID_POINT_PICKUP | CARRIER` and `OrderStatus`.
-
-### 3.3 Rewrite `createOrder` so the server owns totals
-
-Current input takes `sellerId` and per-item `price` from the client. Replace
-with the contract the web app uses:
+The gateway never talks to the database directly. After confirming with the
+provider, it calls back into transactions through these GraphQL mutations:
 
 ```graphql
-input CreateOrderInput {
-  items: [OrderItemInput!]!         # { productId | storeProductId, quantity } only
-  shippingMethod: ShippingMethod!
-  shippingAddress: ShippingAddressInput   # required when shippingMethod requires one
-  currency: String!                  # for now always "CLP"; reject if it doesn't match the products
+mutation processProviderReturn($provider: ChileanPaymentProvider!, $payload: JSON!, $internalSecret: String!): PaymentStatus!
+mutation processProviderWebhook($provider: ChileanPaymentProvider!, $eventType: String!, $payload: JSON!, $internalSecret: String!): PaymentStatus!
+```
+
+Both check the shared `INTERNAL_SERVICE_SECRET` (either via the
+`x-internal-secret` header the gateway propagates through Apollo Federation
+or via the explicit `internalSecret` argument — useful for dev curls).
+[`src/payments/payments.resolver.ts`](../../ekoru-transactions/src/payments/payments.resolver.ts).
+
+The transactions context picks up the header in [`src/app.module.ts`](../../ekoru-transactions/src/app.module.ts) and exposes it as `ctx.internalSecret`.
+
+When a provider returns/webhooks `COMPLETED`, `PaymentsService` flips the
+linked `Order` to `PAID`; on `FAILED|CANCELLED|EXPIRED` it flips
+`PENDING_PAYMENT` orders to `CANCELED` (idempotent — only matches
+pending-payment rows so re-deliveries don't clobber state).
+
+---
+
+## 3. Gateway (`ekoru-gateway`)
+
+### 3.1 Federation
+
+`transactions` is now uncommented in [`src/app.module.ts`](../../ekoru-gateway/src/app.module.ts) under the subgraph list. Requires `EKORU_TRANSACTIONS_DEV_URL` (and `_STAGING_URL`, `_PROD_URL` per environment) in the gateway env.
+
+The `AuthenticatedDataSource` now also propagates `x-internal-secret` to subgraph requests so transactions' internal mutations can verify the call is from the gateway.
+
+### 3.2 PaymentsController
+
+New module at [`src/payments/`](../../ekoru-gateway/src/payments/) with:
+
+- `POST /payments/return/webpay` — handles Transbank's form-POST (`token_ws`, `TBK_ORDEN_COMPRA`), forwards to transactions' `processProviderReturn`, then `303 Location: ${webAppOrigin}/${lang}/cart/confirmation?paymentId=…`.
+- `GET /payments/return/:provider` (`khipu`, `mercadopago`) — same shape but for GET-style returns.
+- `POST /payments/webhook/khipu` — checks `x-khipu-signature` is present (full HMAC verification happens in transactions after the payment is resolved, because each seller has a different webhook secret).
+- `POST /payments/webhook/mercadopago` — accepts the IPN body, forwards. TODO: verify `x-signature` against the seller's `webhookSecret` (same deferred-resolution pattern as Khipu).
+
+The `PaymentsService` ([`src/payments/payments.service.ts`](../../ekoru-gateway/src/payments/payments.service.ts)) calls the transactions GraphQL endpoint directly with the internal secret header — it does NOT go through the public federated gateway for these internal mutations.
+
+---
+
+## 4. What you still need to do locally
+
+These are the things I can't do for you (database access, npm registry, sandbox credentials).
+
+### 4.1 Install provider SDKs
+
+In `ekoru-transactions`:
+
+```bash
+npm i transbank-sdk mercadopago
+```
+
+(Khipu uses plain `fetch` — no SDK needed.) The adapters lazy-import these so the subgraph still boots if a package is missing; they only throw when an actual payment is attempted with that provider.
+
+### 4.2 Run the Prisma migration
+
+From the monorepo root:
+
+```bash
+npx prisma migrate dev --schema prisma/schema.prisma --name checkout_orders_addresses
+```
+
+Then in `ekoru-transactions` so the client picks up `Order.status`, `tx.shippingAddress`, and the `MERCADOPAGO` enum value:
+
+```bash
+cd ekoru-transactions
+npx prisma generate
+```
+
+You'll see IDE/TS errors in [`payments.service.ts`](../../ekoru-transactions/src/payments/payments.service.ts) and [`orders.service.ts`](../../ekoru-transactions/src/orders/orders.service.ts) until `prisma generate` runs — those are stale client types, not real bugs.
+
+### 4.3 Env vars
+
+**`ekoru-transactions`:**
+
+```ini
+MARKETPLACE_URL=http://localhost:4001/graphql       # internal subgraph URL
+GATEWAY_BASE_URL=http://localhost:4000              # used to build provider notify URLs
+INTERNAL_SERVICE_SECRET=<a-long-random-string>
+```
+
+**`ekoru-gateway`:**
+
+```ini
+EKORU_TRANSACTIONS_DEV_URL=http://localhost:4006/graphql
+INTERNAL_SERVICE_SECRET=<same string as transactions>
+WEB_APP_BASE_URL=http://localhost:3000              # fallback when Referer header is missing
+```
+
+Per-seller credentials live on `ChileanPaymentConfig` rows (not env). For local sandbox testing you can either:
+
+- Create a config row for each seller with `environment = SANDBOX` and leave `merchantId/secretKey` null — the Webpay adapter falls back to Transbank's public integration creds (`597055555532`).
+- Use the same pattern for Khipu/MercadoPago with their respective sandbox tokens.
+
+### 4.4 Marketplace `productsByIds` resolver
+
+`MarketplaceClient.getPrices` calls:
+
+```graphql
+query GetProductPricesForCheckout($ids: [Int!]!) {
+  productsByIds(ids: $ids) {
+    id sellerId price hasOffer offerPrice isActive
+  }
 }
 ```
 
-Server-side `createOrder` must:
+That resolver doesn't exist in the marketplace subgraph yet. Adding it is a 10-line addition to the marketplace `products.resolver.ts` — just a `findMany({ where: { id: { in: ids } } })` and a `select` of those six fields.
 
-1. Resolve `buyerId` from `@CurrentSeller()`/JWT, never trust the client.
-2. Fetch each product from the marketplace subgraph (REST `@requires` or an internal HTTP call) and read `price` and `sellerId` from the canonical record.
-3. Validate that all items share the same `sellerId` (or accept multi-seller orders and split into one `Order` per seller — design decision; recommend single-seller v1 to keep payouts simple).
-4. Compute `subtotal = Σ(price × quantity)`, `shippingCost` from method + address (flat-rate table for v1; carrier quote API later), `taxAmount = 0` for v1 (IVA already included in product prices for Chilean retail), `total = subtotal + shippingCost`.
-5. Persist `Order` with `status = PENDING_PAYMENT`.
-6. Return the totals so the client can show the same number it's about to be charged.
+Until that's added, `createOrder` will fail with "Productos no encontrados".
 
-### 3.4 Rewrite `createPayment` to actually return a redirect
+### 4.5 Carrier shipping
 
-Current `createPayment` takes `amount`, `chileanConfigId`, `paymentType` from
-the client and enqueues a BullMQ job that returns immediately with a `PENDING`
-record. The client never sees the provider URL.
+The CARRIER shipping method is intentionally rejected at the service layer with "Cotización de courier aún no disponible" until you wire a real quote endpoint (Chilexpress / Starken). The web app already shows a disabled tile so the buyer can't pick it.
 
-Two changes:
+### 4.6 Webhook signature verification (MercadoPago)
 
-**A. Input — drop client-trusted fields:**
-
-```graphql
-input CreatePaymentInput {
-  orderId: Int!
-  provider: PaymentProvider!
-  returnUrl: String!
-}
-```
-
-Server reads `payerId` from `@CurrentSeller()`, `receiverId` and `amount` from
-the `Order`, resolves `chileanConfigId` from the seller + provider.
-
-**B. Synchronous provider call inside the mutation, not in BullMQ.**
-
-The provider call has to be **synchronous** for the user-facing flow because
-the response *is* the redirect URL. BullMQ is appropriate for retries on
-*background* work (webhook reconciliation, refunds), not for the initiate-call
-that the user is waiting on.
-
-The mutation should:
-
-1. Load the order, verify it's `PENDING_PAYMENT` and belongs to the caller.
-2. Load the seller's `ChileanPaymentConfig` for the chosen provider.
-3. Call the provider SDK directly. Catch network errors → return a typed GraphQL error so the client can show it inline.
-4. Persist the resulting `externalId` and `externalToken` on the `Payment` row.
-5. Return:
-
-```graphql
-type CreatePaymentResult {
-  paymentId: ID!
-  provider: PaymentProvider!
-  status: PaymentStatus!
-  redirect: PaymentRedirect!
-  payment: Payment!
-}
-
-union PaymentRedirect = WebpayRedirect | ExternalRedirect
-type WebpayRedirect  { kind: String!, url: String!, token: String! }
-type ExternalRedirect { kind: String!, url: String! }
-```
-
-### 3.5 Add REST surface for provider returns + webhooks
-
-These live on the gateway because the providers send the user's browser there
-and webhooks come from public IPs that must hit a publicly addressable host.
-The gateway re-emits cookies and proxies authenticated calls — same pattern.
-
-**Routes to add** on `ekoru-gateway` (new `PaymentsController`):
-
-- `POST /payments/return/webpay` — Transbank POSTs `token_ws` here. Confirms the transaction with `tx.commit(token)`, updates the `Payment` row via an internal call to the transactions subgraph, responds with `302 Location: /es/cart/confirmation?paymentId=…` (or a JSON `{ paymentId }`).
-- `GET /payments/return/khipu` — Khipu redirects here with query params, typically `transaction_id`. Same shape.
-- `GET /payments/return/mercadopago` — MercadoPago redirects with `collection_id`, `external_reference`. Same shape.
-- `POST /payments/webhook/webpay` — Transbank's post-pay notification (separate from `return` — Webpay's return URL is also POST and that's where the commit happens; you may not need a separate webhook).
-- `POST /payments/webhook/khipu` — Khipu's webhook (`x-khipu-signature` header). Verifies HMAC, then calls into transactions to update status.
-- `POST /payments/webhook/mercadopago` — MercadoPago IPN/Webhook. Verifies signature, then forwards.
-
-Each webhook handler MUST verify the provider's signature using the
-`webhookSecret` in `ChileanPaymentConfig` before trusting any field.
-
-The gateway can call into `ekoru-transactions` either through an internal
-GraphQL mutation (`processProviderWebhook(provider, paymentId, payload)`) or
-through a separate internal REST. GraphQL is the lower-friction option since
-the federation client already exists.
-
-### 3.6 Federate the transactions subgraph
-
-Uncomment in `ekoru-gateway/src/app.module.ts:130`:
-
-```ts
-{ name: 'transactions', url: getServiceUrl('TRANSACTIONS') },
-```
-
-…and add `EKORU_TRANSACTIONS_{DEV,STAGING,PROD}_URL` to the gateway's env. The
-subgraph already declares federation directives (Order/Payment as types).
-
-Until this is done, the web app's `CREATE_ORDER`/`CREATE_PAYMENT`/`GET_PAYMENT_STATUS`
-queries will fail with "Cannot query field createOrder" at the gateway.
-
-### 3.7 Real provider SDK integrations
-
-Where the simulation stubs live today:
-[`payment.processor.ts:97-166`](../../ekoru-transactions/src/queues/processors/payment.processor.ts#L97-L166).
-After §3.4 the initiate call moves into the resolver, but the SDK code is the
-same shape.
-
-**Webpay Plus (Transbank)** — npm `transbank-sdk`:
-
-```ts
-import { WebpayPlus, Options, IntegrationCommerceCodes, IntegrationApiKeys, Environment } from 'transbank-sdk';
-
-const env = config.environment === 'PRODUCTION' ? Environment.Production : Environment.Integration;
-const tx = new WebpayPlus.Transaction(new Options(config.merchantId!, config.secretKey!, env));
-const { token, url } = await tx.create(
-  buyOrder,          // unique string, max 26 chars — use `ekoru-${order.id}-${Date.now()}`
-  sessionId,         // unique per session
-  amount,            // CLP integer
-  returnUrl,         // ${GATEWAY_BASE_URL}/payments/return/webpay
-);
-// Return WebpayRedirect { kind: "WEBPAY_FORM", url, token } to the client.
-```
-
-The return handler then commits:
-
-```ts
-const response = await tx.commit(token); // throws on rejection
-// response.status === 'AUTHORIZED' → mark Payment COMPLETED
-```
-
-Use **integration** credentials in dev/staging:
-`IntegrationCommerceCodes.WEBPAY_PLUS` (597055555532) and the matching API key.
-
-**Khipu** — npm `khipu` or a thin axios wrapper over their REST API:
-
-```ts
-const resp = await axios.post('https://payment-api.khipu.com/v3/payments', {
-  amount,
-  currency: 'CLP',
-  subject: description,
-  return_url: `${GATEWAY_BASE_URL}/payments/return/khipu`,
-  cancel_url: `${returnUrl}?status=cancelled`,
-  notify_url: `${GATEWAY_BASE_URL}/payments/webhook/khipu`,
-  transaction_id: `ekoru-${order.id}`,
-}, {
-  headers: { 'x-api-key': config.apiKey! },
-});
-// resp.data: { payment_id, payment_url, simplified_transfer_url, transfer_url, ... }
-// Return ExternalRedirect { kind: "EXTERNAL", url: payment_url }
-```
-
-**MercadoPago** — npm `mercadopago` (Checkout Pro):
-
-```ts
-import { MercadoPagoConfig, Preference } from 'mercadopago';
-
-const client = new MercadoPagoConfig({ accessToken: config.secretKey! });
-const pref = await new Preference(client).create({
-  body: {
-    items: order.orderItem.map(i => ({ id: String(i.productId), title: '...', unit_price: i.price, quantity: i.quantity, currency_id: 'CLP' })),
-    back_urls: {
-      success: `${GATEWAY_BASE_URL}/payments/return/mercadopago`,
-      failure: `${GATEWAY_BASE_URL}/payments/return/mercadopago?status=failed`,
-      pending: `${GATEWAY_BASE_URL}/payments/return/mercadopago?status=pending`,
-    },
-    notification_url: `${GATEWAY_BASE_URL}/payments/webhook/mercadopago`,
-    external_reference: `ekoru-${order.id}`,
-    auto_return: 'approved',
-  },
-});
-// pref.init_point is the redirect URL.
-// Return ExternalRedirect { kind: "EXTERNAL", url: pref.init_point }
-```
-
-### 3.8 Multi-currency / `Product.currency`
-
-`Product` and `StoreProduct` carry `price: number` with no currency. Web app
-defaults to `CLP` at add-to-cart. That's fine for a Chile-first launch but the
-gateway should reject orders whose products span multiple currencies, and
-eventually `Product` needs a `currency: String!` field (or a sellerCurrency on
-the seller record). Not blocking v1.
-
-### 3.9 Shipping quotes
-
-Web `useShippingQuote` flat-rates `DELIVERED_TO_HOME` at CLP $3,990 and marks
-`CARRIER` as `UNAVAILABLE`. Real options:
-
-- v1: store a `shippingFee` on `BusinessProfile` or as a per-region table and resolve server-side in `createOrder`.
-- v2: integrate Chilexpress / Starken quote APIs; add a `shippingQuote(method, address, items)` query the web calls before showing the summary.
-
-### 3.10 Order-level status & buyer history
-
-`getOrdersBySeller` exists but no `getOrdersByBuyer(payerId)`. Confirmation
-screen success state links to `/[lang]/profile/orders` (already a page) — that
-page will need this query when wired.
+The MercadoPago controller currently only rejects empty bodies. Add `x-signature` HMAC verification once you have a seller's webhook secret stored in `ChileanPaymentConfig.secretKey` — same deferred-resolution pattern as Khipu (verify inside the transactions adapter after looking up the payment).
 
 ---
 
-## 4. Rollout sequence (PR-sized chunks)
+## 5. Open product questions
 
-In order — earlier PRs unblock later ones.
+These shape downstream PRs. Worth deciding before going to production.
 
-| # | Repo | Change | Unblocks |
-|---|------|--------|----------|
-| 1 | `transactions` | Prisma migration: `OrderStatus`, `ShippingMethod`, `ShippingAddress`, totals on `Order` | 2, 3, 8 |
-| 2 | `transactions` | Rewrite `createOrder` (server-owned totals, auth from JWT) | 3 |
-| 3 | `transactions` | Rewrite `createPayment` to return `PaymentRedirect` union; move initiate into the resolver | 7 |
-| 4 | `transactions` | Add `MERCADOPAGO` to enum + migration | 7 |
-| 5 | `transactions` | Implement Webpay SDK call (sandbox creds in env) | 7 |
-| 6 | `transactions` | Implement Khipu + MercadoPago SDK calls | 7 |
-| 7 | `gateway` | Uncomment `transactions` subgraph; add `EKORU_TRANSACTIONS_*_URL` env | 8, web app smoke test |
-| 8 | `gateway` | Add `PaymentsController` with `return/:provider` + `webhook/:provider` routes | end-to-end checkout |
-| 9 | `transactions` | Wire webhook → BullMQ → `processWebhook` job → `Payment.status` updates | order completion |
-| 10 | `web-app` | Replace `CARRIER unavailable` branch with a real `shippingQuote` query | carrier method |
-
-Pause and test at the end of each chunk — Webpay's sandbox is fast to verify
-once #1-#5 land.
-
----
-
-## 5. Open questions for the next decision pass
-
-These shape the schema choices in §3.2-§3.3. Worth deciding before #1 lands.
-
-- **Multi-seller carts.** Today's cart can hold items from different sellers. Does the backend split into one `Order` per seller (clean payouts, multiple payments, worse UX) or reject mixed-seller carts at `createOrder` (simple v1, ugly error)? Recommendation: reject for v1, show the user a "split your order" affordance in the cart later.
-- **Where commission/fees live.** `Payment.fees` and `netAmount` columns exist. Who computes them — the resolver, or a separate `splitPayment` step after `COMPLETED`? Affects whether the seller's `ChileanPaymentConfig` is the *only* payee or whether Ekoru's account is.
-- **Sandbox seller config.** Right now `ChileanPaymentConfig` is per-seller. For sandbox/testing, do you want a "platform" config fallback so dev users without their own merchant creds can still complete checkout? Recommendation: yes — add an `isPlatformDefault: Boolean` flag and pick that when the seller has no active config.
-- **Refund UX.** `refundPayment` exists but no frontend surface. Out of scope for the checkout PR but worth knowing whether the buyer or the seller initiates it.
-- **MercadoPago in Chile.** They have lower bank-transfer penetration than Khipu but accept international cards Webpay doesn't. Worth confirming with whoever owns the commercial side that it's worth the integration effort for v1 — it's the most work for the smallest local share.
+- **Multi-seller carts.** Today rejected at `createOrder` with a clear message. Long-term: split into one order per seller at the cart layer with a clearer UX.
+- **Where commission/fees live.** `Payment.fees` and `netAmount` columns exist but aren't populated yet. Affects whether `ChileanPaymentConfig` points at the seller's own account or Ekoru's platform account.
+- **Sandbox platform-default config.** For dev sellers without merchant creds, consider adding `isPlatformDefault: Boolean` to `ChileanPaymentConfig` and picking that when the seller has no active config. The Webpay adapter already falls back to integration creds in SANDBOX, but Khipu/MercadoPago need per-account tokens even in test mode.
+- **Refund UX.** `refundPayment` resolver works; no buyer/seller surface yet.
+- **MercadoPago effort vs. local share.** Lower bank-transfer share than Khipu in Chile but accepts international cards. Confirm with the commercial side it's worth ongoing maintenance.
+- **`Product.currency`.** Cart defaults to CLP. Multi-country needs a currency field on `Product`/`StoreProduct` (or on the seller) so the server can reject mixed-currency carts.

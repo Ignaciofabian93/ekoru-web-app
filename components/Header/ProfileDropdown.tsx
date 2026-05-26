@@ -2,7 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Bell, Leaf, LogIn, PackagePlus, Recycle, UserPlus, User } from "lucide-react";
+import {
+  Bell,
+  Leaf,
+  LogIn,
+  PackagePlus,
+  Recycle,
+  UserPlus,
+  User,
+  LogOutIcon,
+} from "lucide-react";
 import Image from "next/image";
 import clsx from "clsx";
 
@@ -15,6 +24,7 @@ import {
   useSellerEmail,
 } from "@/store/useAuthStore";
 import { NAMESPACE } from "@/features/navigation/i18n";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 
 const AUTH_MENU_ITEMS = [
   { key: "dropdown.myProfile", route: "/profile", icon: User },
@@ -33,6 +43,7 @@ export default function ProfileDropdown() {
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { t } = useTranslation(NAMESPACE);
+  const { handleLogout } = useLogout();
 
   const isAuthenticated = useIsAuthenticated();
   const profileImage = useProfileImage();
@@ -194,6 +205,13 @@ export default function ProfileDropdown() {
               />
             );
           })}
+          <MenuItem
+            icon={LogOutIcon}
+            label={t("dropdown.signOut")}
+            onPress={handleLogout}
+            hasBorder
+            isHighlighted
+          />
         </div>
       </div>
     </div>
@@ -205,20 +223,39 @@ interface MenuItemProps {
   label: string;
   hasBorder: boolean;
   onPress: () => void;
+  isHighlighted?: boolean;
 }
 
-function MenuItem({ icon: Icon, label, hasBorder, onPress }: MenuItemProps) {
+function MenuItem({
+  icon: Icon,
+  label,
+  hasBorder,
+  onPress,
+  isHighlighted,
+}: MenuItemProps) {
   return (
     <button
       type="button"
       role="menuitem"
       onClick={onPress}
       className={clsx(
-        "group flex w-full cursor-pointer items-center gap-3 border-none bg-transparent px-4 py-2.5 text-left transition-colors duration-150 hover:bg-surface-hover",
+        "group flex w-full cursor-pointer items-center gap-3 border-none",
+        "px-4 py-2.5 text-left transition-colors",
+        "duration-150 hover:bg-surface-hover",
         hasBorder && "border-b border-border-light",
       )}
     >
-      <div className="flex size-8 shrink-0 items-center justify-center rounded-sm bg-primary/[0.07] text-primary transition-colors duration-150 group-hover:bg-primary/13 group-hover:text-primary-active">
+      <div
+        className={clsx(
+          "flex size-8 shrink-0 items-center justify-center rounded-sm",
+          " transition-colors duration-150",
+          {
+            "bg-primary/[0.07] text-primary group-hover:bg-primary/13 group-hover:text-primary-active":
+              !isHighlighted,
+            "bg-danger/90 text-white": isHighlighted,
+          },
+        )}
+      >
         <Icon size={16} strokeWidth={1.5} />
       </div>
       <span className="text-base font-medium text-foreground-secondary transition-colors duration-150 group-hover:text-foreground">

@@ -72,5 +72,9 @@
   "actions": {
     "viewAll": "View all",
     "goBack": "Go back"
+  },
+  "scroll": {
+    "previous": "Scroll left",
+    "next": "Scroll right"
   }
 }

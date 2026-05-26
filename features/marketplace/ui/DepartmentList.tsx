@@ -2,7 +2,9 @@
 import { Title } from "@/components/Title/Title";
 import { useTranslation } from "@/i18n/context";
 import clsx from "clsx";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { NAMESPACE } from "../i18n";
 import type { CatalogDepartment } from "../types";
@@ -16,6 +18,8 @@ interface Props {
   loading?: boolean;
 }
 
+const SCROLL_STEP = 240;
+
 export function DepartmentList({
   lang,
   departments,
@@ -24,6 +28,34 @@ export function DepartmentList({
   loading,
 }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateScrollState = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateScrollState();
+    el.addEventListener("scroll", updateScrollState, { passive: true });
+    const observer = new ResizeObserver(updateScrollState);
+    observer.observe(el);
+    return () => {
+      el.removeEventListener("scroll", updateScrollState);
+      observer.disconnect();
+    };
+  }, [updateScrollState, departments.length, showAll]);
+
+  const handleScroll = (delta: number) => {
+    scrollRef.current?.scrollBy({ left: delta, behavior: "smooth" });
+  };
 
   if (loading && departments.length === 0) {
     return (
@@ -48,37 +80,66 @@ export function DepartmentList({
       <Title level="h2" size="h5">
         {t("sections.departments")}
       </Title>
-      <div className="scrollbar-none flex items-center gap-2 overflow-x-auto pb-1">
-        {showAll && (
-          <Link
-            href={`/${lang}/marketplace`}
-            className={clsx(
-              "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
-              !activeSlug
-                ? "bg-primary text-white"
-                : "border border-border bg-surface text-foreground hover:border-primary hover:text-primary",
-            )}
-          >
-            {t("sections.allDepartments")}
-          </Link>
-        )}
-        {departments.map((dep) => {
-          const isActive = dep.slug === activeSlug;
-          return (
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => handleScroll(-SCROLL_STEP)}
+          aria-label={t("scroll.previous")}
+          disabled={!canScrollLeft}
+          className={clsx(
+            "hidden size-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-sm transition hover:border-primary hover:text-primary md:flex",
+            !canScrollLeft && "pointer-events-none opacity-40",
+          )}
+        >
+          <ChevronLeft size={18} strokeWidth={2} />
+        </button>
+        <div
+          ref={scrollRef}
+          className="scrollbar-none flex min-w-0 flex-1 items-center gap-2 overflow-x-auto"
+        >
+          {showAll && (
             <Link
-              key={dep.id}
-              href={`/${lang}/marketplace/${dep.slug}`}
+              href={`/${lang}/marketplace`}
               className={clsx(
                 "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
-                isActive
+                !activeSlug
                   ? "bg-primary text-white"
                   : "border border-border bg-surface text-foreground hover:border-primary hover:text-primary",
               )}
             >
-              {dep.name}
+              {t("sections.allDepartments")}
             </Link>
-          );
-        })}
+          )}
+          {departments.map((dep) => {
+            const isActive = dep.slug === activeSlug;
+            return (
+              <Link
+                key={dep.id}
+                href={`/${lang}/marketplace/${dep.slug}`}
+                className={clsx(
+                  "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-primary text-white"
+                    : "border border-border bg-surface text-foreground hover:border-primary hover:text-primary",
+                )}
+              >
+                {dep.name}
+              </Link>
+            );
+          })}
+        </div>
+        <button
+          type="button"
+          onClick={() => handleScroll(SCROLL_STEP)}
+          aria-label={t("scroll.next")}
+          disabled={!canScrollRight}
+          className={clsx(
+            "hidden size-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-sm transition hover:border-primary hover:text-primary md:flex",
+            !canScrollRight && "pointer-events-none opacity-40",
+          )}
+        >
+          <ChevronRight size={18} strokeWidth={2} />
+        </button>
       </div>
     </section>
   );

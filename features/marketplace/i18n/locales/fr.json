@@ -72,5 +72,9 @@
   "actions": {
     "viewAll": "Tout voir",
     "goBack": "Retour"
+  },
+  "scroll": {
+    "previous": "Défiler à gauche",
+    "next": "Défiler à droite"
   }
 }
