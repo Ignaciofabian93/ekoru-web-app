@@ -1,10 +1,16 @@
-export default function Page() {
-  return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4 py-16">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <h1 className="text-3xl font-bold text-foreground">Seller</h1>
-        <p className="text-foreground-secondary">Coming soon</p>
-      </div>
-    </main>
-  );
+import { notFound } from "next/navigation";
+
+import { hasLocale } from "@/constants/settings";
+import { Seller } from "@/features/seller/screens/Seller";
+
+export default async function SellerPage({
+  params,
+}: {
+  params: Promise<{ lang: string; id: string }>;
+}) {
+  const { lang, id } = await params;
+  if (!hasLocale(lang)) notFound();
+  if (!id) notFound();
+
+  return <Seller id={id} lang={lang} />;
 }

@@ -1,10 +1,11 @@
-export default function Page() {
-  return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4 py-16">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <h1 className="text-3xl font-bold text-foreground">Order Confirmed</h1>
-        <p className="text-foreground-secondary">Coming soon</p>
-      </div>
-    </main>
-  );
+import { type SupportedLanguage } from "@/constants/settings";
+import { Confirmation } from "@/features/cart/screens/Confirmation";
+
+export default async function ConfirmationPage({
+  params,
+}: {
+  params: Promise<{ lang: SupportedLanguage }>;
+}) {
+  const { lang } = await params;
+  return <Confirmation lang={lang} />;
 }

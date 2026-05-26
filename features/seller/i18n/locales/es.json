@@ -1,0 +1,85 @@
+{
+  "page": {
+    "loading": "Cargando vendedor…",
+    "notFound": "Vendedor no encontrado",
+    "notFoundHint": "Este perfil de vendedor no está disponible por el momento.",
+    "error": "No se pudo cargar este vendedor",
+    "errorHint": "Revisa tu conexión e inténtalo nuevamente."
+  },
+  "breadcrumbs": {
+    "marketplace": "Marketplace",
+    "seller": "Vendedor"
+  },
+  "hero": {
+    "memberSince": "Miembro desde {{date}}",
+    "verified": "Vendedor verificado",
+    "share": "Compartir perfil",
+    "shareCopied": "Enlace copiado",
+    "follow": "Seguir",
+    "following": "Siguiendo",
+    "message": "Mensaje",
+    "noLocation": "Ubicación no informada"
+  },
+  "stats": {
+    "products": "Publicaciones",
+    "categories": "Categorías",
+    "memberFor": "Miembro hace"
+  },
+  "memberFor": {
+    "days": "{{count}} día",
+    "daysPlural": "{{count}} días",
+    "months": "{{count}} mes",
+    "monthsPlural": "{{count}} meses",
+    "years": "{{count}} año",
+    "yearsPlural": "{{count}} años"
+  },
+  "about": {
+    "title": "Acerca de",
+    "empty": "Este vendedor aún no ha agregado una biografía."
+  },
+  "details": {
+    "title": "Detalles del vendedor",
+    "sellerType": "Tipo de cuenta",
+    "businessType": "Tipo de negocio",
+    "location": "Ubicación",
+    "phone": "Teléfono",
+    "email": "Correo"
+  },
+  "sellerTypes": {
+    "PERSON": "Persona",
+    "STARTUP": "Emprendimiento",
+    "COMPANY": "Empresa"
+  },
+  "businessTypes": {
+    "RETAIL": "Retail",
+    "SERVICES": "Servicios",
+    "MIXED": "Mixto"
+  },
+  "catalog": {
+    "title": "Publicaciones",
+    "subtitle": "Productos organizados por categoría",
+    "all": "Todos",
+    "empty": "Este vendedor no tiene publicaciones por ahora.",
+    "emptyHint": "Vuelve más tarde para ver nuevos productos.",
+    "loading": "Cargando productos…",
+    "categoryCount": "{{count}} producto",
+    "categoryCountPlural": "{{count}} productos",
+    "uncategorized": "Otros"
+  },
+  "card": {
+    "addToCart": "Agregar al carro",
+    "added": "¡Agregado!",
+    "view": "Ver producto",
+    "noImage": "Sin imagen"
+  },
+  "conditions": {
+    "NEW": "Nuevo",
+    "LIKE_NEW": "Como nuevo",
+    "OPEN_BOX": "Caja abierta",
+    "GOOD": "Bueno",
+    "FAIR": "Regular",
+    "POOR": "Desgastado",
+    "FOR_PARTS": "Para repuestos",
+    "REFURBISHED": "Reacondicionado"
+  }
+}

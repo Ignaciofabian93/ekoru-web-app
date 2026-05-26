@@ -1,0 +1,140 @@
+{
+  "cart": {
+    "title": "Votre panier",
+    "itemCount": "{{count}} article",
+    "itemCountPlural": "{{count}} articles",
+    "empty": {
+      "title": "Votre panier est vide",
+      "subtitle": "Parcourez la marketplace et ajoutez des produits pour commencer.",
+      "cta": "Aller à la marketplace"
+    },
+    "item": {
+      "remove": "Supprimer",
+      "quantity": "Quantité",
+      "unitPrice": "Prix unitaire",
+      "increase": "Augmenter la quantité",
+      "decrease": "Diminuer la quantité",
+      "soldBy": "Vendu par {{seller}}"
+    },
+    "actions": {
+      "clear": "Vider le panier",
+      "proceed": "Passer au paiement",
+      "continueShopping": "Continuer mes achats"
+    }
+  },
+  "checkout": {
+    "title": "Paiement",
+    "subtitle": "Confirmez la livraison et choisissez votre mode de paiement.",
+    "back": "Retour au panier",
+    "steps": {
+      "shipping": "Livraison",
+      "payment": "Paiement",
+      "review": "Revue"
+    },
+    "shipping": {
+      "sectionTitle": "Détails de livraison",
+      "methodTitle": "Mode de livraison",
+      "addressTitle": "Adresse de livraison",
+      "methods": {
+        "DELIVERED_TO_HOME": "Livraison à domicile",
+        "DELIVERED_TO_HOME_desc": "Recevez votre commande à votre adresse.",
+        "IN_HOUSE_PICKUP": "Retrait sur place",
+        "IN_HOUSE_PICKUP_desc": "Retrait gratuit chez le vendeur.",
+        "IN_MID_POINT_PICKUP": "Point de rencontre",
+        "IN_MID_POINT_PICKUP_desc": "Convenez d'un point de rencontre avec le vendeur.",
+        "CARRIER": "Transporteur (Chilexpress / Starken)",
+        "CARRIER_desc": "Devis transporteur selon votre adresse.",
+        "carrierUnavailable": "Les devis transporteur ne sont pas encore disponibles."
+      },
+      "form": {
+        "country": "Pays",
+        "region": "Région",
+        "city": "Ville",
+        "county": "Commune",
+        "address": "Adresse",
+        "addressPlaceholder": "Rue et numéro, app/maison",
+        "addressReference": "Référence (optionnel)",
+        "addressReferencePlaceholder": "Bâtiment, étage, instructions pour le livreur",
+        "zipCode": "Code postal",
+        "phone": "Téléphone de contact",
+        "phonePlaceholder": "+56 9 ...",
+        "recipientName": "Nom du destinataire"
+      },
+      "midPoint": {
+        "note": "Avec le point de rencontre, vous coordonnerez les détails directement avec le vendeur par message. Le paiement en ligne est ignoré jusqu'à confirmation.",
+        "cta": "Contacter le vendeur"
+      },
+      "estimatedCost": "Coût estimé",
+      "free": "Gratuit",
+      "calculating": "Calcul en cours..."
+    },
+    "payment": {
+      "sectionTitle": "Mode de paiement",
+      "providerLabel": "Choisissez un fournisseur",
+      "providers": {
+        "WEBPAY": "Webpay Plus",
+        "WEBPAY_desc": "Cartes de crédit, débit et prépayées. Traité par Transbank.",
+        "KHIPU": "Khipu",
+        "KHIPU_desc": "Virement depuis votre banque chilienne.",
+        "MERCADOPAGO": "MercadoPago",
+        "MERCADOPAGO_desc": "Cartes et portefeuille numérique."
+      },
+      "redirectNotice": "Vous serez redirigé vers {{provider}} pour effectuer le paiement de manière sécurisée. Vos données de carte ne transitent jamais par Ekoru.",
+      "secureBadge": "Paiement sécurisé",
+      "currency": "Devise"
+    },
+    "summary": {
+      "title": "Résumé de la commande",
+      "subtotal": "Sous-total",
+      "shipping": "Livraison",
+      "tax": "Taxes",
+      "total": "Total",
+      "items": "{{count}} articles dans votre commande"
+    },
+    "actions": {
+      "pay": "Payer {{amount}}",
+      "paying": "Traitement...",
+      "continue": "Continuer"
+    },
+    "errors": {
+      "missingAddress": "Complétez l'adresse avant de continuer.",
+      "missingShipping": "Sélectionnez un mode de livraison.",
+      "missingPayment": "Sélectionnez un mode de paiement.",
+      "createOrderFailed": "Impossible de créer votre commande. Réessayez.",
+      "createPaymentFailed": "Impossible de démarrer le paiement. Réessayez.",
+      "midPointUnavailable": "Le point de rencontre se coordonne par message, pas par paiement en ligne."
+    }
+  },
+  "confirmation": {
+    "title": "Confirmation de paiement",
+    "checking": {
+      "title": "Confirmation de votre paiement",
+      "subtitle": "Nous vérifions la réponse de {{provider}}. Cela peut prendre quelques secondes."
+    },
+    "success": {
+      "title": "Paiement confirmé !",
+      "subtitle": "Votre commande #{{orderId}} a été confirmée. Vous recevrez un e-mail avec les détails.",
+      "viewOrder": "Voir ma commande",
+      "continueShopping": "Continuer mes achats"
+    },
+    "pending": {
+      "title": "Paiement en attente",
+      "subtitle": "Nous attendons toujours la confirmation de {{provider}}. Nous vous enverrons un e-mail dès qu'il sera validé.",
+      "viewOrder": "Voir ma commande"
+    },
+    "failed": {
+      "title": "Le paiement n'a pas abouti",
+      "subtitle": "{{provider}} a refusé la transaction ou elle a été annulée. Vous pouvez essayer une autre méthode.",
+      "retry": "Réessayer",
+      "backToCart": "Retour au panier"
+    },
+    "missingPayment": "Nous n'avons pas trouvé d'informations de paiement. Si vous pensez qu'il s'agit d'une erreur, contactez-nous.",
+    "supportLink": "J'ai besoin d'aide"
+  },
+  "a11y": {
+    "cartSection": "Articles dans le panier",
+    "summarySection": "Résumé de la commande",
+    "checkoutForm": "Formulaire de paiement",
+    "loading": "Chargement, veuillez patienter"
+  }
+}

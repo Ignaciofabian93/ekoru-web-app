@@ -1,0 +1,85 @@
+{
+  "page": {
+    "loading": "Chargement du vendeur…",
+    "notFound": "Vendeur introuvable",
+    "notFoundHint": "Ce profil de vendeur n'est pas disponible pour le moment.",
+    "error": "Impossible de charger ce vendeur",
+    "errorHint": "Veuillez vérifier votre connexion et réessayer."
+  },
+  "breadcrumbs": {
+    "marketplace": "Marketplace",
+    "seller": "Vendeur"
+  },
+  "hero": {
+    "memberSince": "Membre depuis {{date}}",
+    "verified": "Vendeur vérifié",
+    "share": "Partager le profil",
+    "shareCopied": "Lien copié",
+    "follow": "Suivre",
+    "following": "Suivi",
+    "message": "Message",
+    "noLocation": "Localisation non fournie"
+  },
+  "stats": {
+    "products": "Annonces",
+    "categories": "Catégories",
+    "memberFor": "Membre depuis"
+  },
+  "memberFor": {
+    "days": "{{count}} jour",
+    "daysPlural": "{{count}} jours",
+    "months": "{{count}} mois",
+    "monthsPlural": "{{count}} mois",
+    "years": "{{count}} an",
+    "yearsPlural": "{{count}} ans"
+  },
+  "about": {
+    "title": "À propos",
+    "empty": "Ce vendeur n'a pas encore ajouté de biographie."
+  },
+  "details": {
+    "title": "Détails du vendeur",
+    "sellerType": "Type de compte",
+    "businessType": "Type d'activité",
+    "location": "Localisation",
+    "phone": "Téléphone",
+    "email": "Email"
+  },
+  "sellerTypes": {
+    "PERSON": "Particulier",
+    "STARTUP": "Startup",
+    "COMPANY": "Entreprise"
+  },
+  "businessTypes": {
+    "RETAIL": "Vente",
+    "SERVICES": "Services",
+    "MIXED": "Mixte"
+  },
+  "catalog": {
+    "title": "Annonces",
+    "subtitle": "Produits organisés par catégorie",
+    "all": "Tous",
+    "empty": "Ce vendeur n'a pas encore d'annonces.",
+    "emptyHint": "Revenez plus tard pour de nouveaux produits.",
+    "loading": "Chargement des produits…",
+    "categoryCount": "{{count}} produit",
+    "categoryCountPlural": "{{count}} produits",
+    "uncategorized": "Autres"
+  },
+  "card": {
+    "addToCart": "Ajouter au panier",
+    "added": "Ajouté !",
+    "view": "Voir le produit",
+    "noImage": "Aucune image"
+  },
+  "conditions": {
+    "NEW": "Neuf",
+    "LIKE_NEW": "Comme neuf",
+    "OPEN_BOX": "Boîte ouverte",
+    "GOOD": "Bon état",
+    "FAIR": "État correct",
+    "POOR": "Usé",
+    "FOR_PARTS": "Pour pièces",
+    "REFURBISHED": "Reconditionné"
+  }
+}

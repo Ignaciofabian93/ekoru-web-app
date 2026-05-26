@@ -1,0 +1,140 @@
+{
+  "cart": {
+    "title": "Your cart",
+    "itemCount": "{{count}} item",
+    "itemCountPlural": "{{count}} items",
+    "empty": {
+      "title": "Your cart is empty",
+      "subtitle": "Browse the marketplace and add products to get started.",
+      "cta": "Go to marketplace"
+    },
+    "item": {
+      "remove": "Remove",
+      "quantity": "Quantity",
+      "unitPrice": "Unit price",
+      "increase": "Increase quantity",
+      "decrease": "Decrease quantity",
+      "soldBy": "Sold by {{seller}}"
+    },
+    "actions": {
+      "clear": "Clear cart",
+      "proceed": "Proceed to checkout",
+      "continueShopping": "Continue shopping"
+    }
+  },
+  "checkout": {
+    "title": "Checkout",
+    "subtitle": "Confirm your shipping and choose how to pay.",
+    "back": "Back to cart",
+    "steps": {
+      "shipping": "Shipping",
+      "payment": "Payment",
+      "review": "Review"
+    },
+    "shipping": {
+      "sectionTitle": "Shipping details",
+      "methodTitle": "Shipping method",
+      "addressTitle": "Delivery address",
+      "methods": {
+        "DELIVERED_TO_HOME": "Home delivery",
+        "DELIVERED_TO_HOME_desc": "Receive your order at your address.",
+        "IN_HOUSE_PICKUP": "In-store pickup",
+        "IN_HOUSE_PICKUP_desc": "Pick up for free at the seller's address.",
+        "IN_MID_POINT_PICKUP": "Mid-point pickup",
+        "IN_MID_POINT_PICKUP_desc": "Agree on a meeting point with the seller.",
+        "CARRIER": "Carrier (Chilexpress / Starken)",
+        "CARRIER_desc": "Carrier quote based on your address.",
+        "carrierUnavailable": "Carrier quotes are not available yet."
+      },
+      "form": {
+        "country": "Country",
+        "region": "Region",
+        "city": "City",
+        "county": "County",
+        "address": "Address",
+        "addressPlaceholder": "Street and number, apt/house",
+        "addressReference": "Reference (optional)",
+        "addressReferencePlaceholder": "Block, floor, instructions for the courier",
+        "zipCode": "ZIP code",
+        "phone": "Contact phone",
+        "phonePlaceholder": "+56 9 ...",
+        "recipientName": "Recipient name"
+      },
+      "midPoint": {
+        "note": "With mid-point pickup you'll coordinate the meeting details directly with the seller. Online payment is skipped until the meet-up is confirmed.",
+        "cta": "Message the seller"
+      },
+      "estimatedCost": "Estimated cost",
+      "free": "Free",
+      "calculating": "Calculating..."
+    },
+    "payment": {
+      "sectionTitle": "Payment method",
+      "providerLabel": "Choose a provider",
+      "providers": {
+        "WEBPAY": "Webpay Plus",
+        "WEBPAY_desc": "Credit, debit and prepaid cards. Processed by Transbank.",
+        "KHIPU": "Khipu",
+        "KHIPU_desc": "Bank transfer from your Chilean bank.",
+        "MERCADOPAGO": "MercadoPago",
+        "MERCADOPAGO_desc": "Cards and digital wallet."
+      },
+      "redirectNotice": "You'll be redirected to {{provider}} to complete the payment securely. Your card details never pass through Ekoru.",
+      "secureBadge": "Secure payment",
+      "currency": "Currency"
+    },
+    "summary": {
+      "title": "Order summary",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "tax": "Taxes",
+      "total": "Total",
+      "items": "{{count}} items in your order"
+    },
+    "actions": {
+      "pay": "Pay {{amount}}",
+      "paying": "Processing...",
+      "continue": "Continue"
+    },
+    "errors": {
+      "missingAddress": "Please complete the address before continuing.",
+      "missingShipping": "Select a shipping method.",
+      "missingPayment": "Select a payment method.",
+      "createOrderFailed": "We couldn't create your order. Please try again.",
+      "createPaymentFailed": "We couldn't start the payment. Please try again.",
+      "midPointUnavailable": "Mid-point pickup is coordinated by message, not by online payment."
+    }
+  },
+  "confirmation": {
+    "title": "Payment confirmation",
+    "checking": {
+      "title": "Confirming your payment",
+      "subtitle": "We are verifying the response from {{provider}}. This may take a few seconds."
+    },
+    "success": {
+      "title": "Payment confirmed!",
+      "subtitle": "Your order #{{orderId}} was confirmed. You'll receive an email with the details.",
+      "viewOrder": "View my order",
+      "continueShopping": "Continue shopping"
+    },
+    "pending": {
+      "title": "Payment pending",
+      "subtitle": "We're still waiting for {{provider}} to confirm. We'll email you as soon as it clears.",
+      "viewOrder": "View my order"
+    },
+    "failed": {
+      "title": "Payment didn't go through",
+      "subtitle": "{{provider}} declined the transaction or it was cancelled. You can try another method.",
+      "retry": "Try again",
+      "backToCart": "Back to cart"
+    },
+    "missingPayment": "We couldn't find the payment information. If you believe this is a mistake, contact us.",
+    "supportLink": "I need help"
+  },
+  "a11y": {
+    "cartSection": "Items in cart",
+    "summarySection": "Order summary",
+    "checkoutForm": "Checkout form",
+    "loading": "Loading, please wait"
+  }
+}

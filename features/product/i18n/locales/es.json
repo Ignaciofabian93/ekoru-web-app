@@ -1,0 +1,130 @@
+{
+  "page": {
+    "loading": "Cargando producto…",
+    "notFound": "Producto no encontrado",
+    "notFoundHint": "Es posible que este producto haya sido eliminado o ya no esté disponible.",
+    "error": "No se pudo cargar este producto",
+    "errorHint": "Revisa tu conexión e inténtalo nuevamente."
+  },
+  "breadcrumbs": {
+    "marketplace": "Marketplace",
+    "product": "Producto"
+  },
+  "gallery": {
+    "noImage": "Sin imagen disponible",
+    "previous": "Imagen anterior",
+    "next": "Imagen siguiente",
+    "goToImage": "Ir a la imagen {{index}}",
+    "imageAlt": "{{name}} – imagen {{index}} de {{total}}",
+    "thumbnailAlt": "Miniatura {{index}}"
+  },
+  "actions": {
+    "addToCart": "Agregar al carro",
+    "added": "Agregado al carro",
+    "buyNow": "Comprar ahora",
+    "save": "Guardar",
+    "saved": "Guardado",
+    "share": "Compartir",
+    "viewCart": "Ver carro",
+    "contactSeller": "Contactar al vendedor",
+    "viewSeller": "Ver vendedor",
+    "viewAll": "Ver todos"
+  },
+  "summary": {
+    "by": "por",
+    "views": "{{count}} visualización",
+    "viewsPlural": "{{count}} visualizaciones",
+    "noBrand": "Sin marca",
+    "exchangeable": "Intercambiable"
+  },
+  "conditions": {
+    "NEW": "Nuevo",
+    "LIKE_NEW": "Como nuevo",
+    "OPEN_BOX": "Caja abierta",
+    "GOOD": "Bueno",
+    "FAIR": "Regular",
+    "POOR": "Desgastado",
+    "FOR_PARTS": "Para repuestos",
+    "REFURBISHED": "Reacondicionado"
+  },
+  "trust": {
+    "secureCheckout": "Pago seguro",
+    "secureCheckoutHint": "Pagos encriptados, tus datos están protegidos",
+    "buyerProtection": "Protección al comprador",
+    "buyerProtectionHint": "Devolución si el producto no es como se describe",
+    "shipping": "Envío disponible",
+    "shippingHint": "Coordina la entrega con el vendedor"
+  },
+  "description": {
+    "title": "Descripción",
+    "empty": "El vendedor no ha agregado una descripción para este producto."
+  },
+  "details": {
+    "title": "Detalles del producto",
+    "brand": "Marca",
+    "color": "Color",
+    "condition": "Condición",
+    "conditionDescription": "Notas de la condición",
+    "category": "Categoría",
+    "exchangeable": "Intercambiable",
+    "yes": "Sí",
+    "no": "No",
+    "interests": "Intereses",
+    "publishedOn": "Publicado el"
+  },
+  "impact": {
+    "title": "Impacto ambiental",
+    "subtitle": "Al darle una segunda vida a este producto ahorras",
+    "co2": "CO₂ ahorrado",
+    "water": "Agua ahorrada",
+    "materials": "Desglose por material",
+    "kg": "kg",
+    "liters": "L"
+  },
+  "badges": {
+    "POPULAR": "Popular",
+    "DISCOUNTED": "Con descuento",
+    "WOMAN_OWNED": "Mujer emprendedora",
+    "BEST_SELLER": "Más vendido",
+    "TOP_RATED": "Mejor valorado",
+    "COMMUNITY_FAVORITE": "Favorito de la comunidad",
+    "LIMITED_TIME_OFFER": "Oferta por tiempo limitado",
+    "FLASH_SALE": "Oferta flash",
+    "BEST_VALUE": "Mejor precio",
+    "HANDMADE": "Hecho a mano",
+    "SUSTAINABLE": "Sustentable",
+    "SUPPORTS_CAUSE": "Apoya una causa",
+    "FAMILY_BUSINESS": "Negocio familiar",
+    "CHARITY_SUPPORT": "Apoyo a la caridad",
+    "LIMITED_STOCK": "Stock limitado",
+    "SEASONAL": "De temporada",
+    "FREE_SHIPPING": "Envío gratis",
+    "FOR_REPAIR": "Para reparación",
+    "REFURBISHED": "Reacondicionado",
+    "EXCHANGEABLE": "Intercambiable",
+    "LAST_PRICE": "Último precio",
+    "FOR_GIFT": "Ideal para regalo",
+    "OPEN_TO_OFFERS": "Abierto a ofertas",
+    "OPEN_BOX": "Caja abierta",
+    "CRUELTY_FREE": "Libre de crueldad",
+    "DELIVERED_TO_HOME": "Entrega a domicilio"
+  },
+  "seller": {
+    "title": "Sobre el vendedor",
+    "verified": "Verificado",
+    "memberSince": "Miembro desde {{date}}",
+    "location": "Ubicación",
+    "phone": "Teléfono",
+    "noLocation": "Ubicación no informada",
+    "types": {
+      "PERSON": "Persona",
+      "STARTUP": "Emprendimiento",
+      "COMPANY": "Empresa"
+    }
+  },
+  "otherProducts": {
+    "title": "Más productos de este vendedor",
+    "empty": "Este vendedor no tiene otras publicaciones por ahora.",
+    "loading": "Cargando otros productos…"
+  }
+}

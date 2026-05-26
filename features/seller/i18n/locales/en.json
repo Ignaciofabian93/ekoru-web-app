@@ -1,0 +1,85 @@
+{
+  "page": {
+    "loading": "Loading seller…",
+    "notFound": "Seller not found",
+    "notFoundHint": "This seller profile is not available right now.",
+    "error": "Could not load this seller",
+    "errorHint": "Please check your connection and try again."
+  },
+  "breadcrumbs": {
+    "marketplace": "Marketplace",
+    "seller": "Seller"
+  },
+  "hero": {
+    "memberSince": "Member since {{date}}",
+    "verified": "Verified seller",
+    "share": "Share profile",
+    "shareCopied": "Link copied",
+    "follow": "Follow",
+    "following": "Following",
+    "message": "Message",
+    "noLocation": "Location not provided"
+  },
+  "stats": {
+    "products": "Listings",
+    "categories": "Categories",
+    "memberFor": "Member for"
+  },
+  "memberFor": {
+    "days": "{{count}} day",
+    "daysPlural": "{{count}} days",
+    "months": "{{count}} month",
+    "monthsPlural": "{{count}} months",
+    "years": "{{count}} year",
+    "yearsPlural": "{{count}} years"
+  },
+  "about": {
+    "title": "About",
+    "empty": "This seller has not added a bio yet."
+  },
+  "details": {
+    "title": "Seller details",
+    "sellerType": "Account type",
+    "businessType": "Business type",
+    "location": "Location",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "sellerTypes": {
+    "PERSON": "Person",
+    "STARTUP": "Startup",
+    "COMPANY": "Company"
+  },
+  "businessTypes": {
+    "RETAIL": "Retail",
+    "SERVICES": "Services",
+    "MIXED": "Mixed"
+  },
+  "catalog": {
+    "title": "Listings",
+    "subtitle": "Products organized by category",
+    "all": "All",
+    "empty": "This seller has no listings yet.",
+    "emptyHint": "Check back later for new products.",
+    "loading": "Loading products…",
+    "categoryCount": "{{count}} product",
+    "categoryCountPlural": "{{count}} products",
+    "uncategorized": "Other"
+  },
+  "card": {
+    "addToCart": "Add to cart",
+    "added": "Added!",
+    "view": "View product",
+    "noImage": "No image"
+  },
+  "conditions": {
+    "NEW": "New",
+    "LIKE_NEW": "Like new",
+    "OPEN_BOX": "Open box",
+    "GOOD": "Good",
+    "FAIR": "Fair",
+    "POOR": "Poor",
+    "FOR_PARTS": "For parts",
+    "REFURBISHED": "Refurbished"
+  }
+}

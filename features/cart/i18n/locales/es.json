@@ -1,0 +1,140 @@
+{
+  "cart": {
+    "title": "Tu carrito",
+    "itemCount": "{{count}} producto",
+    "itemCountPlural": "{{count}} productos",
+    "empty": {
+      "title": "Tu carrito está vacío",
+      "subtitle": "Explora el marketplace y agrega productos para comenzar.",
+      "cta": "Ir al marketplace"
+    },
+    "item": {
+      "remove": "Eliminar",
+      "quantity": "Cantidad",
+      "unitPrice": "Precio unitario",
+      "increase": "Aumentar cantidad",
+      "decrease": "Disminuir cantidad",
+      "soldBy": "Vendido por {{seller}}"
+    },
+    "actions": {
+      "clear": "Vaciar carrito",
+      "proceed": "Continuar al pago",
+      "continueShopping": "Seguir comprando"
+    }
+  },
+  "checkout": {
+    "title": "Pago",
+    "subtitle": "Confirma tu envío y elige cómo pagar.",
+    "back": "Volver al carrito",
+    "steps": {
+      "shipping": "Envío",
+      "payment": "Pago",
+      "review": "Revisar"
+    },
+    "shipping": {
+      "sectionTitle": "Datos de envío",
+      "methodTitle": "Método de envío",
+      "addressTitle": "Dirección de entrega",
+      "methods": {
+        "DELIVERED_TO_HOME": "Envío a domicilio",
+        "DELIVERED_TO_HOME_desc": "Recibe tu pedido en tu dirección.",
+        "IN_HOUSE_PICKUP": "Retiro en local",
+        "IN_HOUSE_PICKUP_desc": "Retira gratis en la dirección del vendedor.",
+        "IN_MID_POINT_PICKUP": "Punto intermedio",
+        "IN_MID_POINT_PICKUP_desc": "Coordina con el vendedor un punto de encuentro.",
+        "CARRIER": "Courier (Chilexpress / Starken)",
+        "CARRIER_desc": "Cotización por courier según tu dirección.",
+        "carrierUnavailable": "Cotización de courier no disponible por ahora."
+      },
+      "form": {
+        "country": "País",
+        "region": "Región",
+        "city": "Ciudad",
+        "county": "Comuna",
+        "address": "Dirección",
+        "addressPlaceholder": "Calle y número, depto/casa",
+        "addressReference": "Referencia (opcional)",
+        "addressReferencePlaceholder": "Block, piso, instrucciones para el repartidor",
+        "zipCode": "Código postal",
+        "phone": "Teléfono de contacto",
+        "phonePlaceholder": "+56 9 ...",
+        "recipientName": "Nombre del destinatario"
+      },
+      "midPoint": {
+        "note": "Al elegir punto intermedio, coordinarás los detalles directamente con el vendedor por mensaje. Por ahora se omite el pago hasta confirmar el encuentro.",
+        "cta": "Contactar al vendedor"
+      },
+      "estimatedCost": "Costo estimado",
+      "free": "Gratis",
+      "calculating": "Calculando..."
+    },
+    "payment": {
+      "sectionTitle": "Método de pago",
+      "providerLabel": "Selecciona un proveedor",
+      "providers": {
+        "WEBPAY": "Webpay Plus",
+        "WEBPAY_desc": "Tarjetas de crédito, débito y prepago. Procesado por Transbank.",
+        "KHIPU": "Khipu",
+        "KHIPU_desc": "Transferencia bancaria desde tu banco chileno.",
+        "MERCADOPAGO": "MercadoPago",
+        "MERCADOPAGO_desc": "Tarjetas y billetera digital."
+      },
+      "redirectNotice": "Serás redirigido a {{provider}} para completar el pago de forma segura. Tus datos de tarjeta nunca pasan por Ekoru.",
+      "secureBadge": "Pago seguro",
+      "currency": "Moneda"
+    },
+    "summary": {
+      "title": "Resumen del pedido",
+      "subtotal": "Subtotal",
+      "shipping": "Envío",
+      "tax": "Impuestos",
+      "total": "Total",
+      "items": "{{count}} productos en tu pedido"
+    },
+    "actions": {
+      "pay": "Pagar {{amount}}",
+      "paying": "Procesando...",
+      "continue": "Continuar"
+    },
+    "errors": {
+      "missingAddress": "Completa la dirección antes de continuar.",
+      "missingShipping": "Selecciona un método de envío.",
+      "missingPayment": "Selecciona un método de pago.",
+      "createOrderFailed": "No pudimos crear tu pedido. Intenta nuevamente.",
+      "createPaymentFailed": "No pudimos iniciar el pago. Intenta nuevamente.",
+      "midPointUnavailable": "El método de punto intermedio se coordina por mensaje, no por pago en línea."
+    }
+  },
+  "confirmation": {
+    "title": "Confirmación de pago",
+    "checking": {
+      "title": "Confirmando tu pago",
+      "subtitle": "Estamos verificando la respuesta de {{provider}}. Esto puede tomar unos segundos."
+    },
+    "success": {
+      "title": "¡Pago confirmado!",
+      "subtitle": "Tu pedido #{{orderId}} fue confirmado. Recibirás un correo con los detalles.",
+      "viewOrder": "Ver mi pedido",
+      "continueShopping": "Seguir comprando"
+    },
+    "pending": {
+      "title": "Pago pendiente",
+      "subtitle": "Aún estamos esperando la confirmación de {{provider}}. Te avisaremos por correo en cuanto se acredite.",
+      "viewOrder": "Ver mi pedido"
+    },
+    "failed": {
+      "title": "El pago no se completó",
+      "subtitle": "{{provider}} rechazó la transacción o fue cancelada. Puedes intentar con otro método.",
+      "retry": "Intentar de nuevo",
+      "backToCart": "Volver al carrito"
+    },
+    "missingPayment": "No encontramos la información del pago. Si crees que es un error, contáctanos.",
+    "supportLink": "Necesito ayuda"
+  },
+  "a11y": {
+    "cartSection": "Productos en el carrito",
+    "summarySection": "Resumen del pedido",
+    "checkoutForm": "Formulario de pago",
+    "loading": "Cargando, por favor espera"
+  }
+}

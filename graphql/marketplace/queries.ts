@@ -101,6 +101,76 @@ export const GET_PRODUCT_CATEGORY_BY_SLUG = gql`
   }
 `;
 
+export const GET_PRODUCT_BY_ID = gql`
+  query GetProductById($id: ID!) {
+    getProductById(id: $id) {
+      id
+      name
+      description
+      color
+      brand
+      price
+      images
+      badges
+      interests
+      condition
+      conditionDescription
+      isActive
+      isExchangeable
+      sellerId
+      viewCount
+      createdAt
+      updatedAt
+      productCategory {
+        id
+        translation {
+          name
+          slug
+          href
+        }
+      }
+      environmentalImpact {
+        totalCo2SavingsKG
+        totalWaterSavingsLT
+        materialBreakdown {
+          materialType
+          quantity
+          unit
+          co2SavingsKG
+          waterSavingsLT
+        }
+      }
+      seller {
+        id
+        email
+        sellerType
+        isVerified
+        address
+        phone
+        county {
+          id
+          county
+          cityId
+        }
+        profile {
+          ... on PersonProfile {
+            id
+            firstName
+            lastName
+            displayName
+            profileImage
+          }
+          ... on BusinessProfile {
+            id
+            businessName
+            logo
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_PRODUCTS = gql`
   ${PRODUCT_FIELDS_FRAGMENT}
   query GetProducts(
@@ -156,6 +226,93 @@ export const GET_PRODUCTS_BY_SELLER = gql`
     ) {
       nodes {
         ...ProductFields
+      }
+      pageInfo {
+        totalCount
+        totalPages
+        currentPage
+        pageSize
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+`;
+
+export const GET_SELLER_STOREFRONT = gql`
+  query GetSellerStorefront(
+    $sellerId: ID!
+    $page: Int = 1
+    $pageSize: Int = 100
+    $filter: ProductFilterInput
+    $sort: ProductSortInput
+  ) {
+    getProductsBySeller(
+      sellerId: $sellerId
+      page: $page
+      pageSize: $pageSize
+      filter: $filter
+      sort: $sort
+    ) {
+      nodes {
+        id
+        name
+        description
+        color
+        brand
+        price
+        images
+        badges
+        interests
+        condition
+        conditionDescription
+        isActive
+        isExchangeable
+        sellerId
+        viewCount
+        createdAt
+        updatedAt
+        productCategory {
+          id
+          translation {
+            name
+            slug
+            href
+          }
+        }
+        seller {
+          id
+          email
+          sellerType
+          isVerified
+          createdAt
+          address
+          phone
+          county {
+            id
+            county
+            cityId
+          }
+          profile {
+            ... on PersonProfile {
+              id
+              firstName
+              lastName
+              displayName
+              bio
+              profileImage
+              coverImage
+            }
+            ... on BusinessProfile {
+              id
+              businessName
+              description
+              logo
+              coverImage
+              businessType
+            }
+          }
+        }
       }
       pageInfo {
         totalCount

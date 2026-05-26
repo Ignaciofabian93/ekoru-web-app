@@ -1,10 +1,11 @@
-import { CartClient } from "@/features/cart/ui/CartClient";
+import { type SupportedLanguage } from "@/constants/settings";
+import { Cart } from "@/features/cart/screens/Cart";
 
 export default async function CartPage({
   params,
 }: {
-  params: Promise<{ lang: string }>;
+  params: Promise<{ lang: SupportedLanguage }>;
 }) {
   const { lang } = await params;
-  return <CartClient lang={lang} />;
+  return <Cart lang={lang} />;
 }

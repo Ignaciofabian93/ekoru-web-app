@@ -41,6 +41,7 @@ export type Product = {
   condition: ProductCondition;
   conditionDescription?: string;
   deletedAt?: string; // Soft delete - null means active
+  viewCount?: number;
   environmentalImpact?: EnvironmentalImpact;
   seller?: Seller;
   productCategory?: ProductCategory;
