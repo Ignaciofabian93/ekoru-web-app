@@ -24,15 +24,15 @@ export function SellerCategorySection({ lang, group, id }: Props) {
 
   return (
     <section id={id} className="scroll-mt-24">
-      <div className="mb-3 flex items-baseline justify-between gap-3">
-        <h3 className="text-base font-semibold text-foreground md:text-lg">
+      <div className="mb-3 flex items-baseline justify-between gap-2">
+        <h3 className="min-w-0 flex-1 truncate text-base font-semibold text-foreground md:text-lg">
           {group.name}
         </h3>
-        <span className="text-xs font-medium text-foreground-tertiary">
+        <span className="shrink-0 text-xs font-medium whitespace-nowrap text-foreground-tertiary">
           {countLabel}
         </span>
       </div>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
         {group.products.map((product) => (
           <SellerProductCard key={product.id} product={product} lang={lang} />
         ))}

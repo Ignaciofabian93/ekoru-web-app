@@ -42,6 +42,12 @@ export function useRegister() {
     // The active locale comes from the URL; fall back to the persisted cookie.
     const storedLanguage = params.lang ?? getCookie(LANGUAGE_COOKIE) ?? undefined;
 
+    // Mobile keyboards and clipboard managers frequently introduce trailing
+    // whitespace or capitalization on the email field. The backend rejects
+    // unnormalized emails with a 400, so normalize before submit.
+    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedPassword = password.trim();
+
     try {
       if (sellerType === "PERSON") {
         await registerPerson({
@@ -50,8 +56,8 @@ export function useRegister() {
               sellerType,
               firstName: sanitizeOnSubmit(firstName),
               lastName: sanitizeOnSubmit(lastName),
-              email,
-              password,
+              email: normalizedEmail,
+              password: normalizedPassword,
             },
             language: storedLanguage?.toUpperCase() || "ES",
           },
@@ -64,8 +70,8 @@ export function useRegister() {
               businessType,
               businessName: sanitizeOnSubmit(businessName),
               displayName: sanitizeOnSubmit(displayName),
-              email,
-              password,
+              email: normalizedEmail,
+              password: normalizedPassword,
             },
             language: storedLanguage?.toUpperCase() || "ES",
           },

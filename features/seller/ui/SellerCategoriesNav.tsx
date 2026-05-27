@@ -4,6 +4,8 @@ import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
 import type { CategoryGroup } from "../types";
+import clsx from "clsx";
+import { Text } from "@/components/Text/Text";
 
 interface Props {
   categories: CategoryGroup[];
@@ -12,12 +14,7 @@ interface Props {
   totalCount: number;
 }
 
-export function SellerCategoriesNav({
-  categories,
-  active,
-  onChange,
-  totalCount,
-}: Props) {
+export function SellerCategoriesNav({ categories, active, onChange, totalCount }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
   if (categories.length === 0) return null;
@@ -34,9 +31,9 @@ export function SellerCategoriesNav({
   return (
     <nav
       aria-label={t("catalog.title")}
-      className="sticky top-0 z-10 -mx-4 border-b border-border-light bg-background/95 px-4 py-2 backdrop-blur md:mx-0 md:rounded-2xl md:border md:px-3"
+      className="sticky top-0 z-10 -mx-4 px-4 py-2 backdrop-blur md:mx-0 md:px-3"
     >
-      <div className="flex gap-2 overflow-x-auto">
+      <div className="scrollbar-none -mx-1 flex gap-2 overflow-x-auto px-1 py-2">
         {tabs.map((tab) => {
           const isActive = tab.id === active;
           return (
@@ -45,20 +42,32 @@ export function SellerCategoriesNav({
               type="button"
               onClick={() => onChange(tab.id)}
               aria-pressed={isActive}
-              className={`flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-primary text-white"
-                  : "bg-background-secondary text-foreground-secondary hover:bg-border"
-              }`}
+              className={clsx(
+                "flex shrink-0 items-center gap-4 rounded-full",
+                "px-3.5 py-1.5 text-sm font-medium",
+                "transition-colors shadow-xs hover:shadow-md shadow-gray-200",
+                {
+                  "bg-primary text-white": isActive,
+                  "bg-white text-foreground-secondary": !isActive,
+                },
+              )}
             >
-              <span>{tab.name}</span>
-              <span
-                className={`rounded-full px-1.5 text-xs font-semibold ${
-                  isActive ? "bg-white/20" : "bg-surface text-foreground-tertiary"
-                }`}
+              <Text
+                variant="span"
+                size="sm"
+                weight={isActive ? "semibold" : "normal"}
+                color={isActive ? "white" : "default"}
+              >
+                {tab.name}
+              </Text>
+              <Text
+                variant="span"
+                size="xs"
+                color={isActive ? "white" : "default"}
+                weight="bold"
               >
                 {tab.count}
-              </span>
+              </Text>
             </button>
           );
         })}

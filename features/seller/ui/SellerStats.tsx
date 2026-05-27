@@ -5,6 +5,7 @@ import { LayoutGrid, Package, Sparkles } from "lucide-react";
 import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
+import { Text } from "@/components/Text/Text";
 
 interface Props {
   productsCount: number;
@@ -16,10 +17,7 @@ function memberDuration(t: ReturnType<typeof useTranslation>["t"], since?: strin
   if (!since) return "—";
   const start = new Date(since).getTime();
   if (Number.isNaN(start)) return "—";
-  const diffDays = Math.max(
-    1,
-    Math.floor((Date.now() - start) / (1000 * 60 * 60 * 24)),
-  );
+  const diffDays = Math.max(1, Math.floor((Date.now() - start) / (1000 * 60 * 60 * 24)));
   if (diffDays < 30) {
     return diffDays === 1
       ? t("memberFor.days", { count: "1" })
@@ -37,11 +35,7 @@ function memberDuration(t: ReturnType<typeof useTranslation>["t"], since?: strin
     : t("memberFor.yearsPlural", { count: String(years) });
 }
 
-export function SellerStats({
-  productsCount,
-  categoriesCount,
-  memberSince,
-}: Props) {
+export function SellerStats({ productsCount, categoriesCount, memberSince }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
   const items = [
@@ -55,15 +49,19 @@ export function SellerStats({
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-2 sm:gap-3">
+    <div className="grid grid-cols-3 md:grid-cols-1 gap-2 sm:gap-3 mb-3">
       {items.map(({ icon: Icon, label, value }) => (
         <div
           key={label}
-          className="flex flex-col items-center gap-1 rounded-2xl border border-border-light bg-surface px-3 py-3 text-center"
+          className="flex flex-col md:flex-row items-center gap-1 md:gap-2 rounded-md border border-border-light px-3 py-3 text-center"
         >
           <Icon size={18} strokeWidth={1.8} className="text-primary" />
-          <span className="text-base font-bold text-foreground">{value}</span>
-          <span className="text-xs text-foreground-secondary">{label}</span>
+          <Text variant="span" size="sm">
+            {label}
+          </Text>
+          <Text variant="span" weight="bold">
+            {value}
+          </Text>
         </div>
       ))}
     </div>

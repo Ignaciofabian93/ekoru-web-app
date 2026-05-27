@@ -17,30 +17,22 @@ interface Props {
   loading?: boolean;
 }
 
-export function SellerCatalog({
-  lang,
-  categories,
-  totalCount,
-  loading,
-}: Props) {
+export function SellerCatalog({ lang, categories, totalCount, loading }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const [active, setActive] = useState("all");
 
   const visible = useMemo<CategoryGroup[]>(
-    () =>
-      active === "all" ? categories : categories.filter((c) => c.id === active),
+    () => (active === "all" ? categories : categories.filter((c) => c.id === active)),
     [active, categories],
   );
 
   return (
-    <section className="flex flex-col gap-5">
-      <div>
-        <h2 className="text-xl font-semibold text-foreground">
+    <section className="flex min-w-0 flex-col gap-5">
+      <div className="min-w-0">
+        <h2 className="text-lg font-semibold text-foreground sm:text-xl">
           {t("catalog.title")}
         </h2>
-        <p className="text-sm text-foreground-secondary">
-          {t("catalog.subtitle")}
-        </p>
+        <p className="text-sm text-foreground-secondary">{t("catalog.subtitle")}</p>
       </div>
 
       <SellerCategoriesNav
@@ -51,7 +43,7 @@ export function SellerCatalog({
       />
 
       {loading && categories.length === 0 ? (
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={i}
@@ -66,7 +58,7 @@ export function SellerCatalog({
           <p className="text-sm">{t("catalog.emptyHint")}</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6 md:gap-8">
           {visible.map((group) => (
             <SellerCategorySection key={group.id} lang={lang} group={group} />
           ))}

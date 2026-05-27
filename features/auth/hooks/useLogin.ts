@@ -30,7 +30,10 @@ export function useLogin() {
     e.preventDefault();
     setLoading(true);
     try {
-      await Login({ email, password });
+      // Normalize email to match how it was stored on register; otherwise a
+      // trailing space or capital letter from mobile autocomplete would cause
+      // a 400 / "user not found" on an account that actually exists.
+      await Login({ email: email.trim().toLowerCase(), password: password.trim() });
       const { data } = await fetchMe();
       if (data?.me) setSeller(data.me);
       const lang = params.lang ?? DEFAULT_LANGUAGE;

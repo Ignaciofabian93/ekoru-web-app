@@ -3,18 +3,12 @@
 import type { SupportedLanguage } from "@/constants/settings";
 
 import { useSellerStorefront } from "../hooks/useSellerStorefront";
-import { getSellerName } from "../sellerDisplay";
 import { SellerAbout } from "./SellerAbout";
-import { SellerBreadcrumbs } from "./SellerBreadcrumbs";
 import { SellerCatalog } from "./SellerCatalog";
 import { SellerDetails } from "./SellerDetails";
 import { SellerHero } from "./SellerHero";
 import { SellerStats } from "./SellerStats";
-import {
-  SellerErrorState,
-  SellerLoading,
-  SellerNotFound,
-} from "./SellerStatus";
+import { SellerErrorState, SellerLoading, SellerNotFound } from "./SellerStatus";
 
 interface Props {
   id: string;
@@ -22,9 +16,7 @@ interface Props {
 }
 
 function Container({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-6 md:py-8">{children}</div>
-  );
+  return <div className="mx-auto w-full max-w-7xl px-4 py-6 md:py-8">{children}</div>;
 }
 
 export function SellerContent({ id, lang }: Props) {
@@ -56,15 +48,12 @@ export function SellerContent({ id, lang }: Props) {
     );
   }
 
-  const sellerName = getSellerName(seller);
-
   return (
     <>
       <SellerHero seller={seller} lang={lang} />
       <div className="mx-auto w-full max-w-7xl px-4 py-6 md:py-8">
-        <SellerBreadcrumbs lang={lang} sellerName={sellerName} />
-        <div className="mt-6 grid gap-8 md:grid-cols-3">
-          <aside className="flex flex-col gap-6 md:col-span-1">
+        <div className="mt-2 grid gap-6 md:mt-6 md:grid-cols-3 md:gap-8">
+          <aside className="flex min-w-0 flex-col gap-6 md:col-span-1">
             <SellerStats
               productsCount={totalCount}
               categoriesCount={categories.length}
@@ -74,7 +63,7 @@ export function SellerContent({ id, lang }: Props) {
             <SellerDetails seller={seller} />
           </aside>
 
-          <div className="md:col-span-2">
+          <div className="min-w-0 md:col-span-2">
             <SellerCatalog
               lang={lang}
               categories={categories}

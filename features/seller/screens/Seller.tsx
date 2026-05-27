@@ -4,7 +4,7 @@ import { DictionaryProvider } from "@/i18n/context";
 
 import { getSellerDictionary, NAMESPACE } from "../i18n";
 import { SellerContent } from "../ui/SellerContent";
-import { SellerShell } from "../ui/SellerShell";
+import { ScreenShell } from "@/components/Layout/ScreenShell";
 
 interface Props {
   id: string;
@@ -16,9 +16,9 @@ export async function Seller({ id, lang }: Props) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <SellerShell nav={<Navigation lang={lang} />}>
+      <ScreenShell nav={<Navigation lang={lang} />} lang={lang}>
         <SellerContent id={id} lang={lang} />
-      </SellerShell>
+      </ScreenShell>
     </DictionaryProvider>
   );
 }

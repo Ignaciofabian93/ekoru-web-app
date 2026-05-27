@@ -1,5 +1,6 @@
 import { type SupportedLanguage } from "@/constants/settings";
 import { Footer } from "@/features/footer/Footer";
+import { clsx } from "clsx";
 import type { ReactNode } from "react";
 
 interface Props {
@@ -11,10 +12,19 @@ interface Props {
 
 export function ScreenShell({ lang, nav, hero, children }: Props) {
   return (
-    <main className="flex min-h-screen flex-1 flex-col bg-background">
+    <main className="flex min-h-screen flex-1 flex-col bg-white">
       {nav}
       {hero}
-      <div className="mx-auto w-full max-w-4xl flex-1 px-4 py-8">{children}</div>
+      <div
+        className={clsx("mx-auto w-full max-w-4xl", "flex-1", {
+          "py-8": hero,
+          "py-0": !hero,
+          "px-4": hero,
+          "px-0": !hero,
+        })}
+      >
+        {children}
+      </div>
       <Footer lang={lang} />
     </main>
   );

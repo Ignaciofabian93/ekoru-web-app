@@ -90,17 +90,17 @@ export function SellerProductCard({ product, lang }: Props) {
         </button>
       </div>
 
-      <div className="p-3">
+      <div className="p-2.5 sm:p-3">
         {product.brand && (
-          <p className="truncate text-xs tracking-wide text-foreground-tertiary uppercase">
+          <p className="truncate text-[10px] tracking-wide text-foreground-tertiary uppercase sm:text-xs">
             {product.brand}
           </p>
         )}
-        <p className="mt-0.5 line-clamp-2 text-sm leading-snug font-semibold text-foreground">
+        <p className="mt-0.5 line-clamp-2 text-xs leading-snug font-semibold text-foreground sm:text-sm">
           {product.name}
         </p>
 
-        <div className="mt-2 flex items-center justify-between">
+        <div className="mt-1.5 sm:mt-2">
           <span className="text-sm font-bold text-primary">
             {formatPrice(product.price)}
           </span>
@@ -109,14 +109,16 @@ export function SellerProductCard({ product, lang }: Props) {
         <button
           type="button"
           onClick={handleAddToCart}
-          className={`mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-colors ${
+          className={`mt-2 flex w-full items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 text-[11px] font-semibold transition-colors sm:gap-1.5 sm:text-xs ${
             added
               ? "bg-success/10 text-success"
               : "bg-primary-light-bg text-primary hover:bg-primary hover:text-white"
           }`}
         >
-          <ShoppingCart size={13} strokeWidth={2} />
-          {added ? t("card.added") : t("card.addToCart")}
+          <ShoppingCart size={13} strokeWidth={2} className="shrink-0" />
+          <span className="truncate">
+            {added ? t("card.added") : t("card.addToCart")}
+          </span>
         </button>
       </div>
     </Link>

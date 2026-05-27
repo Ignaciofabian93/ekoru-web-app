@@ -1,17 +1,7 @@
 "use client";
 
-import {
-  BadgeCheck,
-  Check,
-  MapPin,
-  MessageCircle,
-  Share2,
-  Store,
-  UserPlus,
-  Users,
-} from "lucide-react";
+import { BadgeCheck, Check, MapPin, Share2 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
 
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
@@ -20,10 +10,14 @@ import type { Seller } from "@/types/user";
 import { NAMESPACE } from "../i18n";
 import { useShareSeller } from "../hooks/useShareSeller";
 import {
-  getSellerAvatar,
-  getSellerCover,
-  getSellerName,
-} from "../sellerDisplay";
+  useCoverImage,
+  useDisplayName,
+  useProfileImage,
+  useInitials,
+  useSellerLocation,
+} from "@/hooks/useSellerData";
+import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Text/Text";
 
 const LOCALE_MAP: Record<SupportedLanguage, string> = {
   es: "es-CL",
@@ -50,111 +44,95 @@ interface Props {
 
 export function SellerHero({ seller, lang }: Props) {
   const { t } = useTranslation(NAMESPACE);
-  const [following, setFollowing] = useState(false);
 
-  const name = getSellerName(seller);
-  const avatar = getSellerAvatar(seller);
-  const cover = getSellerCover(seller);
-  const isBusiness = seller.profile?.__typename === "BusinessProfile";
-  const location = [seller.county?.county, seller.address]
-    .filter(Boolean)
-    .join(" · ");
+  const name = useDisplayName(seller);
+  const avatar = useProfileImage(seller);
+  const cover = useCoverImage(seller);
+  const location = useSellerLocation(seller);
+  const userInitials = useInitials(seller);
 
   const { share, copied } = useShareSeller({ title: name });
 
   return (
-    <header className="bg-surface border-b border-border-light">
-      <div className="bg-background-secondary relative h-40 w-full md:h-56">
+    <section className="w-full max-w-4xl mx-auto">
+      <div className="relative w-full">
         {cover ? (
           <Image
             src={cover}
+            width={1000}
+            height={400}
             alt=""
-            fill
-            sizes="100vw"
-            className="object-cover"
+            className="w-full min-h-50 h-auto max-h-60 object-cover"
             priority
           />
         ) : (
-          <div className="from-primary-light-bg to-background-secondary h-full w-full bg-gradient-to-br" />
+          <div className="bg-linear-to-br from-primary-light-bg to-background-secondary w-full min-h-50 h-auto max-h-60" />
         )}
-      </div>
-
-      <div className="mx-auto w-full max-w-7xl px-4 pb-5">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div className="-mt-12 flex items-end gap-4 md:-mt-16">
-            <div className="bg-background-secondary relative size-24 shrink-0 overflow-hidden rounded-2xl border-4 border-surface md:size-32">
-              {avatar ? (
-                <Image src={avatar} alt={name} fill sizes="128px" className="object-cover" />
-              ) : (
-                <div className="flex h-full items-center justify-center text-foreground-muted">
-                  {isBusiness ? <Store size={36} /> : <Users size={36} />}
-                </div>
-              )}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-[40%] max-w-45">
+          {avatar ? (
+            <Image
+              src={avatar}
+              alt={name}
+              width={200}
+              height={200}
+              className="w-full h-auto rounded-full border-4 border-white"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-foreground-muted">
+              {userInitials}
             </div>
-            <div className="flex min-w-0 flex-1 flex-col gap-1 pb-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="truncate text-2xl font-bold text-foreground md:text-3xl">
-                  {name}
-                </h1>
-                {seller.isVerified && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-primary-light-bg px-2 py-0.5 text-xs font-semibold text-primary">
-                    <BadgeCheck size={14} strokeWidth={2.2} />
-                    {t("hero.verified")}
-                  </span>
-                )}
-              </div>
-              <span className="text-sm font-medium text-foreground-tertiary">
-                {t(`sellerTypes.${seller.sellerType}`)}
-              </span>
-              <div className="flex items-center gap-1.5 text-sm text-foreground-secondary">
-                <MapPin size={14} strokeWidth={1.8} />
-                <span className="truncate">
-                  {location || t("hero.noLocation")}
-                </span>
-              </div>
-              {seller.createdAt && (
-                <span className="text-xs text-foreground-tertiary">
-                  {t("hero.memberSince", {
-                    date: formatJoinDate(seller.createdAt, lang),
-                  })}
-                </span>
-              )}
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2 md:justify-end">
-            <button
-              type="button"
-              onClick={() => setFollowing((v) => !v)}
-              aria-pressed={following}
-              className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${
-                following
-                  ? "bg-primary-light-bg text-primary"
-                  : "bg-primary text-white hover:opacity-90"
-              }`}
-            >
-              {following ? <Check size={16} strokeWidth={2.2} /> : <UserPlus size={16} strokeWidth={2} />}
-              {following ? t("hero.following") : t("hero.follow")}
-            </button>
-            <button
-              type="button"
-              className="flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-background-secondary"
-            >
-              <MessageCircle size={16} strokeWidth={2} />
-              {t("hero.message")}
-            </button>
-            <button
-              type="button"
-              onClick={share}
-              aria-label={t("hero.share")}
-              className="flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-foreground-secondary transition-colors hover:bg-background-secondary"
-            >
-              {copied ? <Check size={16} strokeWidth={2.2} /> : <Share2 size={16} strokeWidth={2} />}
-              {copied ? t("hero.shareCopied") : t("hero.share")}
-            </button>
-          </div>
+          )}
         </div>
       </div>
-    </header>
+      <div className="wrap-break-word mt-24 flex flex-col items-center gap-4 px-4">
+        <Title level="h3" size="h3" align="center" weight="medium">
+          {name}
+        </Title>
+        {seller.isVerified && (
+          <span className="inline-flex items-center gap-1 rounded-full bg-primary-light-bg px-2 py-0.5 text-xs font-semibold text-primary">
+            <BadgeCheck size={14} strokeWidth={2.2} />
+            {t("hero.verified")}
+          </span>
+        )}
+        <div className="w-fit mx-auto rounded-lg bg-primary-light/20 px-4">
+          <Text variant="span" size="sm" weight="semibold">
+            {t(`sellerTypes.${seller.sellerType}`)}
+          </Text>
+        </div>
+        <div className="w-full flex items-center justify-center gap-1.5 text-sm text-foreground-secondary">
+          <MapPin size={14} strokeWidth={1.8} />
+          <Text variant="span" size="sm" align="center">
+            {location || t("hero.noLocation")}
+          </Text>
+        </div>
+        {seller.createdAt && (
+          <Text
+            variant="span"
+            size="sm"
+            align="center"
+            className="text-foreground-secondary"
+          >
+            {t("hero.memberSince", {
+              date: formatJoinDate(seller.createdAt, lang),
+            })}
+          </Text>
+        )}
+        <div className="flex flex-wrap gap-2 md:justify-end">
+          <button
+            type="button"
+            onClick={share}
+            aria-label={t("hero.share")}
+            className="flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-foreground-secondary transition-colors hover:bg-background-secondary"
+          >
+            {copied ? (
+              <Check size={16} strokeWidth={2.2} />
+            ) : (
+              <Share2 size={16} strokeWidth={2} />
+            )}
+            {copied ? t("hero.shareCopied") : t("hero.share")}
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }

@@ -4,18 +4,14 @@ import { useTranslation } from "@/i18n/context";
 import type { Seller } from "@/types/user";
 
 import { NAMESPACE } from "../i18n";
+import { Title } from "@/components/Title/Title";
+import { useBusinessType, useSellerLocation } from "@/hooks/useSellerData";
 
 export function SellerDetails({ seller }: { seller: Seller }) {
   const { t } = useTranslation(NAMESPACE);
 
-  const businessType =
-    seller.profile?.__typename === "BusinessProfile"
-      ? seller.profile.businessType
-      : undefined;
-
-  const location = [seller.county?.county, seller.address]
-    .filter(Boolean)
-    .join(" · ");
+  const businessType = useBusinessType(seller);
+  const location = useSellerLocation(seller);
 
   const rows = [
     {
@@ -34,18 +30,15 @@ export function SellerDetails({ seller }: { seller: Seller }) {
   if (rows.length === 0) return null;
 
   return (
-    <section>
-      <h2 className="mb-3 text-lg font-semibold text-foreground">
+    <section className="mb-3">
+      <Title level="h2" size="h6" weight="medium" className="mb-4">
         {t("details.title")}
-      </h2>
-      <dl className="bg-surface flex flex-col divide-y divide-border-light overflow-hidden rounded-2xl border border-border-light">
+      </Title>
+      <dl className="flex flex-col divide-y divide-border-light overflow-hidden">
         {rows.map((row) => (
-          <div
-            key={row.label}
-            className="flex items-center justify-between gap-4 px-4 py-3"
-          >
-            <dt className="text-sm text-foreground-secondary">{row.label}</dt>
-            <dd className="truncate text-sm font-medium text-foreground">
+          <div key={row.label} className="flex items-center justify-between gap-4 py-3">
+            <dt className="shrink-0 text-sm text-foreground font-medium">{row.label}</dt>
+            <dd className="min-w-0 truncate text-right text-sm font-medium text-foreground-secondary">
               {row.value}
             </dd>
           </div>
