@@ -22,6 +22,88 @@
     "region": "Région",
     "country": "Pays"
   },
+  "dashboard": {
+    "actionCenter": {
+      "title": "Demande votre attention",
+      "subtitle": "Quelques éléments en attente",
+      "ordersToShip": "Commandes à expédier",
+      "ordersToShipDescription": "Les acheteurs attendent l'envoi",
+      "unreadMessages": "Messages non lus",
+      "unreadMessagesDescription": "Réponses à lire",
+      "exchangeProposals": "Propositions d'échange",
+      "exchangeProposalsDescription": "Offres d'échange ouvertes sur vos articles",
+      "viewAll": "Tout voir",
+      "empty": "Vous êtes à jour"
+    },
+    "activity": {
+      "title": "30 derniers jours",
+      "subtitle": "Votre activité récente en un clin d'œil",
+      "views": "Vues",
+      "favorites": "Favoris",
+      "sales": "Ventes",
+      "pointsEarned": "Points gagnés"
+    },
+    "impact": {
+      "title": "Votre impact",
+      "subtitle": "Aperçu de ce que vous avez économisé",
+      "co2": "CO₂ économisé",
+      "water": "Eau économisée",
+      "products": "Produits réutilisés",
+      "viewFull": "Voir l'impact complet"
+    },
+    "listings": {
+      "title": "Mes annonces",
+      "subtitle": "Tout ce que vous avez publié, groupé par catégorie",
+      "publish": "Nouvelle annonce",
+      "status": {
+        "active": "Actives",
+        "sold": "Vendues",
+        "drafts": "Brouillons"
+      },
+      "uncategorized": "Autres",
+      "countLabel": "{{count}} articles",
+      "viewAll": "Tout voir",
+      "empty": {
+        "title": "Rien pour l'instant",
+        "description": "Commencez à publier pour voir vos produits groupés par catégorie."
+      },
+      "actions": {
+        "menu": "Actions du produit",
+        "edit": "Édition rapide",
+        "activate": "Publier",
+        "deactivate": "Déplacer aux brouillons",
+        "delete": "Supprimer",
+        "view": "Voir le produit"
+      },
+      "edit": {
+        "title": "Modifier le produit",
+        "subtitle": "Mettez à jour les champs les plus courants. Utilisez le flux de publication pour le reste.",
+        "name": "Nom",
+        "brand": "Marque",
+        "price": "Prix",
+        "description": "Description",
+        "save": "Enregistrer",
+        "saving": "Enregistrement",
+        "cancel": "Annuler",
+        "success": "Produit mis à jour",
+        "error": "Impossible de mettre à jour le produit"
+      },
+      "delete": {
+        "title": "Supprimer ce produit ?",
+        "description": "\"{{name}}\" sera retiré de vos annonces. Cette action est irréversible.",
+        "confirm": "Supprimer",
+        "cancel": "Conserver",
+        "deleting": "Suppression",
+        "success": "Produit supprimé",
+        "error": "Impossible de supprimer le produit"
+      },
+      "toggle": {
+        "activated": "Produit publié",
+        "deactivated": "Déplacé aux brouillons",
+        "error": "Impossible de changer l'état du produit"
+      }
+    }
+  },
   "account": {
     "title": "Mon Compte",
     "editProfile": "Modifier le Profil",
@@ -32,18 +114,303 @@
     "subscription": "Abonnement",
     "settings": "Paramètres"
   },
+  "editProfile": {
+    "screenTitle": "Modifier le Profil",
+    "screenSubtitle": "Gardez vos informations à jour",
+    "personal": {
+      "title": "Informations Personnelles",
+      "subtitle": "Comment vous apparaissez sur la marketplace",
+      "firstName": "Prénom",
+      "firstNamePlaceholder": "Votre prénom",
+      "lastName": "Nom",
+      "lastNamePlaceholder": "Votre nom",
+      "displayName": "Nom Affiché",
+      "displayNamePlaceholder": "Comment vous voulez apparaître",
+      "businessName": "Nom de l'Entreprise",
+      "businessNamePlaceholder": "Nom de votre entreprise",
+      "bio": "Bio",
+      "bioPlaceholder": "Présentez-vous à la communauté",
+      "description": "Description",
+      "descriptionPlaceholder": "À propos de votre entreprise"
+    },
+    "contact": {
+      "title": "Contact",
+      "subtitle": "Comment les acheteurs peuvent vous joindre",
+      "phone": "Téléphone",
+      "phonePlaceholder": "9 1234 5678",
+      "areaCode": "Indicatif",
+      "website": "Site web",
+      "websitePlaceholder": "https://"
+    },
+    "location": {
+      "title": "Localisation",
+      "subtitle": "Nous aide à vous mettre en relation avec des acheteurs proches",
+      "country": "Pays",
+      "countryPlaceholder": "Sélectionnez un pays",
+      "region": "Région",
+      "regionPlaceholder": "Sélectionnez une région",
+      "city": "Ville",
+      "cityPlaceholder": "Sélectionnez une ville",
+      "county": "Arrondissement",
+      "countyPlaceholder": "Sélectionnez un arrondissement",
+      "address": "Adresse",
+      "addressPlaceholder": "Rue, numéro"
+    },
+    "actions": {
+      "save": "Enregistrer",
+      "saving": "Enregistrement",
+      "cancel": "Annuler"
+    },
+    "feedback": {
+      "success": "Profil mis à jour",
+      "error": "Impossible de mettre à jour le profil",
+      "required": "Ce champ est requis"
+    }
+  },
+  "changePassword": {
+    "screenTitle": "Changer le Mot de Passe",
+    "screenSubtitle": "Utilisez un mot de passe fort pour protéger votre compte",
+    "currentPassword": "Mot de passe actuel",
+    "currentPasswordPlaceholder": "••••••••",
+    "newPassword": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Au moins 8 caractères",
+    "confirmPassword": "Confirmez le nouveau mot de passe",
+    "confirmPasswordPlaceholder": "Saisissez à nouveau votre mot de passe",
+    "tips": {
+      "title": "Conseils",
+      "length": "Utilisez au moins 8 caractères",
+      "mix": "Mélangez lettres, chiffres et symboles",
+      "unique": "Évitez les mots de passe que vous réutilisez ailleurs"
+    },
+    "actions": {
+      "save": "Mettre à jour",
+      "saving": "Mise à jour"
+    },
+    "feedback": {
+      "success": "Mot de passe mis à jour",
+      "error": "Impossible de mettre à jour le mot de passe",
+      "required": "Ce champ est requis",
+      "tooShort": "Le mot de passe doit contenir au moins 8 caractères",
+      "mismatch": "Les mots de passe ne correspondent pas",
+      "sameAsCurrent": "Le nouveau mot de passe est identique à l'actuel"
+    }
+  },
+  "orders": {
+    "screenTitle": "Historique des Commandes",
+    "screenSubtitle": "Retrouvez tous vos achats",
+    "filter": {
+      "all": "Tous",
+      "preparing": "En préparation",
+      "shipped": "Expédié",
+      "delivered": "Livré",
+      "returned": "Retourné",
+      "canceled": "Annulé"
+    },
+    "status": {
+      "PREPARING": "En préparation",
+      "SHIPPED": "Expédié",
+      "DELIVERED": "Livré",
+      "RETURNED": "Retourné",
+      "CANCELED": "Annulé"
+    },
+    "card": {
+      "order": "Commande",
+      "placedOn": "Passée le",
+      "items": "{{count}} articles",
+      "total": "Total",
+      "viewDetails": "Voir les détails",
+      "track": "Suivre la livraison",
+      "rate": "Évaluer l'achat"
+    },
+    "empty": {
+      "title": "Aucune commande pour l'instant",
+      "description": "Vos commandes apparaîtront ici.",
+      "action": "Explorer la marketplace"
+    }
+  },
+  "favorites": {
+    "screenTitle": "Favoris",
+    "screenSubtitle": "Les articles que vous avez sauvegardés",
+    "tabs": {
+      "products": "Produits",
+      "stores": "Boutiques",
+      "services": "Services"
+    },
+    "card": {
+      "remove": "Retirer",
+      "view": "Voir"
+    },
+    "empty": {
+      "title": "Aucun favori",
+      "description": "Touchez le cœur sur un produit, une boutique ou un service pour le sauvegarder ici.",
+      "action": "Parcourir la marketplace"
+    }
+  },
+  "environmentalImpact": {
+    "screenTitle": "Votre Impact Environnemental",
+    "screenSubtitle": "La différence que vous faites en achetant d'occasion",
+    "stats": {
+      "co2": "CO₂ économisé",
+      "water": "Eau économisée",
+      "products": "Produits réutilisés",
+      "waste": "Déchets évités"
+    },
+    "equivalences": {
+      "title": "Ce que ça signifie",
+      "subtitle": "Équivalences concrètes de votre impact",
+      "carDistance": "kilomètres non parcourus en voiture",
+      "showers": "douches d'eau",
+      "treeMonths": "mois d'un arbre absorbant le CO₂",
+      "phoneCharges": "charges de téléphone"
+    },
+    "breakdown": {
+      "title": "Par matériau",
+      "subtitle": "D'où viennent vos économies",
+      "weight": "Poids",
+      "co2": "CO₂",
+      "water": "Eau"
+    },
+    "level": {
+      "title": "Votre niveau éco",
+      "subtitle": "Chaque niveau débloque de nouveaux avantages",
+      "next": "Niveau suivant",
+      "pointsToNext": "{{points}} pts pour {{level}}"
+    },
+    "empty": {
+      "title": "Votre impact commence bientôt",
+      "description": "Achetez ou échangez votre premier produit pour commencer.",
+      "action": "Découvrir la marketplace"
+    }
+  },
+  "subscription": {
+    "screenTitle": "Abonnement",
+    "screenSubtitle": "Choisissez le plan qui grandit avec vous",
+    "current": {
+      "label": "Plan actuel",
+      "renews": "Renouvellement le {{date}}",
+      "free": "Vous êtes sur le plan gratuit",
+      "manage": "Gérer la facturation",
+      "cancel": "Annuler l'abonnement"
+    },
+    "plans": {
+      "title": "Plans disponibles",
+      "subtitle": "Changez à tout moment — paiement mensuel, annulez quand vous voulez",
+      "month": "par mois",
+      "year": "par an",
+      "select": "Choisir ce plan",
+      "active": "Actuel",
+      "popular": "Le plus populaire"
+    },
+    "person": {
+      "FREEMIUM": {
+        "name": "Freemium",
+        "tagline": "Découvrez Ekoru",
+        "feature1": "Jusqu'à 5 annonces",
+        "feature2": "Accès à la communauté",
+        "feature3": "Suivi d'impact de base"
+      },
+      "BASIC": {
+        "name": "Basique",
+        "tagline": "Pour les vendeurs réguliers",
+        "feature1": "Jusqu'à 25 annonces",
+        "feature2": "Mise en avant mensuelle",
+        "feature3": "Rapports d'impact détaillés"
+      },
+      "ADVANCED": {
+        "name": "Avancé",
+        "tagline": "Utilisateurs avancés et revendeurs",
+        "feature1": "Annonces illimitées",
+        "feature2": "Placement prioritaire",
+        "feature3": "Tableau de bord complet",
+        "feature4": "Support prioritaire"
+      }
+    },
+    "business": {
+      "FREEMIUM": {
+        "name": "Freemium",
+        "tagline": "Essayez Ekoru pour les pros",
+        "feature1": "Jusqu'à 10 annonces",
+        "feature2": "Profil d'entreprise",
+        "feature3": "Analytique de base"
+      },
+      "STARTUP": {
+        "name": "Startup",
+        "tagline": "Validez et grandissez",
+        "feature1": "Jusqu'à 50 annonces",
+        "feature2": "Boutique personnalisée",
+        "feature3": "Messagerie clients"
+      },
+      "BASIC": {
+        "name": "Basique",
+        "tagline": "Installez votre boutique",
+        "feature1": "Jusqu'à 200 annonces",
+        "feature2": "Promotions et coupons",
+        "feature3": "Outils de gestion de commandes"
+      },
+      "ADVANCED": {
+        "name": "Avancé",
+        "tagline": "Scalez votre activité",
+        "feature1": "Annonces illimitées",
+        "feature2": "Analytique avancée",
+        "feature3": "Accès multi-utilisateur"
+      },
+      "EXPERT": {
+        "name": "Expert",
+        "tagline": "Toute la puissance",
+        "feature1": "Tout de Avancé",
+        "feature2": "Account manager dédié",
+        "feature3": "Accès API",
+        "feature4": "Intégrations sur mesure"
+      }
+    },
+    "feedback": {
+      "changed": "Abonnement mis à jour",
+      "error": "Impossible de mettre à jour l'abonnement"
+    }
+  },
   "settings": {
+    "screenTitle": "Paramètres",
+    "screenSubtitle": "Configurez Ekoru comme vous le souhaitez",
     "preferences": "Préférences",
+    "preferencesSubtitle": "Définissez comment le contenu s'affiche",
     "language": "Langue",
     "currency": "Devise",
+    "theme": "Thème",
+    "themeLight": "Clair",
+    "themeDark": "Sombre",
+    "themeSystem": "Système",
     "notifications": "Notifications",
-    "emailNotifications": "Notifications par Email",
-    "emailNotificationsDescription": "Recevez des mises à jour de commandes et des promotions par email",
-    "pushNotifications": "Notifications Push",
-    "pushNotificationsDescription": "Recevez des alertes en temps réel sur votre appareil",
+    "notificationsSubtitle": "Choisissez ce que nous vous envoyons",
+    "emailNotifications": "Notifications par email",
+    "emailNotificationsDescription": "Recevez les mises à jour de commandes par email",
+    "pushNotifications": "Notifications push",
+    "pushNotificationsDescription": "Alertes en temps réel sur votre appareil",
+    "marketingEmails": "Promotions et newsletters",
+    "marketingEmailsDescription": "Actualités, conseils et sélections produits",
+    "weeklySummary": "Résumé hebdomadaire",
+    "weeklySummaryDescription": "Un récap' de votre semaine sur Ekoru",
+    "privacy": "Confidentialité",
+    "privacySubtitle": "Contrôlez ce que les autres voient",
+    "publicProfile": "Profil public",
+    "publicProfileDescription": "Laissez tout le monde voir votre profil",
+    "showInSearch": "M'afficher dans la recherche",
+    "showInSearchDescription": "Apparaissez dans la recherche de vendeurs et boutiques",
+    "allowExchanges": "Autoriser les échanges",
+    "allowExchangesDescription": "Laissez les acheteurs proposer des échanges",
+    "security": "Sécurité",
+    "securitySubtitle": "Couches supplémentaires de protection",
+    "twoFactor": "Authentification à deux facteurs",
+    "twoFactorDescription": "Ajoutez une seconde étape à la connexion",
+    "loginAlerts": "Alertes de connexion",
+    "loginAlertsDescription": "Soyez prévenu des connexions sur de nouveaux appareils",
     "dangerZone": "Zone Dangereuse",
+    "dangerZoneSubtitle": "Actions irréversibles sur le compte",
+    "deactivateAccount": "Désactiver le compte",
+    "deactivateAccountDescription": "Masquer temporairement votre profil et vos annonces",
+    "deactivate": "Désactiver",
     "deleteAccount": "Supprimer le Compte",
     "deleteAccountDescription": "Supprimez définitivement votre compte et toutes les données associées. Cette action est irréversible."
   },
-  "logout": "Se Déconnecter"
+  "logout": "Se Déconnecter",
+  "back": "Retour"
 }

@@ -1,5 +1,4 @@
 "use client";
-import { Title } from "@/components/Title/Title";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import {
@@ -7,87 +6,59 @@ import {
   Gem,
   Heart,
   KeyRound,
+  LayoutGrid,
   Leaf,
   PackagePlus,
   Settings,
   UserRoundPen,
+  type LucideIcon,
 } from "lucide-react";
 import { Text } from "@/components/Text/Text";
 import Link from "next/link";
+import { SectionCard } from "./SectionCard";
+
+interface AccountItem {
+  key: string;
+  route: string;
+  icon: LucideIcon;
+  labelKey: string;
+}
+
+const ITEMS: AccountItem[] = [
+  { key: "editProfile", route: "/profile/edit-profile", icon: UserRoundPen, labelKey: "account.editProfile" },
+  { key: "changePassword", route: "/profile/change-password", icon: KeyRound, labelKey: "account.changePassword" },
+  { key: "orderHistory", route: "/profile/orders", icon: PackagePlus, labelKey: "account.orderHistory" },
+  { key: "favorites", route: "/profile/favorites", icon: Heart, labelKey: "account.favorites" },
+  { key: "environmentalImpact", route: "/profile/environmental-impact", icon: Leaf, labelKey: "account.environmentalImpact" },
+  { key: "subscription", route: "/profile/subscription", icon: Gem, labelKey: "account.subscription" },
+  { key: "settings", route: "/profile/settings", icon: Settings, labelKey: "account.settings" },
+];
 
 export function Account() {
   const { t } = useTranslation(NAMESPACE);
 
-  const ITEMS = [
-    {
-      key: "editProfile",
-      route: `/profile/edit-profile`,
-      icon: UserRoundPen,
-      label: t("account.editProfile"),
-    },
-    {
-      key: "changePassword",
-      route: `/profile/change-password`,
-      icon: KeyRound,
-      label: t("account.changePassword"),
-    },
-    {
-      key: "orderHistory",
-      route: `/profile/orders`,
-      icon: PackagePlus,
-      label: t("account.orderHistory"),
-    },
-    {
-      key: "favorites",
-      route: `/profile/favorites`,
-      icon: Heart,
-      label: t("account.favorites"),
-    },
-    {
-      key: "environmentalImpact",
-      route: `/profile/environmental-impact`,
-      icon: Leaf,
-      label: t("account.environmentalImpact"),
-    },
-    {
-      key: "subscription",
-      route: `/profile/subscription`,
-      icon: Gem,
-      label: t("account.subscription"),
-    },
-    {
-      key: "settings",
-      route: `/profile/settings`,
-      icon: Settings,
-      label: t("account.settings"),
-    },
-  ];
-
   return (
-    <section className="w-full max-w-4xl mx-auto my-16 px-8">
-      <div className="mb-4">
-        <Title level="h5" size="h5">
-          {t("account.title")}
-        </Title>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {ITEMS.map((item) => (
-          <div key={item.key} className="flex items-center">
-            <div className="bg-primary-light/20 p-3 rounded-lg text-primary">
-              <item.icon size={18} />
-            </div>
+    <SectionCard icon={LayoutGrid} title={t("account.title")}>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {ITEMS.map((item) => {
+          const Icon = item.icon;
+          return (
             <Link
+              key={item.key}
               href={item.route}
-              className="flex ml-4 items-center justify-between w-full"
+              className="flex items-center gap-3 rounded-lg p-2.5 transition-colors hover:bg-background-secondary"
             >
-              <Text variant="span" weight="normal" size="base">
-                {item.label}
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-light/20 text-primary">
+                <Icon size={16} color="currentColor" strokeWidth={2} />
+              </div>
+              <Text variant="span" weight="medium" size="base" className="flex-1">
+                {t(item.labelKey)}
               </Text>
-              <ChevronRight size={14} />
+              <ChevronRight size={16} color="currentColor" strokeWidth={2} className="text-foreground-tertiary" />
             </Link>
-          </div>
-        ))}
+          );
+        })}
       </div>
-    </section>
+    </SectionCard>
   );
 }

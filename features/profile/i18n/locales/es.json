@@ -22,6 +22,88 @@
     "region": "Región",
     "country": "País"
   },
+  "dashboard": {
+    "actionCenter": {
+      "title": "Requiere tu atención",
+      "subtitle": "Algunas cosas esperan por ti",
+      "ordersToShip": "Pedidos por enviar",
+      "ordersToShipDescription": "Los compradores están esperando",
+      "unreadMessages": "Mensajes sin leer",
+      "unreadMessagesDescription": "Respuestas pendientes de revisar",
+      "exchangeProposals": "Propuestas de intercambio",
+      "exchangeProposalsDescription": "Ofertas de intercambio abiertas",
+      "viewAll": "Ver todo",
+      "empty": "Estás al día"
+    },
+    "activity": {
+      "title": "Últimos 30 días",
+      "subtitle": "Tu actividad reciente",
+      "views": "Vistas",
+      "favorites": "Favoritos",
+      "sales": "Ventas",
+      "pointsEarned": "Puntos ganados"
+    },
+    "impact": {
+      "title": "Tu impacto",
+      "subtitle": "Un vistazo a lo que has ahorrado",
+      "co2": "CO₂ ahorrado",
+      "water": "Agua ahorrada",
+      "products": "Productos reusados",
+      "viewFull": "Ver impacto completo"
+    },
+    "listings": {
+      "title": "Mis publicaciones",
+      "subtitle": "Todo lo que has publicado, agrupado por categoría",
+      "publish": "Publicar nuevo",
+      "status": {
+        "active": "Activas",
+        "sold": "Vendidas",
+        "drafts": "Borradores"
+      },
+      "uncategorized": "Otros",
+      "countLabel": "{{count}} productos",
+      "viewAll": "Ver todo",
+      "empty": {
+        "title": "Aún no hay nada aquí",
+        "description": "Empieza a publicar para ver tus productos agrupados por categoría."
+      },
+      "actions": {
+        "menu": "Acciones del producto",
+        "edit": "Edición rápida",
+        "activate": "Publicar",
+        "deactivate": "Mover a borradores",
+        "delete": "Eliminar",
+        "view": "Ver producto"
+      },
+      "edit": {
+        "title": "Editar producto",
+        "subtitle": "Actualiza los campos más comunes. Usa el flujo de publicación para el resto.",
+        "name": "Nombre",
+        "brand": "Marca",
+        "price": "Precio",
+        "description": "Descripción",
+        "save": "Guardar cambios",
+        "saving": "Guardando",
+        "cancel": "Cancelar",
+        "success": "Producto actualizado",
+        "error": "No se pudo actualizar el producto"
+      },
+      "delete": {
+        "title": "¿Eliminar este producto?",
+        "description": "Esto eliminará \"{{name}}\" de tus publicaciones. Esta acción no se puede deshacer.",
+        "confirm": "Eliminar producto",
+        "cancel": "Conservar",
+        "deleting": "Eliminando",
+        "success": "Producto eliminado",
+        "error": "No se pudo eliminar el producto"
+      },
+      "toggle": {
+        "activated": "Producto publicado",
+        "deactivated": "Movido a borradores",
+        "error": "No se pudo cambiar el estado del producto"
+      }
+    }
+  },
   "account": {
     "title": "Mi Cuenta",
     "editProfile": "Editar Perfil",
@@ -32,18 +114,303 @@
     "subscription": "Suscripción",
     "settings": "Configuración"
   },
+  "editProfile": {
+    "screenTitle": "Editar Perfil",
+    "screenSubtitle": "Mantén tu información actualizada",
+    "personal": {
+      "title": "Información Personal",
+      "subtitle": "Cómo te ven en el marketplace",
+      "firstName": "Nombre",
+      "firstNamePlaceholder": "Tu nombre",
+      "lastName": "Apellido",
+      "lastNamePlaceholder": "Tu apellido",
+      "displayName": "Nombre Público",
+      "displayNamePlaceholder": "Cómo quieres mostrarte",
+      "businessName": "Nombre del Negocio",
+      "businessNamePlaceholder": "Nombre de tu negocio",
+      "bio": "Biografía",
+      "bioPlaceholder": "Cuéntale a la comunidad un poco sobre ti",
+      "description": "Descripción",
+      "descriptionPlaceholder": "Sobre qué se trata tu negocio"
+    },
+    "contact": {
+      "title": "Contacto",
+      "subtitle": "Cómo pueden contactarte",
+      "phone": "Teléfono",
+      "phonePlaceholder": "9 1234 5678",
+      "areaCode": "Código de área",
+      "website": "Sitio web",
+      "websitePlaceholder": "https://"
+    },
+    "location": {
+      "title": "Ubicación",
+      "subtitle": "Nos ayuda a conectarte con compradores cercanos",
+      "country": "País",
+      "countryPlaceholder": "Selecciona un país",
+      "region": "Región",
+      "regionPlaceholder": "Selecciona una región",
+      "city": "Ciudad",
+      "cityPlaceholder": "Selecciona una ciudad",
+      "county": "Comuna",
+      "countyPlaceholder": "Selecciona una comuna",
+      "address": "Dirección",
+      "addressPlaceholder": "Calle, número"
+    },
+    "actions": {
+      "save": "Guardar cambios",
+      "saving": "Guardando",
+      "cancel": "Cancelar"
+    },
+    "feedback": {
+      "success": "Perfil actualizado",
+      "error": "No se pudo actualizar el perfil",
+      "required": "Este campo es obligatorio"
+    }
+  },
+  "changePassword": {
+    "screenTitle": "Cambiar Contraseña",
+    "screenSubtitle": "Usa una contraseña segura para proteger tu cuenta",
+    "currentPassword": "Contraseña actual",
+    "currentPasswordPlaceholder": "••••••••",
+    "newPassword": "Nueva contraseña",
+    "newPasswordPlaceholder": "Al menos 8 caracteres",
+    "confirmPassword": "Confirma la nueva contraseña",
+    "confirmPasswordPlaceholder": "Reingresa tu nueva contraseña",
+    "tips": {
+      "title": "Consejos de contraseña",
+      "length": "Usa al menos 8 caracteres",
+      "mix": "Combina letras, números y símbolos",
+      "unique": "Evita contraseñas que reutilizas en otros sitios"
+    },
+    "actions": {
+      "save": "Actualizar contraseña",
+      "saving": "Actualizando"
+    },
+    "feedback": {
+      "success": "Contraseña actualizada",
+      "error": "No se pudo actualizar la contraseña",
+      "required": "Este campo es obligatorio",
+      "tooShort": "La contraseña debe tener al menos 8 caracteres",
+      "mismatch": "Las contraseñas no coinciden",
+      "sameAsCurrent": "Tu nueva contraseña es igual a la actual"
+    }
+  },
+  "orders": {
+    "screenTitle": "Historial de Pedidos",
+    "screenSubtitle": "Revisa todas tus compras",
+    "filter": {
+      "all": "Todos",
+      "preparing": "Preparando",
+      "shipped": "Enviado",
+      "delivered": "Entregado",
+      "returned": "Devuelto",
+      "canceled": "Cancelado"
+    },
+    "status": {
+      "PREPARING": "Preparando",
+      "SHIPPED": "Enviado",
+      "DELIVERED": "Entregado",
+      "RETURNED": "Devuelto",
+      "CANCELED": "Cancelado"
+    },
+    "card": {
+      "order": "Pedido",
+      "placedOn": "Realizado el",
+      "items": "{{count}} productos",
+      "total": "Total",
+      "viewDetails": "Ver detalles",
+      "track": "Seguir envío",
+      "rate": "Calificar compra"
+    },
+    "empty": {
+      "title": "Aún no tienes pedidos",
+      "description": "Cuando compres algo, tus pedidos aparecerán aquí.",
+      "action": "Explorar marketplace"
+    }
+  },
+  "favorites": {
+    "screenTitle": "Favoritos",
+    "screenSubtitle": "Los productos que guardaste para más tarde",
+    "tabs": {
+      "products": "Productos",
+      "stores": "Tiendas",
+      "services": "Servicios"
+    },
+    "card": {
+      "remove": "Quitar",
+      "view": "Ver"
+    },
+    "empty": {
+      "title": "Aún no tienes favoritos",
+      "description": "Toca el corazón en cualquier producto, tienda o servicio para guardarlo aquí.",
+      "action": "Explorar marketplace"
+    }
+  },
+  "environmentalImpact": {
+    "screenTitle": "Tu Impacto Ambiental",
+    "screenSubtitle": "La diferencia que has hecho comprando de segunda mano",
+    "stats": {
+      "co2": "CO₂ ahorrado",
+      "water": "Agua ahorrada",
+      "products": "Productos reusados",
+      "waste": "Residuos evitados"
+    },
+    "equivalences": {
+      "title": "Qué significa eso",
+      "subtitle": "Equivalencias reales de tu impacto",
+      "carDistance": "kilómetros no recorridos en auto",
+      "showers": "duchas de agua",
+      "treeMonths": "meses de un árbol absorbiendo CO₂",
+      "phoneCharges": "cargas de celular"
+    },
+    "breakdown": {
+      "title": "Por material",
+      "subtitle": "De dónde vienen tus ahorros",
+      "weight": "Peso",
+      "co2": "CO₂",
+      "water": "Agua"
+    },
+    "level": {
+      "title": "Tu nivel eco",
+      "subtitle": "Cada nivel desbloquea beneficios en la comunidad",
+      "next": "Próximo nivel",
+      "pointsToNext": "{{points}} pts para {{level}}"
+    },
+    "empty": {
+      "title": "Tu impacto está por comenzar",
+      "description": "Compra o intercambia tu primer producto para empezar a sumar.",
+      "action": "Descubrir el marketplace"
+    }
+  },
+  "subscription": {
+    "screenTitle": "Suscripción",
+    "screenSubtitle": "Elige el plan que crece contigo",
+    "current": {
+      "label": "Plan actual",
+      "renews": "Se renueva el {{date}}",
+      "free": "Estás en el plan gratuito",
+      "manage": "Gestionar facturación",
+      "cancel": "Cancelar suscripción"
+    },
+    "plans": {
+      "title": "Planes disponibles",
+      "subtitle": "Cambia cuando quieras — paga mensual, cancela cuando quieras",
+      "month": "por mes",
+      "year": "por año",
+      "select": "Elegir plan",
+      "active": "Actual",
+      "popular": "Más popular"
+    },
+    "person": {
+      "FREEMIUM": {
+        "name": "Freemium",
+        "tagline": "Conoce Ekoru",
+        "feature1": "Hasta 5 publicaciones",
+        "feature2": "Acceso a la comunidad",
+        "feature3": "Seguimiento básico de impacto"
+      },
+      "BASIC": {
+        "name": "Básico",
+        "tagline": "Para vendedores frecuentes",
+        "feature1": "Hasta 25 publicaciones",
+        "feature2": "Destacado mensual",
+        "feature3": "Reportes detallados de impacto"
+      },
+      "ADVANCED": {
+        "name": "Avanzado",
+        "tagline": "Power users y revendedores",
+        "feature1": "Publicaciones ilimitadas",
+        "feature2": "Posición prioritaria",
+        "feature3": "Dashboard de analítica completo",
+        "feature4": "Soporte prioritario"
+      }
+    },
+    "business": {
+      "FREEMIUM": {
+        "name": "Freemium",
+        "tagline": "Prueba Ekoru para negocios",
+        "feature1": "Hasta 10 publicaciones",
+        "feature2": "Perfil de negocio",
+        "feature3": "Analítica básica"
+      },
+      "STARTUP": {
+        "name": "Startup",
+        "tagline": "Valida y crece",
+        "feature1": "Hasta 50 publicaciones",
+        "feature2": "Tienda personalizada",
+        "feature3": "Mensajería con clientes"
+      },
+      "BASIC": {
+        "name": "Básico",
+        "tagline": "Establece tu tienda",
+        "feature1": "Hasta 200 publicaciones",
+        "feature2": "Promociones y cupones",
+        "feature3": "Herramientas de pedidos"
+      },
+      "ADVANCED": {
+        "name": "Avanzado",
+        "tagline": "Escala tu operación",
+        "feature1": "Publicaciones ilimitadas",
+        "feature2": "Analítica avanzada",
+        "feature3": "Acceso multiusuario"
+      },
+      "EXPERT": {
+        "name": "Experto",
+        "tagline": "Todo el poder",
+        "feature1": "Todo lo de Avanzado",
+        "feature2": "Ejecutivo de cuenta dedicado",
+        "feature3": "Acceso a la API",
+        "feature4": "Integraciones a medida"
+      }
+    },
+    "feedback": {
+      "changed": "Suscripción actualizada",
+      "error": "No se pudo actualizar la suscripción"
+    }
+  },
   "settings": {
+    "screenTitle": "Configuración",
+    "screenSubtitle": "Configura cómo funciona Ekoru para ti",
     "preferences": "Preferencias",
+    "preferencesSubtitle": "Define cómo se te muestra el contenido",
     "language": "Idioma",
     "currency": "Moneda",
+    "theme": "Tema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "themeSystem": "Sistema",
     "notifications": "Notificaciones",
-    "emailNotifications": "Notificaciones por Email",
-    "emailNotificationsDescription": "Recibe actualizaciones de pedidos y promociones por email",
-    "pushNotifications": "Notificaciones Push",
-    "pushNotificationsDescription": "Recibe alertas en tiempo real en tu dispositivo",
+    "notificationsSubtitle": "Elige qué te enviamos",
+    "emailNotifications": "Notificaciones por email",
+    "emailNotificationsDescription": "Recibe actualizaciones de pedidos por email",
+    "pushNotifications": "Notificaciones push",
+    "pushNotificationsDescription": "Alertas en tiempo real en tu dispositivo",
+    "marketingEmails": "Promociones y novedades",
+    "marketingEmailsDescription": "Noticias, tips y selecciones de productos",
+    "weeklySummary": "Resumen semanal",
+    "weeklySummaryDescription": "Un resumen de tu semana en Ekoru",
+    "privacy": "Privacidad",
+    "privacySubtitle": "Controla qué pueden ver otros usuarios",
+    "publicProfile": "Perfil público",
+    "publicProfileDescription": "Permite que cualquiera vea tu perfil",
+    "showInSearch": "Aparecer en búsquedas",
+    "showInSearchDescription": "Sé visible en búsquedas de vendedores y tiendas",
+    "allowExchanges": "Permitir intercambios",
+    "allowExchangesDescription": "Deja que los compradores propongan intercambios",
+    "security": "Seguridad",
+    "securitySubtitle": "Capas extra de protección",
+    "twoFactor": "Autenticación en dos pasos",
+    "twoFactorDescription": "Agrega un segundo paso al iniciar sesión",
+    "loginAlerts": "Alertas de inicio de sesión",
+    "loginAlertsDescription": "Notifícame de inicios de sesión en nuevos dispositivos",
     "dangerZone": "Zona de Peligro",
+    "dangerZoneSubtitle": "Acciones irreversibles de la cuenta",
+    "deactivateAccount": "Desactivar cuenta",
+    "deactivateAccountDescription": "Oculta temporalmente tu perfil y publicaciones",
+    "deactivate": "Desactivar",
     "deleteAccount": "Eliminar Cuenta",
     "deleteAccountDescription": "Elimina permanentemente tu cuenta y todos los datos asociados. Esta acción no se puede deshacer."
   },
-  "logout": "Cerrar Sesión"
+  "logout": "Cerrar Sesión",
+  "back": "Volver"
 }

@@ -2,11 +2,11 @@ import { type SupportedLanguage } from "@/constants/settings";
 import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 import { getProfileDictionary, NAMESPACE } from "../i18n";
-import { Settings } from "../ui/Settings";
 import { ScreenShell } from "@/components/Layout/ScreenShell";
 import { ProfileHero } from "../ui/ProfileHero";
+import { FavoritesGrid } from "../ui/FavoritesGrid";
 
-export async function SettingsScreen({ lang }: { lang: SupportedLanguage }) {
+export async function FavoritesScreen({ lang }: { lang: SupportedLanguage }) {
   const dict = await getProfileDictionary(lang);
 
   return (
@@ -15,13 +15,13 @@ export async function SettingsScreen({ lang }: { lang: SupportedLanguage }) {
         nav={<Navigation lang={lang} />}
         hero={
           <ProfileHero
-            icon="settings"
-            titleKey="settings.screenTitle"
-            subtitleKey="settings.screenSubtitle"
+            icon="favorites"
+            titleKey="favorites.screenTitle"
+            subtitleKey="favorites.screenSubtitle"
           />
         }
       >
-        <Settings />
+        <FavoritesGrid />
       </ScreenShell>
     </DictionaryProvider>
   );

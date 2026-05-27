@@ -22,6 +22,88 @@
     "region": "Region",
     "country": "Country"
   },
+  "dashboard": {
+    "actionCenter": {
+      "title": "Needs your attention",
+      "subtitle": "A few things waiting on you",
+      "ordersToShip": "Orders to ship",
+      "ordersToShipDescription": "Buyers are waiting for these to leave",
+      "unreadMessages": "Unread messages",
+      "unreadMessagesDescription": "Replies you haven't read yet",
+      "exchangeProposals": "Exchange proposals",
+      "exchangeProposalsDescription": "Open swap offers on your items",
+      "viewAll": "View all",
+      "empty": "You're all caught up"
+    },
+    "activity": {
+      "title": "Last 30 days",
+      "subtitle": "Your recent activity at a glance",
+      "views": "Views",
+      "favorites": "Favorites",
+      "sales": "Sales",
+      "pointsEarned": "Points earned"
+    },
+    "impact": {
+      "title": "Your impact",
+      "subtitle": "A quick look at what you've saved",
+      "co2": "CO₂ saved",
+      "water": "Water saved",
+      "products": "Products reused",
+      "viewFull": "See full impact"
+    },
+    "listings": {
+      "title": "My listings",
+      "subtitle": "Everything you've published, grouped by category",
+      "publish": "Publish new",
+      "status": {
+        "active": "Active",
+        "sold": "Sold",
+        "drafts": "Drafts"
+      },
+      "uncategorized": "Other",
+      "countLabel": "{{count}} items",
+      "viewAll": "View all",
+      "empty": {
+        "title": "Nothing here yet",
+        "description": "Start publishing to see your products grouped by category."
+      },
+      "actions": {
+        "menu": "Product actions",
+        "edit": "Quick edit",
+        "activate": "Publish",
+        "deactivate": "Move to drafts",
+        "delete": "Delete",
+        "view": "View product"
+      },
+      "edit": {
+        "title": "Edit product",
+        "subtitle": "Update the most common fields. Use the publish flow for everything else.",
+        "name": "Name",
+        "brand": "Brand",
+        "price": "Price",
+        "description": "Description",
+        "save": "Save changes",
+        "saving": "Saving",
+        "cancel": "Cancel",
+        "success": "Product updated",
+        "error": "Could not update product"
+      },
+      "delete": {
+        "title": "Delete this product?",
+        "description": "This will remove \"{{name}}\" from your listings. This action cannot be undone.",
+        "confirm": "Delete product",
+        "cancel": "Keep it",
+        "deleting": "Deleting",
+        "success": "Product deleted",
+        "error": "Could not delete product"
+      },
+      "toggle": {
+        "activated": "Product published",
+        "deactivated": "Moved to drafts",
+        "error": "Could not change product status"
+      }
+    }
+  },
   "account": {
     "title": "My Account",
     "editProfile": "Edit Profile",
@@ -32,18 +114,303 @@
     "subscription": "Subscription",
     "settings": "Settings"
   },
+  "editProfile": {
+    "screenTitle": "Edit Profile",
+    "screenSubtitle": "Keep your information up to date",
+    "personal": {
+      "title": "Personal Information",
+      "subtitle": "How you appear across the marketplace",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "Your first name",
+      "lastName": "Last Name",
+      "lastNamePlaceholder": "Your last name",
+      "displayName": "Display Name",
+      "displayNamePlaceholder": "How you want to be shown",
+      "businessName": "Business Name",
+      "businessNamePlaceholder": "Your business name",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell the community a little about yourself",
+      "description": "Description",
+      "descriptionPlaceholder": "What your business is about"
+    },
+    "contact": {
+      "title": "Contact",
+      "subtitle": "Where buyers can reach you",
+      "phone": "Phone",
+      "phonePlaceholder": "9 1234 5678",
+      "areaCode": "Area code",
+      "website": "Website",
+      "websitePlaceholder": "https://"
+    },
+    "location": {
+      "title": "Location",
+      "subtitle": "Helps us match you with nearby buyers",
+      "country": "Country",
+      "countryPlaceholder": "Select a country",
+      "region": "Region",
+      "regionPlaceholder": "Select a region",
+      "city": "City",
+      "cityPlaceholder": "Select a city",
+      "county": "County",
+      "countyPlaceholder": "Select a county",
+      "address": "Address",
+      "addressPlaceholder": "Street, number"
+    },
+    "actions": {
+      "save": "Save changes",
+      "saving": "Saving",
+      "cancel": "Cancel"
+    },
+    "feedback": {
+      "success": "Profile updated",
+      "error": "Could not update profile",
+      "required": "This field is required"
+    }
+  },
+  "changePassword": {
+    "screenTitle": "Change Password",
+    "screenSubtitle": "Use a strong password to keep your account safe",
+    "currentPassword": "Current password",
+    "currentPasswordPlaceholder": "••••••••",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "At least 8 characters",
+    "confirmPassword": "Confirm new password",
+    "confirmPasswordPlaceholder": "Re-enter your new password",
+    "tips": {
+      "title": "Password tips",
+      "length": "Use at least 8 characters",
+      "mix": "Mix letters, numbers and symbols",
+      "unique": "Avoid passwords you reuse on other sites"
+    },
+    "actions": {
+      "save": "Update password",
+      "saving": "Updating"
+    },
+    "feedback": {
+      "success": "Password updated",
+      "error": "Could not update password",
+      "required": "This field is required",
+      "tooShort": "Password must be at least 8 characters",
+      "mismatch": "Passwords do not match",
+      "sameAsCurrent": "Your new password is the same as the current one"
+    }
+  },
+  "orders": {
+    "screenTitle": "Order History",
+    "screenSubtitle": "Track every purchase you've made",
+    "filter": {
+      "all": "All",
+      "preparing": "Preparing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "returned": "Returned",
+      "canceled": "Canceled"
+    },
+    "status": {
+      "PREPARING": "Preparing",
+      "SHIPPED": "Shipped",
+      "DELIVERED": "Delivered",
+      "RETURNED": "Returned",
+      "CANCELED": "Canceled"
+    },
+    "card": {
+      "order": "Order",
+      "placedOn": "Placed on",
+      "items": "{{count}} items",
+      "total": "Total",
+      "viewDetails": "View details",
+      "track": "Track shipment",
+      "rate": "Rate purchase"
+    },
+    "empty": {
+      "title": "No orders yet",
+      "description": "When you buy something, your orders will show up here.",
+      "action": "Explore the marketplace"
+    }
+  },
+  "favorites": {
+    "screenTitle": "Favorites",
+    "screenSubtitle": "Items you've saved for later",
+    "tabs": {
+      "products": "Products",
+      "stores": "Stores",
+      "services": "Services"
+    },
+    "card": {
+      "remove": "Remove",
+      "view": "View"
+    },
+    "empty": {
+      "title": "No favorites yet",
+      "description": "Tap the heart on any product, store or service to save it here.",
+      "action": "Browse marketplace"
+    }
+  },
+  "environmentalImpact": {
+    "screenTitle": "Your Environmental Impact",
+    "screenSubtitle": "The difference you've made by buying second hand",
+    "stats": {
+      "co2": "CO₂ saved",
+      "water": "Water saved",
+      "products": "Products reused",
+      "waste": "Waste avoided"
+    },
+    "equivalences": {
+      "title": "What that means",
+      "subtitle": "Real-world equivalences for your impact",
+      "carDistance": "kilometers not driven",
+      "showers": "showers of water",
+      "treeMonths": "months of a tree absorbing CO₂",
+      "phoneCharges": "phone charges"
+    },
+    "breakdown": {
+      "title": "By material",
+      "subtitle": "Where your savings come from",
+      "weight": "Weight",
+      "co2": "CO₂",
+      "water": "Water"
+    },
+    "level": {
+      "title": "Your eco level",
+      "subtitle": "Each level unlocks new community perks",
+      "next": "Next level",
+      "pointsToNext": "{{points}} pts to {{level}}"
+    },
+    "empty": {
+      "title": "Your impact starts soon",
+      "description": "Buy or exchange your first product to start counting your contribution.",
+      "action": "Discover the marketplace"
+    }
+  },
+  "subscription": {
+    "screenTitle": "Subscription",
+    "screenSubtitle": "Pick the plan that grows with you",
+    "current": {
+      "label": "Current plan",
+      "renews": "Renews on {{date}}",
+      "free": "You're on the free plan",
+      "manage": "Manage billing",
+      "cancel": "Cancel subscription"
+    },
+    "plans": {
+      "title": "Available plans",
+      "subtitle": "Switch anytime — pay monthly, cancel whenever",
+      "month": "per month",
+      "year": "per year",
+      "select": "Choose plan",
+      "active": "Current",
+      "popular": "Most popular"
+    },
+    "person": {
+      "FREEMIUM": {
+        "name": "Freemium",
+        "tagline": "Get a feel for Ekoru",
+        "feature1": "Up to 5 listings",
+        "feature2": "Community access",
+        "feature3": "Basic impact tracking"
+      },
+      "BASIC": {
+        "name": "Basic",
+        "tagline": "For everyday sellers",
+        "feature1": "Up to 25 listings",
+        "feature2": "Featured spot every month",
+        "feature3": "Detailed impact reports"
+      },
+      "ADVANCED": {
+        "name": "Advanced",
+        "tagline": "Power users & resellers",
+        "feature1": "Unlimited listings",
+        "feature2": "Priority placement",
+        "feature3": "Full analytics dashboard",
+        "feature4": "Priority support"
+      }
+    },
+    "business": {
+      "FREEMIUM": {
+        "name": "Freemium",
+        "tagline": "Try Ekoru for business",
+        "feature1": "Up to 10 listings",
+        "feature2": "Business profile",
+        "feature3": "Basic analytics"
+      },
+      "STARTUP": {
+        "name": "Startup",
+        "tagline": "Validate and grow",
+        "feature1": "Up to 50 listings",
+        "feature2": "Custom storefront",
+        "feature3": "Customer messaging"
+      },
+      "BASIC": {
+        "name": "Basic",
+        "tagline": "Establish your shop",
+        "feature1": "Up to 200 listings",
+        "feature2": "Promotions & coupons",
+        "feature3": "Order management tools"
+      },
+      "ADVANCED": {
+        "name": "Advanced",
+        "tagline": "Scale your operation",
+        "feature1": "Unlimited listings",
+        "feature2": "Advanced analytics",
+        "feature3": "Multi-user access"
+      },
+      "EXPERT": {
+        "name": "Expert",
+        "tagline": "All the firepower",
+        "feature1": "Everything in Advanced",
+        "feature2": "Dedicated account manager",
+        "feature3": "API access",
+        "feature4": "Custom integrations"
+      }
+    },
+    "feedback": {
+      "changed": "Subscription updated",
+      "error": "Could not update subscription"
+    }
+  },
   "settings": {
+    "screenTitle": "Settings",
+    "screenSubtitle": "Configure how Ekoru works for you",
     "preferences": "Preferences",
+    "preferencesSubtitle": "Set how content is shown to you",
     "language": "Language",
     "currency": "Currency",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
     "notifications": "Notifications",
-    "emailNotifications": "Email Notifications",
-    "emailNotificationsDescription": "Receive order updates and promotions by email",
-    "pushNotifications": "Push Notifications",
-    "pushNotificationsDescription": "Receive real-time alerts on your device",
+    "notificationsSubtitle": "Choose what we send your way",
+    "emailNotifications": "Email notifications",
+    "emailNotificationsDescription": "Receive order updates by email",
+    "pushNotifications": "Push notifications",
+    "pushNotificationsDescription": "Real-time alerts on your device",
+    "marketingEmails": "Promotions & newsletters",
+    "marketingEmailsDescription": "News, tips and product picks",
+    "weeklySummary": "Weekly summary",
+    "weeklySummaryDescription": "A recap of your week on Ekoru",
+    "privacy": "Privacy",
+    "privacySubtitle": "Control what other users can see",
+    "publicProfile": "Public profile",
+    "publicProfileDescription": "Let anyone view your seller profile",
+    "showInSearch": "Show me in search",
+    "showInSearchDescription": "Appear in seller and store searches",
+    "allowExchanges": "Allow exchanges",
+    "allowExchangesDescription": "Let buyers propose item exchanges",
+    "security": "Security",
+    "securitySubtitle": "Extra layers for your account",
+    "twoFactor": "Two-factor authentication",
+    "twoFactorDescription": "Add a second step when signing in",
+    "loginAlerts": "Sign-in alerts",
+    "loginAlertsDescription": "Notify me of new device sign-ins",
     "dangerZone": "Danger Zone",
+    "dangerZoneSubtitle": "Irreversible account actions",
+    "deactivateAccount": "Deactivate account",
+    "deactivateAccountDescription": "Temporarily hide your profile and listings",
+    "deactivate": "Deactivate",
     "deleteAccount": "Delete Account",
     "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone."
   },
-  "logout": "Log Out"
+  "logout": "Log Out",
+  "back": "Back"
 }

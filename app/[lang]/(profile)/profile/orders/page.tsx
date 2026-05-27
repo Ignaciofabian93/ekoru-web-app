@@ -1,10 +1,14 @@
-export default function Page() {
-  return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4 py-16">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <h1 className="text-3xl font-bold text-foreground">Order History</h1>
-        <p className="text-foreground-secondary">Coming soon</p>
-      </div>
-    </main>
-  );
+import { hasLocale } from "@/constants/settings";
+import { OrdersScreen } from "@/features/profile/screens/Orders";
+import { notFound } from "next/navigation";
+
+export default async function Orders({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+
+  return <OrdersScreen lang={lang} />;
 }
