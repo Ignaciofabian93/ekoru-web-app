@@ -1,17 +1,21 @@
+import { type SupportedLanguage } from "@/constants/settings";
+import { Footer } from "@/features/footer/Footer";
 import type { ReactNode } from "react";
 
 interface Props {
+  lang: SupportedLanguage;
   nav: ReactNode;
   hero?: ReactNode;
   children: ReactNode;
 }
 
-export function ScreenShell({ nav, hero, children }: Props) {
+export function ScreenShell({ lang, nav, hero, children }: Props) {
   return (
-    <main className="flex-1 bg-background">
+    <main className="flex min-h-screen flex-1 flex-col bg-background">
       {nav}
       {hero}
-      <div className="mx-auto w-full max-w-4xl px-4 py-8">{children}</div>
+      <div className="mx-auto w-full max-w-4xl flex-1 px-4 py-8">{children}</div>
+      <Footer lang={lang} />
     </main>
   );
 }

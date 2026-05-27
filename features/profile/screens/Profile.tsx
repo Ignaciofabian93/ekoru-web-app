@@ -16,7 +16,7 @@ export async function ProfileScreen({ lang }: { lang: SupportedLanguage }) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <ScreenShell nav={<Navigation lang={lang} />} hero={<ProfileHeader />}>
+      <ScreenShell lang={lang} nav={<Navigation lang={lang} />} hero={<ProfileHeader />}>
         <div className="flex flex-col gap-5">
           <ActionCenter />
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">

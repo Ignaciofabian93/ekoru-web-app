@@ -13,7 +13,7 @@ export function CustomHeader({ logo, searchBar, subHeader }: CustomHeaderProps) 
   return (
     <header
       id="header"
-      className="w-screen bg-linear-to-r from-primary-dark via-primary to-primary-dark"
+      className="w-screen bg-linear-to-r from-primary via-secondary-dark to-primary"
     >
       <nav className="w-full max-w-4xl flex flex-col mx-auto pt-3 px-6">
         <div className="flex items-center justify-between mb-2 px-2">

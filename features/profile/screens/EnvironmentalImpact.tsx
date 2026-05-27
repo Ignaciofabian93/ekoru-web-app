@@ -12,6 +12,7 @@ export async function EnvironmentalImpactScreen({ lang }: { lang: SupportedLangu
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
       <ScreenShell
+        lang={lang}
         nav={<Navigation lang={lang} />}
         hero={
           <ProfileHero

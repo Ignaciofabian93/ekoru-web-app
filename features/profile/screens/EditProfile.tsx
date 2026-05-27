@@ -12,6 +12,7 @@ export async function EditProfileScreen({ lang }: { lang: SupportedLanguage }) {
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
       <ScreenShell
+        lang={lang}
         nav={<Navigation lang={lang} />}
         hero={
           <ProfileHero
