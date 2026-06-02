@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "slides": {
+      "marketplace": {
+        "label": "Marketplace",
+        "title": "Consommez durable",
+        "subtitle": "Découvrez des produits d'occasion qui préservent la planète",
+        "cta": "Explorer"
+      },
+      "stores": {
+        "label": "Éco Boutiques",
+        "title": "Locales et vérifiées",
+        "subtitle": "Achetez auprès d'entreprises durables de votre communauté",
+        "cta": "Trouver des boutiques"
+      },
+      "impact": {
+        "label": "Impact",
+        "title": "Agissez vraiment",
+        "subtitle": "Chaque achat éco-responsable réduit votre empreinte",
+        "cta": "Voir l'impact"
+      },
+      "circular": {
+        "label": "Circulaire",
+        "title": "Bouclez la boucle",
+        "subtitle": "Vendez, échangez et réparez — donnez une seconde vie à vos objets",
+        "cta": "Rejoindre"
+      }
+    }
+  },
+  "categories": {
+    "title": "Explorez nos catégories",
+    "subtitle": "Trouvez ce qui vous fait avancer.",
+    "topPicks": "Coups de cœur",
+    "tags": {
+      "clothing": "Vêtements",
+      "bikes": "Vélos",
+      "plants": "Plantes",
+      "electronics": "Électronique",
+      "organic": "Bio",
+      "zeroWaste": "Zéro déchet",
+      "fairTrade": "Commerce équitable",
+      "repair": "Réparation",
+      "rental": "Location",
+      "swap": "Échange",
+      "upcycle": "Surcyclage"
+    },
+    "items": {
+      "marketplace": {
+        "title": "Marketplace",
+        "description": "Achetez et vendez des articles durables d'occasion",
+        "meta": "567+ produits"
+      },
+      "stores": {
+        "title": "Éco Boutiques",
+        "description": "Découvrez des boutiques durables vérifiées près de chez vous",
+        "meta": "89 vérifiées"
+      },
+      "services": {
+        "title": "Services",
+        "description": "Réparez, louez et échangez — donnez une seconde vie aux objets",
+        "meta": "45 disponibles"
+      }
+    }
+  },
+  "stats": {
+    "title": "C'est déjà en cours",
+    "subtitle": "Une communauté active qui change notre façon de consommer.",
+    "caption": "Produits, boutiques et services déjà intégrés à l'économie circulaire.",
+    "items": {
+      "activeUsers": "Utilisateurs actifs",
+      "productsListed": "Produits publiés",
+      "ecoStores": "Éco Boutiques",
+      "ecoServices": "Éco Services",
+      "activeInitiatives": "Initiatives actives"
+    }
+  },
+  "stores": {
+    "title": "Éco Boutiques",
+    "subtitle": "Boutiques durables vérifiées",
+    "seeAll": "Voir tout"
+  },
+  "products": {
+    "title": "Produits en vedette",
+    "subtitle": "Trouvailles durables sélectionnées",
+    "seeAll": "Voir tout"
+  },
+  "exchange": {
+    "title": "Prêts à échanger",
+    "subtitle": "Échangez des articles et donnez-leur une seconde vie",
+    "seeAll": "Voir tout",
+    "scrollPrevious": "Défiler vers la gauche",
+    "scrollNext": "Défiler vers la droite"
+  }
+}

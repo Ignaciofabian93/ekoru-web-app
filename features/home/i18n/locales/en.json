@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "slides": {
+      "marketplace": {
+        "label": "Marketplace",
+        "title": "Shop Sustainably",
+        "subtitle": "Discover pre-loved products that care for the planet",
+        "cta": "Explore now"
+      },
+      "stores": {
+        "label": "Eco Stores",
+        "title": "Local & Verified",
+        "subtitle": "Shop from sustainable businesses in your community",
+        "cta": "Find stores"
+      },
+      "impact": {
+        "label": "Impact",
+        "title": "Make It Count",
+        "subtitle": "Every eco-conscious purchase reduces your footprint",
+        "cta": "See impact"
+      },
+      "circular": {
+        "label": "Circular",
+        "title": "Close the Loop",
+        "subtitle": "Sell, swap & repair — give your items a second life",
+        "cta": "Join now"
+      }
+    }
+  },
+  "categories": {
+    "title": "Explore our categories",
+    "subtitle": "Find what moves you forward.",
+    "topPicks": "Top picks",
+    "tags": {
+      "clothing": "Clothing",
+      "bikes": "Bikes",
+      "plants": "Plants",
+      "electronics": "Electronics",
+      "organic": "Organic",
+      "zeroWaste": "Zero Waste",
+      "fairTrade": "Fair Trade",
+      "repair": "Repair",
+      "rental": "Rental",
+      "swap": "Swap",
+      "upcycle": "Upcycle"
+    },
+    "items": {
+      "marketplace": {
+        "title": "Marketplace",
+        "description": "Buy & sell pre-loved sustainable items",
+        "meta": "567+ products"
+      },
+      "stores": {
+        "title": "Eco Stores",
+        "description": "Discover verified sustainable shops near you",
+        "meta": "89 verified"
+      },
+      "services": {
+        "title": "Services",
+        "description": "Repair, rent & swap — give things a second life",
+        "meta": "45 available"
+      }
+    }
+  },
+  "stats": {
+    "title": "This is already happening",
+    "subtitle": "An active community changing the way we consume.",
+    "caption": "Products, stores, and services already part of the circular economy.",
+    "items": {
+      "activeUsers": "Active Users",
+      "productsListed": "Products Listed",
+      "ecoStores": "Eco Stores",
+      "ecoServices": "Eco Services",
+      "activeInitiatives": "Active Initiatives"
+    }
+  },
+  "stores": {
+    "title": "Eco Stores",
+    "subtitle": "Verified sustainable shops",
+    "seeAll": "See all"
+  },
+  "products": {
+    "title": "Featured Products",
+    "subtitle": "Handpicked sustainable finds",
+    "seeAll": "See all"
+  },
+  "exchange": {
+    "title": "Ready to Swap",
+    "subtitle": "Trade items and give them a second life",
+    "seeAll": "See all",
+    "scrollPrevious": "Scroll left",
+    "scrollNext": "Scroll right"
+  }
+}

@@ -1,76 +1,23 @@
 import { gql } from "@apollo/client";
 
+import { HOME_EXCHANGEABLE_PRODUCT_FIELDS_FRAGMENT } from "./fragments";
+
 export const GET_EXCHANGEABLE_PRODUCTS_HOME = gql`
-  query GetExchangeableProductsHome(
+  ${HOME_EXCHANGEABLE_PRODUCT_FIELDS_FRAGMENT}
+  query GetExchangeableProducts(
     $page: Int = 1
-    $pageSize: Int = 20
+    $pageSize: Int = 24
+    $filter: ProductFilterInput = { isExchangeable: true }
     $sort: ProductSortInput
-    $filter: ProductFilterInput
   ) {
     getExchangeableProducts(
       page: $page
       pageSize: $pageSize
-      sort: $sort
       filter: $filter
+      sort: $sort
     ) {
       nodes {
-        id
-        name
-        description
-        color
-        images
-        brand
-        price
-        badges
-        condition
-        isExchangeable
-        sellerId
-        environmentalImpact {
-          totalCo2SavingsKG
-          totalWaterSavingsLT
-          materialBreakdown {
-            materialType
-            quantity
-            unit
-            co2SavingsKG
-            waterSavingsLT
-          }
-        }
-        seller {
-          id
-          email
-          sellerType
-          isVerified
-          address
-          phone
-          county {
-            id
-            county
-            cityId
-          }
-          profile {
-            ... on PersonProfile {
-              id
-              firstName
-              lastName
-              displayName
-              profileImage
-            }
-            ... on BusinessProfile {
-              id
-              businessName
-              logo
-            }
-          }
-        }
-        productCategory {
-          id
-          translation {
-            name
-            slug
-            href
-          }
-        }
+        ...HomeExchangeableProductFields
       }
       pageInfo {
         currentPage
@@ -78,6 +25,8 @@ export const GET_EXCHANGEABLE_PRODUCTS_HOME = gql`
         totalCount
         hasNextPage
         hasPreviousPage
+        startCursor
+        endCursor
         pageSize
       }
     }

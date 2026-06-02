@@ -94,7 +94,7 @@ export default function BackSide({ product, onFlip, onShowImpact }: Props) {
                       {material.materialType}
                     </span>
                     <span className="text-xs font-semibold text-foreground">
-                      {material.percentage.toFixed(1)}%
+                      {material?.percentage?.toFixed(1)}%
                     </span>
                   </div>
                 ))}

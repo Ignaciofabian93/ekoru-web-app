@@ -151,7 +151,7 @@ export function FooterContent() {
             </ul>
           </div>
 
-          <div className="flex flex-col items-center gap-4 text-center md:items-start md:text-start">
+          {/* <div className="flex flex-col items-center gap-4 text-center md:items-start md:text-start">
             <Text variant="p" size="lg" color="white" weight="bold">
               {t("newsletter.title")}
             </Text>
@@ -178,7 +178,7 @@ export function FooterContent() {
                 <Mail size={18} aria-hidden />
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <Divider />

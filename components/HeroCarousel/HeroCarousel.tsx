@@ -1,68 +1,24 @@
 "use client";
 
 import clsx from "clsx";
-import {
-  ArrowRight,
-  Footprints,
-  Globe,
-  Leaf,
-  Store,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, type LucideIcon } from "lucide-react";
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const AUTO_PLAY_INTERVAL = 4500;
 
-interface SlideData {
+export interface HeroSlide {
   id: string;
   label: string;
   title: string;
   subtitle: string;
+  cta: string;
+  href: string;
   gradient: [string, string, string];
   Icon: LucideIcon;
-  cta: string;
 }
 
-const SLIDES: SlideData[] = [
-  {
-    id: "1",
-    label: "Marketplace",
-    title: "Shop Sustainably",
-    subtitle: "Discover pre-loved products that care for the planet",
-    gradient: ["var(--color-primary-dark)", "#2d6a0f", "var(--color-primary)"],
-    Icon: Leaf,
-    cta: "Explore Now",
-  },
-  {
-    id: "2",
-    label: "Eco Stores",
-    title: "Local & Verified",
-    subtitle: "Shop from sustainable businesses in your community",
-    gradient: ["var(--color-secondary-dark)", "#0c7b95", "#14b8a6"],
-    Icon: Store,
-    cta: "Find Stores",
-  },
-  {
-    id: "3",
-    label: "Impact",
-    title: "Make It Count",
-    subtitle: "Every eco-conscious purchase reduces your footprint",
-    gradient: ["#134e4a", "#065f46", "#059669"],
-    Icon: Globe,
-    cta: "See Impact",
-  },
-  {
-    id: "4",
-    label: "Circular",
-    title: "Close the Loop",
-    subtitle: "Sell, swap & repair — give your items a second life",
-    gradient: ["var(--color-primary-dark)", "#1e4d10", "var(--color-secondary-dark)"],
-    Icon: Footprints,
-    cta: "Join Now",
-  },
-];
-
-function SlideItem({ item }: { item: SlideData }) {
+function SlideItem({ item }: { item: HeroSlide }) {
   const { Icon } = item;
   return (
     <div
@@ -100,22 +56,22 @@ function SlideItem({ item }: { item: SlideData }) {
           <span className="font-sans text-sm font-normal leading-5 text-white/82">
             {item.subtitle}
           </span>
-          <button
-            type="button"
-            className="mt-0.5 inline-flex flex-row items-center gap-1.25 self-start rounded-2xl border border-white/35 bg-white/18 px-3.5 py-2 text-on-primary"
+          <Link
+            href={item.href}
+            className="mt-0.5 inline-flex flex-row items-center gap-1.25 self-start rounded-2xl border border-white/35 bg-white/18 px-3.5 py-2 text-on-primary transition-colors hover:bg-white/28"
           >
             <span className="font-sans text-sm font-semibold text-on-primary">
               {item.cta}
             </span>
             <ArrowRight size={13} color="currentColor" strokeWidth={2.5} />
-          </button>
+          </Link>
         </div>
       </div>
     </div>
   );
 }
 
-export default function HeroCarousel() {
+export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -135,12 +91,12 @@ export default function HeroCarousel() {
     autoPlayRef.current = setInterval(() => {
       if (isUserScrolling.current) return;
       setCurrentIndex((prev) => {
-        const next = (prev + 1) % SLIDES.length;
+        const next = (prev + 1) % slides.length;
         scrollToIndex(next);
         return next;
       });
     }, AUTO_PLAY_INTERVAL);
-  }, [scrollToIndex]);
+  }, [scrollToIndex, slides.length]);
 
   useEffect(() => {
     startAutoPlay();
@@ -169,7 +125,7 @@ export default function HeroCarousel() {
         }}
         className="flex h-full snap-x snap-mandatory scroll-smooth overflow-x-scroll scrollbar-none"
       >
-        {SLIDES.map((slide) => (
+        {slides.map((slide) => (
           <div key={slide.id} className="h-full min-w-full snap-start">
             <SlideItem item={slide} />
           </div>
@@ -178,7 +134,7 @@ export default function HeroCarousel() {
 
       {/* Dot indicators */}
       <div className="pointer-events-none absolute right-5 bottom-4 flex flex-row items-center gap-1.25">
-        {SLIDES.map((_, index) => (
+        {slides.map((_, index) => (
           <div
             key={index}
             className={clsx(

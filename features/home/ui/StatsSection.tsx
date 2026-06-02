@@ -2,12 +2,15 @@
 
 import { Package2, ScanBarcode, Store, TrendingUp, UsersRound } from "lucide-react";
 
+import { useTranslation } from "@/i18n/context";
+import { NAMESPACE } from "../i18n";
+
 const STATS = [
-  { label: "Active Users", value: "1,234", Icon: UsersRound },
-  { label: "Products Listed", value: "567", Icon: Package2 },
-  { label: "Eco Stores", value: "89", Icon: Store },
-  { label: "Eco Services", value: "45", Icon: ScanBarcode },
-  { label: "Active Initiatives", value: "12", Icon: TrendingUp },
+  { key: "activeUsers", value: "1,234", Icon: UsersRound },
+  { key: "productsListed", value: "567", Icon: Package2 },
+  { key: "ecoStores", value: "89", Icon: Store },
+  { key: "ecoServices", value: "45", Icon: ScanBarcode },
+  { key: "activeInitiatives", value: "12", Icon: TrendingUp },
 ];
 
 function StatItem({ label, value, Icon }: { label: string; value: string; Icon: React.ElementType }) {
@@ -22,17 +25,24 @@ function StatItem({ label, value, Icon }: { label: string; value: string; Icon: 
 }
 
 export function StatsSection() {
+  const { t } = useTranslation(NAMESPACE);
+
   return (
     <div className="my-8">
-      <h2 className="text-xl font-bold text-foreground text-center">This is already happening</h2>
+      <h2 className="text-xl font-bold text-foreground text-center">{t("stats.title")}</h2>
       <p className="text-sm text-foreground-secondary text-center mt-1.5">
-        An active community changing the way we consume.
+        {t("stats.subtitle")}
       </p>
 
       <div className="relative mt-5 mb-3 overflow-hidden py-3.5">
         <div className="flex animate-marquee">
           {[...STATS, ...STATS].map((stat, i) => (
-            <StatItem key={i} label={stat.label} value={stat.value} Icon={stat.Icon} />
+            <StatItem
+              key={i}
+              label={t(`stats.items.${stat.key}`)}
+              value={stat.value}
+              Icon={stat.Icon}
+            />
           ))}
         </div>
         {/* Fade edges */}
@@ -41,7 +51,7 @@ export function StatsSection() {
       </div>
 
       <p className="text-xs text-foreground-tertiary text-center">
-        Products, stores, and services already part of the circular economy.
+        {t("stats.caption")}
       </p>
     </div>
   );

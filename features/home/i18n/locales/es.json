@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "slides": {
+      "marketplace": {
+        "label": "Marketplace",
+        "title": "Compra sostenible",
+        "subtitle": "Descubre productos de segunda mano que cuidan el planeta",
+        "cta": "Explorar ahora"
+      },
+      "stores": {
+        "label": "Eco Tiendas",
+        "title": "Locales y verificadas",
+        "subtitle": "Compra en negocios sostenibles de tu comunidad",
+        "cta": "Buscar tiendas"
+      },
+      "impact": {
+        "label": "Impacto",
+        "title": "Haz que cuente",
+        "subtitle": "Cada compra consciente reduce tu huella",
+        "cta": "Ver impacto"
+      },
+      "circular": {
+        "label": "Circular",
+        "title": "Cierra el ciclo",
+        "subtitle": "Vende, intercambia y repara — dale una segunda vida a tus cosas",
+        "cta": "Únete ahora"
+      }
+    }
+  },
+  "categories": {
+    "title": "Explora nuestras categorías",
+    "subtitle": "Encuentra lo que te impulsa.",
+    "topPicks": "Destacados",
+    "tags": {
+      "clothing": "Ropa",
+      "bikes": "Bicicletas",
+      "plants": "Plantas",
+      "electronics": "Electrónica",
+      "organic": "Orgánico",
+      "zeroWaste": "Cero residuos",
+      "fairTrade": "Comercio justo",
+      "repair": "Reparación",
+      "rental": "Arriendo",
+      "swap": "Intercambio",
+      "upcycle": "Reciclaje creativo"
+    },
+    "items": {
+      "marketplace": {
+        "title": "Marketplace",
+        "description": "Compra y vende artículos sostenibles de segunda mano",
+        "meta": "567+ productos"
+      },
+      "stores": {
+        "title": "Eco Tiendas",
+        "description": "Descubre tiendas sostenibles verificadas cerca de ti",
+        "meta": "89 verificadas"
+      },
+      "services": {
+        "title": "Servicios",
+        "description": "Repara, arrienda e intercambia — dale una segunda vida a las cosas",
+        "meta": "45 disponibles"
+      }
+    }
+  },
+  "stats": {
+    "title": "Esto ya está pasando",
+    "subtitle": "Una comunidad activa cambiando la forma en que consumimos.",
+    "caption": "Productos, tiendas y servicios que ya son parte de la economía circular.",
+    "items": {
+      "activeUsers": "Usuarios activos",
+      "productsListed": "Productos publicados",
+      "ecoStores": "Eco Tiendas",
+      "ecoServices": "Eco Servicios",
+      "activeInitiatives": "Iniciativas activas"
+    }
+  },
+  "stores": {
+    "title": "Eco Tiendas",
+    "subtitle": "Tiendas sostenibles verificadas",
+    "seeAll": "Ver todas"
+  },
+  "products": {
+    "title": "Productos destacados",
+    "subtitle": "Hallazgos sostenibles seleccionados",
+    "seeAll": "Ver todos"
+  },
+  "exchange": {
+    "title": "Listos para intercambiar",
+    "subtitle": "Intercambia artículos y dales una segunda vida",
+    "seeAll": "Ver todos",
+    "scrollPrevious": "Desplazar a la izquierda",
+    "scrollNext": "Desplazar a la derecha"
+  }
+}

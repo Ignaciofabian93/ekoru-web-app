@@ -1,25 +1,24 @@
+"use client";
+
 import { MapPin, ShieldCheck, Star } from "lucide-react";
 import Link from "next/link";
 
-type Store = {
-  id: string;
-  name: string;
-  rating: number;
-  county: string;
-  category: string;
-  isVerified: boolean;
-};
+import { useTranslation } from "@/i18n/context";
+import { NAMESPACE } from "../i18n";
+import type { HighlightStore } from "../constants/mockData";
 
-export function StoresHighlight({ lang, stores }: { lang: string; stores: Store[] }) {
+export function StoresHighlight({ lang, stores }: { lang: string; stores: HighlightStore[] }) {
+  const { t } = useTranslation(NAMESPACE);
+
   return (
     <div className="my-10">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h2 className="text-xl font-bold text-foreground">Eco Stores</h2>
-          <p className="text-sm text-foreground-secondary mt-0.5">Verified sustainable shops</p>
+          <h2 className="text-xl font-bold text-foreground">{t("stores.title")}</h2>
+          <p className="text-sm text-foreground-secondary mt-0.5">{t("stores.subtitle")}</p>
         </div>
         <Link href={`/${lang}/stores`} className="text-sm font-semibold text-primary hover:underline">
-          See all
+          {t("stores.seeAll")}
         </Link>
       </div>
 
