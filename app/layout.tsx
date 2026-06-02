@@ -1,20 +1,11 @@
-import { Cabin } from "next/font/google";
 import "./globals.css";
-import { ToastProvider } from "@/components/Toast/ToastProvider";
 
-const cabin = Cabin({
-  variable: "--font-cabin",
-  subsets: ["latin"],
-  display: "swap",
-});
-
+/**
+ * Root layout is intentionally a pass-through: the real `<html>`/`<body>` live in
+ * `app/[lang]/layout.tsx` so the `lang` attribute can be set per locale (required
+ * for SEO and accessibility). The only route mounted directly under this layout is
+ * `app/page.tsx`, which redirects to the default locale before rendering.
+ */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html className={`${cabin.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-background text-foreground overflow-x-hidden">
-        {children}
-        <ToastProvider />
-      </body>
-    </html>
-  );
+  return children;
 }

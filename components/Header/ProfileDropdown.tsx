@@ -205,13 +205,15 @@ export default function ProfileDropdown() {
               />
             );
           })}
-          <MenuItem
-            icon={LogOutIcon}
-            label={t("dropdown.signOut")}
-            onPress={handleLogout}
-            hasBorder
-            isHighlighted
-          />
+          {isAuthenticated && (
+            <MenuItem
+              icon={LogOutIcon}
+              label={t("dropdown.signOut")}
+              onPress={handleLogout}
+              hasBorder
+              isHighlighted
+            />
+          )}
         </div>
       </div>
     </div>

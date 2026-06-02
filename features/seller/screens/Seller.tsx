@@ -1,4 +1,8 @@
 import { type SupportedLanguage } from "@/constants/settings";
+import {
+  getMarketplaceDictionary,
+  NAMESPACE as MARKETPLACE_NAMESPACE,
+} from "@/features/marketplace/i18n";
 import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 
@@ -12,10 +16,21 @@ interface Props {
 }
 
 export async function Seller({ id, lang }: Props) {
-  const dict = await getSellerDictionary(lang);
+  // Seller pages render MarketplaceCard (and any other marketplace UI), which
+  // looks up keys under the "marketplace" namespace — load both dictionaries
+  // so those translations resolve instead of falling back to raw keys.
+  const [sellerDict, marketplaceDict] = await Promise.all([
+    getSellerDictionary(lang),
+    getMarketplaceDictionary(lang),
+  ]);
 
   return (
-    <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
+    <DictionaryProvider
+      dictionary={{
+        [NAMESPACE]: sellerDict,
+        [MARKETPLACE_NAMESPACE]: marketplaceDict,
+      }}
+    >
       <ScreenShell nav={<Navigation lang={lang} />} lang={lang}>
         <SellerContent id={id} lang={lang} />
       </ScreenShell>

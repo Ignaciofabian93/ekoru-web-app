@@ -1,145 +1,10 @@
 "use client";
 import { useTranslation } from "@/i18n/context";
-import { formatPrice } from "@/data/products";
-import { useToast } from "@/hooks/useToast";
-import useCartStore from "@/store/useCartStore";
-import { resolveImageUrl } from "@/utils/resolveImage";
-import { Heart, ImageOff, ShoppingCart } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
+import { ShoppingCart } from "lucide-react";
 
 import { NAMESPACE } from "../i18n";
 import type { MarketplaceProduct } from "../types";
-
-const CONDITION_COLORS: Record<string, string> = {
-  NEW: "bg-primary-light-bg text-primary",
-  LIKE_NEW: "bg-primary-light-bg text-primary",
-  OPEN_BOX: "bg-primary-light-bg text-primary",
-  REFURBISHED: "bg-primary-light-bg text-primary",
-  FAIR: "bg-amber-50 text-amber-700",
-  POOR: "bg-red-50 text-red-600",
-  FOR_PARTS: "bg-red-50 text-red-600",
-};
-
-function ProductCard({
-  product,
-  lang,
-}: {
-  product: MarketplaceProduct;
-  lang: string;
-}) {
-  const { t } = useTranslation(NAMESPACE);
-  const toast = useToast();
-  const addItem = useCartStore((s) => s.addItem);
-  const [liked, setLiked] = useState(false);
-  const [added, setAdded] = useState(false);
-
-  const cover = resolveImageUrl(product.images?.[0]);
-
-  function handleAddToCart(e: React.MouseEvent) {
-    e.preventDefault();
-    addItem({
-      productId: product.id,
-      name: product.name,
-      image: product.images?.[0],
-      unitPrice: product.price,
-      currency: "CLP",
-      sellerId: product.sellerId,
-    });
-    setAdded(true);
-    toast.success(t("product.added"));
-    setTimeout(() => setAdded(false), 1500);
-  }
-
-  return (
-    <Link
-      href={`/${lang}/product/${product.id}`}
-      className="group bg-surface relative overflow-hidden rounded-xl border border-border transition-all hover:shadow-md"
-    >
-      <div className="bg-background-secondary relative flex aspect-square items-center justify-center">
-        {cover ? (
-          <Image
-            src={cover}
-            alt={product.name}
-            fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover"
-          />
-        ) : (
-          <ImageOff
-            size={36}
-            className="text-foreground-muted"
-            strokeWidth={1.5}
-            aria-label={t("product.noImage")}
-          />
-        )}
-
-        <span
-          className={`absolute bottom-2 left-2 rounded-md px-2 py-0.5 text-xs font-medium ${
-            CONDITION_COLORS[product.condition] ?? "bg-border text-foreground"
-          }`}
-        >
-          {t(`conditions.${product.condition}`)}
-        </span>
-
-        {product.isExchangeable && (
-          <span className="absolute top-2 left-2 rounded-md bg-secondary/90 px-2 py-0.5 text-xs font-medium text-white">
-            {t("product.exchangeable")}
-          </span>
-        )}
-
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            setLiked((v) => !v);
-          }}
-          className="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
-          aria-pressed={liked}
-        >
-          <Heart
-            size={15}
-            className={
-              liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"
-            }
-            strokeWidth={2}
-          />
-        </button>
-      </div>
-
-      <div className="p-3">
-        {product.brand && (
-          <p className="truncate text-xs tracking-wide text-foreground-tertiary uppercase">
-            {product.brand}
-          </p>
-        )}
-        <p className="mt-0.5 line-clamp-2 text-sm leading-snug font-semibold text-foreground">
-          {product.name}
-        </p>
-
-        <div className="mt-2 flex items-center justify-between">
-          <span className="text-sm font-bold text-primary">
-            {formatPrice(product.price)}
-          </span>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleAddToCart}
-          className={`mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-semibold transition-colors ${
-            added
-              ? "bg-success/10 text-success"
-              : "bg-primary-light-bg text-primary hover:bg-primary hover:text-white"
-          }`}
-        >
-          <ShoppingCart size={13} strokeWidth={2} />
-          {added ? t("product.added") : t("product.addToCart")}
-        </button>
-      </div>
-    </Link>
-  );
-}
+import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
 
 interface Props {
   products: MarketplaceProduct[];
@@ -176,7 +41,7 @@ export function ProductGrid({ products, lang, loading }: Props) {
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} lang={lang} />
+        <MarketplaceCard key={product.id} product={product} lang={lang} />
       ))}
     </div>
   );

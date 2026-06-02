@@ -192,7 +192,7 @@ export default function Drawer() {
         <div className="flex flex-1 flex-col gap-1 overflow-y-auto pb-8">
           {/* User identity */}
           {seller && (
-            <div className="m-3 flex flex-col items-center gap-3 rounded-lg bg-secondary/10 p-3.5">
+            <div className="flex flex-col items-center gap-3 bg-secondary/10 p-3.5">
               {profileImage ? (
                 <Image
                   src={profileImage}
@@ -215,7 +215,7 @@ export default function Drawer() {
                 <span className="max-w-full truncate font-sans text-xs font-normal text-foreground-secondary">
                   {seller.email}
                 </span>
-                <div className="mt-1 self-start rounded-2xl bg-primary/15 px-2 py-0.5">
+                <div className="flex items-center justify-center mt-2 self-center-safe rounded-2xl bg-primary/15 px-2 py-1">
                   <span className="font-sans text-xs font-semibold text-primary-dark">
                     {t(`sellerType.${seller.sellerType}`)}
                   </span>
@@ -289,14 +289,15 @@ export default function Drawer() {
           </div>
 
           {/* Auth action */}
-          <div className="mt-3">
+          <div className="w-full flex items-center mt-3">
             {seller ? (
               <MainButton
                 variant="error"
                 text={t("logOut")}
                 className="mx-4 mt-3"
+                fullWidth
                 onPress={async () => {
-                  await logout();
+                  logout();
                   closeDrawer();
                   router.push(`/${lang}/login`);
                 }}
@@ -305,6 +306,7 @@ export default function Drawer() {
               <MainButton
                 text={t("logIn")}
                 className="mx-4 mt-3"
+                fullWidth
                 onPress={() => handleNavigate("/login")}
               />
             )}
