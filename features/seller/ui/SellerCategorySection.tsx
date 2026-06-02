@@ -1,10 +1,11 @@
 "use client";
 
 import { useTranslation } from "@/i18n/context";
-
 import { NAMESPACE } from "../i18n";
 import type { CategoryGroup } from "../types";
-import { SellerProductCard } from "./SellerProductCard";
+import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
+import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Text/Text";
 
 interface Props {
   lang: string;
@@ -25,16 +26,16 @@ export function SellerCategorySection({ lang, group, id }: Props) {
   return (
     <section id={id} className="scroll-mt-24">
       <div className="mb-3 flex items-baseline justify-between gap-2">
-        <h3 className="min-w-0 flex-1 truncate text-base font-semibold text-foreground md:text-lg">
+        <Title level="h3" size="h6">
           {group.name}
-        </h3>
-        <span className="shrink-0 text-xs font-medium whitespace-nowrap text-foreground-tertiary">
+        </Title>
+        <Text variant="span" size="xs" weight="semibold">
           {countLabel}
-        </span>
+        </Text>
       </div>
-      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3">
         {group.products.map((product) => (
-          <SellerProductCard key={product.id} product={product} lang={lang} />
+          <MarketplaceCard key={product.id} product={product} lang={lang} />
         ))}
       </div>
     </section>

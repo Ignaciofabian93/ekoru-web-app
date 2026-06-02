@@ -1,9 +1,9 @@
-import type { MarketplaceProduct, PageInfo } from "@/features/marketplace/types";
-import type { Seller } from "@/types/user";
+import type { PageInfo } from "@/features/marketplace/types";
+import type { Product } from "@/types/product";
 
-export type SellerStorefrontProduct = MarketplaceProduct & {
-  seller?: Seller | null;
-};
+// Seller storefront items are just the global Product (which already carries
+// an optional `seller` relation), so no extension is needed.
+export type SellerStorefrontProduct = Product;
 
 export type SellerStorefrontPayload = {
   nodes: SellerStorefrontProduct[];

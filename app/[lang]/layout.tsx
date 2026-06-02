@@ -1,23 +1,37 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
+import { Cabin } from "next/font/google";
 
 import { hasLocale, SUPPORTED_LANGUAGES } from "@/constants/settings";
+import {
+  SITE_URL,
+  SITE_NAME,
+  OG_LOCALE,
+  HREFLANG,
+  buildLanguageAlternates,
+} from "@/config/site";
 import { getDictionary } from "@/i18n/dictionaries";
 import { DictionaryProvider } from "@/i18n/context";
 import { ApolloWrapper } from "@/lib/apollo/ApolloWrapper";
 import { DrawerProvider } from "@/context/DrawerContext";
 import Drawer from "@/components/Drawer/Drawer";
+import { ToastProvider } from "@/components/Toast/ToastProvider";
 import {
   getDrawerDictionary,
   NAMESPACE as DRAWER_NAMESPACE,
 } from "@/components/Drawer/i18n";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ekoru.cl";
+const cabin = Cabin({
+  variable: "--font-cabin",
+  subsets: ["latin"],
+  display: "swap",
+});
 
-const OG_LOCALE: Record<string, string> = {
-  en: "en_US",
-  es: "es_ES",
-  fr: "fr_FR",
+export const viewport: Viewport = {
+  themeColor: "#65a30d",
+  colorScheme: "light",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export async function generateMetadata({
@@ -30,12 +44,13 @@ export async function generateMetadata({
   const dict = await getDictionary(lang);
 
   return {
-    metadataBase: new URL(BASE_URL),
+    metadataBase: new URL(SITE_URL),
     title: {
       default: dict.metadata.title,
-      template: `%s | Ekoru`,
+      template: `%s | ${SITE_NAME}`,
     },
     description: dict.metadata.description,
+    applicationName: SITE_NAME,
     keywords: [
       "sustainability",
       "circular economy",
@@ -44,8 +59,19 @@ export async function generateMetadata({
       "recycle",
       "green",
       "sostenible",
+      "economía circular",
+      "reciclar",
     ],
-    authors: [{ name: "Ekoru" }],
+    authors: [{ name: SITE_NAME }],
+    creator: SITE_NAME,
+    publisher: SITE_NAME,
+    category: "shopping",
+    formatDetection: { telephone: false, email: false, address: false },
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/favicon.ico",
+      apple: "/brand/icon.webp",
+    },
     robots: {
       index: true,
       follow: true,
@@ -54,28 +80,35 @@ export async function generateMetadata({
         follow: true,
         "max-image-preview": "large",
         "max-snippet": -1,
+        "max-video-preview": -1,
       },
     },
     openGraph: {
       type: "website",
-      siteName: "Ekoru",
+      siteName: SITE_NAME,
       title: dict.metadata.title,
       description: dict.metadata.description,
       url: `/${lang}`,
-      locale: OG_LOCALE[lang] ?? "es_ES",
+      locale: OG_LOCALE[lang] ?? OG_LOCALE.es,
+      alternateLocale: SUPPORTED_LANGUAGES.filter((l) => l !== lang).map(
+        (l) => OG_LOCALE[l],
+      ),
+      images: [
+        {
+          url: "/brand/logo.webp",
+          alt: SITE_NAME,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: dict.metadata.title,
       description: dict.metadata.description,
+      images: ["/brand/logo.webp"],
     },
     alternates: {
       canonical: `/${lang}`,
-      languages: {
-        en: "/en",
-        es: "/es",
-        fr: "/fr",
-      },
+      languages: buildLanguageAlternates(),
     },
   };
 }
@@ -101,15 +134,23 @@ export default async function RootLayout({
   ]);
 
   return (
-    <ApolloWrapper>
-      <DictionaryProvider dictionary={dict}>
-        <DictionaryProvider dictionary={{ [DRAWER_NAMESPACE]: drawerDict }}>
-          <DrawerProvider>
-            {children}
-            <Drawer />
-          </DrawerProvider>
-        </DictionaryProvider>
-      </DictionaryProvider>
-    </ApolloWrapper>
+    <html
+      lang={HREFLANG[lang] ?? lang}
+      className={`${cabin.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col bg-background text-foreground overflow-x-hidden">
+        <ApolloWrapper>
+          <DictionaryProvider dictionary={dict}>
+            <DictionaryProvider dictionary={{ [DRAWER_NAMESPACE]: drawerDict }}>
+              <DrawerProvider>
+                {children}
+                <Drawer />
+              </DrawerProvider>
+            </DictionaryProvider>
+          </DictionaryProvider>
+        </ApolloWrapper>
+        <ToastProvider />
+      </body>
+    </html>
   );
 }

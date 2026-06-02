@@ -1,4 +1,5 @@
 import type { ProductCondition } from "@/types/enums";
+import type { Product } from "@/types/product";
 
 export type Language = "ES" | "EN" | "FR";
 
@@ -25,29 +26,10 @@ export type CatalogDepartment = {
   categories: CatalogDepartmentCategory[];
 };
 
-export type MarketplaceProduct = {
-  id: number;
-  name: string;
-  description: string;
-  color?: string | null;
-  brand: string;
-  price: number;
-  images: string[];
-  badges: string[];
-  interests: string[];
-  condition: ProductCondition;
-  conditionDescription?: string | null;
-  isActive: boolean;
-  isExchangeable: boolean;
-  sellerId: string;
-  viewCount: number;
-  createdAt: string;
-  updatedAt: string;
-  productCategory?: {
-    id: string | number;
-    translation?: { name: string; slug: string; href: string };
-  } | null;
-};
+// MarketplaceProduct is just the global Product. Keeping the alias makes it
+// easy to swap in a narrower projection later if the marketplace ever needs
+// one, without churning every import site.
+export type MarketplaceProduct = Product;
 
 export type PageInfo = {
   totalCount: number;

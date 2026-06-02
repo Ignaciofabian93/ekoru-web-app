@@ -54,6 +54,21 @@
     "exchangeable": "Échangeable",
     "noImage": "Aucune image"
   },
+  "card": {
+    "flipToDetails": "Voir les détails",
+    "flipToFront": "Retour au produit",
+    "environmentalImpact": "Impact environnemental",
+    "water": "Eau",
+    "materials": "Matériaux",
+    "viewFullImpact": "Voir l'impact complet",
+    "seller": "Vendeur",
+    "noExtraInfo": "Aucune information supplémentaire."
+  },
+  "sellerTypes": {
+    "PERSON": "Particulier",
+    "STARTUP": "Startup",
+    "COMPANY": "Entreprise"
+  },
   "results": {
     "count": "{{count}} produit",
     "countPlural": "{{count}} produits",

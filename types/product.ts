@@ -23,28 +23,28 @@ export type EnvironmentalImpact = {
 export type Product = {
   id: number;
   name: string;
-  description: string;
+  description?: string;
   price: number;
-  hasOffer: boolean;
+  hasOffer?: boolean;
   offerPrice?: number;
   sellerId: string;
-  badges: Badge[];
-  brand: string;
-  color?: string;
-  createdAt: string;
-  images: string[];
-  interests: string[];
-  isActive: boolean;
-  isExchangeable: boolean;
-  productCategoryId: number;
-  updatedAt: string;
+  badges?: Badge[];
+  brand?: string;
+  color?: string | null;
+  createdAt?: string;
+  images?: string[];
+  interests?: string[];
+  isActive?: boolean;
+  isExchangeable?: boolean;
+  productCategoryId?: number;
+  updatedAt?: string;
   condition: ProductCondition;
-  conditionDescription?: string;
+  conditionDescription?: string | null;
   deletedAt?: string; // Soft delete - null means active
   viewCount?: number;
   environmentalImpact?: EnvironmentalImpact;
-  seller?: Seller;
-  productCategory?: ProductCategory;
+  seller?: Seller | null;
+  productCategory?: ProductCategory | null;
 };
 
 export type StoreProduct = {
@@ -145,17 +145,25 @@ export type MaterialImpactEstimate = {
   estimatedWaterSavingsLT: number;
 };
 
+export type ProductCategoryTranslation = {
+  id?: number | string;
+  name: string;
+  slug?: string;
+  href?: string;
+};
+
 export type ProductCategory = {
-  id: number;
-  departmentCategoryId: number;
-  keywords: string[];
-  productCategoryName: string;
+  id: number | string;
+  departmentCategoryId?: number;
+  keywords?: string[];
+  productCategoryName?: string;
   size?: ProductSize;
   averageWeight?: number;
   weightUnit?: WeightUnit;
   products?: Product[];
   materials?: ProductCategoryMaterial[];
-  href: string;
+  href?: string;
+  translation?: ProductCategoryTranslation | null;
 };
 
 export type DepartmentCategory = {

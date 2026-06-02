@@ -65,91 +65,93 @@ export type AdminActivityLog = {
 export type Seller = {
   id: string;
   email: string;
-  password: string;
+  // Auth-only fields; never returned to the web client.
+  password?: string;
   sellerType: SellerType;
-  isActive: boolean;
-  isVerified: boolean;
-  createdAt: string;
-  updatedAt: string;
+  isActive?: boolean;
+  isVerified?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 
-  // Profile Relations - Each seller has ONE profile based on sellerType
-  profile: PersonProfile | BusinessProfile;
+  // Profile Relations - Each seller has ONE profile based on sellerType.
+  // Optional because partial GraphQL projections may omit it.
+  profile?: PersonProfile | BusinessProfile | null;
 
   // Location information
-  address?: string;
+  address?: string | null;
   cityId?: number;
   countryId?: number;
   countyId?: number;
   regionId?: number;
-  county?: County;
-  region?: Region;
-  country?: Country;
-  city?: City;
+  county?: County | null;
+  region?: Region | null;
+  country?: Country | null;
+  city?: City | null;
 
   // Contact information
-  phone?: string;
-  website?: string;
+  phone?: string | null;
+  website?: string | null;
   preferredContactMethod?: ContactMethod;
   socialMediaLinks?: Record<string, string>;
 
   // Points and Level System
-  points: number;
+  points?: number;
   sellerLevelId?: number;
-  sellerLevel?: SellerLevel;
+  sellerLevel?: SellerLevel | null;
   sellerCategoryId?: number;
-  sellerCategory?: SellerCategory;
+  sellerCategory?: SellerCategory | null;
 };
 
 export type PersonProfile = {
   __typename: "PersonProfile";
   id: string;
-  sellerId: string;
+  sellerId?: string;
   firstName: string;
-  lastName?: string;
-  displayName?: string;
-  bio?: string;
-  birthday?: string;
-  profileImage?: string;
-  coverImage?: string;
-  allowExchanges: boolean;
-  personSubscriptionPlan: PersonSubscriptionPlan;
+  lastName?: string | null;
+  displayName?: string | null;
+  bio?: string | null;
+  birthday?: string | null;
+  profileImage?: string | null;
+  coverImage?: string | null;
+  allowExchanges?: boolean;
+  personSubscriptionPlan?: PersonSubscriptionPlan;
 };
 
 export type BusinessProfile = {
   __typename: "BusinessProfile";
   id: string;
-  sellerId: string;
+  sellerId?: string;
 
   // Basic Information
   businessName: string;
-  description?: string;
-  logo?: string;
-  coverImage?: string;
-  businessType: BusinessType;
+  description?: string | null;
+  logo?: string | null;
+  coverImage?: string | null;
+  businessType?: BusinessType;
 
   // Chilean Legal Requirements
-  legalBusinessName?: string;
-  taxId?: string;
-  businessStartDate?: string;
-  legalRepresentative?: string;
-  legalRepresentativeTaxId?: string;
+  legalBusinessName?: string | null;
+  taxId?: string | null;
+  businessStartDate?: string | null;
+  legalRepresentative?: string | null;
+  legalRepresentativeTaxId?: string | null;
 
   // For RETAIL and MIXED
-  shippingPolicy?: string;
-  returnPolicy?: string;
+  shippingPolicy?: string | null;
+  returnPolicy?: string | null;
 
   // For SERVICES and MIXED
-  serviceArea?: string;
-  yearsOfExperience?: number;
+  serviceArea?: string | null;
+  yearsOfExperience?: number | null;
   certifications?: string[];
-  travelRadius?: number;
+  travelRadius?: number | null;
 
   // Operating Hours
-  businessHours?: Record<string, unknown>;
+  businessHours?: Record<string, unknown> | null;
 
-  businessSubscriptionPlan: BusinessSubscriptionPlan;
-  createdAt: string;
-  updatedAt: string;
+  businessSubscriptionPlan?: BusinessSubscriptionPlan;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type SellerCategory = {

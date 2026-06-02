@@ -29,6 +29,6 @@ export function getSellerCover(seller: Seller): string | undefined {
 export function getSellerBio(seller: Seller): string | undefined {
   const profile = seller.profile;
   if (!profile) return undefined;
-  if (profile.__typename === "PersonProfile") return profile.bio;
-  return profile.description;
+  if (profile.__typename === "PersonProfile") return profile.bio ?? undefined;
+  return profile.description ?? undefined;
 }
