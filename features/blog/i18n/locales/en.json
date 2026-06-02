@@ -1,0 +1,20 @@
+{
+  "page": {
+    "title": "Blog",
+    "subtitle": "Ideas, guides and stories for living and consuming more consciously"
+  },
+  "sections": {
+    "categories": "Categories"
+  },
+  "category": {
+    "explore": "Explore"
+  },
+  "results": {
+    "empty": "No categories available yet",
+    "emptyHint": "Check back soon for new content",
+    "loading": "Loading categories..."
+  },
+  "feedback": {
+    "loadError": "Could not load the blog"
+  }
+}

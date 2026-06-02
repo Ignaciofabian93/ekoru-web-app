@@ -1,0 +1,52 @@
+{
+  "page": {
+    "title": "Stores",
+    "subtitle": "Brand-new products from sustainable, committed businesses",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Discover products in {{name}}"
+  },
+  "sections": {
+    "categories": "Categories",
+    "subcategories": "Subcategories",
+    "products": "Products",
+    "allCategories": "All categories"
+  },
+  "filters": {
+    "title": "Filters",
+    "search": "Search",
+    "searchPlaceholder": "Search products...",
+    "sortBy": "Sort by",
+    "minPrice": "Min price",
+    "maxPrice": "Max price",
+    "onOfferOnly": "On offer only",
+    "clear": "Clear",
+    "perPage": "Per page"
+  },
+  "sort": {
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "priceAsc": "Price: low to high",
+    "priceDesc": "Price: high to low"
+  },
+  "product": {
+    "offer": "Offer",
+    "noImage": "No image"
+  },
+  "results": {
+    "count": "{{count}} product",
+    "countPlural": "{{count}} products",
+    "showing": "Showing {{from}}–{{to}} of {{total}}",
+    "empty": "No products found",
+    "emptyHint": "Try adjusting your filters"
+  },
+  "breadcrumbs": {
+    "stores": "Stores"
+  },
+  "feedback": {
+    "loadError": "Could not load the stores"
+  },
+  "scroll": {
+    "previous": "Scroll left",
+    "next": "Scroll right"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "page": {
+    "title": "Tiendas",
+    "subtitle": "Productos nuevos de negocios sostenibles y comprometidos",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Descubre productos en {{name}}"
+  },
+  "sections": {
+    "categories": "Categorías",
+    "subcategories": "Subcategorías",
+    "products": "Productos",
+    "allCategories": "Todas las categorías"
+  },
+  "filters": {
+    "title": "Filtros",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar productos...",
+    "sortBy": "Ordenar por",
+    "minPrice": "Precio mínimo",
+    "maxPrice": "Precio máximo",
+    "onOfferOnly": "Solo en oferta",
+    "clear": "Limpiar",
+    "perPage": "Por página"
+  },
+  "sort": {
+    "newest": "Más recientes",
+    "oldest": "Más antiguos",
+    "priceAsc": "Precio: menor a mayor",
+    "priceDesc": "Precio: mayor a menor"
+  },
+  "product": {
+    "offer": "Oferta",
+    "noImage": "Sin imagen"
+  },
+  "results": {
+    "count": "{{count}} producto",
+    "countPlural": "{{count}} productos",
+    "showing": "Mostrando {{from}}–{{to}} de {{total}}",
+    "empty": "No se encontraron productos",
+    "emptyHint": "Prueba ajustando los filtros"
+  },
+  "breadcrumbs": {
+    "stores": "Tiendas"
+  },
+  "feedback": {
+    "loadError": "No se pudieron cargar las tiendas"
+  },
+  "scroll": {
+    "previous": "Desplazar a la izquierda",
+    "next": "Desplazar a la derecha"
+  }
+}

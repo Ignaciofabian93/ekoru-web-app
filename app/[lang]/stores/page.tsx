@@ -1,10 +1,14 @@
-export default function Page() {
-  return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4 py-16">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <h1 className="text-3xl font-bold text-foreground">Stores</h1>
-        <p className="text-foreground-secondary">Coming soon</p>
-      </div>
-    </main>
-  );
+import { hasLocale } from "@/constants/settings";
+import { Stores } from "@/features/stores/screens/Stores";
+import { notFound } from "next/navigation";
+
+export default async function StoresPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+
+  return <Stores lang={lang} />;
 }

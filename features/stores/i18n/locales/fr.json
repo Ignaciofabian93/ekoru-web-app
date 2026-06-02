@@ -1,0 +1,52 @@
+{
+  "page": {
+    "title": "Boutiques",
+    "subtitle": "Des produits neufs issus d'entreprises durables et engagées",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Découvrez des produits dans {{name}}"
+  },
+  "sections": {
+    "categories": "Catégories",
+    "subcategories": "Sous-catégories",
+    "products": "Produits",
+    "allCategories": "Toutes les catégories"
+  },
+  "filters": {
+    "title": "Filtres",
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher des produits...",
+    "sortBy": "Trier par",
+    "minPrice": "Prix minimum",
+    "maxPrice": "Prix maximum",
+    "onOfferOnly": "En promotion uniquement",
+    "clear": "Effacer",
+    "perPage": "Par page"
+  },
+  "sort": {
+    "newest": "Plus récents",
+    "oldest": "Plus anciens",
+    "priceAsc": "Prix : croissant",
+    "priceDesc": "Prix : décroissant"
+  },
+  "product": {
+    "offer": "Promo",
+    "noImage": "Pas d'image"
+  },
+  "results": {
+    "count": "{{count}} produit",
+    "countPlural": "{{count}} produits",
+    "showing": "Affichage de {{from}} à {{to}} sur {{total}}",
+    "empty": "Aucun produit trouvé",
+    "emptyHint": "Essayez d'ajuster les filtres"
+  },
+  "breadcrumbs": {
+    "stores": "Boutiques"
+  },
+  "feedback": {
+    "loadError": "Impossible de charger les boutiques"
+  },
+  "scroll": {
+    "previous": "Défiler vers la gauche",
+    "next": "Défiler vers la droite"
+  }
+}
