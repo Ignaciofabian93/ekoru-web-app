@@ -1,0 +1,31 @@
+{
+  "page": {
+    "title": "Community",
+    "subtitle": "Connect, share and grow with people building a more sustainable world"
+  },
+  "sections": {
+    "categories": "Categories"
+  },
+  "category": {
+    "explore": "Explore",
+    "subcategories": "Topics"
+  },
+  "detail": {
+    "backToList": "Community",
+    "subcategoriesTitle": "Topics",
+    "noSubcategories": "No topics in this category yet",
+    "postsTitle": "Posts",
+    "noPosts": "No posts yet",
+    "noPostsHint": "Be the first to start a conversation here",
+    "notFound": "Not found",
+    "notFoundHint": "This page may have been moved or removed"
+  },
+  "results": {
+    "empty": "No categories available yet",
+    "emptyHint": "Check back soon for new content",
+    "loading": "Loading categories..."
+  },
+  "feedback": {
+    "loadError": "Could not load the community"
+  }
+}

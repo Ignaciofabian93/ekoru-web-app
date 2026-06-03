@@ -9,3 +9,18 @@ export type BlogCatalogCategory = {
   slug: string;
   href: string;
 };
+
+export type BlogCategoryTranslation = {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  href: string | null;
+};
+
+/** Shape returned by `getBlogCategoryBySlug` — translated fields are nested under `translation`. */
+export type BlogCategoryDetail = {
+  id: number;
+  icon: string;
+  translation: BlogCategoryTranslation | null;
+};

@@ -12,3 +12,19 @@ export const GET_BLOG_CATALOG = gql`
     }
   }
 `;
+
+export const GET_BLOG_CATEGORY_BY_SLUG = gql`
+  query GetBlogCategoryBySlug($slug: String!, $language: Language!) {
+    getBlogCategoryBySlug(slug: $slug, language: $language) {
+      id
+      icon
+      translation {
+        id
+        name
+        slug
+        description
+        href
+      }
+    }
+  }
+`;

@@ -28,10 +28,10 @@ export type L1Item = { label: string; route: string; children?: L2Item[] };
 function mapCatalogToAccordion(items: CommunityCatalogItem[]): L1Item[] {
   return items.map((cat) => ({
     label: cat.category,
-    route: `/community?cat=${cat.slug}`,
+    route: `/community/${cat.slug}`,
     children: (cat.subcategories ?? []).map((sub) => ({
       label: sub.subcategory,
-      route: `/community?sub=${sub.slug}`,
+      route: `/community/${cat.slug}/${sub.slug}`,
     })),
   }));
 }

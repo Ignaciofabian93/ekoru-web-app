@@ -1,0 +1,35 @@
+{
+  "page": {
+    "heroLabel": "Assistance",
+    "heroTitle": "Contactez-nous"
+  },
+  "form": {
+    "name": "Nom",
+    "namePlaceholder": "Saisissez votre nom",
+    "email": "E-mail",
+    "emailPlaceholder": "Saisissez votre e-mail",
+    "subject": "Sujet",
+    "subjectPlaceholder": "Sélectionnez un sujet",
+    "message": "Message",
+    "messagePlaceholder": "Comment pouvons-nous vous aider ?",
+    "submit": "Envoyer le message"
+  },
+  "subjects": {
+    "platformIssues": "Problèmes de plateforme",
+    "accountProblems": "Problèmes de compte",
+    "paymentBilling": "Paiement et facturation",
+    "productInquiry": "Question sur un produit",
+    "feedback": "Commentaires et suggestions",
+    "other": "Autre"
+  },
+  "feedback": {
+    "nameError": "Veuillez saisir votre nom",
+    "emailError": "Veuillez saisir une adresse e-mail valide",
+    "subjectError": "Veuillez sélectionner un sujet",
+    "messageError": "Votre message doit contenir au moins 10 caractères",
+    "fieldsRequired": "Veuillez remplir tous les champs requis",
+    "success": "Votre message a été envoyé. Nous vous répondrons bientôt.",
+    "error": "Une erreur s'est produite. Veuillez réessayer."
+  },
+  "noResults": "Aucun résultat trouvé"
+}

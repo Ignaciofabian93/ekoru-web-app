@@ -1,0 +1,31 @@
+{
+  "page": {
+    "title": "Comunidad",
+    "subtitle": "Conecta, comparte y crece con personas que construyen un mundo más sostenible"
+  },
+  "sections": {
+    "categories": "Categorías"
+  },
+  "category": {
+    "explore": "Explorar",
+    "subcategories": "Temas"
+  },
+  "detail": {
+    "backToList": "Comunidad",
+    "subcategoriesTitle": "Temas",
+    "noSubcategories": "Aún no hay temas en esta categoría",
+    "postsTitle": "Publicaciones",
+    "noPosts": "Aún no hay publicaciones",
+    "noPostsHint": "Sé el primero en iniciar una conversación aquí",
+    "notFound": "No encontrado",
+    "notFoundHint": "Es posible que esta página se haya movido o eliminado"
+  },
+  "results": {
+    "empty": "Aún no hay categorías disponibles",
+    "emptyHint": "Vuelve pronto para descubrir nuevos contenidos",
+    "loading": "Cargando categorías..."
+  },
+  "feedback": {
+    "loadError": "No se pudo cargar la comunidad"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "page": {
+    "title": "Services",
+    "subtitle": "Trouvez des prestataires de confiance pour tous vos besoins, de façon durable"
+  },
+  "sections": {
+    "categories": "Catégories",
+    "allCategories": "Toutes les catégories",
+    "services": "Services en vedette"
+  },
+  "scroll": {
+    "previous": "Défiler vers la gauche",
+    "next": "Défiler vers la droite"
+  },
+  "category": {
+    "explore": "Explorer",
+    "subcategories": "Sous-catégories"
+  },
+  "detail": {
+    "backToList": "Services",
+    "subcategoriesTitle": "Sous-catégories",
+    "noSubcategories": "Aucune sous-catégorie dans cette catégorie pour le moment",
+    "servicesTitle": "Services",
+    "noServices": "Aucun service pour le moment",
+    "noServicesHint": "Revenez bientôt : de nouveaux prestataires nous rejoignent régulièrement",
+    "notFound": "Introuvable",
+    "notFoundHint": "Cette page a peut-être été déplacée ou supprimée"
+  },
+  "card": {
+    "bookNow": "Réserver",
+    "verified": "Vérifié",
+    "priceFrom": "Dès",
+    "reviews": "avis"
+  },
+  "results": {
+    "empty": "Aucune catégorie disponible pour le moment",
+    "emptyHint": "Revenez bientôt pour découvrir de nouveaux services"
+  }
+}

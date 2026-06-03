@@ -1,0 +1,39 @@
+{
+  "page": {
+    "title": "Services",
+    "subtitle": "Find trusted providers for everything you need, the sustainable way"
+  },
+  "sections": {
+    "categories": "Categories",
+    "allCategories": "All categories",
+    "services": "Featured services"
+  },
+  "scroll": {
+    "previous": "Scroll left",
+    "next": "Scroll right"
+  },
+  "category": {
+    "explore": "Explore",
+    "subcategories": "Subcategories"
+  },
+  "detail": {
+    "backToList": "Services",
+    "subcategoriesTitle": "Subcategories",
+    "noSubcategories": "No subcategories in this category yet",
+    "servicesTitle": "Services",
+    "noServices": "No services yet",
+    "noServicesHint": "Check back soon — providers are joining all the time",
+    "notFound": "Not found",
+    "notFoundHint": "This page may have been moved or removed"
+  },
+  "card": {
+    "bookNow": "Book",
+    "verified": "Verified",
+    "priceFrom": "From",
+    "reviews": "reviews"
+  },
+  "results": {
+    "empty": "No categories available yet",
+    "emptyHint": "Check back soon for new services"
+  }
+}

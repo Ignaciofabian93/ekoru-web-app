@@ -1,0 +1,31 @@
+{
+  "page": {
+    "title": "Communauté",
+    "subtitle": "Connectez-vous, partagez et grandissez avec ceux qui bâtissent un monde plus durable"
+  },
+  "sections": {
+    "categories": "Catégories"
+  },
+  "category": {
+    "explore": "Explorer",
+    "subcategories": "Thèmes"
+  },
+  "detail": {
+    "backToList": "Communauté",
+    "subcategoriesTitle": "Thèmes",
+    "noSubcategories": "Aucun thème dans cette catégorie pour le moment",
+    "postsTitle": "Publications",
+    "noPosts": "Aucune publication pour le moment",
+    "noPostsHint": "Soyez le premier à lancer une conversation ici",
+    "notFound": "Introuvable",
+    "notFoundHint": "Cette page a peut-être été déplacée ou supprimée"
+  },
+  "results": {
+    "empty": "Aucune catégorie disponible pour le moment",
+    "emptyHint": "Revenez bientôt pour découvrir de nouveaux contenus",
+    "loading": "Chargement des catégories..."
+  },
+  "feedback": {
+    "loadError": "Impossible de charger la communauté"
+  }
+}

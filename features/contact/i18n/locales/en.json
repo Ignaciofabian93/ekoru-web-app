@@ -1,0 +1,35 @@
+{
+  "page": {
+    "heroLabel": "Support",
+    "heroTitle": "Get in touch"
+  },
+  "form": {
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "subject": "Subject",
+    "subjectPlaceholder": "Select a subject",
+    "message": "Message",
+    "messagePlaceholder": "How can we help you?",
+    "submit": "Send message"
+  },
+  "subjects": {
+    "platformIssues": "Platform issues",
+    "accountProblems": "Account problems",
+    "paymentBilling": "Payment & billing",
+    "productInquiry": "Product inquiry",
+    "feedback": "Feedback & suggestions",
+    "other": "Other"
+  },
+  "feedback": {
+    "nameError": "Please enter your name",
+    "emailError": "Please enter a valid email address",
+    "subjectError": "Please select a subject",
+    "messageError": "Your message must be at least 10 characters",
+    "fieldsRequired": "Please fill in all required fields",
+    "success": "Your message has been sent. We'll get back to you soon.",
+    "error": "Something went wrong. Please try again."
+  },
+  "noResults": "No results found"
+}

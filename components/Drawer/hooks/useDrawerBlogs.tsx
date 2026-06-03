@@ -16,7 +16,7 @@ export type L1Item = { label: string; route: string };
 function mapCatalogToAccordion(items: BlogCatalogItem[]): L1Item[] {
   return items.map((topic) => ({
     label: topic.name,
-    route: `/blog?topic=${topic.slug}`,
+    route: `/blog/${topic.slug}`,
   }));
 }
 

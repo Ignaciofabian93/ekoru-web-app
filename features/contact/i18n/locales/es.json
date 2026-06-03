@@ -1,0 +1,35 @@
+{
+  "page": {
+    "heroLabel": "Soporte",
+    "heroTitle": "Ponte en contacto"
+  },
+  "form": {
+    "name": "Nombre",
+    "namePlaceholder": "Ingresa tu nombre",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Ingresa tu correo electrónico",
+    "subject": "Asunto",
+    "subjectPlaceholder": "Selecciona un asunto",
+    "message": "Mensaje",
+    "messagePlaceholder": "¿En qué podemos ayudarte?",
+    "submit": "Enviar mensaje"
+  },
+  "subjects": {
+    "platformIssues": "Problemas de la plataforma",
+    "accountProblems": "Problemas de cuenta",
+    "paymentBilling": "Pagos y facturación",
+    "productInquiry": "Consulta sobre un producto",
+    "feedback": "Comentarios y sugerencias",
+    "other": "Otro"
+  },
+  "feedback": {
+    "nameError": "Por favor ingresa tu nombre",
+    "emailError": "Por favor ingresa un correo electrónico válido",
+    "subjectError": "Por favor selecciona un asunto",
+    "messageError": "Tu mensaje debe tener al menos 10 caracteres",
+    "fieldsRequired": "Por favor completa todos los campos requeridos",
+    "success": "Tu mensaje ha sido enviado. Te responderemos pronto.",
+    "error": "Algo salió mal. Por favor intenta de nuevo."
+  },
+  "noResults": "No se encontraron resultados"
+}

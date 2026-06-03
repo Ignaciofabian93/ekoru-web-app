@@ -18,3 +18,44 @@ export const GET_COMMUNITY_CATALOG = gql`
     }
   }
 `;
+
+export const GET_COMMUNITY_CATEGORY_BY_SLUG = gql`
+  query GetCommunityCategoryBySlug($slug: String!, $language: Language!) {
+    getCommunityCategoryBySlug(slug: $slug, language: $language) {
+      id
+      translation {
+        id
+        category
+        slug
+        description
+        href
+      }
+      subcategories {
+        id
+        translation {
+          id
+          subCategory
+          slug
+          description
+          href
+        }
+      }
+    }
+  }
+`;
+
+export const GET_COMMUNITY_SUBCATEGORY_BY_SLUG = gql`
+  query GetCommunitySubCategoryBySlug($slug: String!, $language: Language) {
+    getCommunitySubCategoryBySlug(slug: $slug, language: $language) {
+      id
+      communityCategoryId
+      translation {
+        id
+        subCategory
+        slug
+        description
+        href
+      }
+    }
+  }
+`;

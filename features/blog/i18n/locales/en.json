@@ -9,6 +9,14 @@
   "category": {
     "explore": "Explore"
   },
+  "detail": {
+    "backToList": "Blog",
+    "postsTitle": "Articles",
+    "noPosts": "No articles yet",
+    "noPostsHint": "We're working on fresh content for this category",
+    "notFound": "Category not found",
+    "notFoundHint": "This category may have been moved or removed"
+  },
   "results": {
     "empty": "No categories available yet",
     "emptyHint": "Check back soon for new content",

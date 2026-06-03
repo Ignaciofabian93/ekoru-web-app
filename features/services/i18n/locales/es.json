@@ -1,0 +1,39 @@
+{
+  "page": {
+    "title": "Servicios",
+    "subtitle": "Encuentra proveedores de confianza para todo lo que necesitas, de forma sostenible"
+  },
+  "sections": {
+    "categories": "Categorías",
+    "allCategories": "Todas las categorías",
+    "services": "Servicios destacados"
+  },
+  "scroll": {
+    "previous": "Desplazar a la izquierda",
+    "next": "Desplazar a la derecha"
+  },
+  "category": {
+    "explore": "Explorar",
+    "subcategories": "Subcategorías"
+  },
+  "detail": {
+    "backToList": "Servicios",
+    "subcategoriesTitle": "Subcategorías",
+    "noSubcategories": "Aún no hay subcategorías en esta categoría",
+    "servicesTitle": "Servicios",
+    "noServices": "Aún no hay servicios",
+    "noServicesHint": "Vuelve pronto: nuevos proveedores se unen constantemente",
+    "notFound": "No encontrado",
+    "notFoundHint": "Es posible que esta página se haya movido o eliminado"
+  },
+  "card": {
+    "bookNow": "Reservar",
+    "verified": "Verificado",
+    "priceFrom": "Desde",
+    "reviews": "reseñas"
+  },
+  "results": {
+    "empty": "Aún no hay categorías disponibles",
+    "emptyHint": "Vuelve pronto para descubrir nuevos servicios"
+  }
+}

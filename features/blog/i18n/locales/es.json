@@ -9,6 +9,14 @@
   "category": {
     "explore": "Explorar"
   },
+  "detail": {
+    "backToList": "Blog",
+    "postsTitle": "Artículos",
+    "noPosts": "Aún no hay artículos",
+    "noPostsHint": "Estamos preparando contenido nuevo para esta categoría",
+    "notFound": "Categoría no encontrada",
+    "notFoundHint": "Es posible que esta categoría se haya movido o eliminado"
+  },
   "results": {
     "empty": "Aún no hay categorías disponibles",
     "emptyHint": "Vuelve pronto para descubrir nuevos contenidos",
