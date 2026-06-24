@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { NAMESPACE } from "@/features/marketplace/i18n";
 import type { MarketplaceCardProduct } from "./types";
 
@@ -33,6 +34,7 @@ export default function FrontSide({ product, href, onFlip, onAddToCart }: Props)
   const { t } = useTranslation(NAMESPACE);
   const [imageError, setImageError] = useState(false);
   const cover = resolveImageUrl(product.images?.[0]);
+  const isOwnProduct = useIsOwnProduct(product.sellerId);
 
   const Container: React.ElementType = href ? Link : "div";
   const containerProps = href ? { href } : {};
@@ -121,14 +123,16 @@ export default function FrontSide({ product, href, onFlip, onAddToCart }: Props)
           <span className="truncate text-base font-bold text-primary">
             {formatPrice(product.price)}
           </span>
-          <button
-            type="button"
-            onClick={handleAddToCart}
-            aria-label={t("product.addToCart")}
-            className="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md bg-primary text-on-primary shadow-sm transition-colors hover:bg-primary-active"
-          >
-            <ShoppingCart size={15} strokeWidth={2} />
-          </button>
+          {!isOwnProduct && (
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              aria-label={t("product.addToCart")}
+              className="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md bg-primary text-on-primary shadow-sm transition-colors hover:bg-primary-active"
+            >
+              <ShoppingCart size={15} strokeWidth={2} />
+            </button>
+          )}
         </div>
       </div>
     </Container>

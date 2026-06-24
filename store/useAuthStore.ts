@@ -79,6 +79,8 @@ export const useIsAuthenticated = () => useAuthStore((s) => s.seller !== null);
 
 export const useSeller = () => useAuthStore((s) => s.seller);
 
+export const useCurrentSellerId = () => useAuthStore((s) => s.seller?.id ?? null);
+
 export const useSellerType = () => useAuthStore((s) => s.seller?.sellerType ?? null);
 
 export const useIsSellerType = (type: SellerType) =>

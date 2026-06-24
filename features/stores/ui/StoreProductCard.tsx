@@ -1,10 +1,13 @@
 "use client";
 import { formatPrice } from "@/data/products";
+import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
+import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import { ImageOff, Star } from "lucide-react";
+import { Check, ImageOff, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 import { NAMESPACE } from "../i18n";
 import type { StoreListProduct } from "../types";
@@ -16,12 +19,25 @@ interface Props {
 
 export function StoreProductCard({ product, lang }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  const { addStoreProduct } = useAddToCart();
+  const isOwnProduct = useIsOwnProduct(product.sellerId);
+  const [added, setAdded] = useState(false);
 
   const cover = resolveImageUrl(product.images?.[0]);
   const onOffer =
     product.hasOffer &&
     typeof product.offerPrice === "number" &&
     product.offerPrice < product.price;
+  const outOfStock = (product.stock ?? 0) <= 0;
+
+  function handleAddToCart(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (addStoreProduct(product)) {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1500);
+    }
+  }
 
   return (
     <Link
@@ -90,6 +106,34 @@ export function StoreProductCard({ product, lang }: Props) {
               <span className="text-foreground-tertiary">({product.reviewsNumber})</span>
             )}
           </div>
+        )}
+
+        {!isOwnProduct && (
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            disabled={outOfStock}
+            className={`mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg px-1.5 py-1.5 text-[11px] font-semibold transition-colors sm:text-xs ${
+              outOfStock
+                ? "cursor-not-allowed bg-background-secondary text-foreground-tertiary"
+                : added
+                  ? "bg-success/10 text-success"
+                  : "bg-primary-light-bg text-primary hover:bg-primary hover:text-white"
+            }`}
+          >
+            {added ? (
+              <Check size={13} strokeWidth={2.2} className="shrink-0" />
+            ) : (
+              <ShoppingCart size={13} strokeWidth={2} className="shrink-0" />
+            )}
+            <span className="truncate">
+              {outOfStock
+                ? t("product.outOfStock")
+                : added
+                  ? t("product.added")
+                  : t("product.addToCart")}
+            </span>
+          </button>
         )}
       </div>
     </Link>

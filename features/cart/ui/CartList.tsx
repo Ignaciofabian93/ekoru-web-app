@@ -14,11 +14,15 @@ export function CartList() {
     >
       {items.map((item) => (
         <CartItemRow
-          key={item.productId}
+          key={`${item.source}-${item.productId}`}
           item={item}
-          onIncrease={() => updateQuantity(item.productId, item.quantity + 1)}
-          onDecrease={() => updateQuantity(item.productId, item.quantity - 1)}
-          onRemove={() => removeItem(item.productId)}
+          onIncrease={() =>
+            updateQuantity(item.productId, item.source, item.quantity + 1)
+          }
+          onDecrease={() =>
+            updateQuantity(item.productId, item.source, item.quantity - 1)
+          }
+          onRemove={() => removeItem(item.productId, item.source)}
         />
       ))}
     </ul>

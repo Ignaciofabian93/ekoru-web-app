@@ -28,7 +28,8 @@
     "viewCart": "View cart",
     "contactSeller": "Contact seller",
     "viewSeller": "View seller",
-    "viewAll": "View all"
+    "viewAll": "View all",
+    "ownListing": "This is your listing — you can't buy your own products."
   },
   "summary": {
     "by": "by",

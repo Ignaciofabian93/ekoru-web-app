@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
+import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { formatPrice } from "@/data/products";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
@@ -29,6 +31,8 @@ interface Props {
 
 export function SellerProductCard({ product, lang }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  const { addMarketplaceProduct } = useAddToCart();
+  const isOwnProduct = useIsOwnProduct(product.sellerId);
   const [liked, setLiked] = useState(false);
   const [added, setAdded] = useState(false);
 
@@ -36,6 +40,8 @@ export function SellerProductCard({ product, lang }: Props) {
 
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault();
+    e.stopPropagation();
+    addMarketplaceProduct(product);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   }
@@ -106,20 +112,22 @@ export function SellerProductCard({ product, lang }: Props) {
           </span>
         </div>
 
-        <button
-          type="button"
-          onClick={handleAddToCart}
-          className={`mt-2 flex w-full items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 text-[11px] font-semibold transition-colors sm:gap-1.5 sm:text-xs ${
-            added
-              ? "bg-success/10 text-success"
-              : "bg-primary-light-bg text-primary hover:bg-primary hover:text-white"
-          }`}
-        >
-          <ShoppingCart size={13} strokeWidth={2} className="shrink-0" />
-          <span className="truncate">
-            {added ? t("card.added") : t("card.addToCart")}
-          </span>
-        </button>
+        {!isOwnProduct && (
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className={`mt-2 flex w-full items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 text-[11px] font-semibold transition-colors sm:gap-1.5 sm:text-xs ${
+              added
+                ? "bg-success/10 text-success"
+                : "bg-primary-light-bg text-primary hover:bg-primary hover:text-white"
+            }`}
+          >
+            <ShoppingCart size={13} strokeWidth={2} className="shrink-0" />
+            <span className="truncate">
+              {added ? t("card.added") : t("card.addToCart")}
+            </span>
+          </button>
+        )}
       </div>
     </Link>
   );

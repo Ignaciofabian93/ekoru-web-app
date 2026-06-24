@@ -14,7 +14,8 @@
       "unitPrice": "Unit price",
       "increase": "Increase quantity",
       "decrease": "Decrease quantity",
-      "soldBy": "Sold by {{seller}}"
+      "soldBy": "Sold by {{seller}}",
+      "singleUnit": "Single item"
     },
     "actions": {
       "clear": "Clear cart",

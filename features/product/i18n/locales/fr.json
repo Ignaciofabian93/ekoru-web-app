@@ -28,7 +28,8 @@
     "viewCart": "Voir le panier",
     "contactSeller": "Contacter le vendeur",
     "viewSeller": "Voir le vendeur",
-    "viewAll": "Voir tout"
+    "viewAll": "Voir tout",
+    "ownListing": "Ceci est votre annonce — vous ne pouvez pas acheter vos propres produits."
   },
   "summary": {
     "by": "par",

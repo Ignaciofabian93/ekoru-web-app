@@ -19,6 +19,8 @@ export function CartItemRow({ item, onIncrease, onDecrease, onRemove }: Props) {
   const { t } = useTranslation("cart");
   const image = resolveImageUrl(item.image);
   const lineTotal = item.unitPrice * item.quantity;
+  const atMax =
+    typeof item.maxStock === "number" && item.quantity >= item.maxStock;
 
   return (
     <li className="flex gap-3 rounded-xl border border-border-light bg-surface p-3">
@@ -51,27 +53,36 @@ export function CartItemRow({ item, onIncrease, onDecrease, onRemove }: Props) {
         </div>
 
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1 rounded-md border border-border-light">
-            <button
-              type="button"
-              onClick={onDecrease}
-              aria-label={t("cart.item.decrease")}
-              className="flex size-8 cursor-pointer items-center justify-center text-foreground-secondary hover:text-foreground"
-            >
-              <Minus size={14} strokeWidth={2.5} />
-            </button>
-            <span className="min-w-6 text-center font-sans text-sm font-semibold text-foreground">
-              {item.quantity}
+          {item.source === "store" ? (
+            <div className="flex items-center gap-1 rounded-md border border-border-light">
+              <button
+                type="button"
+                onClick={onDecrease}
+                aria-label={t("cart.item.decrease")}
+                className="flex size-8 cursor-pointer items-center justify-center text-foreground-secondary hover:text-foreground"
+              >
+                <Minus size={14} strokeWidth={2.5} />
+              </button>
+              <span className="min-w-6 text-center font-sans text-sm font-semibold text-foreground">
+                {item.quantity}
+              </span>
+              <button
+                type="button"
+                onClick={onIncrease}
+                disabled={atMax}
+                aria-label={t("cart.item.increase")}
+                className="flex size-8 items-center justify-center text-foreground-secondary hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40 enabled:cursor-pointer"
+              >
+                <Plus size={14} strokeWidth={2.5} />
+              </button>
+            </div>
+          ) : (
+            // Marketplace items are unique single units — no counter, just the
+            // line price. Removal happens via the trash icon above.
+            <span className="rounded-md bg-background-secondary px-2 py-1 font-sans text-xs font-medium text-foreground-secondary">
+              {t("cart.item.singleUnit")}
             </span>
-            <button
-              type="button"
-              onClick={onIncrease}
-              aria-label={t("cart.item.increase")}
-              className="flex size-8 cursor-pointer items-center justify-center text-foreground-secondary hover:text-foreground"
-            >
-              <Plus size={14} strokeWidth={2.5} />
-            </button>
-          </div>
+          )}
           <Text variant="span" weight="bold">
             {formatPrice(lineTotal, item.currency)}
           </Text>

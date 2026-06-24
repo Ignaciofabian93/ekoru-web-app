@@ -30,7 +30,10 @@
   },
   "product": {
     "offer": "Promo",
-    "noImage": "Pas d'image"
+    "noImage": "Pas d'image",
+    "addToCart": "Ajouter au panier",
+    "added": "Ajouté",
+    "outOfStock": "Rupture de stock"
   },
   "results": {
     "count": "{{count}} produit",

@@ -30,7 +30,10 @@
   },
   "product": {
     "offer": "Offer",
-    "noImage": "No image"
+    "noImage": "No image",
+    "addToCart": "Add to cart",
+    "added": "Added",
+    "outOfStock": "Out of stock"
   },
   "results": {
     "count": "{{count}} product",

@@ -28,7 +28,8 @@
     "viewCart": "Ver carro",
     "contactSeller": "Contactar al vendedor",
     "viewSeller": "Ver vendedor",
-    "viewAll": "Ver todos"
+    "viewAll": "Ver todos",
+    "ownListing": "Esta es tu publicación — no puedes comprar tus propios productos."
   },
   "summary": {
     "by": "por",

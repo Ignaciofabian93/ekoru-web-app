@@ -14,7 +14,8 @@
       "unitPrice": "Precio unitario",
       "increase": "Aumentar cantidad",
       "decrease": "Disminuir cantidad",
-      "soldBy": "Vendido por {{seller}}"
+      "soldBy": "Vendido por {{seller}}",
+      "singleUnit": "Artículo único"
     },
     "actions": {
       "clear": "Vaciar carrito",

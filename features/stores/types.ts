@@ -28,6 +28,9 @@ export type StoreListProduct = {
   images?: string[];
   averageRating?: number;
   reviewsNumber?: number;
+  // Returned by the detail fragment already; needed for stock-aware add-to-cart.
+  stock?: number;
+  sellerId?: string;
 };
 
 export type PageInfo = {
