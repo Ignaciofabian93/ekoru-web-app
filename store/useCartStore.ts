@@ -154,6 +154,12 @@ export const useCartSubtotal = () =>
 
 export const useCartIsEmpty = () => useCartStore((s) => s.items.length === 0);
 
+/** Whether a specific (source, productId) line is already in the cart. */
+export const useIsInCart = (source: CartItemSource, productId: number) =>
+  useCartStore((s) =>
+    s.items.some((i) => i.productId === productId && i.source === source),
+  );
+
 export const useCartCurrency = () =>
   useCartStore((s) => s.items[0]?.currency ?? "CLP");
 

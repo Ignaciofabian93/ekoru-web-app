@@ -74,6 +74,21 @@ export const GET_SERVICE_BY_ID = gql`
   }
 `;
 
+export const GET_MY_FAVORITE_SERVICES = gql`
+  ${SERVICE_DETAIL_FIELDS_FRAGMENT}
+  ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}
+  query GetMyFavoriteServices($page: Int = 1, $pageSize: Int = 12) {
+    getMyFavoriteServices(page: $page, pageSize: $pageSize) {
+      pageInfo {
+        ...ServicePageInfoFields
+      }
+      nodes {
+        ...ServiceDetailFields
+      }
+    }
+  }
+`;
+
 export const GET_SERVICES = gql`
   ${SERVICE_DETAIL_FIELDS_FRAGMENT}
   ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}

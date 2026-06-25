@@ -31,6 +31,7 @@ export type StoreListProduct = {
   // Returned by the detail fragment already; needed for stock-aware add-to-cart.
   stock?: number;
   sellerId?: string;
+  isLiked?: boolean;
 };
 
 export type PageInfo = {

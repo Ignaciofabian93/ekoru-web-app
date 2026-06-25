@@ -3,8 +3,6 @@
 import clsx from "clsx";
 import { useState } from "react";
 
-import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
-
 import type { MarketplaceCardProduct } from "./types";
 import CardBackSide from "./BackSide";
 import CardFrontSide from "./FrontSide";
@@ -28,11 +26,6 @@ export default function MarketplaceCard({
 }: Props) {
   const [isFlipped, setIsFlipped] = useState(false);
   const flip = () => setIsFlipped((prev) => !prev);
-  const { addMarketplaceProduct } = useAddToCart();
-
-  // Cards in the catalog are marketplace listings. Fall back to a default
-  // add-to-cart when the parent doesn't supply a custom handler.
-  const handleAddToCart = onAddToCart ?? (() => addMarketplaceProduct(product));
 
   const resolvedHref = href ?? (lang ? `/${lang}/product/${product.id}` : undefined);
 
@@ -59,7 +52,7 @@ export default function MarketplaceCard({
             product={product}
             href={resolvedHref}
             onFlip={flip}
-            onAddToCart={handleAddToCart}
+            onAddToCart={onAddToCart}
           />
         </div>
         <div

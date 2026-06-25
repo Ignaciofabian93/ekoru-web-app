@@ -1,12 +1,14 @@
 "use client";
 
-import { Heart, ImageOff, ShoppingCart } from "lucide-react";
+import { Check, Heart, ImageOff, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
+import { useToggleFavorite } from "@/hooks/useToggleFavorite";
+import { useIsInCart } from "@/store/useCartStore";
 import { formatPrice } from "@/data/products";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
@@ -32,18 +34,22 @@ interface Props {
 export function SellerProductCard({ product, lang }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const { addMarketplaceProduct } = useAddToCart();
+  const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
-  const [liked, setLiked] = useState(false);
-  const [added, setAdded] = useState(false);
+  const inCart = useIsInCart("marketplace", product.id);
+  const liked = Boolean(product.isLiked);
+  const [popped, setPopped] = useState(false);
 
   const cover = resolveImageUrl(product.images?.[0]);
 
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    addMarketplaceProduct(product);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+    const result = addMarketplaceProduct(product);
+    if (result === "added") {
+      setPopped(true);
+      setTimeout(() => setPopped(false), 400);
+    }
   }
 
   return (
@@ -81,7 +87,8 @@ export function SellerProductCard({ product, lang }: Props) {
           type="button"
           onClick={(e) => {
             e.preventDefault();
-            setLiked((v) => !v);
+            e.stopPropagation();
+            toggleFavorite(product.id, liked);
           }}
           aria-pressed={liked}
           className="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
@@ -116,15 +123,22 @@ export function SellerProductCard({ product, lang }: Props) {
           <button
             type="button"
             onClick={handleAddToCart}
+            disabled={inCart}
             className={`mt-2 flex w-full items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 text-[11px] font-semibold transition-colors sm:gap-1.5 sm:text-xs ${
-              added
-                ? "bg-success/10 text-success"
+              popped ? "animate-cart-pop" : ""
+            } ${
+              inCart
+                ? "cursor-not-allowed bg-success/10 text-success"
                 : "bg-primary-light-bg text-primary hover:bg-primary hover:text-white"
             }`}
           >
-            <ShoppingCart size={13} strokeWidth={2} className="shrink-0" />
+            {inCart ? (
+              <Check size={13} strokeWidth={2.4} className="shrink-0" />
+            ) : (
+              <ShoppingCart size={13} strokeWidth={2} className="shrink-0" />
+            )}
             <span className="truncate">
-              {added ? t("card.added") : t("card.addToCart")}
+              {inCart ? t("card.added") : t("card.addToCart")}
             </span>
           </button>
         )}

@@ -171,10 +171,22 @@ body {
   animation: fade-up 0.3s ease both;
 }
 
+/* ── Add-to-cart button feedback ────────────────────────────── */
+@keyframes cart-pop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(0.92); }
+  70%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+.animate-cart-pop {
+  animation: cart-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-step-forward,
   .animate-step-back,
-  .animate-fade-up {
+  .animate-fade-up,
+  .animate-cart-pop {
     animation: none;
   }
 }

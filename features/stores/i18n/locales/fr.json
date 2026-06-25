@@ -33,7 +33,8 @@
     "noImage": "Pas d'image",
     "addToCart": "Ajouter au panier",
     "added": "Ajouté",
-    "outOfStock": "Rupture de stock"
+    "outOfStock": "Rupture de stock",
+    "favorite": "Ajouter aux favoris"
   },
   "results": {
     "count": "{{count}} produit",

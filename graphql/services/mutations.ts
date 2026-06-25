@@ -36,3 +36,12 @@ export const TOGGLE_SERVICE_ACTIVE = gql`
     }
   }
 `;
+
+export const TOGGLE_SERVICE_LIKE = gql`
+  mutation ToggleServiceLike($serviceId: ID!) {
+    toggleServiceLike(serviceId: $serviceId) {
+      id
+      isLiked
+    }
+  }
+`;

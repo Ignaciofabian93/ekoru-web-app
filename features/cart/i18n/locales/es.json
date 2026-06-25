@@ -21,7 +21,14 @@
       "clear": "Vaciar carrito",
       "proceed": "Continuar al pago",
       "continueShopping": "Seguir comprando"
-    }
+    },
+    "toast": {
+      "added": "Agregado al carrito",
+      "loginRequired": "Inicia sesión para agregar productos al carrito",
+      "alreadyInCart": "Este producto ya está en tu carrito",
+      "outOfStock": "Este producto está sin stock"
+    },
+    "inCart": "En el carrito"
   },
   "checkout": {
     "title": "Pago",

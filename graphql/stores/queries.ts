@@ -70,6 +70,21 @@ export const GET_STORE_PRODUCT_BY_ID = gql`
   }
 `;
 
+export const GET_MY_FAVORITE_STORE_PRODUCTS = gql`
+  ${STORE_PRODUCT_DETAIL_FIELDS_FRAGMENT}
+  ${STORE_PAGE_INFO_FIELDS_FRAGMENT}
+  query GetMyFavoriteStoreProducts($page: Int = 1, $pageSize: Int = 12) {
+    getMyFavoriteStoreProducts(page: $page, pageSize: $pageSize) {
+      pageInfo {
+        ...StorePageInfoFields
+      }
+      nodes {
+        ...StoreProductDetailFields
+      }
+    }
+  }
+`;
+
 export const GET_STORE_PRODUCTS = gql`
   ${STORE_PRODUCT_DETAIL_FIELDS_FRAGMENT}
   ${STORE_PAGE_INFO_FIELDS_FRAGMENT}

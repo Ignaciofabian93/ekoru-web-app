@@ -1,14 +1,16 @@
 "use client";
 
 import { formatPrice } from "@/data/products";
+import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import { ImageOff, Repeat, RotateCw, ShoppingCart } from "lucide-react";
+import { Check, ImageOff, Repeat, RotateCw, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
+import { useIsInCart } from "@/store/useCartStore";
 import { NAMESPACE } from "@/features/marketplace/i18n";
 import type { MarketplaceCardProduct } from "./types";
 
@@ -32,9 +34,12 @@ interface Props {
 
 export default function FrontSide({ product, href, onFlip, onAddToCart }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  const { addMarketplaceProduct } = useAddToCart();
   const [imageError, setImageError] = useState(false);
+  const [popped, setPopped] = useState(false);
   const cover = resolveImageUrl(product.images?.[0]);
   const isOwnProduct = useIsOwnProduct(product.sellerId);
+  const inCart = useIsInCart("marketplace", product.id);
 
   const Container: React.ElementType = href ? Link : "div";
   const containerProps = href ? { href } : {};
@@ -42,7 +47,15 @@ export default function FrontSide({ product, href, onFlip, onAddToCart }: Props)
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    onAddToCart?.();
+    if (onAddToCart) {
+      onAddToCart();
+      return;
+    }
+    const result = addMarketplaceProduct(product);
+    if (result === "added") {
+      setPopped(true);
+      setTimeout(() => setPopped(false), 400);
+    }
   };
 
   const handleFlip = (e: React.MouseEvent) => {
@@ -127,10 +140,21 @@ export default function FrontSide({ product, href, onFlip, onAddToCart }: Props)
             <button
               type="button"
               onClick={handleAddToCart}
+              disabled={inCart}
               aria-label={t("product.addToCart")}
-              className="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md bg-primary text-on-primary shadow-sm transition-colors hover:bg-primary-active"
+              className={`flex size-9 shrink-0 items-center justify-center rounded-md shadow-sm transition-colors ${
+                popped ? "animate-cart-pop" : ""
+              } ${
+                inCart
+                  ? "cursor-not-allowed bg-success/15 text-success"
+                  : "cursor-pointer bg-primary text-on-primary hover:bg-primary-active"
+              }`}
             >
-              <ShoppingCart size={15} strokeWidth={2} />
+              {inCart ? (
+                <Check size={15} strokeWidth={2.4} />
+              ) : (
+                <ShoppingCart size={15} strokeWidth={2} />
+              )}
             </button>
           )}
         </div>

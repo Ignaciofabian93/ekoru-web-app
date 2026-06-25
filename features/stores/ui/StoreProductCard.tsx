@@ -2,9 +2,10 @@
 import { formatPrice } from "@/data/products";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
+import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import { Check, ImageOff, ShoppingCart, Star } from "lucide-react";
+import { Check, Heart, ImageOff, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -20,7 +21,9 @@ interface Props {
 export function StoreProductCard({ product, lang }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const { addStoreProduct } = useAddToCart();
+  const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
+  const liked = Boolean(product.isLiked);
   const [added, setAdded] = useState(false);
 
   const cover = resolveImageUrl(product.images?.[0]);
@@ -33,7 +36,7 @@ export function StoreProductCard({ product, lang }: Props) {
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    if (addStoreProduct(product)) {
+    if (addStoreProduct(product) === "added") {
       setAdded(true);
       setTimeout(() => setAdded(false), 1500);
     }
@@ -61,6 +64,24 @@ export function StoreProductCard({ product, lang }: Props) {
             aria-label={t("product.noImage")}
           />
         )}
+
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleFavorite(product.id, liked, "store");
+          }}
+          aria-pressed={liked}
+          aria-label={t("product.favorite")}
+          className="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full bg-white/85 shadow-sm transition-colors hover:bg-white"
+        >
+          <Heart
+            size={15}
+            strokeWidth={2}
+            className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
+          />
+        </button>
 
         {onOffer && (
           <span className="absolute top-2 left-2 rounded-md bg-danger px-2 py-0.5 text-xs font-semibold text-white shadow-sm">
@@ -114,6 +135,8 @@ export function StoreProductCard({ product, lang }: Props) {
             onClick={handleAddToCart}
             disabled={outOfStock}
             className={`mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg px-1.5 py-1.5 text-[11px] font-semibold transition-colors sm:text-xs ${
+              added ? "animate-cart-pop" : ""
+            } ${
               outOfStock
                 ? "cursor-not-allowed bg-background-secondary text-foreground-tertiary"
                 : added

@@ -1,8 +1,18 @@
 "use client";
 
 import { formatPrice } from "@/data/products";
+import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import { BadgeCheck, Clock, ImageOff, MapPin, RotateCw, Sparkles, Star } from "lucide-react";
+import {
+  BadgeCheck,
+  Clock,
+  Heart,
+  ImageOff,
+  MapPin,
+  RotateCw,
+  Sparkles,
+  Star,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -20,11 +30,15 @@ function formatDuration(minutes: number, labels: Required<ServiceCardLabels>): s
   if (minutes < 60) return `${minutes} ${labels.minutesShort}`;
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
-  return mins === 0 ? `${hours} ${labels.hoursShort}` : `${hours}${labels.hoursShort} ${mins}${labels.minutesShort}`;
+  return mins === 0
+    ? `${hours} ${labels.hoursShort}`
+    : `${hours}${labels.hoursShort} ${mins}${labels.minutesShort}`;
 }
 
 export default function FrontSide({ service, href, labels, onFlip }: Props) {
   const [imageError, setImageError] = useState(false);
+  const { toggleFavorite } = useToggleFavorite();
+  const liked = Boolean(service.isLiked);
   const cover = resolveImageUrl(service.image);
 
   const Container: React.ElementType = href ? Link : "div";
@@ -43,7 +57,7 @@ export default function FrontSide({ service, href, labels, onFlip }: Props) {
       {...containerProps}
       className="group flex h-full w-full flex-col overflow-hidden rounded-xl border border-accent/30 bg-surface text-left shadow-sm transition-all hover:border-accent hover:shadow-md"
     >
-      <div className="relative aspect-4/3 w-full shrink-0 bg-gradient-to-br from-accent/15 to-accent/5">
+      <div className="relative aspect-4/3 w-full shrink-0 bg-linear-to-br from-accent/15 to-accent/5">
         {cover && !imageError ? (
           <Image
             src={cover}
@@ -74,6 +88,24 @@ export default function FrontSide({ service, href, labels, onFlip }: Props) {
 
         <button
           type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleFavorite(Number(service.id), liked, "service");
+          }}
+          aria-pressed={liked}
+          aria-label="favorite"
+          className="absolute top-2 right-11 flex size-8 cursor-pointer items-center justify-center rounded-full bg-white/90 shadow-sm transition-colors hover:bg-white"
+        >
+          <Heart
+            size={14}
+            strokeWidth={2}
+            className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
+          />
+        </button>
+
+        <button
+          type="button"
           onClick={handleFlip}
           aria-label={labels.flipToDetails}
           className="absolute top-2 right-2 flex size-8 cursor-pointer items-center justify-center rounded-full bg-accent text-white shadow-sm transition-colors hover:bg-accent-hover"
@@ -96,8 +128,14 @@ export default function FrontSide({ service, href, labels, onFlip }: Props) {
           <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-foreground-secondary">
             {typeof service.rating === "number" && (
               <span className="inline-flex items-center gap-1">
-                <Star size={12} className="fill-amber-400 text-amber-400" strokeWidth={1.5} />
-                <span className="font-semibold text-foreground">{service.rating.toFixed(1)}</span>
+                <Star
+                  size={12}
+                  className="fill-amber-400 text-amber-400"
+                  strokeWidth={1.5}
+                />
+                <span className="font-semibold text-foreground">
+                  {service.rating.toFixed(1)}
+                </span>
               </span>
             )}
             {typeof service.durationMinutes === "number" && (

@@ -36,3 +36,12 @@ export const TOGGLE_PRODUCT_ACTIVE = gql`
     }
   }
 `;
+
+export const TOGGLE_PRODUCT_LIKE = gql`
+  mutation ToggleProductLike($productId: ID!) {
+    toggleProductLike(productId: $productId) {
+      id
+      isLiked
+    }
+  }
+`;

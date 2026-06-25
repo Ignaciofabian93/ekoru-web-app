@@ -21,7 +21,14 @@
       "clear": "Vider le panier",
       "proceed": "Passer au paiement",
       "continueShopping": "Continuer mes achats"
-    }
+    },
+    "toast": {
+      "added": "Ajouté au panier",
+      "loginRequired": "Connectez-vous pour ajouter des articles au panier",
+      "alreadyInCart": "Cet article est déjà dans votre panier",
+      "outOfStock": "Ce produit est en rupture de stock"
+    },
+    "inCart": "Dans le panier"
   },
   "checkout": {
     "title": "Paiement",

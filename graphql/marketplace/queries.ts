@@ -119,6 +119,7 @@ export const GET_PRODUCT_BY_ID = gql`
       isExchangeable
       sellerId
       viewCount
+      isLiked
       createdAt
       updatedAt
       productCategory {
@@ -270,6 +271,7 @@ export const GET_SELLER_STOREFRONT = gql`
         isExchangeable
         sellerId
         viewCount
+        isLiked
         createdAt
         updatedAt
         productCategory {
@@ -406,6 +408,33 @@ export const GET_PRODUCTS_BY_DEPARTMENT = gql`
     ) {
       nodes {
         ...ProductFields
+      }
+      pageInfo {
+        totalCount
+        totalPages
+        currentPage
+        pageSize
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+`;
+
+export const GET_MY_FAVORITES = gql`
+  ${PRODUCT_FIELDS_FRAGMENT}
+  query GetMyFavorites($page: Int = 1, $pageSize: Int = 12) {
+    getMyFavorites(page: $page, pageSize: $pageSize) {
+      nodes {
+        ...ProductFields
+        productCategory {
+          id
+          translation {
+            name
+            slug
+            href
+          }
+        }
       }
       pageInfo {
         totalCount

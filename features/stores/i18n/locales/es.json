@@ -33,7 +33,8 @@
     "noImage": "Sin imagen",
     "addToCart": "Agregar al carrito",
     "added": "Agregado",
-    "outOfStock": "Sin stock"
+    "outOfStock": "Sin stock",
+    "favorite": "Agregar a favoritos"
   },
   "results": {
     "count": "{{count}} producto",

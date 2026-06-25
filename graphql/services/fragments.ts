@@ -126,6 +126,7 @@ export const SERVICE_FIELDS_FRAGMENT = gql`
     averageRating
     reviewCount
     viewCount
+    isLiked
   }
 `;
 

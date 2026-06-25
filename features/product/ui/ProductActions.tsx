@@ -7,7 +7,8 @@ import { useState } from "react";
 
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
-import { useToast } from "@/hooks/useToast";
+import { useToggleFavorite } from "@/hooks/useToggleFavorite";
+import { useIsInCart } from "@/store/useCartStore";
 import { useTranslation } from "@/i18n/context";
 import type { Product } from "@/types/product";
 
@@ -22,26 +23,34 @@ interface Props {
 export function ProductActions({ lang, product }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const router = useRouter();
-  const toast = useToast();
   const { addMarketplaceProduct } = useAddToCart();
+  const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
-  const [added, setAdded] = useState(false);
-  const [saved, setSaved] = useState(false);
+  // Marketplace items are unique: once in the cart the add button stays
+  // disabled until the user removes the line.
+  const inCart = useIsInCart("marketplace", product.id);
+  const liked = Boolean(product.isLiked);
+  const [popped, setPopped] = useState(false);
   const { share, copied } = useShareProduct({
     title: product.name,
     text: product.description,
   });
 
-  function handleAddToCart() {
-    addMarketplaceProduct(product);
-    setAdded(true);
-    toast.success(t("actions.added"));
-    setTimeout(() => setAdded(false), 1800);
+  function handleAddToCart(): boolean {
+    const result = addMarketplaceProduct(product);
+    if (result === "added") {
+      setPopped(true);
+      setTimeout(() => setPopped(false), 400);
+    }
+    return result === "added" || result === "exists";
   }
 
   function handleBuyNow() {
-    handleAddToCart();
-    router.push(`/${lang}/cart/checkout`);
+    // Only proceed to checkout when the item is actually in the cart. If the
+    // user is anonymous, the helper already redirected to login.
+    if (handleAddToCart() || inCart) {
+      router.push(`/${lang}/cart/checkout`);
+    }
   }
 
   return (
@@ -57,14 +66,17 @@ export function ProductActions({ lang, product }: Props) {
             <button
               type="button"
               onClick={handleAddToCart}
+              disabled={inCart}
               className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3.5 text-base font-semibold transition-colors ${
-                added
-                  ? "bg-success text-white"
+                popped ? "animate-cart-pop" : ""
+              } ${
+                inCart
+                  ? "cursor-not-allowed bg-success/15 text-success"
                   : "bg-primary text-white hover:opacity-90"
               }`}
             >
-              {added ? <Check size={20} strokeWidth={2.2} /> : <ShoppingCart size={20} strokeWidth={2} />}
-              {added ? t("actions.added") : t("actions.addToCart")}
+              {inCart ? <Check size={20} strokeWidth={2.2} /> : <ShoppingCart size={20} strokeWidth={2} />}
+              {inCart ? t("actions.added") : t("actions.addToCart")}
             </button>
             <Link
               href={`/${lang}/cart`}
@@ -89,10 +101,10 @@ export function ProductActions({ lang, product }: Props) {
       <div className="flex gap-2">
         <button
           type="button"
-          onClick={() => setSaved((v) => !v)}
-          aria-pressed={saved}
+          onClick={() => toggleFavorite(product.id, liked)}
+          aria-pressed={liked}
           className={`flex flex-1 items-center justify-center gap-2 rounded-xl border py-2.5 text-sm font-medium transition-colors ${
-            saved
+            liked
               ? "border-red-200 bg-red-50 text-red-600"
               : "border-border bg-surface text-foreground-secondary hover:bg-background-secondary"
           }`}
@@ -100,9 +112,9 @@ export function ProductActions({ lang, product }: Props) {
           <Heart
             size={16}
             strokeWidth={2}
-            className={saved ? "fill-red-500 text-red-500" : ""}
+            className={liked ? "fill-red-500 text-red-500" : ""}
           />
-          {saved ? t("actions.saved") : t("actions.save")}
+          {liked ? t("actions.saved") : t("actions.save")}
         </button>
         <button
           type="button"

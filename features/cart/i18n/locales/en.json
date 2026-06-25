@@ -21,7 +21,14 @@
       "clear": "Clear cart",
       "proceed": "Proceed to checkout",
       "continueShopping": "Continue shopping"
-    }
+    },
+    "toast": {
+      "added": "Added to cart",
+      "loginRequired": "Please log in to add items to your cart",
+      "alreadyInCart": "This item is already in your cart",
+      "outOfStock": "This product is out of stock"
+    },
+    "inCart": "In cart"
   },
   "checkout": {
     "title": "Checkout",

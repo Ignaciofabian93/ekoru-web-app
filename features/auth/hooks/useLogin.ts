@@ -37,8 +37,13 @@ export function useLogin() {
       const { data } = await fetchMe();
       if (data?.me) setSeller(data.me);
       const lang = params.lang ?? DEFAULT_LANGUAGE;
-      const redirectTo = searchParams.get("redirectTo") ?? `/${lang}/profile`;
-      replace({ route: redirectTo });
+      // Only honor a same-origin relative path to avoid open-redirects.
+      const requested = searchParams.get("redirectTo");
+      const safeRedirect =
+        requested && requested.startsWith("/") && !requested.startsWith("//")
+          ? requested
+          : `/${lang}/profile`;
+      replace({ route: safeRedirect });
       refresh();
     } catch (err) {
       const message = isAxiosError(err)

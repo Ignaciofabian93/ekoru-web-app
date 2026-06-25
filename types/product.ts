@@ -42,6 +42,7 @@ export type Product = {
   conditionDescription?: string | null;
   deletedAt?: string; // Soft delete - null means active
   viewCount?: number;
+  isLiked?: boolean; // Whether the current seller has favorited this product
   environmentalImpact?: EnvironmentalImpact;
   seller?: Seller | null;
   productCategory?: ProductCategory | null;

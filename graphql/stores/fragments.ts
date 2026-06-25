@@ -133,6 +133,7 @@ export const STORE_PRODUCT_FIELDS_FRAGMENT = gql`
     averageRating
     reviewsNumber
     likesCount
+    isLiked
     saleCount
     viewCount
     materialComposition

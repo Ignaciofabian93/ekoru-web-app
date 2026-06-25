@@ -20,6 +20,7 @@ function toCardData(service: ServiceNode): ServiceCardData {
     rating: service.averageRating ?? undefined,
     reviewsCount: service.reviewCount ?? undefined,
     isVerified: service.seller?.isVerified,
+    isLiked: service.isLiked,
   };
 }
 

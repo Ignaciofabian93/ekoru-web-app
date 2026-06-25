@@ -13,6 +13,7 @@ export type ServiceCardData = {
   rating?: number;
   reviewsCount?: number;
   isVerified?: boolean;
+  isLiked?: boolean;
   includes?: string[];
 };
 

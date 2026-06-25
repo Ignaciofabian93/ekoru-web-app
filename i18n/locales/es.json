@@ -49,6 +49,7 @@
   "common": {
     "loading": "Cargando...",
     "error": "Ocurrió un error",
+    "loginRequired": "Inicia sesión para continuar",
     "retry": "Reintentar",
     "save": "Guardar",
     "cancel": "Cancelar",
@@ -150,7 +151,14 @@
     "orderSummary": "Resumen del pedido",
     "placeOrder": "Realizar pedido",
     "orderConfirmed": "¡Pedido confirmado!",
-    "thankYou": "Gracias por tu compra"
+    "thankYou": "Gracias por tu compra",
+    "inCart": "En el carrito",
+    "toast": {
+      "added": "Agregado al carrito",
+      "loginRequired": "Inicia sesión para agregar productos al carrito",
+      "alreadyInCart": "Este producto ya está en tu carrito",
+      "outOfStock": "Este producto está sin stock"
+    }
   },
   "publish": {
     "title": "Publicar producto",

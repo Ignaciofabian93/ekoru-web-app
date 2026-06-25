@@ -60,6 +60,7 @@ export type ServiceNode = {
   images: string[] | null;
   averageRating: number | null;
   reviewCount: number | null;
+  isLiked?: boolean;
   seller: {
     isVerified: boolean;
     profile: { businessName?: string | null; logo?: string | null } | null;

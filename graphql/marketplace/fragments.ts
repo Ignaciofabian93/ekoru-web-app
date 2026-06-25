@@ -103,6 +103,7 @@ export const PRODUCT_FIELDS_FRAGMENT = gql`
     isExchangeable
     sellerId
     viewCount
+    isLiked
     createdAt
     updatedAt
   }
