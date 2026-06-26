@@ -1,3 +1,6 @@
+import type { EnvironmentalImpact } from "@/types/product";
+import type { Seller } from "@/types/user";
+
 export type Language = "ES" | "EN" | "FR";
 
 export type StoreCatalogSubItem = {
@@ -32,6 +35,10 @@ export type StoreListProduct = {
   stock?: number;
   sellerId?: string;
   isLiked?: boolean;
+  // The listing queries fetch the detail fragment, which already includes the
+  // environmental impact and seller — the card back side renders both.
+  environmentalImpact?: EnvironmentalImpact | null;
+  seller?: Seller | null;
 };
 
 export type PageInfo = {

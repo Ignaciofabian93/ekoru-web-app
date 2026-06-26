@@ -5,11 +5,14 @@ import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import { Check, Heart, ImageOff, ShoppingCart, Star } from "lucide-react";
+import { Check, Heart, ImageOff, RotateCw, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import clsx from "clsx";
 import { useState } from "react";
 
+import ProductImpactBack from "@/components/Card/shared/ProductImpactBack";
+import EnvironmentalImpactModal from "@/components/EnvironmentalImpactModal/EnvironmentalImpactModal";
 import { NAMESPACE } from "../i18n";
 import type { StoreListProduct } from "../types";
 
@@ -19,7 +22,66 @@ interface Props {
 }
 
 export function StoreProductCard({ product, lang }: Props) {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [impactOpen, setImpactOpen] = useState(false);
+  const flip = () => setIsFlipped((prev) => !prev);
+
+  return (
+    <div className="relative aspect-3/4 w-full min-w-0 perspective-distant">
+      <div
+        className={clsx(
+          "relative h-full w-full transition-transform duration-500 ease-out transform-3d",
+          isFlipped && "rotate-y-180",
+        )}
+      >
+        <div
+          className={clsx(
+            "absolute inset-0 backface-hidden",
+            isFlipped && "pointer-events-none",
+          )}
+        >
+          <FrontSide product={product} lang={lang} onFlip={flip} />
+        </div>
+        <div
+          className={clsx(
+            "absolute inset-0 rotate-y-180 backface-hidden",
+            !isFlipped && "pointer-events-none",
+          )}
+        >
+          <ProductImpactBack
+            title={product.name}
+            environmentalImpact={product.environmentalImpact}
+            seller={product.seller}
+            accent="secondary"
+            onFlip={flip}
+            onShowImpact={() => setImpactOpen(true)}
+          />
+        </div>
+      </div>
+
+      {product.environmentalImpact && (
+        <EnvironmentalImpactModal
+          isOpen={impactOpen}
+          onClose={() => setImpactOpen(false)}
+          environmentalImpact={product.environmentalImpact}
+          productName={product.name}
+        />
+      )}
+    </div>
+  );
+}
+
+function FrontSide({
+  product,
+  lang,
+  onFlip,
+}: {
+  product: StoreListProduct;
+  lang: string;
+  onFlip: () => void;
+}) {
   const { t } = useTranslation(NAMESPACE);
+  const { t: tg } = useTranslation();
   const { addStoreProduct } = useAddToCart();
   const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
@@ -42,12 +104,18 @@ export function StoreProductCard({ product, lang }: Props) {
     }
   }
 
+  function handleFlip(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    onFlip();
+  }
+
   return (
     <Link
       href={`/${lang}/product/${product.id}`}
-      className="group bg-surface relative overflow-hidden rounded-xl border border-border-light transition-all hover:shadow-md"
+      className="group flex h-full w-full flex-col overflow-hidden rounded-xl border border-border-light bg-surface text-left shadow-sm transition-all hover:border-secondary/40 hover:shadow-md"
     >
-      <div className="bg-background-secondary relative flex aspect-square items-center justify-center">
+      <div className="relative aspect-4/3 w-full shrink-0 bg-background-secondary">
         {cover ? (
           <Image
             src={cover}
@@ -57,40 +125,52 @@ export function StoreProductCard({ product, lang }: Props) {
             className="object-cover transition-transform group-hover:scale-105"
           />
         ) : (
-          <ImageOff
-            size={36}
-            className="text-foreground-muted"
-            strokeWidth={1.5}
-            aria-label={t("product.noImage")}
-          />
+          <div className="flex h-full w-full items-center justify-center">
+            <ImageOff
+              size={36}
+              className="text-foreground-muted"
+              strokeWidth={1.5}
+              aria-label={t("product.noImage")}
+            />
+          </div>
         )}
-
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleFavorite(product.id, liked, "store");
-          }}
-          aria-pressed={liked}
-          aria-label={t("product.favorite")}
-          className="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full bg-white/85 shadow-sm transition-colors hover:bg-white"
-        >
-          <Heart
-            size={15}
-            strokeWidth={2}
-            className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
-          />
-        </button>
 
         {onOffer && (
           <span className="absolute top-2 left-2 rounded-md bg-danger px-2 py-0.5 text-xs font-semibold text-white shadow-sm">
             {t("product.offer")}
           </span>
         )}
+
+        <div className="absolute top-2 right-2 flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleFavorite(product.id, liked, "store");
+            }}
+            aria-pressed={liked}
+            aria-label={t("product.favorite")}
+            className="flex size-8 items-center justify-center rounded-full bg-white/85 shadow-sm transition-colors hover:bg-white"
+          >
+            <Heart
+              size={15}
+              strokeWidth={2}
+              className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
+            />
+          </button>
+          <button
+            type="button"
+            onClick={handleFlip}
+            aria-label={tg("impact.flipToDetails")}
+            className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-secondary text-white shadow-sm transition-colors hover:bg-secondary-dark"
+          >
+            <RotateCw size={14} strokeWidth={2.5} />
+          </button>
+        </div>
       </div>
 
-      <div className="p-2.5 sm:p-3">
+      <div className="flex flex-1 flex-col p-2.5 sm:p-3">
         {product.brand && (
           <p className="truncate text-[10px] tracking-wide text-foreground-tertiary uppercase sm:text-xs">
             {product.brand}
@@ -111,9 +191,7 @@ export function StoreProductCard({ product, lang }: Props) {
               </span>
             </>
           ) : (
-            <span className="text-sm font-bold text-primary">
-              {formatPrice(product.price)}
-            </span>
+            <span className="text-sm font-bold text-primary">{formatPrice(product.price)}</span>
           )}
         </div>
 
@@ -134,15 +212,15 @@ export function StoreProductCard({ product, lang }: Props) {
             type="button"
             onClick={handleAddToCart}
             disabled={outOfStock}
-            className={`mt-2 flex w-full items-center justify-center gap-1.5 rounded-lg px-1.5 py-1.5 text-[11px] font-semibold transition-colors sm:text-xs ${
-              added ? "animate-cart-pop" : ""
-            } ${
+            className={clsx(
+              "mt-auto flex w-full items-center justify-center gap-1.5 rounded-lg px-1.5 py-1.5 text-[11px] font-semibold transition-colors sm:text-xs",
+              added && "animate-cart-pop",
               outOfStock
                 ? "cursor-not-allowed bg-background-secondary text-foreground-tertiary"
                 : added
                   ? "bg-success/10 text-success"
-                  : "bg-primary-light-bg text-primary hover:bg-primary hover:text-white"
-            }`}
+                  : "bg-primary-light-bg text-primary hover:bg-primary hover:text-white",
+            )}
           >
             {added ? (
               <Check size={13} strokeWidth={2.2} className="shrink-0" />

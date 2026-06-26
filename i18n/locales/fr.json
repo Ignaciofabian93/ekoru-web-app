@@ -178,5 +178,38 @@
     "detectedSubtitle": "Nous utiliserons ceci pour afficher les annonces proches et définir votre langue. Vous pouvez le modifier à tout moment dans les paramètres.",
     "confirm": "Oui, c'est correct",
     "notMyLocation": "Ce n'est pas ma position"
+  },
+  "impact": {
+    "flipToDetails": "Voir l'impact",
+    "flipToFront": "Retour au produit",
+    "environmentalImpact": "Impact environnemental",
+    "co2": "CO₂",
+    "water": "Eau",
+    "materials": "Matériaux",
+    "viewFullImpact": "Voir l'impact complet",
+    "seller": "Vendeur",
+    "noExtraInfo": "Aucune information supplémentaire disponible.",
+    "sellerTypes": {
+      "PERSON": "Personne",
+      "STARTUP": "Startup",
+      "COMPANY": "Entreprise"
+    },
+    "modal": {
+      "title": "Impact environnemental détaillé",
+      "co2Savings": "Économies de CO₂",
+      "waterSavings": "Économies d'eau",
+      "amount": "Quantité",
+      "co2Saved": "CO₂ économisé",
+      "waterSaved": "Eau économisée",
+      "materialBreakdown": "Détail des matériaux",
+      "equivalentTo": "Équivaut à",
+      "carDistance": " en voiture",
+      "showerCount": " douches",
+      "info": "Ces valeurs sont des estimations basées sur les économies réalisées en réutilisant des produits plutôt qu'en fabriquant des neufs.",
+      "benefitsTitle": "Pourquoi c'est important",
+      "benefit1": "Chaque article réutilisé évite que des matériaux finissent en décharge.",
+      "benefit2": "Acheter d'occasion réduit la demande de fabrication neuve et ses émissions.",
+      "benefit3": "De petits choix conscients ont un impact réel pour la planète."
+    }
   }
 }

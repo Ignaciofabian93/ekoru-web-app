@@ -7,9 +7,15 @@ import {
 import { type Seller } from "./user";
 
 export type MaterialImpactBreakdown = {
+  // Raw enum key (e.g. "PLASTIC") — stable identifier for icons/logic.
   materialType: string;
-  percentage: number;
-  weightKG: number;
+  // Localized, render-ready name resolved by the subgraph for the request
+  // language (falls back to a humanized form of materialType on the backend).
+  materialTypeLabel?: string;
+  // Amount of this material as returned by the API: `quantity` + `unit`
+  // (when unit === "percentage", quantity is the share of the composition).
+  quantity: number;
+  unit: string;
   co2SavingsKG: number;
   waterSavingsLT: number;
 };

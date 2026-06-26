@@ -178,5 +178,38 @@
     "detectedSubtitle": "We'll use this to show nearby listings and set your language. You can change it anytime in settings.",
     "confirm": "Yes, that's correct",
     "notMyLocation": "This isn't my location"
+  },
+  "impact": {
+    "flipToDetails": "Show impact",
+    "flipToFront": "Back to product",
+    "environmentalImpact": "Environmental impact",
+    "co2": "CO₂",
+    "water": "Water",
+    "materials": "Materials",
+    "viewFullImpact": "View full impact",
+    "seller": "Seller",
+    "noExtraInfo": "No additional info available.",
+    "sellerTypes": {
+      "PERSON": "Person",
+      "STARTUP": "Startup",
+      "COMPANY": "Company"
+    },
+    "modal": {
+      "title": "Detailed environmental impact",
+      "co2Savings": "CO₂ savings",
+      "waterSavings": "Water savings",
+      "amount": "Amount",
+      "co2Saved": "CO₂ saved",
+      "waterSaved": "Water saved",
+      "materialBreakdown": "Material breakdown",
+      "equivalentTo": "Equivalent to",
+      "carDistance": " by car",
+      "showerCount": " showers",
+      "info": "These values are estimates based on the savings from reusing products instead of manufacturing new ones.",
+      "benefitsTitle": "Why this matters",
+      "benefit1": "Every reused item keeps materials out of landfills.",
+      "benefit2": "Buying second-hand cuts demand for new manufacturing and its emissions.",
+      "benefit3": "Small, conscious choices add up to a real impact for the planet."
+    }
   }
 }

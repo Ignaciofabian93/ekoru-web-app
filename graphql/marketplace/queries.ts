@@ -4,6 +4,8 @@ import {
   CATALOG_ITEM_FIELDS_FRAGMENT,
   CATEGORY_TRANSLATION_FIELDS_FRAGMENT,
   DEPARTMENT_FIELDS_FRAGMENT,
+  ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT,
+  PRODUCT_CARD_SELLER_FIELDS_FRAGMENT,
   PRODUCT_CATEGORY_FIELDS_FRAGMENT,
   PRODUCT_FIELDS_FRAGMENT,
 } from "./fragments";
@@ -135,6 +137,7 @@ export const GET_PRODUCT_BY_ID = gql`
         totalWaterSavingsLT
         materialBreakdown {
           materialType
+          materialTypeLabel
           quantity
           unit
           co2SavingsKG
@@ -174,6 +177,8 @@ export const GET_PRODUCT_BY_ID = gql`
 
 export const GET_PRODUCTS = gql`
   ${PRODUCT_FIELDS_FRAGMENT}
+  ${ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT}
+  ${PRODUCT_CARD_SELLER_FIELDS_FRAGMENT}
   query GetProducts(
     $page: Int = 1
     $pageSize: Int = 10
@@ -196,6 +201,12 @@ export const GET_PRODUCTS = gql`
             href
           }
         }
+        environmentalImpact {
+          ...EnvironmentalImpactFields
+        }
+        seller {
+          ...ProductCardSellerFields
+        }
       }
       pageInfo {
         totalCount
@@ -211,6 +222,8 @@ export const GET_PRODUCTS = gql`
 
 export const GET_PRODUCTS_BY_SELLER = gql`
   ${PRODUCT_FIELDS_FRAGMENT}
+  ${ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT}
+  ${PRODUCT_CARD_SELLER_FIELDS_FRAGMENT}
   query GetProductsBySeller(
     $sellerId: ID!
     $page: Int = 1
@@ -227,6 +240,12 @@ export const GET_PRODUCTS_BY_SELLER = gql`
     ) {
       nodes {
         ...ProductFields
+        environmentalImpact {
+          ...EnvironmentalImpactFields
+        }
+        seller {
+          ...ProductCardSellerFields
+        }
       }
       pageInfo {
         totalCount

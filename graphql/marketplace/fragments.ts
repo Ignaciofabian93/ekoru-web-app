@@ -109,10 +109,51 @@ export const PRODUCT_FIELDS_FRAGMENT = gql`
   }
 `;
 
+// Environmental impact projection used by the product card back side + the
+// detailed impact modal. Mirrors `EnvironmentalImpact` in `types/product.ts`.
 export const ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT = gql`
   fragment EnvironmentalImpactFields on EnvironmentalImpact {
-    carbonFootprint
-    waterUsage
-    recyclabilityScore
+    totalCo2SavingsKG
+    totalWaterSavingsLT
+    materialBreakdown {
+      materialType
+      materialTypeLabel
+      quantity
+      unit
+      co2SavingsKG
+      waterSavingsLT
+    }
+  }
+`;
+
+// Lean seller projection for the card back side (name + profile image + type
+// + location). Full seller detail is fetched separately on the product page.
+export const PRODUCT_CARD_SELLER_FIELDS_FRAGMENT = gql`
+  fragment ProductCardSellerFields on Seller {
+    id
+    email
+    sellerType
+    isVerified
+    address
+    phone
+    county {
+      id
+      county
+      cityId
+    }
+    profile {
+      ... on PersonProfile {
+        id
+        firstName
+        lastName
+        displayName
+        profileImage
+      }
+      ... on BusinessProfile {
+        id
+        businessName
+        logo
+      }
+    }
   }
 `;

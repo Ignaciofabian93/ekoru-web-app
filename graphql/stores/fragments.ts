@@ -92,6 +92,7 @@ export const STORE_PRODUCT_ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT = gql`
     totalWaterSavingsLT
     materialBreakdown {
       materialType
+      materialTypeLabel
       quantity
       unit
       co2SavingsKG

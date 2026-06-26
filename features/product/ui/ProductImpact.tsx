@@ -4,6 +4,7 @@ import { Droplets, Leaf } from "lucide-react";
 
 import { useTranslation } from "@/i18n/context";
 import type { EnvironmentalImpact } from "@/types/product";
+import { formatMaterialAmount, materialLabel } from "@/utils/impact";
 
 import { NAMESPACE } from "../i18n";
 
@@ -62,9 +63,9 @@ export function ProductImpact({
                 key={m.materialType}
                 className="flex items-center justify-between gap-3 px-4 py-2.5"
               >
-                <span className="text-sm text-foreground">{m.materialType}</span>
+                <span className="text-sm text-foreground">{materialLabel(m)}</span>
                 <span className="text-sm font-medium text-foreground-secondary">
-                  {m.percentage}%
+                  {formatMaterialAmount(m)}
                 </span>
               </li>
             ))}

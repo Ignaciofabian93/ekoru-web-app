@@ -178,5 +178,38 @@
     "detectedSubtitle": "Usaremos esto para mostrar productos cercanos y configurar tu idioma. Puedes cambiarlo en cualquier momento en ajustes.",
     "confirm": "Sí, es correcta",
     "notMyLocation": "Esta no es mi ubicación"
+  },
+  "impact": {
+    "flipToDetails": "Ver impacto",
+    "flipToFront": "Volver al producto",
+    "environmentalImpact": "Impacto ambiental",
+    "co2": "CO₂",
+    "water": "Agua",
+    "materials": "Materiales",
+    "viewFullImpact": "Ver impacto completo",
+    "seller": "Vendedor",
+    "noExtraInfo": "No hay información adicional disponible.",
+    "sellerTypes": {
+      "PERSON": "Persona",
+      "STARTUP": "Emprendimiento",
+      "COMPANY": "Empresa"
+    },
+    "modal": {
+      "title": "Impacto ambiental detallado",
+      "co2Savings": "Ahorro de CO₂",
+      "waterSavings": "Ahorro de agua",
+      "amount": "Cantidad",
+      "co2Saved": "CO₂ ahorrado",
+      "waterSaved": "Agua ahorrada",
+      "materialBreakdown": "Desglose de materiales",
+      "equivalentTo": "Equivale a",
+      "carDistance": " en auto",
+      "showerCount": " duchas",
+      "info": "Estos valores son estimaciones basadas en el ahorro generado al reutilizar productos en lugar de fabricar nuevos.",
+      "benefitsTitle": "Por qué importa",
+      "benefit1": "Cada producto reutilizado evita que los materiales terminen en vertederos.",
+      "benefit2": "Comprar de segunda mano reduce la demanda de nueva fabricación y sus emisiones.",
+      "benefit3": "Las pequeñas decisiones conscientes suman un impacto real para el planeta."
+    }
   }
 }

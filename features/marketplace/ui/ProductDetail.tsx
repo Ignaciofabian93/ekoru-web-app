@@ -2,6 +2,7 @@
 
 import { conditionLabel, formatPrice } from "@/data/products";
 import type { Product } from "@/types/product";
+import { formatMaterialAmount, materialLabel } from "@/utils/impact";
 import {
   Droplets,
   ImageOff,
@@ -126,9 +127,9 @@ export function ProductDetail({ product, lang }: { product: Product; lang: strin
                 <div className="flex flex-col divide-y divide-border-light">
                   {product.environmentalImpact.materialBreakdown.map((m) => (
                     <div key={m.materialType} className="flex justify-between py-2">
-                      <span className="text-sm text-foreground">{m.materialType}</span>
+                      <span className="text-sm text-foreground">{materialLabel(m)}</span>
                       <span className="text-sm font-medium text-foreground-secondary">
-                        {m.percentage}%
+                        {formatMaterialAmount(m)}
                       </span>
                     </div>
                   ))}

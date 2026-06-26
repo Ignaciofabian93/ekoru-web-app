@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 
+import EnvironmentalImpactModal from "@/components/EnvironmentalImpactModal/EnvironmentalImpactModal";
 import type { MarketplaceCardProduct } from "./types";
 import CardBackSide from "./BackSide";
 import CardFrontSide from "./FrontSide";
@@ -11,7 +12,6 @@ interface Props {
   product: MarketplaceCardProduct;
   lang?: string;
   href?: string;
-  onShowImpact?: () => void;
   onAddToCart?: () => void;
   className?: string;
 }
@@ -20,11 +20,11 @@ export default function MarketplaceCard({
   product,
   lang,
   href,
-  onShowImpact,
   onAddToCart,
   className,
 }: Props) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [impactOpen, setImpactOpen] = useState(false);
   const flip = () => setIsFlipped((prev) => !prev);
 
   const resolvedHref = href ?? (lang ? `/${lang}/product/${product.id}` : undefined);
@@ -64,10 +64,19 @@ export default function MarketplaceCard({
           <CardBackSide
             product={product}
             onFlip={flip}
-            onShowImpact={onShowImpact}
+            onShowImpact={() => setImpactOpen(true)}
           />
         </div>
       </div>
+
+      {product.environmentalImpact && (
+        <EnvironmentalImpactModal
+          isOpen={impactOpen}
+          onClose={() => setImpactOpen(false)}
+          environmentalImpact={product.environmentalImpact}
+          productName={product.name}
+        />
+      )}
     </div>
   );
 }
