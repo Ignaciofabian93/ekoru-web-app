@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import useCartStore, { useCartCount } from "@/store/useCartStore";
 import ProfileDropdown from "./ProfileDropdown";
 import LanguageDropdown from "./LanguageDropdown";
+import CountryDropdown from "./CountryDropdown";
 
 function CartButton() {
   const params = useParams();
@@ -43,6 +44,7 @@ const MobileHeader = () => {
 
   return (
     <div className="flex items-center gap-3 md:hidden">
+      <CountryDropdown />
       <LanguageDropdown />
       <CartButton />
       <button
@@ -59,6 +61,7 @@ const MobileHeader = () => {
 
 const DesktopHeader = () => (
   <div className="hidden md:flex items-center gap-3">
+    <CountryDropdown />
     <LanguageDropdown />
     <CartButton />
     <ProfileDropdown />

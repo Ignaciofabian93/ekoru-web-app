@@ -1,0 +1,25 @@
+{
+  "heading": "Results for \"{{query}}\"",
+  "count": "{{count}} result",
+  "countPlural": "{{count}} results",
+  "emptyQuery": {
+    "title": "What are you looking for?",
+    "hint": "Type a product or service in the search bar above."
+  },
+  "results": {
+    "empty": "No results found",
+    "emptyHint": "Try different or more general keywords."
+  },
+  "error": {
+    "title": "Something went wrong",
+    "hint": "We couldn't run your search. Please try again."
+  },
+  "types": {
+    "PRODUCT": "Product",
+    "STORE_PRODUCT": "Store",
+    "SERVICE": "Service"
+  },
+  "card": {
+    "noImage": "No image"
+  }
+}

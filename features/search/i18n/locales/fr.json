@@ -1,0 +1,25 @@
+{
+  "heading": "Résultats pour « {{query}} »",
+  "count": "{{count}} résultat",
+  "countPlural": "{{count}} résultats",
+  "emptyQuery": {
+    "title": "Que recherchez-vous ?",
+    "hint": "Saisissez un produit ou un service dans la barre de recherche."
+  },
+  "results": {
+    "empty": "Aucun résultat trouvé",
+    "emptyHint": "Essayez d'autres mots-clés ou des termes plus généraux."
+  },
+  "error": {
+    "title": "Une erreur est survenue",
+    "hint": "Nous n'avons pas pu effectuer votre recherche. Réessayez."
+  },
+  "types": {
+    "PRODUCT": "Produit",
+    "STORE_PRODUCT": "Boutique",
+    "SERVICE": "Service"
+  },
+  "card": {
+    "noImage": "Aucune image"
+  }
+}

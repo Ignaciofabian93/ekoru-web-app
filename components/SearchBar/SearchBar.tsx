@@ -7,6 +7,8 @@ import { useState } from "react";
 interface SearchBarProps {
   value?: string;
   onChange?: (value: string) => void;
+  /** Fired on Enter or when the search icon is clicked. */
+  onSubmit?: (value: string) => void;
   placeholder?: string;
   className?: string;
 }
@@ -14,6 +16,7 @@ interface SearchBarProps {
 export default function SearchBar({
   value: controlledValue,
   onChange,
+  onSubmit,
   placeholder = "Search...",
   className,
 }: SearchBarProps) {
@@ -26,18 +29,36 @@ export default function SearchBar({
     onChange?.(e.target.value);
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit?.(query);
+  };
+
   return (
-    <div className={clsx("bg-transparent pt-1 pb-3", className)}>
+    <form
+      role="search"
+      onSubmit={handleSubmit}
+      className={clsx("bg-transparent pt-1 pb-3", className)}
+    >
       <div
         className={clsx(
           "flex flex-row items-center bg-surface rounded-md px-3 h-10 gap-2",
         )}
       >
-        <Search
-          size={20}
-          className={clsx("text-input-placeholder shrink-0")}
-          strokeWidth={2}
-        />
+        <button
+          type="submit"
+          aria-label="Search"
+          className={clsx(
+            "flex shrink-0 items-center justify-center border-none bg-transparent p-0",
+            onSubmit ? "cursor-pointer" : "cursor-default",
+          )}
+        >
+          <Search
+            size={20}
+            className={clsx("text-input-placeholder")}
+            strokeWidth={2}
+          />
+        </button>
         <input
           type="search"
           value={query}
@@ -49,6 +70,6 @@ export default function SearchBar({
           )}
         />
       </div>
-    </div>
+    </form>
   );
 }

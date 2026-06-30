@@ -1,0 +1,25 @@
+{
+  "heading": "Resultados para \"{{query}}\"",
+  "count": "{{count}} resultado",
+  "countPlural": "{{count}} resultados",
+  "emptyQuery": {
+    "title": "¿Qué estás buscando?",
+    "hint": "Escribe un producto o servicio en la barra de búsqueda."
+  },
+  "results": {
+    "empty": "No se encontraron resultados",
+    "emptyHint": "Prueba con palabras distintas o más generales."
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "hint": "No pudimos realizar tu búsqueda. Inténtalo de nuevo."
+  },
+  "types": {
+    "PRODUCT": "Producto",
+    "STORE_PRODUCT": "Tienda",
+    "SERVICE": "Servicio"
+  },
+  "card": {
+    "noImage": "Sin imagen"
+  }
+}

@@ -1,7 +1,7 @@
 "use client";
 import { CustomHeader } from "@/components/Header/CustomHeader";
 import { type SupportedLanguage } from "@/constants/settings";
-import SearchBar from "@/components/SearchBar/SearchBar";
+import { NavSearchBar } from "@/features/search/ui/NavSearchBar";
 import SubHeader, { type Item } from "@/components/SubHeader/SubHeader";
 import { Newspaper, Package, ScanBarcode, Store, UsersRound } from "lucide-react";
 import { useTranslation } from "@/i18n/context";
@@ -42,7 +42,7 @@ export function NavigationContent({
   return (
     <CustomHeader
       logo={logo}
-      searchBar={<SearchBar placeholder={t("searchPlaceholder")} />}
+      searchBar={<NavSearchBar placeholder={t("searchPlaceholder")} />}
       subHeader={<SubHeader subheaderLinks={SUBHEADER_LINKS} />}
     />
   );
