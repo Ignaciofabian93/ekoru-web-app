@@ -1,0 +1,6 @@
+{
+  "trigger": "Change country and language",
+  "country": "Country",
+  "language": "Language",
+  "singleLanguage": "Only one language is available for this country."
+}

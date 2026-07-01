@@ -9,6 +9,8 @@ export type Option = {
   label: string;
   value: string | number;
   iconColor?: string;
+  /** Arbitrary node (e.g. a flag) shown before the label in the trigger and list. */
+  icon?: React.ReactNode;
 };
 
 type Variant = "default" | "filled" | "outline";
@@ -205,6 +207,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
               LeftIcon && s.padLeft,
             )}
           >
+            {selectedOption?.icon}
             {renderColorCircle(selectedOption)}
             <span
               className={clsx(
@@ -273,6 +276,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                         renderOption(item, isSelected)
                       ) : (
                         <span className="flex flex-1 flex-row items-center gap-2.5 px-4 py-3.5">
+                          {item.icon}
                           {renderColorCircle(item)}
                           <span
                             className={clsx(

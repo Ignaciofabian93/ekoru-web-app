@@ -130,9 +130,12 @@ export function useCheckout() {
       const order = orderRes.data?.createOrder;
       if (!order) throw new Error("createOrder returned no data");
 
-      const lang = params.lang ?? DEFAULT_LANGUAGE;
       const origin = typeof window === "undefined" ? "" : window.location.origin;
-      const returnUrl = `${origin}/${lang}/cart/confirmation`;
+      // Route the provider return through the Next proxy → gateway, which commits
+      // the payment (e.g. Webpay tx.commit) and only then 303s the buyer to
+      // /{lang}/cart/confirmation?paymentId=…. Lowercase so it matches the
+      // gateway's /payments/return/<provider> routes.
+      const returnUrl = `${origin}/api/checkout/return/${provider.toLowerCase()}`;
 
       const paymentRes = await createPayment({
         variables: {

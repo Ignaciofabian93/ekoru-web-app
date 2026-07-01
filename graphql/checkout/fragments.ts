@@ -18,9 +18,11 @@ export const PAYMENT_FIELDS_FRAGMENT = gql`
     amount
     currency
     orderId
-    provider
-    providerTransactionId
-    paidAt
+    # The transactions subgraph names these differently. Alias them back to the
+    # web-app's Payment vocabulary so types/transaction.ts and the UI are unchanged.
+    provider: paymentProvider
+    providerTransactionId: externalId
+    paidAt: processedAt
   }
 `;
 

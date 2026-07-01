@@ -1,5 +1,9 @@
 # Checkout & Payments
 
+> **Runtime reference** (sequence diagrams, payloads, status lifecycles, provider
+> switching): [`PAYMENT_FLOW.md`](./PAYMENT_FLOW.md). This file is the
+> feature/changelog map; `PAYMENT_FLOW.md` is the live how-it-works doc.
+
 This doc covers the cart → checkout → payment → confirmation flow across
 `ekoru-web-app`, `ekoru-transactions`, and `ekoru-gateway`.
 
