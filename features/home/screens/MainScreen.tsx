@@ -11,6 +11,7 @@ import { StatsSection } from "../ui/StatsSection";
 import { StoresHighlight } from "../ui/StoresHighlight";
 import { ProductsHighlight } from "../ui/ProductsHighlight";
 import { ExchangeHighlight } from "../ui/ExchangeHighlight";
+import { ServicesHighlight } from "../ui/ServicesHighlight";
 
 export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
   const dict = await getHomeDictionary(lang);
@@ -26,6 +27,7 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
         <StatsSection />
         <ProductsHighlight lang={lang} products={MOCK_PRODUCTS} />
         <StoresHighlight lang={lang} stores={MOCK_STORES} />
+        <ServicesHighlight lang={lang} />
         <ExchangeHighlight lang={lang} />
       </ScreenShell>
     </DictionaryProvider>

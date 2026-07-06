@@ -13,6 +13,7 @@ import { MarketplaceCategoryFields } from "../fields/MarketplaceCategoryFields";
 import { NameField } from "../fields/NameField";
 import { ServiceCategoryFields } from "../fields/ServiceCategoryFields";
 import { StoreCategoryFields } from "../fields/StoreCategoryFields";
+import { TagsField } from "../fields/TagsField";
 
 interface DetailsStepProps {
   target: PublishTarget;
@@ -45,8 +46,8 @@ export function DetailsStep({
   invalid,
   descriptionMinLength,
 }: DetailsStepProps) {
-  const showImages = target === "MARKETPLACE" || target === "STORE";
-
+  // Photos apply to every target. Products require at least one (enforced in
+  // usePublish validation); services keep them optional.
   return (
     <div className="flex flex-col gap-5">
       <NameField
@@ -95,14 +96,16 @@ export function DetailsStep({
         minLength={descriptionMinLength}
       />
 
-      {showImages && (
-        <ImagesField
-          images={form.images}
-          onAdd={addImage}
-          onRemove={removeImage}
-          invalid={invalid.images}
-        />
+      {target === "SERVICE" && (
+        <TagsField value={form.tags} onChange={(v) => setField("tags", v)} />
       )}
+
+      <ImagesField
+        images={form.images}
+        onAdd={addImage}
+        onRemove={removeImage}
+        invalid={invalid.images}
+      />
     </div>
   );
 }

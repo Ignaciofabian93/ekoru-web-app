@@ -39,6 +39,10 @@ export interface PublishForm {
   servicePricing: ServicePricing | "";
   isExchangeable: boolean;
   images: File[];
+  // Service-only fields (persisted by the services subgraph today).
+  tags: string[];
+  duration: string; // minutes
+  priceRange: string; // free text, e.g. "50.000–150.000 CLP"
 }
 
 const INITIAL_FORM: PublishForm = {
@@ -56,6 +60,9 @@ const INITIAL_FORM: PublishForm = {
   servicePricing: "",
   isExchangeable: false,
   images: [],
+  tags: [],
+  duration: "",
+  priceRange: "",
 };
 
 export function usePublish() {
@@ -202,6 +209,8 @@ export function usePublish() {
 
         const isQuotation = form.servicePricing === "QUOTATION";
 
+        const priceRange = sanitizeOnSubmit(form.priceRange);
+
         // Unlike products, the services subgraph DOES require sellerId in the
         // input (no @CurrentSeller decorator on the resolver).
         await addService({
@@ -214,6 +223,9 @@ export function usePublish() {
               pricingType: form.servicePricing,
               images: imageKeys,
               basePrice: isQuotation ? undefined : Number(form.price),
+              priceRange: priceRange || undefined,
+              duration: form.duration ? Number(form.duration) : undefined,
+              tags: form.tags.length ? form.tags : undefined,
             },
           },
         });

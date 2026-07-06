@@ -74,6 +74,7 @@ export const BUSINESS_PROFILE_FIELDS_FRAGMENT = gql`
     businessHours
     createdAt
     updatedAt
+    businessMembershipSubscriptionId
   }
 `;
 

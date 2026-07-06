@@ -70,7 +70,16 @@
     "isExchangeableHint": "Permite que los compradores propongan intercambios",
     "images": "Fotos",
     "imagesHint": "Agrega de 1 a 3 fotos. La primera será la portada.",
-    "addPhoto": "Agregar foto"
+    "addPhoto": "Agregar foto",
+    "tags": "Etiquetas",
+    "tagsPlaceholder": "Agrega una etiqueta y presiona Enter",
+    "tagsHint": "Hasta 10 palabras clave que ayudan a encontrar tu servicio",
+    "removeTag": "Quitar etiqueta",
+    "duration": "Duración (minutos)",
+    "durationPlaceholder": "Ej: 60",
+    "priceRange": "Rango de precio",
+    "priceRangePlaceholder": "Ej: 50.000–150.000 CLP",
+    "priceRangeHint": "Opcional — útil para cotizaciones y paquetes"
   },
   "conditions": {
     "new": "Nuevo",
@@ -100,10 +109,15 @@
   "review": {
     "target": "Publicando en",
     "title": "Título",
+    "pricingType": "Tipo de precio",
     "price": "Precio",
+    "priceRange": "Rango de precio",
+    "duration": "Duración",
+    "durationValue": "{{minutes}} min",
     "category": "Categoría",
     "condition": "Estado",
     "stock": "Stock",
+    "tags": "Etiquetas",
     "empty": "Sin definir"
   },
   "actions": {

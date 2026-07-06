@@ -70,7 +70,16 @@
     "isExchangeableHint": "Let buyers propose item swaps",
     "images": "Photos",
     "imagesHint": "Add 1 to 3 photos. The first one is the cover.",
-    "addPhoto": "Add photo"
+    "addPhoto": "Add photo",
+    "tags": "Tags",
+    "tagsPlaceholder": "Add a tag and press Enter",
+    "tagsHint": "Up to 10 keywords that help clients find your service",
+    "removeTag": "Remove tag",
+    "duration": "Duration (minutes)",
+    "durationPlaceholder": "e.g. 60",
+    "priceRange": "Price range",
+    "priceRangePlaceholder": "e.g. 50.000–150.000 CLP",
+    "priceRangeHint": "Optional — handy for quotes and packages"
   },
   "conditions": {
     "new": "New",
@@ -100,10 +109,15 @@
   "review": {
     "target": "Publishing to",
     "title": "Title",
+    "pricingType": "Pricing type",
     "price": "Price",
+    "priceRange": "Price range",
+    "duration": "Duration",
+    "durationValue": "{{minutes}} min",
     "category": "Category",
     "condition": "Condition",
     "stock": "Stock",
+    "tags": "Tags",
     "empty": "Not set"
   },
   "actions": {

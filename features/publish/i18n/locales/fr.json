@@ -70,7 +70,16 @@
     "isExchangeableHint": "Laissez les acheteurs proposer des échanges",
     "images": "Photos",
     "imagesHint": "Ajoutez 1 à 3 photos. La première sera la couverture.",
-    "addPhoto": "Ajouter une photo"
+    "addPhoto": "Ajouter une photo",
+    "tags": "Mots-clés",
+    "tagsPlaceholder": "Ajoutez un mot-clé et appuyez sur Entrée",
+    "tagsHint": "Jusqu'à 10 mots-clés pour aider les clients à trouver votre service",
+    "removeTag": "Supprimer le mot-clé",
+    "duration": "Durée (minutes)",
+    "durationPlaceholder": "Ex : 60",
+    "priceRange": "Fourchette de prix",
+    "priceRangePlaceholder": "Ex : 50.000–150.000 CLP",
+    "priceRangeHint": "Facultatif — utile pour les devis et forfaits"
   },
   "conditions": {
     "new": "Neuf",
@@ -100,10 +109,15 @@
   "review": {
     "target": "Publication sur",
     "title": "Titre",
+    "pricingType": "Type de tarification",
     "price": "Prix",
+    "priceRange": "Fourchette de prix",
+    "duration": "Durée",
+    "durationValue": "{{minutes}} min",
     "category": "Catégorie",
     "condition": "État",
     "stock": "Stock",
+    "tags": "Mots-clés",
     "empty": "Non défini"
   },
   "actions": {

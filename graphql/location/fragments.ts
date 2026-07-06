@@ -4,6 +4,8 @@ export const COUNTRY_FIELDS_FRAGMENT = gql`
   fragment CountryFields on Country {
     id
     country
+    createdAt
+    updatedAt
   }
 `;
 

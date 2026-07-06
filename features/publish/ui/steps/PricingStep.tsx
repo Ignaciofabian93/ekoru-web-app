@@ -2,8 +2,10 @@
 import type { PublishForm } from "../../hooks/usePublish";
 import type { PublishTarget } from "../../constants/options";
 
+import { DurationField } from "../fields/DurationField";
 import { ExchangeableField } from "../fields/ExchangeableField";
 import { PriceField } from "../fields/PriceField";
+import { PriceRangeField } from "../fields/PriceRangeField";
 import { ServicePricingField } from "../fields/ServicePricingField";
 
 interface PricingStepProps {
@@ -36,6 +38,19 @@ export function PricingStep({ target, form, setField, invalid }: PricingStepProp
           onChange={(v) => setField("price", v)}
           invalid={invalid.price}
         />
+      )}
+
+      {target === "SERVICE" && (
+        <>
+          <PriceRangeField
+            value={form.priceRange}
+            onChange={(v) => setField("priceRange", v)}
+          />
+          <DurationField
+            value={form.duration}
+            onChange={(v) => setField("duration", v)}
+          />
+        </>
       )}
 
       {target === "MARKETPLACE" && (

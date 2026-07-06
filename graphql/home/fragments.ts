@@ -105,3 +105,67 @@ export const HOME_EXCHANGEABLE_PRODUCT_FIELDS_FRAGMENT = gql`
     }
   }
 `;
+
+export const HOME_SERVICE_CATEGORY_FIELDS_FRAGMENT = gql`
+  fragment HomeServiceCategoryFields on ServiceSubCategory {
+    id
+    serviceCategoryId
+    isActive
+    sortOrder
+    subCategory
+    serviceCount
+    href
+    translation {
+      id
+      serviceSubCategoryId
+      language
+      subCategory
+      slug
+      href
+      metaTitle
+      metaDescription
+      metaKeywords
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const HOME_SERVICE_FIELDS_FRAGMENT = gql`
+  ${HOME_SELLER_FIELDS_FRAGMENT}
+  ${HOME_SERVICE_CATEGORY_FIELDS_FRAGMENT}
+  fragment HomeServiceFields on Service {
+    id
+    name
+    description
+    sellerId
+    subcategoryId
+    pricingType
+    basePrice
+    priceRange
+    duration
+    isActive
+    images
+    tags
+    createdAt
+    updatedAt
+    deletedAt
+    availabilitySchedule
+    isCurrentlyAvailable
+    maxConcurrentBookings
+    advanceBookingDays
+    serviceRadius
+    serviceLocations
+    isRemoteService
+    averageRating
+    reviewCount
+    viewCount
+    isLiked
+    seller {
+      ...HomeSellerFields
+    }
+    serviceCategory {
+      ...HomeServiceCategoryFields
+    }
+  }
+`;

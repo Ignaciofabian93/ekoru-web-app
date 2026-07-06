@@ -3,17 +3,7 @@ import { useQuery } from "@apollo/client/react";
 
 import { GET_EXCHANGEABLE_PRODUCTS_HOME } from "@/graphql/home/queries";
 import type { Product } from "@/types/product";
-
-export type ExchangePageInfo = {
-  currentPage: number;
-  totalPages: number;
-  totalCount: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  startCursor?: string | null;
-  endCursor?: string | null;
-  pageSize: number;
-};
+import type { PageInfo } from "@/types/general";
 
 interface Params {
   page?: number;
@@ -32,7 +22,7 @@ export function useExchangeableProducts({
   sort,
 }: Params = {}) {
   const { data, loading, error, previousData } = useQuery<{
-    getExchangeableProducts: { nodes: Product[]; pageInfo: ExchangePageInfo };
+    getExchangeableProducts: { nodes: Product[]; pageInfo: PageInfo };
   }>(GET_EXCHANGEABLE_PRODUCTS_HOME, {
     variables: { page, pageSize, filter, sort },
     fetchPolicy: "cache-and-network",
@@ -41,8 +31,7 @@ export function useExchangeableProducts({
 
   // Keep the previous page on screen while the next one loads so the grid
   // doesn't flash empty between fetches.
-  const payload =
-    data?.getExchangeableProducts ?? previousData?.getExchangeableProducts;
+  const payload = data?.getExchangeableProducts ?? previousData?.getExchangeableProducts;
 
   return {
     products: payload?.nodes ?? [],

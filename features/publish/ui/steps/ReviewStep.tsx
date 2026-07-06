@@ -2,7 +2,11 @@
 import { Text } from "@/components/Text/Text";
 import { useTranslation } from "@/i18n/context";
 
-import { CONDITION_OPTIONS, type PublishTarget } from "../../constants/options";
+import {
+  CONDITION_OPTIONS,
+  SERVICE_PRICING_OPTIONS,
+  type PublishTarget,
+} from "../../constants/options";
 import type { PublishForm } from "../../hooks/usePublish";
 
 interface ReviewStepProps {
@@ -15,18 +19,34 @@ export function ReviewStep({ target, form, categoryLabel }: ReviewStepProps) {
   const { t } = useTranslation("publish");
 
   const selectedCondition = CONDITION_OPTIONS.find((c) => c.value === form.condition);
+  const selectedPricing = SERVICE_PRICING_OPTIONS.find(
+    (p) => p.value === form.servicePricing,
+  );
+  const isService = target === "SERVICE";
 
   const rows = [
     { label: t("review.target"), value: t(`targetNames.${target}`) },
     { label: t("review.title"), value: form.name },
+    isService && selectedPricing
+      ? { label: t("review.pricingType"), value: t(selectedPricing.labelKey) }
+      : null,
     target !== "SERVICE" || form.servicePricing !== "QUOTATION"
       ? { label: t("review.price"), value: form.price ? `$${form.price}` : "" }
+      : null,
+    isService && form.priceRange
+      ? { label: t("review.priceRange"), value: form.priceRange }
+      : null,
+    isService && form.duration
+      ? { label: t("review.duration"), value: t("review.durationValue", { minutes: form.duration }) }
       : null,
     target === "STORE" ? { label: t("review.stock"), value: form.stock } : null,
     target !== "MARKETPLACE"
       ? null
       : { label: t("review.condition"), value: selectedCondition ? t(selectedCondition.labelKey) : "" },
     { label: t("review.category"), value: categoryLabel },
+    isService && form.tags.length
+      ? { label: t("review.tags"), value: form.tags.join(", ") }
+      : null,
   ].filter((row): row is { label: string; value: string } => row !== null);
 
   return (
