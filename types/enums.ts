@@ -222,6 +222,8 @@ export type BlogReactionType = "LIKE" | "DISLIKE";
 // Measurements
 export type WeightUnit = "KG" | "LB" | "OZ" | "G";
 
+export type DimensionUnit = "CM" | "M" | "MM" | "INCH" | "FOOT";
+
 // Legacy support - keeping enum for backward compatibility
 export enum BlogCategory {
   RECYCLING = "RECYCLING",

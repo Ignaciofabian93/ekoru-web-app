@@ -13,9 +13,15 @@ interface ReviewStepProps {
   target: PublishTarget;
   form: PublishForm;
   categoryLabel: string;
+  materialsLabel: string;
 }
 
-export function ReviewStep({ target, form, categoryLabel }: ReviewStepProps) {
+export function ReviewStep({
+  target,
+  form,
+  categoryLabel,
+  materialsLabel,
+}: ReviewStepProps) {
   const { t } = useTranslation("publish");
 
   const selectedCondition = CONDITION_OPTIONS.find((c) => c.value === form.condition);
@@ -23,6 +29,12 @@ export function ReviewStep({ target, form, categoryLabel }: ReviewStepProps) {
     (p) => p.value === form.servicePricing,
   );
   const isService = target === "SERVICE";
+  const isStore = target === "STORE";
+
+  const dimensions = [form.length, form.width, form.height].every(Boolean)
+    ? `${form.length} × ${form.width} × ${form.height} ${form.dimensionUnit}`.trim()
+    : "";
+  const weight = form.weight ? `${form.weight} ${form.weightUnit}`.trim() : "";
 
   const rows = [
     { label: t("review.target"), value: t(`targetNames.${target}`) },
@@ -33,18 +45,43 @@ export function ReviewStep({ target, form, categoryLabel }: ReviewStepProps) {
     target !== "SERVICE" || form.servicePricing !== "QUOTATION"
       ? { label: t("review.price"), value: form.price ? `$${form.price}` : "" }
       : null,
+    isStore && form.hasOffer
+      ? { label: t("review.offerPrice"), value: form.offerPrice ? `$${form.offerPrice}` : "" }
+      : null,
     isService && form.priceRange
       ? { label: t("review.priceRange"), value: form.priceRange }
       : null,
     isService && form.duration
       ? { label: t("review.duration"), value: t("review.durationValue", { minutes: form.duration }) }
       : null,
-    target === "STORE" ? { label: t("review.stock"), value: form.stock } : null,
+    isStore ? { label: t("review.stock"), value: form.stock } : null,
+    isStore && form.color
+      ? { label: t("review.color"), value: form.color }
+      : null,
+    isStore && form.barcode
+      ? { label: t("review.barcode"), value: form.barcode }
+      : null,
+    isStore && materialsLabel
+      ? { label: t("review.materials"), value: materialsLabel }
+      : null,
+    isStore && form.recycledContent
+      ? { label: t("review.recycledContent"), value: `${form.recycledContent}%` }
+      : null,
+    isStore && weight ? { label: t("review.weight"), value: weight } : null,
+    isStore && dimensions
+      ? { label: t("review.dimensions"), value: dimensions }
+      : null,
+    isStore && form.warranty
+      ? { label: t("review.warranty"), value: form.warranty }
+      : null,
     target !== "MARKETPLACE"
       ? null
       : { label: t("review.condition"), value: selectedCondition ? t(selectedCondition.labelKey) : "" },
     { label: t("review.category"), value: categoryLabel },
-    isService && form.tags.length
+    isStore && form.features.length
+      ? { label: t("review.features"), value: form.features.join(", ") }
+      : null,
+    (isService || isStore) && form.tags.length
       ? { label: t("review.tags"), value: form.tags.join(", ") }
       : null,
   ].filter((row): row is { label: string; value: string } => row !== null);

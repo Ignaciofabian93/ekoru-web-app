@@ -8,16 +8,22 @@ import { BUSINESS_TARGETS, type PublishTarget } from "../../constants/options";
 
 export function TargetStep({
   target,
+  allowedTargets,
   onSelect,
 }: {
   target: PublishTarget | null;
+  allowedTargets: Exclude<PublishTarget, "MARKETPLACE">[];
   onSelect: (target: Exclude<PublishTarget, "MARKETPLACE">) => void;
 }) {
   const { t } = useTranslation("publish");
 
+  const options = BUSINESS_TARGETS.filter((option) =>
+    allowedTargets.includes(option.value),
+  );
+
   return (
     <div className="flex flex-col gap-3">
-      {BUSINESS_TARGETS.map(({ value, icon: Icon, labelKey, descKey }) => {
+      {options.map(({ value, icon: Icon, labelKey, descKey }) => {
         const selected = target === value;
         return (
           <button

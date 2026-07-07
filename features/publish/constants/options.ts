@@ -1,4 +1,9 @@
-import type { ProductCondition, ServicePricing } from "@/types/enums";
+import type {
+  DimensionUnit,
+  ProductCondition,
+  ServicePricing,
+  WeightUnit,
+} from "@/types/enums";
 import { Store, Wrench, type LucideIcon } from "lucide-react";
 
 import type { PublishKey } from "../i18n";
@@ -44,4 +49,21 @@ export const SERVICE_PRICING_OPTIONS: { value: ServicePricing; labelKey: Publish
   { value: "QUOTATION", labelKey: "servicePricingTypes.quotation" },
   { value: "HOURLY", labelKey: "servicePricingTypes.hourly" },
   { value: "PACKAGE", labelKey: "servicePricingTypes.package" },
+];
+
+/** Weight units accepted by the stores subgraph (StoreProduct.weightUnit). */
+export const WEIGHT_UNIT_OPTIONS: { value: WeightUnit; labelKey: PublishKey }[] = [
+  { value: "KG", labelKey: "weightUnits.kg" },
+  { value: "G", labelKey: "weightUnits.g" },
+  { value: "LB", labelKey: "weightUnits.lb" },
+  { value: "OZ", labelKey: "weightUnits.oz" },
+];
+
+/** Dimension units accepted by the stores subgraph (StoreProduct.dimensionUnit). */
+export const DIMENSION_UNIT_OPTIONS: { value: DimensionUnit; labelKey: PublishKey }[] = [
+  { value: "CM", labelKey: "dimensionUnits.cm" },
+  { value: "M", labelKey: "dimensionUnits.m" },
+  { value: "MM", labelKey: "dimensionUnits.mm" },
+  { value: "INCH", labelKey: "dimensionUnits.inch" },
+  { value: "FOOT", labelKey: "dimensionUnits.foot" },
 ];

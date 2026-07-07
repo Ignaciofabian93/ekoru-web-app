@@ -17,6 +17,16 @@ export const GET_STORES_CATALOG = gql`
   }
 `;
 
+export const GET_MATERIALS = gql`
+  query Materials($language: Language = ES) {
+    materials(language: $language) {
+      id
+      materialType
+      label
+    }
+  }
+`;
+
 export const GET_STORES_CATEGORIES = gql`
   ${STORE_CATEGORY_FIELDS_FRAGMENT}
   query GetStoreCategories(

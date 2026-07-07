@@ -11,13 +11,18 @@ import { useNavigation } from "@/hooks/useNavigation";
 import { useToast } from "@/hooks/useToast";
 import { useTranslation } from "@/i18n/context";
 import { uploadProductImage } from "@/lib/api/products";
-import useAuthStore, { useSellerType } from "@/store/useAuthStore";
-import type { ProductCondition, ServicePricing } from "@/types/enums";
+import useAuthStore, { useBusinessProfile, useSellerType } from "@/store/useAuthStore";
+import type {
+  DimensionUnit,
+  ProductCondition,
+  ServicePricing,
+  WeightUnit,
+} from "@/types/enums";
 import { getCookie } from "@/utils/cookies";
 import { sanitizeOnSubmit } from "@/utils/inputValidations";
 import { useMutation } from "@apollo/client/react";
 import { useParams } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { MAX_PRODUCT_IMAGES, type PublishTarget } from "../constants/options";
 
@@ -36,6 +41,24 @@ export interface PublishForm {
   price: string;
   stock: string;
   sku: string;
+  // Store-only product attributes (all optional in the stores subgraph).
+  barcode: string;
+  color: string;
+  hasOffer: boolean;
+  offerPrice: string;
+  recycledContent: string; // percentage
+  weight: string;
+  weightUnit: WeightUnit | "";
+  length: string;
+  width: string;
+  height: string;
+  dimensionUnit: DimensionUnit | "";
+  lowStockThreshold: string;
+  warranty: string;
+  warrantyDuration: string; // months
+  features: string[];
+  // Structured material composition: each row is one material + its percentage.
+  materials: { materialTypeId: string; percentage: string }[];
   servicePricing: ServicePricing | "";
   isExchangeable: boolean;
   images: File[];
@@ -57,6 +80,22 @@ const INITIAL_FORM: PublishForm = {
   price: "",
   stock: "",
   sku: "",
+  barcode: "",
+  color: "",
+  hasOffer: false,
+  offerPrice: "",
+  recycledContent: "",
+  weight: "",
+  weightUnit: "",
+  length: "",
+  width: "",
+  height: "",
+  dimensionUnit: "",
+  lowStockThreshold: "",
+  warranty: "",
+  warrantyDuration: "",
+  features: [],
+  materials: [{ materialTypeId: "", percentage: "" }],
   servicePricing: "",
   isExchangeable: false,
   images: [],
@@ -72,18 +111,43 @@ export function usePublish() {
   const { t } = useTranslation("publish");
 
   const sellerType = useSellerType();
+  const businessProfile = useBusinessProfile();
   const sellerId = useAuthStore((s) => s.seller?.id);
 
   // PERSON (and unauthenticated/unknown) sellers publish to the marketplace.
   // Business sellers (STARTUP / COMPANY) pick a destination first.
   const isBusiness = sellerType === "STARTUP" || sellerType === "COMPANY";
 
+  // A business only publishes to the destinations its BusinessType allows:
+  // RETAIL → store products, SERVICES → services, MIXED → both. Falls back to
+  // both while the profile is still hydrating / businessType is unknown.
+  const allowedTargets = useMemo<Exclude<PublishTarget, "MARKETPLACE">[]>(() => {
+    if (!isBusiness) return [];
+    switch (businessProfile?.businessType) {
+      case "RETAIL":
+        return ["STORE"];
+      case "SERVICES":
+        return ["SERVICE"];
+      case "MIXED":
+        return ["STORE", "SERVICE"];
+      default:
+        return ["STORE", "SERVICE"];
+    }
+  }, [isBusiness, businessProfile?.businessType]);
+
   const [businessTarget, setBusinessTarget] = useState<
     Exclude<PublishTarget, "MARKETPLACE"> | null
   >(null);
 
+  // When a business has a single allowed destination we auto-select it, so the
+  // wizard skips the target step entirely (e.g. a RETAIL company never sees the
+  // "publish a service" option).
+  const soleTarget = allowedTargets.length === 1 ? allowedTargets[0] : null;
+
   // Effective target stays correct even if the seller hydrates after mount.
-  const target: PublishTarget | null = isBusiness ? businessTarget : "MARKETPLACE";
+  const target: PublishTarget | null = isBusiness
+    ? (businessTarget ?? soleTarget)
+    : "MARKETPLACE";
 
   const [form, setForm] = useState<PublishForm>(INITIAL_FORM);
 
@@ -179,6 +243,14 @@ export function usePublish() {
       if (target === "STORE") {
         const imageKeys = await uploadImages(form.images, sellerId);
 
+        // Only keep fully-filled material rows; drop the empty placeholder.
+        const materials = form.materials
+          .filter((m) => m.materialTypeId && m.percentage)
+          .map((m) => ({
+            materialTypeId: Number(m.materialTypeId),
+            percentage: Number(m.percentage),
+          }));
+
         // sellerId is injected by the stores subgraph from the session
         // (`@CurrentSeller`); it is NOT part of AddStoreProductInput.
         await addStoreProduct({
@@ -191,7 +263,33 @@ export function usePublish() {
               subCategoryId: Number(form.storeSubCategoryId),
               images: imageKeys,
               sku: sanitizeOnSubmit(form.sku) || undefined,
+              barcode: sanitizeOnSubmit(form.barcode) || undefined,
               brand: sanitizeOnSubmit(form.brand) || undefined,
+              color: sanitizeOnSubmit(form.color) || undefined,
+              hasOffer: form.hasOffer,
+              offerPrice:
+                form.hasOffer && form.offerPrice
+                  ? Number(form.offerPrice)
+                  : undefined,
+              recycledContent: form.recycledContent
+                ? Number(form.recycledContent)
+                : undefined,
+              weight: form.weight ? Number(form.weight) : undefined,
+              weightUnit: form.weightUnit || undefined,
+              length: form.length ? Number(form.length) : undefined,
+              width: form.width ? Number(form.width) : undefined,
+              height: form.height ? Number(form.height) : undefined,
+              dimensionUnit: form.dimensionUnit || undefined,
+              lowStockThreshold: form.lowStockThreshold
+                ? Number(form.lowStockThreshold)
+                : undefined,
+              warranty: sanitizeOnSubmit(form.warranty) || undefined,
+              warrantyDuration: form.warrantyDuration
+                ? Number(form.warrantyDuration)
+                : undefined,
+              tags: form.tags.length ? form.tags : undefined,
+              features: form.features.length ? form.features : undefined,
+              materials: materials.length ? materials : undefined,
             },
           },
         });
@@ -256,6 +354,7 @@ export function usePublish() {
 
   return {
     isBusiness,
+    allowedTargets,
     target,
     setBusinessTarget,
     form,

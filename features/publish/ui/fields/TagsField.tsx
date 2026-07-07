@@ -5,20 +5,36 @@ import { useTranslation } from "@/i18n/context";
 import { X } from "lucide-react";
 import { useState } from "react";
 
-/** Keep the tag set small so listings stay scannable. */
-const MAX_TAGS = 10;
+import type { PublishKey } from "../../i18n";
 
+/** Keep the set small so listings stay scannable. */
+const DEFAULT_MAX = 10;
+
+/** Reusable chip input. Defaults to service tags but is parameterized so it also
+ *  drives store product features/tags. */
 export function TagsField({
   value,
   onChange,
+  name = "tags",
+  labelKey = "form.tags",
+  placeholderKey = "form.tagsPlaceholder",
+  hintKey = "form.tagsHint",
+  removeAriaKey = "form.removeTag",
+  maxItems = DEFAULT_MAX,
 }: {
   value: string[];
   onChange: (value: string[]) => void;
+  name?: string;
+  labelKey?: PublishKey;
+  placeholderKey?: PublishKey;
+  hintKey?: PublishKey;
+  removeAriaKey?: PublishKey;
+  maxItems?: number;
 }) {
   const { t } = useTranslation("publish");
   const [draft, setDraft] = useState("");
 
-  const atMax = value.length >= MAX_TAGS;
+  const atMax = value.length >= maxItems;
 
   const commit = () => {
     const tag = draft.trim().replace(/,+$/, "").trim();
@@ -44,9 +60,9 @@ export function TagsField({
   return (
     <div className="flex flex-col gap-2">
       <Input
-        name="tags"
-        label={t("form.tags")}
-        placeholder={t("form.tagsPlaceholder")}
+        name={name}
+        label={t(labelKey)}
+        placeholder={t(placeholderKey)}
         value={draft}
         onChangeText={setDraft}
         onKeyDown={handleKeyDown}
@@ -68,7 +84,7 @@ export function TagsField({
               <button
                 type="button"
                 onClick={() => removeAt(i)}
-                aria-label={t("form.removeTag")}
+                aria-label={t(removeAriaKey)}
                 className="flex items-center text-foreground-tertiary transition-colors hover:text-danger"
               >
                 <X size={13} color="currentColor" strokeWidth={2.5} />
@@ -79,7 +95,7 @@ export function TagsField({
       )}
 
       <Text variant="small" color="tertiary">
-        {t("form.tagsHint")}
+        {t(hintKey)}
       </Text>
     </div>
   );

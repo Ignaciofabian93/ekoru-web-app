@@ -9,6 +9,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import { MIN_PRODUCT_IMAGES } from "../constants/options";
 import { useMarketplaceCategories } from "../hooks/useMarketplaceCategories";
+import { useMaterials } from "../hooks/useMaterials";
 import { usePublish } from "../hooks/usePublish";
 import { useServiceCategories } from "../hooks/useServiceCategories";
 import { useStoreCategories } from "../hooks/useStoreCategories";
@@ -26,6 +27,7 @@ export function PublishForm() {
   const { t } = useTranslation("publish");
   const {
     isBusiness,
+    allowedTargets,
     target,
     setBusinessTarget,
     form,
@@ -68,12 +70,20 @@ export function PublishForm() {
     enabled: target === "SERVICE",
     onLeafChange: setServiceSubcategoryId,
   });
+  const materials = useMaterials(target === "STORE");
+
+  // The target step only makes sense when the business may publish to more than
+  // one destination (MIXED). RETAIL / SERVICES businesses have their sole
+  // destination auto-selected in usePublish, so we drop the step for them.
+  const showTargetStep = isBusiness && allowedTargets.length > 1;
 
   const steps = useMemo<StepKey[]>(() => {
     if (!isBusiness) return ["details", "pricing", "review"];
     const mid: StepKey = target === "SERVICE" ? "pricing" : "inventory";
-    return ["target", "details", mid, "review"];
-  }, [isBusiness, target]);
+    return showTargetStep
+      ? ["target", "details", mid, "review"]
+      : ["details", mid, "review"];
+  }, [isBusiness, showTargetStep, target]);
 
   const currentKey = steps[step];
   const totalSteps = steps.length;
@@ -101,11 +111,30 @@ export function PublishForm() {
   const imagesRequired = target === "MARKETPLACE" || target === "STORE";
   const imagesValid = !imagesRequired || form.images.length >= MIN_PRODUCT_IMAGES;
 
+  // Material composition is optional, but any row a seller starts must be
+  // complete: a material + a percentage in (0,100], no duplicate materials, and
+  // the declared percentages can't exceed 100 in total.
+  const filledMaterials = form.materials.filter(
+    (m) => m.materialTypeId || m.percentage,
+  );
+  const materialIds = filledMaterials.map((m) => m.materialTypeId).filter(Boolean);
+  const materialsValid =
+    target !== "STORE" ||
+    (filledMaterials.every(
+      (m) =>
+        m.materialTypeId &&
+        Number(m.percentage) > 0 &&
+        Number(m.percentage) <= 100,
+    ) &&
+      new Set(materialIds).size === materialIds.length &&
+      filledMaterials.reduce((sum, m) => sum + (Number(m.percentage) || 0), 0) <=
+        100);
+
   const detailsValid =
     target === "MARKETPLACE"
       ? nameValid && descValid && categoryValid && conditionValid && imagesValid
       : target === "STORE"
-        ? nameValid && descValid && categoryValid && imagesValid
+        ? nameValid && descValid && categoryValid && imagesValid && materialsValid
         : nameValid && categoryValid;
 
   const pricingValid =
@@ -113,7 +142,13 @@ export function PublishForm() {
       ? servicePricingValid && (isServiceQuotation || priceValid)
       : priceValid;
 
-  const inventoryValid = stockValid && priceValid;
+  // When an offer is enabled the offer price must be a positive amount below the
+  // regular price; otherwise the field is simply ignored.
+  const offerPriceValid =
+    !form.hasOffer ||
+    (Number(form.offerPrice) > 0 && Number(form.offerPrice) < Number(form.price));
+
+  const inventoryValid = stockValid && priceValid && offerPriceValid;
 
   const stepValid: Record<StepKey, boolean> = {
     target: target !== null,
@@ -166,6 +201,11 @@ export function PublishForm() {
           ? serviceCategories.selectedLeafLabel
           : "";
 
+  const reviewMaterialsLabel = form.materials
+    .filter((m) => m.materialTypeId && m.percentage)
+    .map((m) => `${materials.labelFor(m.materialTypeId)} ${m.percentage}%`)
+    .join(", ");
+
   return (
     <div className="flex flex-col gap-6">
       {/* Progress indicator */}
@@ -204,7 +244,11 @@ export function PublishForm() {
           </div>
 
           {currentKey === "target" && (
-            <TargetStep target={target} onSelect={setBusinessTarget} />
+            <TargetStep
+              target={target}
+              allowedTargets={allowedTargets}
+              onSelect={setBusinessTarget}
+            />
           )}
 
           {currentKey === "details" && target && (
@@ -217,12 +261,14 @@ export function PublishForm() {
               marketplaceCategories={marketplaceCategories}
               storeCategories={storeCategories}
               serviceCategories={serviceCategories}
+              materials={materials}
               invalid={{
                 name: submitted && !nameValid,
                 description: submitted && !descValid,
                 category: submitted && !categoryValid,
                 condition: submitted && !conditionValid,
                 images: submitted && !imagesValid,
+                materials: submitted && !materialsValid,
               }}
               descriptionMinLength={DESCRIPTION_MIN}
             />
@@ -247,6 +293,7 @@ export function PublishForm() {
               invalid={{
                 price: submitted && !priceValid,
                 stock: submitted && !stockValid,
+                offerPrice: submitted && !offerPriceValid,
               }}
             />
           )}
@@ -256,6 +303,7 @@ export function PublishForm() {
               target={target}
               form={form}
               categoryLabel={reviewCategoryLabel}
+              materialsLabel={reviewMaterialsLabel}
             />
           )}
         </div>
