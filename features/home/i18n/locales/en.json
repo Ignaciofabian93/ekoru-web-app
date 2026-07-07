@@ -79,6 +79,12 @@
     "subtitle": "Verified sustainable shops",
     "seeAll": "See all"
   },
+  "services": {
+    "title": "Eco Services",
+    "subtitle": "Repair, rent & swap providers",
+    "seeAll": "See all",
+    "noServices": "No services available"
+  },
   "products": {
     "title": "Featured Products",
     "subtitle": "Handpicked sustainable finds",

@@ -1,23 +1,30 @@
 "use client";
 import { useQuery } from "@apollo/client/react";
-import { GET_SERVICES_HOME } from "@/graphql/home/queries";
 import type { PageInfo } from "@/types/general";
-import type { Service } from "@/types/services";
+import { GET_SELLERS } from "@/graphql/users/queries";
+import type { Seller } from "@/types/user";
+import { BusinessType } from "@/graphql/enums/enums";
+import type { SupportedLanguage } from "@/constants/settings";
 
-export function useServices() {
+export function useServicesHomeData({ language }: { language: SupportedLanguage }) {
   const { data, loading, error, previousData } = useQuery<{
-    getServices: { nodes: Service[]; pageInfo: PageInfo };
-  }>(GET_SERVICES_HOME, {
-    variables: { page: 1, pageSize: 20, isActive: true },
+    getSellers: { nodes: Seller[]; pageInfo: PageInfo };
+  }>(GET_SELLERS, {
+    variables: {
+      language: language.toUpperCase(),
+      page: 1,
+      pageSize: 20,
+      isActive: true,
+      businessType: BusinessType.SERVICES,
+    },
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });
 
-  const payload = data?.getServices ?? previousData?.getServices;
+  const payload = data?.getSellers ?? previousData?.getSellers;
 
   return {
-    services: payload?.nodes ?? [],
-    pageInfo: payload?.pageInfo,
+    sellers: payload?.nodes ?? [],
     loading,
     error,
   };

@@ -15,7 +15,6 @@ export function useStoresHomeData({ language }: { language: SupportedLanguage })
       page: 1,
       pageSize: 20,
       isActive: true,
-      // sellerType: SellerType.STARTUP,
       businessType: BusinessType.RETAIL,
     },
     fetchPolicy: "cache-and-network",

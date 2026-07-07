@@ -79,6 +79,12 @@
     "subtitle": "Boutiques durables vérifiées",
     "seeAll": "Voir tout"
   },
+  "services": {
+    "title": "Éco Services",
+    "subtitle": "Réparation, location et échange",
+    "seeAll": "Voir tout",
+    "noServices": "Aucun service disponible"
+  },
   "products": {
     "title": "Produits en vedette",
     "subtitle": "Trouvailles durables sélectionnées",

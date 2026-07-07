@@ -79,6 +79,12 @@
     "subtitle": "Tiendas sostenibles verificadas",
     "seeAll": "Ver todas"
   },
+  "services": {
+    "title": "Eco Servicios",
+    "subtitle": "Reparación, alquiler e intercambio",
+    "seeAll": "Ver todos",
+    "noServices": "No hay servicios disponibles"
+  },
   "products": {
     "title": "Productos destacados",
     "subtitle": "Hallazgos sostenibles seleccionados",
