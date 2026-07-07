@@ -21,11 +21,7 @@ export const GET_MARKETPLACE_CATALOG = gql`
 
 export const GET_DEPARTMENTS = gql`
   ${DEPARTMENT_FIELDS_FRAGMENT}
-  query GetDepartments(
-    $limit: Int = 20
-    $offset: Int = 0
-    $language: Language = ES
-  ) {
+  query GetDepartments($limit: Int = 20, $offset: Int = 0, $language: Language = ES) {
     getDepartments(limit: $limit, offset: $offset, language: $language) {
       ...DepartmentFields
     }
@@ -49,11 +45,7 @@ export const GET_DEPARTMENT_CATEGORIES = gql`
     $offset: Int = 0
     $language: Language = ES
   ) {
-    getDepartmentCategories(
-      limit: $limit
-      offset: $offset
-      language: $language
-    ) {
+    getDepartmentCategories(limit: $limit, offset: $offset, language: $language) {
       id
       translation {
         ...CategoryTranslationFields
@@ -185,12 +177,7 @@ export const GET_PRODUCTS = gql`
     $filter: ProductFilterInput
     $sort: ProductSortInput
   ) {
-    getProducts(
-      page: $page
-      pageSize: $pageSize
-      filter: $filter
-      sort: $sort
-    ) {
+    getProducts(page: $page, pageSize: $pageSize, filter: $filter, sort: $sort) {
       nodes {
         ...ProductFields
         productCategory {
@@ -467,6 +454,10 @@ export const GET_MY_FAVORITES = gql`
   }
 `;
 
+//////////////////////////////////////////////////////////////////////////////
+// EXCHANGEABLE PRODUCTS
+//////////////////////////////////////////////////////////////////////////////
+
 export const GET_EXCHANGEABLE_PRODUCTS = gql`
   ${PRODUCT_FIELDS_FRAGMENT}
   query GetExchangeableProducts(
@@ -474,6 +465,7 @@ export const GET_EXCHANGEABLE_PRODUCTS = gql`
     $pageSize: Int = 10
     $filter: ProductFilterInput
     $sort: ProductSortInput
+    $requiresPageInfo: Boolean = true
   ) {
     getExchangeableProducts(
       page: $page
@@ -484,7 +476,7 @@ export const GET_EXCHANGEABLE_PRODUCTS = gql`
       nodes {
         ...ProductFields
       }
-      pageInfo {
+      pageInfo @include(if: $requiresPageInfo) {
         totalCount
         totalPages
         currentPage

@@ -27,22 +27,151 @@ export const GET_SELLER = gql`
 `;
 
 export const GET_SELLERS = gql`
-  ${SELLER_FIELDS_FRAGMENT}
   query GetSellers(
-    $sellerType: String
+    $language: Language!
+    $page: Int!
+    $pageSize: Int!
+    $sellerType: SellerType
+    $businessType: BusinessType
     $isActive: Boolean
     $isVerified: Boolean
-    $limit: Int
-    $offset: Int
+    $searchQuery: String
+    $enablePreferences: Boolean = false
+    $enableSellerLevel: Boolean = false
+    $enablePagination: Boolean = true
   ) {
-    sellers(
+    getSellers(
+      language: $language
+      page: $page
+      pageSize: $pageSize
       sellerType: $sellerType
+      businessType: $businessType
       isActive: $isActive
       isVerified: $isVerified
-      limit: $limit
-      offset: $offset
+      searchQuery: $searchQuery
     ) {
-      ...SellerFields
+      nodes {
+        id
+        email
+        sellerType
+        isActive
+        isVerified
+        createdAt
+        updatedAt
+        address
+        phone
+        website
+        preferredContactMethod
+        socialMediaLinks
+        points
+        profile {
+          ... on BusinessProfile {
+            id
+            sellerId
+            businessName
+            description
+            logo
+            coverImage
+            businessType
+            legalBusinessName
+            taxId
+            businessStartDate
+            legalRepresentative
+            legalRepresentativeTaxId
+            shippingPolicy
+            returnPolicy
+            serviceArea
+            yearsOfExperience
+            certifications
+            travelRadius
+            businessHours
+            createdAt
+            updatedAt
+            businessMembershipSubscriptionId
+          }
+          ... on PersonProfile {
+            id
+            sellerId
+            firstName
+            lastName
+            displayName
+            bio
+            birthday
+            profileImage
+            coverImage
+            allowExchanges
+            personMembershipSubscriptionId
+          }
+        }
+        preferences @include(if: $enablePreferences) {
+          id
+          sellerId
+          preferredLanguage
+          currency
+          emailNotifications
+          pushNotifications
+          orderUpdates
+          communityUpdates
+          securityAlerts
+          weeklySummary
+          twoFactorAuth
+        }
+        sellerLevel @include(if: $enableSellerLevel) {
+          id
+          levelName
+          minPoints
+          maxPoints
+          benefits
+          badgeIcon
+          createdAt
+          updatedAt
+          translations {
+            id
+            sellerLevelId
+            language
+            levelName
+            createdAt
+            updatedAt
+          }
+        }
+        country {
+          id
+          country
+          createdAt
+          updatedAt
+          translation {
+            id
+            countryId
+            language
+            name
+          }
+        }
+        region {
+          id
+          region
+          countryId
+        }
+        city {
+          id
+          city
+          regionId
+        }
+        county {
+          id
+          county
+          cityId
+        }
+      }
+      pageInfo @include(if: $enablePagination) {
+        currentPage
+        totalPages
+        totalCount
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+        pageSize
+      }
     }
   }
 `;

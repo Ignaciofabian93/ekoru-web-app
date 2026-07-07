@@ -4,7 +4,7 @@ import { DictionaryProvider } from "@/i18n/context";
 import { Navigation } from "@/features/navigation/Navigation";
 
 import { getHomeDictionary, NAMESPACE } from "../i18n";
-import { MOCK_PRODUCTS, MOCK_STORES } from "../constants/mockData";
+import { MOCK_PRODUCTS } from "../constants/mockData";
 import { CategoriesSection } from "../ui/CategoriesSection";
 import { HomeHero } from "../ui/HomeHero";
 import { StatsSection } from "../ui/StatsSection";
@@ -26,7 +26,7 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
         <CategoriesSection lang={lang} />
         <StatsSection />
         <ProductsHighlight lang={lang} products={MOCK_PRODUCTS} />
-        <StoresHighlight lang={lang} stores={MOCK_STORES} />
+        <StoresHighlight lang={lang} />
         <ServicesHighlight lang={lang} />
         <ExchangeHighlight lang={lang} />
       </ScreenShell>

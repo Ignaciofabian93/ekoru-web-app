@@ -1,58 +1,43 @@
 "use client";
 
-import { MapPin, ShieldCheck, Star } from "lucide-react";
 import Link from "next/link";
 
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
-import type { HighlightStore } from "../constants/mockData";
+import { useStoresHomeData } from "../hooks/useStores";
+import type { SupportedLanguage } from "@/constants/settings";
+import StoreCard from "@/components/Card/StoreCard/StoreCard";
 
-export function StoresHighlight({ lang, stores }: { lang: string; stores: HighlightStore[] }) {
+export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
+  const { sellers } = useStoresHomeData({ language: lang });
 
   return (
     <div className="my-10">
       <div className="flex items-center justify-between mb-5">
         <div>
           <h2 className="text-xl font-bold text-foreground">{t("stores.title")}</h2>
-          <p className="text-sm text-foreground-secondary mt-0.5">{t("stores.subtitle")}</p>
+          <p className="text-sm text-foreground-secondary mt-0.5">
+            {t("stores.subtitle")}
+          </p>
         </div>
-        <Link href={`/${lang}/stores`} className="text-sm font-semibold text-primary hover:underline">
+        <Link
+          href={`/${lang}/stores`}
+          className="text-sm font-semibold text-primary hover:underline"
+        >
           {t("stores.seeAll")}
         </Link>
       </div>
-
-      <div className="flex flex-col gap-3">
-        {stores.map((store) => (
-          <Link
-            key={store.id}
-            href={`/${lang}/stores/${store.id}`}
-            className="flex items-center gap-4 bg-surface border border-border rounded-xl p-4 hover:shadow-sm transition-shadow"
-          >
-            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-primary to-primary-dark flex items-center justify-center shrink-0">
-              <span className="text-white font-bold text-lg">{store.name[0]}</span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-1.5">
-                <span className="font-semibold text-foreground truncate">{store.name}</span>
-                {store.isVerified && <ShieldCheck size={14} className="text-primary shrink-0" strokeWidth={2} />}
-              </div>
-              <div className="flex items-center gap-3 mt-0.5">
-                <span className="flex items-center gap-1 text-xs text-foreground-secondary">
-                  <Star size={11} className="text-amber-400" fill="currentColor" strokeWidth={0} />
-                  {store.rating}
-                </span>
-                <span className="flex items-center gap-1 text-xs text-foreground-secondary">
-                  <MapPin size={11} strokeWidth={1.5} />
-                  {store.county}
-                </span>
-              </div>
-            </div>
-            <span className="text-xs font-medium text-primary bg-primary-light-bg px-2 py-0.5 rounded-full shrink-0">
-              {store.category}
-            </span>
-          </Link>
-        ))}
+      <div>
+        {sellers && sellers.length > 0 ? (
+          <div className="flex overflow-x-scroll gap-4 py-2">
+            {sellers.map((seller) => (
+              <StoreCard key={seller.id} {...seller} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-foreground-secondary">{t("stores.noStores")}</p>
+        )}
       </div>
     </div>
   );

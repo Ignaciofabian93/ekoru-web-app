@@ -61,7 +61,7 @@ export enum SortOrder {
   DESC = "DESC",
 }
 
-export enum GqlSellerType {
+export enum SellerType {
   PERSON = "PERSON",
   STARTUP = "STARTUP",
   COMPANY = "COMPANY",
