@@ -76,6 +76,10 @@ export type StoreProduct = {
   averageRating: number;
   reviewsNumber: number;
   storeSubCategoryId: number;
+  /** Seller-declared material composition (material + percentage). */
+  materials?: StoreProductMaterialComposition[];
+  /** Environmental impact summary, computed from this product's composition. */
+  environmentalImpact?: EnvironmentalImpact;
   deletedAt?: string;
 };
 
@@ -92,15 +96,19 @@ export type ProductVariant = {
   updatedAt: string;
 };
 
-export type StoreProductMaterial = {
+/**
+ * One row of a store product's declared material composition, as returned by
+ * the `materials` field on a StoreProduct (GraphQL: StoreProductMaterialComposition).
+ */
+export type StoreProductMaterialComposition = {
   id: number;
-  storeProductId: number;
   materialTypeId: number;
-  quantity: number;
-  unit: string;
-  isPrimary: boolean;
-  createdAt: string;
-  updatedAt: string;
+  /** Raw material key, e.g. "COTTON" — stable identifier for icons/logic. */
+  materialType: string;
+  /** Localized, render-ready material label for the requested language. */
+  label: string;
+  /** Percentage of the product (0-100). */
+  percentage: number;
 };
 
 export type ProductCategoryMaterial = {
@@ -129,7 +137,6 @@ export type StoreSubCategory = {
   storeCategory: StoreCategory;
   products: StoreProduct[];
   href: string;
-  materials: StoreProductMaterial[];
 };
 
 export type ProductLike = {
