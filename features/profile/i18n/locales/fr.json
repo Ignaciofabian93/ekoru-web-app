@@ -133,6 +133,26 @@
       "description": "Description",
       "descriptionPlaceholder": "À propos de votre entreprise"
     },
+    "tags": {
+      "title": "Étiquettes de l'entreprise",
+      "subtitle": "Choisissez jusqu'à 3 étiquettes qui décrivent votre entreprise",
+      "options": {
+        "womanLed": "Dirigé par des femmes",
+        "zeroWaste": "Zéro déchet",
+        "recycledMaterials": "100% matériaux recyclés",
+        "plasticFree": "Sans plastique",
+        "locallyMade": "Fabriqué localement",
+        "handmade": "Fait main",
+        "vegan": "Végan",
+        "crueltyFree": "Sans cruauté",
+        "organic": "Biologique",
+        "fairTrade": "Commerce équitable",
+        "carbonNeutral": "Neutre en carbone",
+        "upcycled": "Surcyclé",
+        "refillable": "Rechargeable",
+        "biodegradable": "Biodégradable"
+      }
+    },
     "contact": {
       "title": "Contact",
       "subtitle": "Comment les acheteurs peuvent vous joindre",

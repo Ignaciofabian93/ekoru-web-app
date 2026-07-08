@@ -36,8 +36,8 @@ function SlideItem({ item }: { item: HeroSlide }) {
       {/* Bottom scrim */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[65%] bg-linear-to-b from-transparent to-black/52" />
 
-      {/* Content */}
-      <div className="relative flex flex-1 flex-col justify-between p-5 pb-11.5">
+      {/* Content — background stays full-width, content aligns to the page width */}
+      <div className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col justify-between p-5 pb-11.5">
         <div className="flex flex-row items-center gap-2.5">
           <div className="flex size-9.5 items-center justify-center rounded-lg border border-white/25 bg-white/18 text-on-primary">
             <Icon size={18} color="currentColor" strokeWidth={1.5} />
@@ -132,8 +132,8 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         ))}
       </div>
 
-      {/* Dot indicators */}
-      <div className="pointer-events-none absolute right-5 bottom-4 flex flex-row items-center gap-1.25">
+      {/* Dot indicators — aligned to the same max-width column as the content */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-4 mx-auto flex max-w-5xl flex-row items-center justify-end gap-1.25 px-5">
         {slides.map((_, index) => (
           <div
             key={index}

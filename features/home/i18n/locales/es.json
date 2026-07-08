@@ -77,13 +77,18 @@
   "stores": {
     "title": "Eco Tiendas",
     "subtitle": "Tiendas sostenibles verificadas",
-    "seeAll": "Ver todas"
+    "seeAll": "Ver todas",
+    "noStores": "No hay tiendas disponibles",
+    "scrollPrevious": "Desplazar a la izquierda",
+    "scrollNext": "Desplazar a la derecha"
   },
   "services": {
     "title": "Eco Servicios",
     "subtitle": "Reparación, alquiler e intercambio",
     "seeAll": "Ver todos",
-    "noServices": "No hay servicios disponibles"
+    "noServices": "No hay servicios disponibles",
+    "scrollPrevious": "Desplazar a la izquierda",
+    "scrollNext": "Desplazar a la derecha"
   },
   "products": {
     "title": "Productos destacados",

@@ -133,6 +133,26 @@
       "description": "Description",
       "descriptionPlaceholder": "What your business is about"
     },
+    "tags": {
+      "title": "Business tags",
+      "subtitle": "Pick up to 3 tags that describe your business",
+      "options": {
+        "womanLed": "Woman-led",
+        "zeroWaste": "Zero waste",
+        "recycledMaterials": "100% recycled materials",
+        "plasticFree": "Plastic-free",
+        "locallyMade": "Locally made",
+        "handmade": "Handmade",
+        "vegan": "Vegan",
+        "crueltyFree": "Cruelty-free",
+        "organic": "Organic",
+        "fairTrade": "Fair trade",
+        "carbonNeutral": "Carbon neutral",
+        "upcycled": "Upcycled",
+        "refillable": "Refillable",
+        "biodegradable": "Biodegradable"
+      }
+    },
     "contact": {
       "title": "Contact",
       "subtitle": "Where buyers can reach you",

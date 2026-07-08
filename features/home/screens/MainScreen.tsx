@@ -4,7 +4,6 @@ import { DictionaryProvider } from "@/i18n/context";
 import { Navigation } from "@/features/navigation/Navigation";
 
 import { getHomeDictionary, NAMESPACE } from "../i18n";
-import { MOCK_PRODUCTS } from "../constants/mockData";
 import { CategoriesSection } from "../ui/CategoriesSection";
 import { HomeHero } from "../ui/HomeHero";
 import { StatsSection } from "../ui/StatsSection";
@@ -12,6 +11,7 @@ import { StoresHighlight } from "../ui/StoresHighlight";
 import { ProductsHighlight } from "../ui/ProductsHighlight";
 import { ExchangeHighlight } from "../ui/ExchangeHighlight";
 import { ServicesHighlight } from "../ui/ServicesHighlight";
+import { AdBannerSection } from "../ui/AdBannerSection";
 
 export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
   const dict = await getHomeDictionary(lang);
@@ -25,10 +25,14 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
       >
         <CategoriesSection lang={lang} />
         <StatsSection />
-        <ProductsHighlight lang={lang} products={MOCK_PRODUCTS} />
+        <ProductsHighlight lang={lang} />
+        <AdBannerSection lang={lang} variant="primary" />
         <StoresHighlight lang={lang} />
+        <AdBannerSection lang={lang} variant="secondary" />
         <ServicesHighlight lang={lang} />
+        <AdBannerSection lang={lang} variant="outlined" />
         <ExchangeHighlight lang={lang} />
+        <AdBannerSection lang={lang} variant="ghost" />
       </ScreenShell>
     </DictionaryProvider>
   );

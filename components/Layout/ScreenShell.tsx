@@ -16,7 +16,7 @@ export function ScreenShell({ lang, nav, hero, children }: Props) {
       {nav}
       {hero}
       <div
-        className={clsx("mx-auto w-full max-w-4xl", "flex-1", {
+        className={clsx("mx-auto w-full max-w-5xl", "flex-1", {
           "py-8": hero,
           "py-0": !hero,
           "px-4": hero,

@@ -17,6 +17,7 @@ import {
   getProfileImage,
   getSellerLocation,
 } from "@/utils/sellerInformation";
+import { Badge } from "@/components/Badge/Badge";
 
 // Placeholder metrics — no rating / product-count / CO₂ fields exist on the
 // seller model yet. Shown until that data is wired into the GraphQL layer.
@@ -77,10 +78,12 @@ export default function StoreCard(seller: Seller) {
 
           {/* Verified pill */}
           {isVerified && (
-            <div className="mx-auto w-fit flex items-center gap-1 bg-white text-secondary-dark text-[11px] font-semibold px-2.5 py-1 rounded-full shadow-md">
-              <BadgeCheck size={13} className="text-secondary" />
-              Verified
-            </div>
+            <Badge
+              badgeType="VERIFIED"
+              variant="secondary"
+              icon={BadgeCheck}
+              size="small"
+            />
           )}
         </figure>
 

@@ -20,6 +20,10 @@ import {
   getDrawerDictionary,
   NAMESPACE as DRAWER_NAMESPACE,
 } from "@/components/Drawer/i18n";
+import {
+  getBadgeDictionary,
+  NAMESPACE as BADGE_NAMESPACE,
+} from "@/components/Badge/i18n";
 
 const cabin = Cabin({
   variable: "--font-cabin",
@@ -128,9 +132,10 @@ export default async function RootLayout({
 
   if (!hasLocale(lang)) notFound();
 
-  const [dict, drawerDict] = await Promise.all([
+  const [dict, drawerDict, badgeDict] = await Promise.all([
     getDictionary(lang),
     getDrawerDictionary(lang),
+    getBadgeDictionary(lang),
   ]);
 
   return (
@@ -141,7 +146,12 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground overflow-x-hidden">
         <ApolloWrapper>
           <DictionaryProvider dictionary={dict}>
-            <DictionaryProvider dictionary={{ [DRAWER_NAMESPACE]: drawerDict }}>
+            <DictionaryProvider
+              dictionary={{
+                [DRAWER_NAMESPACE]: drawerDict,
+                [BADGE_NAMESPACE]: badgeDict,
+              }}
+            >
               <DrawerProvider>
                 {children}
                 <Drawer />

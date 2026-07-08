@@ -25,6 +25,8 @@ import {
   PHONE_CODES,
   splitPhone,
 } from "../constants/phoneCodes";
+import { MAX_BUSINESS_TAGS } from "../constants/businessTags";
+import { useBusinessTags } from "./useBusinessTags";
 import { NAMESPACE } from "../i18n";
 
 export interface EditProfileForm {
@@ -36,6 +38,7 @@ export interface EditProfileForm {
   // Business
   businessName: string;
   description: string;
+  tags: string[];
   // Shared contact
   phoneDial: string;
   phoneLocal: string;
@@ -66,6 +69,7 @@ export function useEditProfile() {
       bio: personProfile?.bio ?? "",
       businessName: businessProfile?.businessName ?? "",
       description: businessProfile?.description ?? "",
+      tags: businessProfile?.tags ?? [],
       phoneDial: dial || findPhoneCodeByCountryName(seller?.country?.country)?.dial || "",
       phoneLocal: local,
       website: seller?.website ?? "",
@@ -83,6 +87,21 @@ export function useEditProfile() {
     },
     [],
   );
+
+  // ── Business tags ────────────────────────────────────────────────
+  // Selectable eco descriptors (business only). Loaded from the users subgraph
+  // with a local fallback. Selection is capped at MAX_BUSINESS_TAGS.
+  const { tags: businessTags, loading: tagsLoading } = useBusinessTags();
+
+  const toggleTag = useCallback((id: string) => {
+    setForm((prev) => {
+      if (prev.tags.includes(id)) {
+        return { ...prev, tags: prev.tags.filter((tag) => tag !== id) };
+      }
+      if (prev.tags.length >= MAX_BUSINESS_TAGS) return prev;
+      return { ...prev, tags: [...prev.tags, id] };
+    });
+  }, []);
 
   // ── Countries ────────────────────────────────────────────────────
   const { data: countriesData } = useQuery<{ countries: Country[] }>(GET_COUNTRIES, {
@@ -191,6 +210,8 @@ export function useEditProfile() {
               id: businessProfile.id,
               businessName: form.businessName,
               description: form.description,
+              // TODO: enable once UpdateBusinessProfileInput exposes `tags`.
+              // tags: form.tags,
             },
           },
         });
@@ -241,6 +262,7 @@ export function useEditProfile() {
             ...businessProfile,
             businessName: form.businessName,
             description: form.description,
+            tags: form.tags,
           },
         });
       }
@@ -269,6 +291,10 @@ export function useEditProfile() {
     isBusiness,
     form,
     setField,
+    businessTags,
+    tagsLoading,
+    toggleTag,
+    maxTags: MAX_BUSINESS_TAGS,
     countries,
     regions,
     cities,

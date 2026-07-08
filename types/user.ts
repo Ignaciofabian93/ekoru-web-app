@@ -125,6 +125,9 @@ export type BusinessProfile = {
   // Basic Information
   businessName: string;
   description?: string | null;
+  // Eco descriptors chosen by the business (max 3). Sourced from the users
+  // subgraph; currently client-side only until the field lands server-side.
+  tags?: string[] | null;
   logo?: string | null;
   coverImage?: string | null;
   businessType?: BusinessType;

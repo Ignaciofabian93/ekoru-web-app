@@ -77,13 +77,18 @@
   "stores": {
     "title": "Eco Stores",
     "subtitle": "Verified sustainable shops",
-    "seeAll": "See all"
+    "seeAll": "See all",
+    "noStores": "No stores available",
+    "scrollPrevious": "Scroll left",
+    "scrollNext": "Scroll right"
   },
   "services": {
     "title": "Eco Services",
     "subtitle": "Repair, rent & swap providers",
     "seeAll": "See all",
-    "noServices": "No services available"
+    "noServices": "No services available",
+    "scrollPrevious": "Scroll left",
+    "scrollNext": "Scroll right"
   },
   "products": {
     "title": "Featured Products",

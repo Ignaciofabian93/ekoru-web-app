@@ -10,11 +10,13 @@ import {
   MapPin,
   Phone,
   Save,
+  Tags,
   User,
 } from "lucide-react";
 import { useEditProfile } from "../hooks/useEditProfile";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
+import { TagSelector } from "./TagSelector";
 
 export function EditProfileForm() {
   const { t } = useTranslation(NAMESPACE);
@@ -22,6 +24,10 @@ export function EditProfileForm() {
     isBusiness,
     form,
     setField,
+    businessTags,
+    tagsLoading,
+    toggleTag,
+    maxTags,
     countries,
     regions,
     cities,
@@ -100,6 +106,29 @@ export function EditProfileForm() {
           )}
         </div>
       </SectionCard>
+
+      {/* Business tags — only businesses describe themselves with eco tags */}
+      {isBusiness && (
+        <SectionCard
+          icon={Tags}
+          title={t("editProfile.tags.title")}
+          subtitle={t("editProfile.tags.subtitle")}
+          headerRight={
+            <span className="shrink-0 rounded-full bg-primary-light/20 px-2.5 py-1 text-xs font-semibold text-primary">
+              {form.tags.length}/{maxTags}
+            </span>
+          }
+        >
+          <TagSelector
+            options={businessTags}
+            selected={form.tags}
+            onToggle={toggleTag}
+            max={maxTags}
+            loading={tagsLoading}
+            getLabel={(tag) => tag.label ?? t(`editProfile.tags.options.${tag.id}`)}
+          />
+        </SectionCard>
+      )}
 
       {/* Contact */}
       <SectionCard

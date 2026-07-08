@@ -58,7 +58,7 @@ export function HomeHero({ lang }: { lang: string }) {
   }));
 
   return (
-    <div className="mx-auto w-full max-w-4xl">
+    <div className="mx-auto w-full">
       <HeroCarousel slides={slides} />
     </div>
   );

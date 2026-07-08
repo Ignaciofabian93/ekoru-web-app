@@ -1,48 +1,48 @@
 import clsx from "clsx";
 import React from "react";
 
-type Variant = "primary" | "secondary" | "outlined" | "ghost";
+export type AdBannerVariant = "primary" | "secondary" | "outlined" | "ghost";
 
 export interface AdBannerProps {
   icon?: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
   title?: string;
   description?: string;
   cta: React.ReactNode;
-  variant?: Variant;
+  variant?: AdBannerVariant;
   animated?: boolean;
   style?: React.CSSProperties;
   className?: string;
 }
 
-const CONTAINER_CLASS: Record<Variant, string> = {
+const CONTAINER_CLASS: Record<AdBannerVariant, string> = {
   primary: "bg-linear-to-r from-primary-dark via-primary to-primary-dark",
   secondary: "bg-linear-to-r from-secondary-dark via-secondary to-secondary-dark",
   outlined: "rounded-lg border border-solid border-primary bg-background",
   ghost: "border-y border-border-light bg-white/50",
 };
 
-const ICON_BG_CLASS: Record<Variant, string> = {
+const ICON_BG_CLASS: Record<AdBannerVariant, string> = {
   primary: "bg-white/15",
   secondary: "bg-white/15",
   outlined: "bg-background",
   ghost: "bg-background",
 };
 
-const ICON_TEXT_CLASS: Record<Variant, string> = {
+const ICON_TEXT_CLASS: Record<AdBannerVariant, string> = {
   primary: "text-on-primary",
   secondary: "text-on-primary",
   outlined: "text-primary",
   ghost: "text-primary",
 };
 
-const TEXT_CLASS: Record<Variant, string> = {
+const TEXT_CLASS: Record<AdBannerVariant, string> = {
   primary: "text-on-primary",
   secondary: "text-on-primary",
   outlined: "text-foreground",
   ghost: "text-foreground",
 };
 
-const MUTED_CLASS: Record<Variant, string> = {
+const MUTED_CLASS: Record<AdBannerVariant, string> = {
   primary: "text-white/75",
   secondary: "text-white/75",
   outlined: "text-foreground-secondary",
@@ -51,7 +51,16 @@ const MUTED_CLASS: Record<Variant, string> = {
 
 const AdBanner = React.forwardRef<HTMLDivElement, AdBannerProps>(
   (
-    { icon: Icon, title, description, cta, variant = "primary", animated: _animated, style, className },
+    {
+      icon: Icon,
+      title,
+      description,
+      cta,
+      variant = "primary",
+      animated: _animated,
+      style,
+      className,
+    },
     ref,
   ) => {
     return (
@@ -59,7 +68,7 @@ const AdBanner = React.forwardRef<HTMLDivElement, AdBannerProps>(
         ref={ref}
         style={style}
         className={clsx(
-          "box-border w-full overflow-hidden px-4 py-3.5",
+          "box-border w-full overflow-hidden px-4 py-3.5 rounded-lg mx-auto",
           CONTAINER_CLASS[variant],
           className,
         )}
@@ -78,7 +87,9 @@ const AdBanner = React.forwardRef<HTMLDivElement, AdBannerProps>(
               </div>
             )}
             {title && (
-              <p className={clsx("m-0 font-sans text-base font-bold", TEXT_CLASS[variant])}>
+              <p
+                className={clsx("m-0 font-sans text-base font-bold", TEXT_CLASS[variant])}
+              >
                 {title}
               </p>
             )}
