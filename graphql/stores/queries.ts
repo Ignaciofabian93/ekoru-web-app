@@ -29,11 +29,7 @@ export const GET_MATERIALS = gql`
 
 export const GET_STORES_CATEGORIES = gql`
   ${STORE_CATEGORY_FIELDS_FRAGMENT}
-  query GetStoreCategories(
-    $limit: Int = 20
-    $offset: Int = 0
-    $language: Language = ES
-  ) {
+  query GetStoreCategories($limit: Int = 20, $offset: Int = 0, $language: Language = ES) {
     getStoreCategories(limit: $limit, offset: $offset, language: $language) {
       ...StoreCategoryFields
     }
@@ -96,25 +92,170 @@ export const GET_MY_FAVORITE_STORE_PRODUCTS = gql`
 `;
 
 export const GET_STORE_PRODUCTS = gql`
-  ${STORE_PRODUCT_DETAIL_FIELDS_FRAGMENT}
-  ${STORE_PAGE_INFO_FIELDS_FRAGMENT}
   query GetStoreProducts(
     $page: Int = 1
-    $pageSize: Int = 10
-    $filter: StoreProductFilterInput
+    $pageSize: Int = 20
     $sort: StoreProductSortInput
+    $filter: StoreProductFilterInput
+    $enablePagination: Boolean = true
   ) {
-    getStoreProducts(
-      page: $page
-      pageSize: $pageSize
-      filter: $filter
-      sort: $sort
-    ) {
-      pageInfo {
-        ...StorePageInfoFields
-      }
+    getStoreProducts(page: $page, pageSize: $pageSize, sort: $sort, filter: $filter) {
       nodes {
-        ...StoreProductDetailFields
+        id
+        name
+        description
+        stock
+        barcode
+        sku
+        price
+        hasOffer
+        offerPrice
+        sellerId
+        images
+        isActive
+        badges
+        color
+        brand
+        averageRating
+        reviewsNumber
+        likesCount
+        saleCount
+        viewCount
+        materialComposition
+        recycledContent
+        weight
+        weightUnit
+        length
+        width
+        height
+        dimensionUnit
+        lowStockThreshold
+        isLowStock
+        tags
+        metaTitle
+        metaDescription
+        warranty
+        warrantyDuration
+        features
+        createdAt
+        updatedAt
+        deletedAt
+        isLiked
+        materials {
+          id
+          materialTypeId
+          materialType
+          label
+          percentage
+        }
+        environmentalImpact {
+          totalCo2SavingsKG
+          totalWaterSavingsLT
+          materialBreakdown {
+            materialType
+            materialTypeLabel
+            quantity
+            unit
+            co2SavingsKG
+            waterSavingsLT
+          }
+        }
+        seller {
+          id
+          email
+          sellerType
+          isActive
+          isVerified
+          createdAt
+          updatedAt
+          address
+          phone
+          website
+          preferredContactMethod
+          socialMediaLinks
+          points
+          profile {
+            ... on BusinessProfile {
+              id
+              sellerId
+              businessName
+              description
+              logo
+              coverImage
+              businessType
+              legalBusinessName
+              taxId
+              businessStartDate
+              legalRepresentative
+              legalRepresentativeTaxId
+              shippingPolicy
+              returnPolicy
+              serviceArea
+              yearsOfExperience
+              certifications
+              travelRadius
+              businessHours
+              createdAt
+              updatedAt
+              businessMembershipSubscriptionId
+            }
+          }
+          country {
+            id
+            country
+            createdAt
+            updatedAt
+          }
+          region {
+            id
+            region
+            countryId
+          }
+          city {
+            id
+            city
+            regionId
+          }
+          county {
+            id
+            county
+            cityId
+          }
+        }
+        storeSubCategory {
+          id
+          storeCategoryId
+          averageWeight
+          size
+          weightUnit
+          isActive
+          sortOrder
+          createdAt
+          updatedAt
+          translation {
+            id
+            storeSubCategoryId
+            language
+            name
+            slug
+            keywords
+            href
+            metaTitle
+            metaDescription
+            createdAt
+            updatedAt
+          }
+        }
+      }
+      pageInfo @include(if: $enablePagination) {
+        currentPage
+        totalPages
+        totalCount
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+        pageSize
       }
     }
   }
@@ -210,12 +351,7 @@ export const GET_STORE_PRODUCTS_ON_OFFER = gql`
     $filter: StoreProductFilterInput
     $sort: StoreProductSortInput
   ) {
-    getProductsOnOffer(
-      page: $page
-      pageSize: $pageSize
-      filter: $filter
-      sort: $sort
-    ) {
+    getProductsOnOffer(page: $page, pageSize: $pageSize, filter: $filter, sort: $sort) {
       pageInfo {
         ...StorePageInfoFields
       }

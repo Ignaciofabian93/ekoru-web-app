@@ -80,7 +80,9 @@
     "seeAll": "See all",
     "noStores": "No stores available",
     "scrollPrevious": "Scroll left",
-    "scrollNext": "Scroll right"
+    "scrollNext": "Scroll right",
+    "seeStore": "See store",
+    "verified": "Verified"
   },
   "services": {
     "title": "Eco Services",
@@ -94,6 +96,16 @@
     "title": "Featured Products",
     "subtitle": "Handpicked sustainable finds",
     "seeAll": "See all"
+  },
+  "storeProducts": {
+    "title": "From our stores",
+    "subtitle": "Fresh finds from verified eco stores",
+    "seeAll": "See all",
+    "addToCart": "Add to cart",
+    "outOfStock": "Out of stock",
+    "noProducts": "No products available",
+    "scrollPrevious": "Scroll left",
+    "scrollNext": "Scroll right"
   },
   "exchange": {
     "title": "Ready to Swap",

@@ -3,31 +3,41 @@ import AdBanner, { type AdBannerVariant } from "@/components/AdBanner/AdBanner";
 import type { SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
 import { useTranslation } from "@/i18n/context";
-import MainButton from "@/components/Button/MainButton";
-import { useNavigation } from "@/hooks/useNavigation";
+import { Package, Store, Toolbox, UsersRound } from "lucide-react";
 
 export function AdBannerSection({
   lang,
   variant,
+  domain,
 }: {
   lang: SupportedLanguage;
   variant?: AdBannerVariant;
+  domain?: "marketplace" | "services" | "stores" | "community";
 }) {
-  const { navigateTo } = useNavigation();
   const { t } = useTranslation(NAMESPACE);
+  const renderIcon = () => {
+    switch (domain) {
+      case "marketplace":
+        return <Package />;
+      case "services":
+        return <Toolbox />;
+      case "stores":
+        return <Store />;
+      case "community":
+        return <UsersRound />;
+      default:
+        return null;
+    }
+  };
   return (
     <AdBanner
-      title={t("adBanner.firstSection.title")}
-      description={t("adBanner.firstSection.description")}
+      title={t(`adSections.${domain}.title`)}
+      description={t(`adSections.${domain}.description`)}
       animated
-      variant={variant || "primary"}
-      cta={
-        <MainButton
-          text={t("adBanner.firstSection.cta")}
-          variant={variant === "outlined" ? "primary" : "outline"}
-          onClick={() => navigateTo({ route: `/${lang}/stores` })}
-        />
-      }
+      variant={variant || "green"}
+      icon={renderIcon}
+      ctaText={t(`adSections.${domain}.cta`)}
+      ctaHref={`/${lang}/${domain}`}
     />
   );
 }

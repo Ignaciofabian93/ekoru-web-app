@@ -80,6 +80,16 @@
     "seeAll": "Ver todas",
     "noStores": "No hay tiendas disponibles",
     "scrollPrevious": "Desplazar a la izquierda",
+    "scrollNext": "Desplazar a la derecha",
+    "seeStore": "Ver tienda",
+    "verified": "Verificada"
+  },
+  "storeProducts": {
+    "title": "Productos Sustentables",
+    "subtitle": "Artículos sostenibles y de calidad",
+    "seeAll": "Ver todos",
+    "noProducts": "No hay productos disponibles",
+    "scrollPrevious": "Desplazar a la izquierda",
     "scrollNext": "Desplazar a la derecha"
   },
   "services": {
@@ -95,11 +105,43 @@
     "subtitle": "Hallazgos sostenibles seleccionados",
     "seeAll": "Ver todos"
   },
+  "storeProducts": {
+    "title": "Desde nuestras tiendas",
+    "subtitle": "Novedades de tiendas eco verificadas",
+    "seeAll": "Ver todos",
+    "addToCart": "Agregar al carrito",
+    "outOfStock": "Agotado",
+    "noProducts": "No hay productos disponibles",
+    "scrollPrevious": "Desplazar a la izquierda",
+    "scrollNext": "Desplazar a la derecha"
+  },
   "exchange": {
     "title": "Listos para intercambiar",
     "subtitle": "Intercambia artículos y dales una segunda vida",
     "seeAll": "Ver todos",
     "scrollPrevious": "Desplazar a la izquierda",
     "scrollNext": "Desplazar a la derecha"
+  },
+  "adSections": {
+    "marketplace": {
+      "title": "Únete a la economía circular",
+      "description": "Compra, vende e intercambia de manera sostenible y responsable.",
+      "cta": "Explorar ahora"
+    },
+    "stores": {
+      "title": "Conoce a los creadores locales",
+      "description": "Apoya a los artesanos y emprendedores de tu comunidad.",
+      "cta": "Ver tiendas"
+    },
+    "services": {
+      "title": "Repara y reutiliza",
+      "description": "Dale una segunda vida a tus cosas con servicios de reparación y reciclaje.",
+      "cta": "Ver servicios"
+    },
+    "community": {
+      "title": "Intercambia y comparte",
+      "description": "Participa en la economía colaborativa y reduce el desperdicio.",
+      "cta": "Ver intercambios"
+    }
   }
 }

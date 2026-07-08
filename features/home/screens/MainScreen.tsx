@@ -12,6 +12,7 @@ import { ProductsHighlight } from "../ui/ProductsHighlight";
 import { ExchangeHighlight } from "../ui/ExchangeHighlight";
 import { ServicesHighlight } from "../ui/ServicesHighlight";
 import { AdBannerSection } from "../ui/AdBannerSection";
+import { StoreProductsHighlight } from "../ui/StoreProductsHighlight";
 
 export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
   const dict = await getHomeDictionary(lang);
@@ -25,14 +26,15 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
       >
         <CategoriesSection lang={lang} />
         <StatsSection />
+        <AdBannerSection lang={lang} variant="green" domain="stores" />
         <ProductsHighlight lang={lang} />
-        <AdBannerSection lang={lang} variant="primary" />
+        <AdBannerSection lang={lang} variant="teal" domain="stores" />
         <StoresHighlight lang={lang} />
-        <AdBannerSection lang={lang} variant="secondary" />
+        <StoreProductsHighlight lang={lang} />
+        <AdBannerSection lang={lang} variant="amber" domain="services" />
         <ServicesHighlight lang={lang} />
-        <AdBannerSection lang={lang} variant="outlined" />
+        <AdBannerSection lang={lang} variant="emerald" domain="marketplace" />
         <ExchangeHighlight lang={lang} />
-        <AdBannerSection lang={lang} variant="ghost" />
       </ScreenShell>
     </DictionaryProvider>
   );

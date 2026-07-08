@@ -80,7 +80,9 @@
     "seeAll": "Voir tout",
     "noStores": "Aucune boutique disponible",
     "scrollPrevious": "Défiler vers la gauche",
-    "scrollNext": "Défiler vers la droite"
+    "scrollNext": "Défiler vers la droite",
+    "seeStore": "Voir la boutique",
+    "verified": "Vérifiée"
   },
   "services": {
     "title": "Éco Services",
@@ -94,6 +96,16 @@
     "title": "Produits en vedette",
     "subtitle": "Trouvailles durables sélectionnées",
     "seeAll": "Voir tout"
+  },
+  "storeProducts": {
+    "title": "De nos boutiques",
+    "subtitle": "Nouveautés de boutiques éco vérifiées",
+    "seeAll": "Voir tout",
+    "addToCart": "Ajouter au panier",
+    "outOfStock": "Rupture de stock",
+    "noProducts": "Aucun produit disponible",
+    "scrollPrevious": "Défiler vers la gauche",
+    "scrollNext": "Défiler vers la droite"
   },
   "exchange": {
     "title": "Prêts à échanger",

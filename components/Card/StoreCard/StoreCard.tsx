@@ -21,7 +21,7 @@ import { Badge } from "@/components/Badge/Badge";
 
 // Placeholder metrics — no rating / product-count / CO₂ fields exist on the
 // seller model yet. Shown until that data is wired into the GraphQL layer.
-// const PLACEHOLDER_TAGS = ["Organic", "Zero Waste"];
+const PLACEHOLDER_TAGS = ["Organic", "Zero Waste"];
 // const PLACEHOLDER_METRICS = {
 //   rating: "4.9",
 //   reviews: "128",
@@ -40,29 +40,37 @@ function getInitials(name?: string): string {
     .toUpperCase();
 }
 
-export default function StoreCard(seller: Seller) {
+export default function StoreCard({
+  seller,
+  ctaText,
+  verifiedLabel,
+}: {
+  seller: Seller;
+  ctaText: string;
+  verifiedLabel: string;
+}) {
   const profile: BusinessProfile | null = getBusinessProfile(seller);
   const location = getSellerLocation(seller);
   const profileImage = getProfileImage(seller);
   const isVerified = Boolean(seller.isVerified);
 
   const initials = getInitials(profile?.businessName);
-  // const tags =
-  //   profile?.certifications && profile.certifications.length > 0
-  //     ? profile.certifications.slice(0, 3)
-  //     : PLACEHOLDER_TAGS;
+  const tags =
+    profile?.certifications && profile.certifications.length > 0
+      ? profile.certifications.slice(0, 3)
+      : PLACEHOLDER_TAGS;
 
   return (
     <div className="w-80 shrink-0">
       <div className="flex w-full h-42 items-stretch rounded-2xl bg-white shadow-md overflow-hidden cursor-pointer">
         {/* Left panel — brand block, mirrors the home category cards */}
-        <figure className="relative w-30 shrink-0 bg-linear-to-br from-secondary-dark to-secondary flex flex-col items-center justify-evenly overflow-hidden">
+        <figure className="relative w-28 shrink-0 bg-linear-to-br from-secondary-dark to-secondary flex flex-col items-center justify-evenly overflow-hidden">
           {/* Decorative dots */}
           <div className="absolute w-24 h-24 rounded-full bg-white/10 -top-6 -left-8" />
           <div className="absolute w-16 h-16 rounded-full bg-white/10 bottom-2 -right-6" />
 
           {/* Logo */}
-          <div className="relative w-23 h-23 rounded-2xl overflow-hidden bg-linear-to-br from-green-600 to-green-800 flex items-center justify-center shadow-lg ring-1 ring-white/30">
+          <div className="relative w-23 h-23 rounded-md overflow-hidden bg-linear-to-br from-green-600 to-green-800 flex items-center justify-center shadow-lg ring-1 ring-white/30">
             {profileImage ? (
               <Image
                 src={profileImage}
@@ -79,16 +87,16 @@ export default function StoreCard(seller: Seller) {
           {/* Verified pill */}
           {isVerified && (
             <Badge
-              badgeType="VERIFIED"
               variant="secondary"
               icon={BadgeCheck}
               size="small"
+              label={verifiedLabel}
             />
           )}
         </figure>
 
         {/* Right panel — details */}
-        <div className="flex flex-col flex-1 min-w-0 p-3.5">
+        <div className="flex flex-col flex-1 min-w-0 px-3.5 py-2">
           <div className="flex items-start justify-between gap-2">
             <p className="font-bold text-foreground truncate">{profile?.businessName}</p>
           </div>
@@ -102,16 +110,11 @@ export default function StoreCard(seller: Seller) {
             {profile?.description}
           </p>
 
-          {/* <div className="flex flex-wrap gap-1.5 mt-2">
+          <div className="flex flex-wrap gap-1.5 mt-2">
             {tags.map((tag) => (
-              <span
-                key={tag}
-                className="bg-primary/10 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full"
-              >
-                {tag}
-              </span>
+              <Badge key={tag} label={tag} variant="descriptive" size="small" />
             ))}
-          </div> */}
+          </div>
 
           <div className="flex items-center justify-end gap-2 mt-auto pt-3">
             {/* <div className="flex items-center gap-2.5 text-[11px] text-foreground-secondary">
@@ -129,8 +132,8 @@ export default function StoreCard(seller: Seller) {
               </span>
             </div> */}
 
-            <button className="inline-flex items-center gap-1 bg-primary text-white text-xs font-semibold px-3 py-2 rounded-lg hover:brightness-110 transition shrink-0">
-              Visit store
+            <button className="inline-flex items-center gap-1 bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-lg hover:brightness-110 transition shrink-0">
+              {ctaText}
               <ArrowUpRight size={14} strokeWidth={2.5} />
             </button>
           </div>
