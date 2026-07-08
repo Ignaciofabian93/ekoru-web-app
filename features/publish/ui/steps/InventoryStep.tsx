@@ -1,5 +1,5 @@
 "use client";
-import type { PublishForm } from "../../hooks/usePublish";
+import type { PublishForm } from "../../hooks/usePublishForm";
 
 import { BarcodeField } from "../fields/BarcodeField";
 import { HasOfferField } from "../fields/HasOfferField";
@@ -22,31 +22,37 @@ interface InventoryStepProps {
 export function InventoryStep({ form, setField, invalid }: InventoryStepProps) {
   return (
     <div className="flex flex-col gap-5">
-      <PriceField
-        value={form.price}
-        onChange={(v) => setField("price", v)}
-        invalid={invalid.price}
-      />
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <PriceField
+          value={form.price}
+          onChange={(v) => setField("price", v)}
+          invalid={invalid.price}
+        />
+        <StockField
+          value={form.stock}
+          onChange={(v) => setField("stock", v)}
+          invalid={invalid.stock}
+        />
+      </div>
       <HasOfferField
         value={form.hasOffer}
         onChange={(v) => setField("hasOffer", v)}
       />
       {form.hasOffer && (
-        <OfferPriceField
-          value={form.offerPrice}
-          onChange={(v) => setField("offerPrice", v)}
-          invalid={invalid.offerPrice}
-        />
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <OfferPriceField
+            value={form.offerPrice}
+            onChange={(v) => setField("offerPrice", v)}
+            invalid={invalid.offerPrice}
+          />
+        </div>
       )}
-      <StockField
-        value={form.stock}
-        onChange={(v) => setField("stock", v)}
-        invalid={invalid.stock}
-      />
-      <LowStockThresholdField
-        value={form.lowStockThreshold}
-        onChange={(v) => setField("lowStockThreshold", v)}
-      />
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <LowStockThresholdField
+          value={form.lowStockThreshold}
+          onChange={(v) => setField("lowStockThreshold", v)}
+        />
+      </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <SkuField value={form.sku} onChange={(v) => setField("sku", v)} />
         <BarcodeField

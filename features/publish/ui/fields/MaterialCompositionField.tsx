@@ -60,7 +60,9 @@ export function MaterialCompositionField({
       <div className="flex flex-col gap-2.5">
         {value.map((row, index) => (
           <div key={index} className="flex items-start gap-2">
-            <div className="flex-1">
+            {/* Fluid on mobile, capped on larger screens so the % input sits
+                right next to the select instead of drifting to the far edge. */}
+            <div className="min-w-0 flex-1 sm:max-w-xs">
               <Select
                 options={optionsFor(index)}
                 placeholder={
@@ -72,17 +74,22 @@ export function MaterialCompositionField({
                 noResultsText={t("form.materialLoading")}
               />
             </div>
-            <div className="w-24">
-              <Input
-                name={`materialPercentage-${index}`}
-                placeholder={t("form.percentage")}
-                type="number"
-                min={0}
-                max={100}
-                value={row.percentage}
-                onChangeText={(v) => setRow(index, { percentage: v })}
-                aria-label={t("form.percentage")}
-              />
+            <div className="flex shrink-0 items-center gap-1.5">
+              <div className="w-20">
+                <Input
+                  name={`materialPercentage-${index}`}
+                  placeholder={t("form.percentagePlaceholder")}
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={row.percentage}
+                  onChangeText={(v) => setRow(index, { percentage: v })}
+                  aria-label={t("form.percentage")}
+                />
+              </div>
+              <Text variant="span" color="tertiary">
+                %
+              </Text>
             </div>
             <button
               type="button"
@@ -123,6 +130,9 @@ export function MaterialCompositionField({
 
       <Text variant="small" color={invalid ? "error" : "tertiary"}>
         {invalid ? t("feedback.materialsInvalid") : t("form.materialCompositionHint")}
+      </Text>
+      <Text variant="small" color="tertiary">
+        {t("form.materialCompositionTotalHint")}
       </Text>
     </div>
   );

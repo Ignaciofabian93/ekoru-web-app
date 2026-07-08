@@ -15,16 +15,20 @@ export function RecycledContentField({
 
   return (
     <div className="flex flex-col gap-1">
-      <Input
-        name="recycledContent"
-        label={t("form.recycledContent")}
-        placeholder={t("form.recycledContentPlaceholder")}
-        type="number"
-        min={0}
-        max={100}
-        value={value}
-        onChangeText={onChange}
-      />
+      <div className="flex items-center gap-1">
+        <Input
+          name="recycledContent"
+          label={t("form.recycledContent")}
+          placeholder={t("form.recycledContentPlaceholder")}
+          type="number"
+          min={0}
+          max={100}
+          value={value}
+          onChangeText={onChange}
+          width="sm"
+        />
+        <span className="mt-5">%</span>
+      </div>
       <Text variant="small" color="tertiary">
         {t("form.recycledContentHint")}
       </Text>

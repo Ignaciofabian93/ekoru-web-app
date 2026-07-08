@@ -1,44 +1,57 @@
 "use client";
 import Input from "@/components/Input/Input";
+import { Select } from "@/components/Select/Select";
 import { useTranslation } from "@/i18n/context";
 
-/** Optional warranty description + duration (months) for a store product. */
+/** Optional warranty flag (yes/no) for a store product; picking "yes" reveals
+ *  the duration in months. */
 export function WarrantyField({
   value,
   duration,
   onChangeValue,
   onChangeDuration,
 }: {
-  value: string;
+  value: boolean | null;
   duration: string;
-  onChangeValue: (value: string) => void;
+  onChangeValue: (value: boolean | null) => void;
   onChangeDuration: (duration: string) => void;
 }) {
   const { t } = useTranslation("publish");
 
+  const options = [
+    { value: "yes", label: t("form.warrantyYes") },
+    { value: "no", label: t("form.warrantyNo") },
+  ];
+
   return (
-    <div className="flex items-end gap-3">
-      <div className="flex-1">
-        <Input
-          name="warranty"
+    <div className="flex items-start gap-3">
+      <div className="w-56">
+        <Select
           label={t("form.warranty")}
           placeholder={t("form.warrantyPlaceholder")}
-          value={value}
-          onChangeText={onChangeValue}
-          maxLength={120}
+          options={options}
+          value={value === null ? undefined : value ? "yes" : "no"}
+          onChange={(v) => {
+            const hasWarranty = v === "yes";
+            onChangeValue(hasWarranty);
+            if (!hasWarranty) onChangeDuration("");
+          }}
+          searchEnabled={false}
         />
       </div>
-      <div className="w-32">
-        <Input
-          name="warrantyDuration"
-          label={t("form.warrantyDuration")}
-          placeholder={t("form.warrantyDurationPlaceholder")}
-          type="number"
-          min={0}
-          value={duration}
-          onChangeText={onChangeDuration}
-        />
-      </div>
+      {value === true && (
+        <div className="w-28">
+          <Input
+            name="warrantyDuration"
+            label={t("form.warrantyDuration")}
+            placeholder={t("form.warrantyDurationPlaceholder")}
+            type="number"
+            min={0}
+            value={duration}
+            onChangeText={onChangeDuration}
+          />
+        </div>
+      )}
     </div>
   );
 }

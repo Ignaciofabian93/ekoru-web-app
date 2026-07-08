@@ -16,6 +16,9 @@ export type PublishTarget = "MARKETPLACE" | "STORE" | "SERVICE";
 export const MIN_PRODUCT_IMAGES = 1;
 export const MAX_PRODUCT_IMAGES = 3;
 
+/** Minimum description length for product listings (marketplace & store). */
+export const DESCRIPTION_MIN_LENGTH = 10;
+
 /** Target options shown to business sellers on the first wizard step. */
 export const BUSINESS_TARGETS: {
   value: Exclude<PublishTarget, "MARKETPLACE">;

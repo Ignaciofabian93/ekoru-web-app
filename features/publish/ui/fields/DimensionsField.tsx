@@ -39,31 +39,37 @@ export function DimensionsField({
       <Text size="sm" weight="medium">
         {t("form.dimensions")}
       </Text>
-      <div className="flex items-end gap-3">
-        <Input
-          name="length"
-          placeholder={t("form.length")}
-          type="number"
-          min={0}
-          value={length}
-          onChangeText={onChangeLength}
-        />
-        <Input
-          name="width"
-          placeholder={t("form.width")}
-          type="number"
-          min={0}
-          value={width}
-          onChangeText={onChangeWidth}
-        />
-        <Input
-          name="height"
-          placeholder={t("form.height")}
-          type="number"
-          min={0}
-          value={height}
-          onChangeText={onChangeHeight}
-        />
+      <div className="flex flex-wrap items-end gap-3">
+        <div className="w-28">
+          <Input
+            name="length"
+            placeholder={t("form.length")}
+            type="number"
+            min={0}
+            value={length}
+            onChangeText={onChangeLength}
+          />
+        </div>
+        <div className="w-28">
+          <Input
+            name="width"
+            placeholder={t("form.width")}
+            type="number"
+            min={0}
+            value={width}
+            onChangeText={onChangeWidth}
+          />
+        </div>
+        <div className="w-28">
+          <Input
+            name="height"
+            placeholder={t("form.height")}
+            type="number"
+            min={0}
+            value={height}
+            onChangeText={onChangeHeight}
+          />
+        </div>
         <div className="w-28">
           <Select
             options={options}

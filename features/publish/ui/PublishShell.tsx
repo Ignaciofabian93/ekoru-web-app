@@ -16,7 +16,7 @@ export function PublishShell({
       {nav}
       <section
         aria-label={t("a11y.section")}
-        className="mx-auto w-full max-w-xl px-6 py-8 lg:py-12"
+        className="mx-auto w-full max-w-3xl px-6 py-8 lg:py-12"
       >
         <Title level="h1" size="h3" weight="semibold" color="primary" className="mb-6">
           {t("page.title")}

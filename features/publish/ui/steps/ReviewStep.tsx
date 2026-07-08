@@ -7,7 +7,7 @@ import {
   SERVICE_PRICING_OPTIONS,
   type PublishTarget,
 } from "../../constants/options";
-import type { PublishForm } from "../../hooks/usePublish";
+import type { PublishForm } from "../../hooks/usePublishForm";
 
 interface ReviewStepProps {
   target: PublishTarget;
@@ -71,8 +71,15 @@ export function ReviewStep({
     isStore && dimensions
       ? { label: t("review.dimensions"), value: dimensions }
       : null,
-    isStore && form.warranty
-      ? { label: t("review.warranty"), value: form.warranty }
+    isStore && form.warranty !== null
+      ? {
+          label: t("review.warranty"),
+          value: form.warranty
+            ? form.warrantyDuration
+              ? t("review.warrantyWithDuration", { months: form.warrantyDuration })
+              : t("form.warrantyYes")
+            : t("form.warrantyNo"),
+        }
       : null,
     target !== "MARKETPLACE"
       ? null

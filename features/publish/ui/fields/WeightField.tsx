@@ -26,8 +26,8 @@ export function WeightField({
   }));
 
   return (
-    <div className="flex items-end gap-3">
-      <div className="flex-1">
+    <div className="flex items-start gap-3">
+      <div className="w-28">
         <Input
           name="weight"
           label={t("form.weight")}
@@ -45,6 +45,7 @@ export function WeightField({
           value={unit || undefined}
           onChange={(v) => onChangeUnit(v as WeightUnit)}
           searchEnabled={false}
+          placeholder="kg"
         />
       </div>
     </div>
