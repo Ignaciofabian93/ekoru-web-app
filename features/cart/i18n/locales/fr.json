@@ -30,9 +30,16 @@
     },
     "inCart": "Dans le panier"
   },
+  "group": {
+    "store": "Boutique",
+    "marketplace": "Marketplace",
+    "checkout": "Payer",
+    "checkoutSeller": "Payer · {{seller}}"
+  },
   "checkout": {
     "title": "Paiement",
     "subtitle": "Confirmez la livraison et choisissez votre mode de paiement.",
+    "sellerSubtitle": "Paiement à {{seller}}. Confirmez la livraison et choisissez votre mode de paiement.",
     "back": "Retour au panier",
     "steps": {
       "shipping": "Livraison",

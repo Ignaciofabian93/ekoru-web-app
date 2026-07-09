@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
-import { useIsInCart } from "@/store/useCartStore";
+import { cartGroupId, useIsInCart } from "@/store/useCartStore";
 import { useTranslation } from "@/i18n/context";
 import type { Product } from "@/types/product";
 
@@ -49,7 +49,8 @@ export function ProductActions({ lang, product }: Props) {
     // Only proceed to checkout when the item is actually in the cart. If the
     // user is anonymous, the helper already redirected to login.
     if (handleAddToCart() || inCart) {
-      router.push(`/${lang}/cart/checkout`);
+      const g = encodeURIComponent(cartGroupId("marketplace", product.sellerId));
+      router.push(`/${lang}/cart/checkout?g=${g}`);
     }
   }
 

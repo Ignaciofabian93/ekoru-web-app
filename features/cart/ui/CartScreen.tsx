@@ -1,10 +1,7 @@
 "use client";
-import Link from "next/link";
-
 import { Text } from "@/components/Text/Text";
 import { Title } from "@/components/Title/Title";
 import { type SupportedLanguage } from "@/constants/settings";
-import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 
 import { useCart } from "../hooks/useCart";
@@ -13,8 +10,7 @@ import { EmptyCart } from "./EmptyCart";
 
 export function CartScreen({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation("cart");
-  const formatPrice = useFormatPrice();
-  const { items, count, subtotal, isEmpty, currency, clear, isHydrated } = useCart();
+  const { count, isEmpty, clear, isHydrated } = useCart();
 
   if (!isHydrated) {
     return (
@@ -56,26 +52,6 @@ export function CartScreen({ lang }: { lang: SupportedLanguage }) {
         </div>
 
         <CartList />
-      </div>
-
-      <div className="sticky bottom-0 border-t border-border-light bg-surface px-4 py-4">
-        <div className="mx-auto flex w-full max-w-2xl flex-col gap-3">
-          <div className="flex items-baseline justify-between">
-            <Text variant="span" weight="semibold">
-              {t("checkout.summary.subtotal")}
-            </Text>
-            <Text variant="span" weight="bold" size="lg">
-              {formatPrice(subtotal, currency)}
-            </Text>
-          </div>
-          <Link
-            href={`/${lang}/cart/checkout`}
-            aria-disabled={items.length === 0}
-            className="block w-full rounded-xl bg-primary py-3.5 text-center font-sans font-semibold text-on-primary transition-opacity hover:opacity-90"
-          >
-            {t("cart.actions.proceed")}
-          </Link>
-        </div>
       </div>
     </div>
   );

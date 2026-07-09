@@ -1,6 +1,6 @@
 "use client";
 import { useMutation } from "@apollo/client/react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
@@ -8,6 +8,7 @@ import { CREATE_ORDER, CREATE_PAYMENT } from "@/graphql/checkout/mutations";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useToast } from "@/hooks/useToast";
 import { useTranslation } from "@/i18n/context";
+import useCartStore, { useCartGroups } from "@/store/useCartStore";
 import type {
   CreateOrderInput,
   CreateOrderResponse,
@@ -19,7 +20,6 @@ import type {
 } from "@/types/checkout";
 
 import { shippingMethodById } from "../constants/shippingMethods";
-import { useCart } from "./useCart";
 import { useShippingQuote } from "./useShippingQuote";
 
 export type CheckoutStep = "shipping" | "payment" | "review";
@@ -31,9 +31,27 @@ const emptyAddress = (): Partial<ShippingAddressInput> => ({});
 export function useCheckout() {
   const { t } = useTranslation("cart");
   const params = useParams<{ lang?: SupportedLanguage }>();
+  const searchParams = useSearchParams();
   const { navigateTo } = useNavigation();
   const toast = useToast();
-  const { items, subtotal, currency, clear, isEmpty } = useCart();
+
+  // Checkout runs one seller group at a time. The cart's per-seller "Checkout"
+  // buttons (and Buy now) pass `?g=<source>:<sellerId>`; if it's missing or
+  // stale we fall back to the first remaining group so checkout never dead-ends.
+  const groups = useCartGroups();
+  const clearGroup = useCartStore((s) => s.clearGroup);
+  const groupParam = searchParams.get("g");
+  const group = useMemo(() => {
+    if (groups.length === 0) return null;
+    if (groupParam) return groups.find((g) => g.id === groupParam) ?? null;
+    return groups[0];
+  }, [groups, groupParam]);
+
+  const items = group?.items ?? [];
+  const subtotal = group?.subtotal ?? 0;
+  const currency = group?.currency ?? "CLP";
+  const count = group?.count ?? 0;
+  const isEmpty = group === null;
 
   const [step, setStep] = useState<CheckoutStep>("shipping");
   const [shippingMethod, setShippingMethod] = useState<ShippingMethod | null>(null);
@@ -153,9 +171,10 @@ export function useCheckout() {
         window.location.assign(result.redirect.url);
       }
 
-      // Clear locally only after redirect kicks off — if the user bails out,
-      // we don't want to also have lost their cart.
-      clear();
+      // Clear only this seller's lines after redirect kicks off — other sellers'
+      // groups stay in the cart for their own checkout. If the user bails out we
+      // don't want to also have lost their cart.
+      if (group) clearGroup(group.source, group.sellerId);
     } catch (err) {
       const msg =
         err instanceof Error ? err.message : t("checkout.errors.createPaymentFailed");
@@ -196,6 +215,13 @@ export function useCheckout() {
     subtotal,
     total,
     currency,
+
+    // Active seller group being checked out.
+    group,
+    count,
+    isEmpty,
+    sellerName: group?.sellerName,
+    source: group?.source,
 
     isShippingValid,
     isPaymentValid,

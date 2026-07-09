@@ -23,8 +23,9 @@ import { ShippingMethodPicker } from "./ShippingMethodPicker";
 export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation("cart");
   const formatPrice = useFormatPrice();
-  const { isEmpty, isHydrated, count } = useCart();
+  const { isHydrated } = useCart();
   const checkout = useCheckout();
+  const { isEmpty, count } = checkout;
 
   if (!isHydrated) {
     return (
@@ -60,7 +61,9 @@ export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
             {t("checkout.title")}
           </Title>
           <Text variant="p" color="secondary">
-            {t("checkout.subtitle")}
+            {checkout.sellerName
+              ? t("checkout.sellerSubtitle", { seller: checkout.sellerName })
+              : t("checkout.subtitle")}
           </Text>
         </div>
         <CheckoutStepper current={checkout.step} />

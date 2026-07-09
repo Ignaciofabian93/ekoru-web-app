@@ -30,9 +30,16 @@
     },
     "inCart": "In cart"
   },
+  "group": {
+    "store": "Store",
+    "marketplace": "Marketplace",
+    "checkout": "Checkout",
+    "checkoutSeller": "Checkout · {{seller}}"
+  },
   "checkout": {
     "title": "Checkout",
     "subtitle": "Confirm your shipping and choose how to pay.",
+    "sellerSubtitle": "Paying {{seller}}. Confirm shipping and choose how to pay.",
     "back": "Back to cart",
     "steps": {
       "shipping": "Shipping",

@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 // import { useToggleFavorite } from "@/hooks/useToggleFavorite";
-import { useIsInCart } from "@/store/useCartStore";
+import { cartGroupId, useIsInCart } from "@/store/useCartStore";
 import { useTranslation } from "@/i18n/context";
 import type { StoreProduct } from "@/types/product";
 
@@ -29,12 +29,12 @@ interface Props {
 export function StoreProductActions({ lang, product }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const router = useRouter();
-  const { addMarketplaceProduct } = useAddToCart();
+  const { addStoreProduct } = useAddToCart();
   // const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
-  // Marketplace items are unique: once in the cart the add button stays
-  // disabled until the user removes the line.
-  const inCart = useIsInCart("marketplace", product.id);
+  // Store items are stock-bounded; once a line exists the button reflects that
+  // it's in the cart and quantity is managed from the cart itself.
+  const inCart = useIsInCart("store", product.id);
   // const liked = Boolean(product.isLiked);
   const [popped, setPopped] = useState(false);
   const { share, copied } = useShareProduct({
@@ -43,7 +43,7 @@ export function StoreProductActions({ lang, product }: Props) {
   });
 
   function handleAddToCart(): boolean {
-    const result = addMarketplaceProduct(product);
+    const result = addStoreProduct(product);
     if (result === "added") {
       setPopped(true);
       setTimeout(() => setPopped(false), 400);
@@ -55,7 +55,8 @@ export function StoreProductActions({ lang, product }: Props) {
     // Only proceed to checkout when the item is actually in the cart. If the
     // user is anonymous, the helper already redirected to login.
     if (handleAddToCart() || inCart) {
-      router.push(`/${lang}/cart/checkout`);
+      const g = encodeURIComponent(cartGroupId("store", product.sellerId));
+      router.push(`/${lang}/cart/checkout?g=${g}`);
     }
   }
 

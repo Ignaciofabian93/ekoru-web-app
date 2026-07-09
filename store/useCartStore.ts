@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { Currency } from "@/constants/settings";
@@ -40,6 +41,57 @@ export const cartLineId = (
 const sameLine = (i: CartItem, productId: number, source: CartItemSource) =>
   i.productId === productId && i.source === source;
 
+/**
+ * A checkout transaction is per-seller (marketplace) / per-business (store):
+ * the transactions subgraph rejects multi-seller orders. Lines are therefore
+ * grouped by source + sellerId, and each group is ordered and paid on its own.
+ * Source is part of the key so a marketplace seller and a store business never
+ * merge even if their ids collide across tables.
+ */
+export const cartGroupId = (
+  source: CartItemSource,
+  sellerId: string,
+): string => `${source}:${sellerId}`;
+
+/** One seller/business worth of cart lines — the unit of a single transaction. */
+export type CartGroup = {
+  id: string;
+  source: CartItemSource;
+  sellerId: string;
+  sellerName?: string;
+  currency: Currency;
+  items: CartItem[];
+  subtotal: number;
+  count: number;
+};
+
+/** Splits a flat item list into per-seller groups, preserving first-seen order. */
+function groupItems(items: CartItem[]): CartGroup[] {
+  const groups = new Map<string, CartGroup>();
+  for (const item of items) {
+    const id = cartGroupId(item.source, item.sellerId);
+    const group = groups.get(id);
+    if (group) {
+      group.items.push(item);
+      group.subtotal += item.unitPrice * item.quantity;
+      group.count += item.quantity;
+      if (!group.sellerName && item.sellerName) group.sellerName = item.sellerName;
+    } else {
+      groups.set(id, {
+        id,
+        source: item.source,
+        sellerId: item.sellerId,
+        sellerName: item.sellerName,
+        currency: item.currency,
+        items: [item],
+        subtotal: item.unitPrice * item.quantity,
+        count: item.quantity,
+      });
+    }
+  }
+  return Array.from(groups.values());
+}
+
 /** Clamp a desired quantity to what the source allows. */
 function clampQuantity(
   source: CartItemSource,
@@ -65,6 +117,8 @@ interface CartState {
     quantity: number,
   ) => void;
   clear: () => void;
+  /** Removes every line for one seller group (used after that group is paid). */
+  clearGroup: (source: CartItemSource, sellerId: string) => void;
   setHydrated: (value: boolean) => void;
 }
 
@@ -131,6 +185,13 @@ const useCartStore = create<CartState>()(
 
       clear: () => set({ items: [] }),
 
+      clearGroup: (source, sellerId) =>
+        set((state) => ({
+          items: state.items.filter(
+            (i) => !(i.source === source && i.sellerId === sellerId),
+          ),
+        })),
+
       setHydrated: (value) => set({ isHydrated: value }),
     }),
     {
@@ -143,6 +204,15 @@ const useCartStore = create<CartState>()(
 );
 
 export const useCartItems = () => useCartStore((s) => s.items);
+
+/**
+ * Cart lines split into per-seller transaction groups. Memoized off the stable
+ * `items` reference so it only recomputes when the cart actually changes.
+ */
+export const useCartGroups = (): CartGroup[] => {
+  const items = useCartStore((s) => s.items);
+  return useMemo(() => groupItems(items), [items]);
+};
 
 export const useCartCount = () =>
   useCartStore((s) => s.items.reduce((acc, i) => acc + i.quantity, 0));
