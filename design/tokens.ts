@@ -215,7 +215,7 @@ export const borderRadius = {
 export const shadows = {
   none: "none",
   sm: "0 1px 4px rgba(0,0,0,0.08)",
-  md: "0 2px 4px rgba(0,0,0,0.10)",
+  md: "0 2px 4px rgba(0,0,0,0.30)",
   lg: "0 4px 10px rgba(0,0,0,0.18)",
   xl: "0 8px 24px rgba(0,0,0,0.12)",
 } as const;
@@ -237,8 +237,35 @@ export const iconStroke = {
   strong: 2.5,
 } as const;
 
+// ─── Animation ────────────────────────────────────────────────────
+export const animation = {
+  pressScale: 0.96,
+  durationFast: 180,
+  durationMed: 250,
+  durationSlow: 350,
+  easing: {
+    standard: "cubic-bezier(0.4, 0, 0.2, 1)",
+    decelerate: "cubic-bezier(0, 0, 0.2, 1)",
+    accelerate: "cubic-bezier(0.4, 0, 1, 1)",
+  },
+} as const;
+
 // ─── Button geometry ──────────────────────────────────────────────
 export const button = {
+  xs: {
+    fontSize: fontSize.sm,
+    iconSize: iconSize.sm,
+    borderRadius: borderRadius.sm,
+    minHeight: 32,
+    fontFamily: fontFamily.sans,
+    padding: "0px 14px",
+    border: "none",
+    cursor: "pointer",
+    transition: `all ${animation.durationMed}ms ${animation.easing.standard}`,
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+  },
   sm: {
     paddingY: 0,
     paddingX: 14,
@@ -265,24 +292,32 @@ export const button = {
   },
 } as const;
 
+// Card geometry
+
+export const card = {
+  horizontal: {
+    sm: { padding: "12px", borderRadius: borderRadius.sm },
+    md: {
+      borderRadius: borderRadius.lg,
+      display: "flex",
+      overflow: "hidden",
+      height: "170px",
+      boxShadow: shadows.md,
+    },
+    lg: { padding: "20px", borderRadius: borderRadius.lg },
+  },
+  vertical: {
+    sm: { padding: "12px", borderRadius: borderRadius.sm },
+    md: { padding: "16px", borderRadius: borderRadius.md },
+    lg: { padding: "20px", borderRadius: borderRadius.lg },
+  },
+} as const;
+
 // ─── Input geometry ───────────────────────────────────────────────
 export const input = {
   sm: { height: 36, fontSize: fontSize.xs, iconSize: iconSize.xs, paddingX: 10 },
   md: { height: 44, fontSize: fontSize.base, iconSize: iconSize.sm, paddingX: 12 },
   lg: { height: 56, fontSize: fontSize.lg, iconSize: iconSize.md, paddingX: 14 },
-} as const;
-
-// ─── Animation ────────────────────────────────────────────────────
-export const animation = {
-  pressScale: 0.96,
-  durationFast: 180,
-  durationMed: 250,
-  durationSlow: 350,
-  easing: {
-    standard: "cubic-bezier(0.4, 0, 0.2, 1)",
-    decelerate: "cubic-bezier(0, 0, 0.2, 1)",
-    accelerate: "cubic-bezier(0.4, 0, 1, 1)",
-  },
 } as const;
 
 // ─── Z-index ─────────────────────────────────────────────────────
@@ -312,6 +347,7 @@ const tokens = {
   input,
   animation,
   zIndex,
+  card,
 } as const;
 
 export default tokens;

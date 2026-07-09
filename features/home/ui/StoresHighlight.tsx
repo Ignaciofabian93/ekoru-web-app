@@ -87,6 +87,7 @@ export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
                 seller={seller}
                 ctaText={t("stores.seeStore")}
                 verifiedLabel={t("stores.verified")}
+                lang={lang}
               />
             ))}
           </div>

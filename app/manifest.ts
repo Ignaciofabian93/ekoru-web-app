@@ -9,10 +9,10 @@ import { DEFAULT_LANGUAGE } from "@/constants/settings";
  */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Ekoru — Marketplace Sostenible",
+    name: "Ekoru — Plataforma Sostenible",
     short_name: SITE_NAME,
     description:
-      "Compra, vende y recicla de forma sostenible. El marketplace circular que conecta personas y comunidades con el medioambiente.",
+      "Compra, vende y recicla de forma sostenible. La plataforma circular que conecta personas y comunidades con el medioambiente.",
     lang: DEFAULT_LANGUAGE,
     start_url: `/${DEFAULT_LANGUAGE}`,
     scope: "/",
