@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Text } from "@/components/Text/Text";
 import { Title } from "@/components/Title/Title";
 import { type SupportedLanguage } from "@/constants/settings";
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 
 import { useCart } from "../hooks/useCart";
@@ -13,6 +13,7 @@ import { EmptyCart } from "./EmptyCart";
 
 export function CartScreen({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation("cart");
+  const formatPrice = useFormatPrice();
   const { items, count, subtotal, isEmpty, currency, clear, isHydrated } = useCart();
 
   if (!isHydrated) {

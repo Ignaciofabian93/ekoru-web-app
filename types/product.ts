@@ -76,6 +76,7 @@ export type StoreProduct = {
   averageRating: number;
   reviewsNumber: number;
   storeSubCategoryId: number;
+  storeSubCategory: StoreSubCategory;
   /** Seller-declared material composition (material + percentage). */
   materials?: StoreProductMaterialComposition[];
   /** Environmental impact summary, computed from this product's composition. */
@@ -133,10 +134,26 @@ export type StoreCategory = {
 export type StoreSubCategory = {
   id: number;
   storeCategoryId: number;
-  subCategory: string;
-  storeCategory: StoreCategory;
-  products: StoreProduct[];
-  href: string;
+  averageWeight: number;
+  size: ProductSize;
+  weightUnit: WeightUnit;
+  isActive: boolean;
+  sortOrder: Record<string, string>;
+  createdAt: string;
+  updatedAt: string;
+  translation: {
+    id: number;
+    storeSubCategoryId: number;
+    language: string;
+    name: string;
+    slug: string;
+    keywords: string[];
+    href: string;
+    metaTitle: string;
+    metaDescription: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 };
 
 export type ProductLike = {

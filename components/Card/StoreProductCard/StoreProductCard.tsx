@@ -6,8 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-import { formatPrice } from "@/data/products";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useIsInCart } from "@/store/useCartStore";
 import type { StoreProduct } from "@/types/product";
@@ -37,6 +37,7 @@ export default function StoreProductCard({
   className,
 }: Props) {
   const { addStoreProduct } = useAddToCart();
+  const formatPrice = useFormatPrice();
   const [imageError, setImageError] = useState(false);
   const [popped, setPopped] = useState(false);
 
@@ -53,7 +54,8 @@ export default function StoreProductCard({
     : 0;
   const showRating = product.reviewsNumber > 0;
 
-  const resolvedHref = href ?? (lang ? `/${lang}/product/${product.id}` : undefined);
+  const resolvedHref =
+    href ?? (lang ? `/${lang}/store-product/${product.id}` : undefined);
   const Container: React.ElementType = resolvedHref ? Link : "div";
   const containerProps = resolvedHref ? { href: resolvedHref } : {};
 

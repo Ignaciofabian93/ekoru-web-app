@@ -1,35 +1,41 @@
 "use client";
 
-import { Check, Heart, PackageCheck, Share2, ShoppingCart, Zap } from "lucide-react";
-import Link from "next/link";
+import {
+  Check,
+  //  Heart,
+  PackageCheck,
+  Share2,
+  ShoppingCart,
+  Zap,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
-import { useToggleFavorite } from "@/hooks/useToggleFavorite";
+// import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { useIsInCart } from "@/store/useCartStore";
 import { useTranslation } from "@/i18n/context";
-import type { Product } from "@/types/product";
+import type { StoreProduct } from "@/types/product";
 
 import { NAMESPACE } from "../i18n";
-import { useShareProduct } from "../../../hooks/useShareProduct";
+import { useShareProduct } from "@/hooks/useShareProduct";
 
 interface Props {
   lang: string;
-  product: Product;
+  product: StoreProduct;
 }
 
-export function ProductActions({ lang, product }: Props) {
+export function StoreProductActions({ lang, product }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const router = useRouter();
   const { addMarketplaceProduct } = useAddToCart();
-  const { toggleFavorite } = useToggleFavorite();
+  // const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
   // Marketplace items are unique: once in the cart the add button stays
   // disabled until the user removes the line.
   const inCart = useIsInCart("marketplace", product.id);
-  const liked = Boolean(product.isLiked);
+  // const liked = Boolean(product.isLiked);
   const [popped, setPopped] = useState(false);
   const { share, copied } = useShareProduct({
     title: product.name,
@@ -82,13 +88,6 @@ export function ProductActions({ lang, product }: Props) {
               )}
               {inCart ? t("actions.added") : t("actions.addToCart")}
             </button>
-            <Link
-              href={`/${lang}/cart`}
-              aria-label={t("actions.viewCart")}
-              className="flex w-14 items-center justify-center rounded-xl border-2 border-primary text-primary transition-colors hover:bg-primary-light-bg"
-            >
-              <ShoppingCart size={20} strokeWidth={2} />
-            </Link>
           </div>
 
           <button
@@ -103,7 +102,7 @@ export function ProductActions({ lang, product }: Props) {
       )}
 
       <div className="flex gap-2">
-        <button
+        {/* <button
           type="button"
           onClick={() => toggleFavorite(product.id, liked)}
           aria-pressed={liked}
@@ -119,7 +118,7 @@ export function ProductActions({ lang, product }: Props) {
             className={liked ? "fill-red-500 text-red-500" : ""}
           />
           {liked ? t("actions.saved") : t("actions.save")}
-        </button>
+        </button> */}
         <button
           type="button"
           onClick={share}

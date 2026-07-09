@@ -48,6 +48,16 @@ export const CURRENCY_COOKIE = "ekoru_currency";
 export const hasCurrency = (value: string): value is Currency =>
   (CURRENCIES_SUPPORTED as readonly string[]).includes(value);
 
+/**
+ * Market currency for each supported country. Product prices are stored in the
+ * seller's market currency, so display formatting derives the currency from the
+ * visitor's country unless the amount carries its own (e.g. cart lines).
+ */
+export const CURRENCY_BY_COUNTRY: Record<SupportedCountry, Currency> = {
+  CL: "CLP",
+  CA: "CAD",
+};
+
 /** Countries the marketplace serves (ISO 3166-1 alpha-2). Extend as markets open. */
 export const SUPPORTED_COUNTRIES = ["CL", "CA"] as const;
 export type SupportedCountry = (typeof SUPPORTED_COUNTRIES)[number];

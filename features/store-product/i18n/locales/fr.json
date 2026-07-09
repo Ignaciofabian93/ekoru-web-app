@@ -1,0 +1,131 @@
+{
+  "page": {
+    "loading": "Chargement du produit…",
+    "notFound": "Produit introuvable",
+    "notFoundHint": "Ce produit a peut-être été supprimé ou n'est plus disponible.",
+    "error": "Impossible de charger ce produit",
+    "errorHint": "Veuillez vérifier votre connexion et réessayer."
+  },
+  "breadcrumbs": {
+    "marketplace": "Marketplace",
+    "product": "Produit"
+  },
+  "gallery": {
+    "noImage": "Aucune image disponible",
+    "previous": "Image précédente",
+    "next": "Image suivante",
+    "goToImage": "Aller à l'image {{index}}",
+    "imageAlt": "{{name}} – image {{index}} sur {{total}}",
+    "thumbnailAlt": "Miniature {{index}}"
+  },
+  "actions": {
+    "addToCart": "Ajouter au panier",
+    "added": "Ajouté au panier",
+    "buyNow": "Acheter maintenant",
+    "save": "Enregistrer",
+    "saved": "Enregistré",
+    "share": "Partager",
+    "viewCart": "Voir le panier",
+    "contactSeller": "Contacter le vendeur",
+    "viewSeller": "Voir le vendeur",
+    "viewAll": "Voir tout",
+    "ownListing": "Ceci est votre annonce — vous ne pouvez pas acheter vos propres produits."
+  },
+  "summary": {
+    "by": "par",
+    "views": "{{count}} vue",
+    "viewsPlural": "{{count}} vues",
+    "noBrand": "Sans marque",
+    "exchangeable": "Échangeable"
+  },
+  "conditions": {
+    "NEW": "Neuf",
+    "LIKE_NEW": "Comme neuf",
+    "OPEN_BOX": "Boîte ouverte",
+    "GOOD": "Bon état",
+    "FAIR": "État correct",
+    "POOR": "Usé",
+    "FOR_PARTS": "Pour pièces",
+    "REFURBISHED": "Reconditionné"
+  },
+  "trust": {
+    "secureCheckout": "Paiement sécurisé",
+    "secureCheckoutHint": "Paiements chiffrés, vos données sont protégées",
+    "buyerProtection": "Protection acheteur",
+    "buyerProtectionHint": "Remboursement si l'article n'est pas conforme",
+    "shipping": "Livraison disponible",
+    "shippingHint": "Coordonnez la livraison avec le vendeur"
+  },
+  "description": {
+    "title": "Description",
+    "empty": "Le vendeur n'a pas ajouté de description pour ce produit."
+  },
+  "details": {
+    "title": "Détails du produit",
+    "brand": "Marque",
+    "color": "Couleur",
+    "condition": "État",
+    "conditionDescription": "Notes sur l'état",
+    "category": "Catégorie",
+    "exchangeable": "Échangeable",
+    "yes": "Oui",
+    "no": "Non",
+    "interests": "Intérêts",
+    "publishedOn": "Publié le"
+  },
+  "impact": {
+    "title": "Impact environnemental",
+    "subtitle": "En donnant une seconde vie à ce produit, vous économisez",
+    "co2": "CO₂ économisé",
+    "water": "Eau économisée",
+    "materials": "Répartition des matériaux",
+    "kg": "kg",
+    "liters": "L"
+  },
+  "badges": {
+    "POPULAR": "Populaire",
+    "DISCOUNTED": "En promo",
+    "WOMAN_OWNED": "Tenu par une femme",
+    "BEST_SELLER": "Meilleure vente",
+    "TOP_RATED": "Mieux noté",
+    "COMMUNITY_FAVORITE": "Favori de la communauté",
+    "LIMITED_TIME_OFFER": "Offre limitée",
+    "FLASH_SALE": "Vente flash",
+    "BEST_VALUE": "Meilleur prix",
+    "HANDMADE": "Fait main",
+    "SUSTAINABLE": "Durable",
+    "SUPPORTS_CAUSE": "Soutient une cause",
+    "FAMILY_BUSINESS": "Entreprise familiale",
+    "CHARITY_SUPPORT": "Soutient une œuvre",
+    "LIMITED_STOCK": "Stock limité",
+    "SEASONAL": "Saisonnier",
+    "FREE_SHIPPING": "Livraison gratuite",
+    "FOR_REPAIR": "À réparer",
+    "REFURBISHED": "Reconditionné",
+    "EXCHANGEABLE": "Échangeable",
+    "LAST_PRICE": "Dernier prix",
+    "FOR_GIFT": "Idée cadeau",
+    "OPEN_TO_OFFERS": "Ouvert aux offres",
+    "OPEN_BOX": "Boîte ouverte",
+    "CRUELTY_FREE": "Sans cruauté",
+    "DELIVERED_TO_HOME": "Livré à domicile"
+  },
+  "seller": {
+    "title": "À propos du vendeur",
+    "verified": "Vérifié",
+    "memberSince": "Membre depuis {{date}}",
+    "location": "Localisation",
+    "phone": "Téléphone",
+    "noLocation": "Localisation non fournie",
+    "types": {
+      "PERSON": "Particulier",
+      "STARTUP": "Startup",
+      "COMPANY": "Entreprise"
+    }
+  },
+  "otherProducts": {
+    "title": "Plus de ce vendeur",
+    "empty": "Ce vendeur n'a pas d'autres annonces pour le moment.",
+    "loading": "Chargement des autres produits…"
+  }
+}

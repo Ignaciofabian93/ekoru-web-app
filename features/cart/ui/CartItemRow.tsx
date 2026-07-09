@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
 
 import { Text } from "@/components/Text/Text";
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 import type { CartItem } from "@/store/useCartStore";
 import { resolveImageUrl } from "@/utils/resolveImage";
@@ -17,6 +17,7 @@ type Props = {
 
 export function CartItemRow({ item, onIncrease, onDecrease, onRemove }: Props) {
   const { t } = useTranslation("cart");
+  const formatPrice = useFormatPrice();
   const image = resolveImageUrl(item.image);
   const lineTotal = item.unitPrice * item.quantity;
   const atMax =

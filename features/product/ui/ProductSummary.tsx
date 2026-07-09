@@ -2,7 +2,7 @@
 
 import { Eye, Repeat } from "lucide-react";
 
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 import type { Product } from "@/types/product";
 
@@ -22,6 +22,7 @@ const CONDITION_STYLES: Record<string, string> = {
 
 export function ProductSummary({ product }: { product: Product }) {
   const { t } = useTranslation(NAMESPACE);
+  const formatPrice = useFormatPrice();
 
   const viewLabel =
     product.viewCount === 1

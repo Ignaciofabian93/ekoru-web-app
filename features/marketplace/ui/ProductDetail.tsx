@@ -1,6 +1,7 @@
 "use client";
 
-import { conditionLabel, formatPrice } from "@/data/products";
+import { conditionLabel } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import type { Product } from "@/types/product";
 import { formatMaterialAmount, materialLabel } from "@/utils/impact";
 import {
@@ -30,6 +31,7 @@ const SELLER_TYPE_LABELS: Record<string, string> = {
 };
 
 export function ProductDetail({ product, lang }: { product: Product; lang: string }) {
+  const formatPrice = useFormatPrice();
   const [added, setAdded] = useState(false);
 
   function handleAddToCart() {

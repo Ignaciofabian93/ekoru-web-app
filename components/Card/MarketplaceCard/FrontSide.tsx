@@ -1,6 +1,6 @@
 "use client";
 
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
@@ -34,6 +34,7 @@ interface Props {
 
 export default function FrontSide({ product, href, onFlip, onAddToCart }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  const formatPrice = useFormatPrice();
   const { addMarketplaceProduct } = useAddToCart();
   const [imageError, setImageError] = useState(false);
   const [popped, setPopped] = useState(false);

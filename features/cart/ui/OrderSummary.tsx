@@ -2,7 +2,7 @@
 import { Text } from "@/components/Text/Text";
 import { Title } from "@/components/Title/Title";
 import type { Currency } from "@/constants/settings";
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 
 import type { ShippingQuote } from "../hooks/useShippingQuote";
@@ -25,6 +25,7 @@ export function OrderSummary({
   taxAmount,
 }: Props) {
   const { t } = useTranslation("cart");
+  const formatPrice = useFormatPrice();
 
   const shippingLabel = (() => {
     if (shipping.status === "FREE") return t("checkout.shipping.free");

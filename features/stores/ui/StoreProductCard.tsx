@@ -1,6 +1,6 @@
 "use client";
-import { formatPrice } from "@/data/products";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { useTranslation } from "@/i18n/context";
@@ -82,6 +82,7 @@ function FrontSide({
 }) {
   const { t } = useTranslation(NAMESPACE);
   const { t: tg } = useTranslation();
+  const formatPrice = useFormatPrice();
   const { addStoreProduct } = useAddToCart();
   const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);

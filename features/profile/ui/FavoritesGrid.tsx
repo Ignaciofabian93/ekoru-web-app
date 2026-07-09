@@ -10,7 +10,7 @@ import { Pagination } from "@/components/Pagination/Pagination";
 import { Text } from "@/components/Text/Text";
 import { Title } from "@/components/Title/Title";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
@@ -40,6 +40,7 @@ function hrefFor(item: FavoriteCardItem, lang: string): string {
 
 export function FavoritesGrid() {
   const { t } = useTranslation(NAMESPACE);
+  const formatPrice = useFormatPrice();
   const params = useParams<{ lang?: SupportedLanguage }>();
   const router = useRouter();
   const lang = params.lang ?? DEFAULT_LANGUAGE;

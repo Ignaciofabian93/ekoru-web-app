@@ -6,7 +6,7 @@ import MainButton from "@/components/Button/MainButton";
 import { Text } from "@/components/Text/Text";
 import { Title } from "@/components/Title/Title";
 import { type SupportedLanguage } from "@/constants/settings";
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 
 import { useCart } from "../hooks/useCart";
@@ -22,6 +22,7 @@ import { ShippingMethodPicker } from "./ShippingMethodPicker";
 
 export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation("cart");
+  const formatPrice = useFormatPrice();
   const { isEmpty, isHydrated, count } = useCart();
   const checkout = useCheckout();
 

@@ -1,0 +1,131 @@
+{
+  "page": {
+    "loading": "Loading product…",
+    "notFound": "Product not found",
+    "notFoundHint": "This product may have been removed or is no longer available.",
+    "error": "Could not load this product",
+    "errorHint": "Please check your connection and try again."
+  },
+  "breadcrumbs": {
+    "marketplace": "Marketplace",
+    "product": "Product"
+  },
+  "gallery": {
+    "noImage": "No image available",
+    "previous": "Previous image",
+    "next": "Next image",
+    "goToImage": "Go to image {{index}}",
+    "imageAlt": "{{name}} – image {{index}} of {{total}}",
+    "thumbnailAlt": "Thumbnail {{index}}"
+  },
+  "actions": {
+    "addToCart": "Add to cart",
+    "added": "Added to cart",
+    "buyNow": "Buy now",
+    "save": "Save",
+    "saved": "Saved",
+    "share": "Share",
+    "viewCart": "View cart",
+    "contactSeller": "Contact seller",
+    "viewSeller": "View seller",
+    "viewAll": "View all",
+    "ownListing": "This is your listing — you can't buy your own products."
+  },
+  "summary": {
+    "by": "by",
+    "views": "{{count}} view",
+    "viewsPlural": "{{count}} views",
+    "noBrand": "Unbranded",
+    "exchangeable": "Exchangeable"
+  },
+  "conditions": {
+    "NEW": "New",
+    "LIKE_NEW": "Like new",
+    "OPEN_BOX": "Open box",
+    "GOOD": "Good",
+    "FAIR": "Fair",
+    "POOR": "Poor",
+    "FOR_PARTS": "For parts",
+    "REFURBISHED": "Refurbished"
+  },
+  "trust": {
+    "secureCheckout": "Secure checkout",
+    "secureCheckoutHint": "Encrypted payments, your data is protected",
+    "buyerProtection": "Buyer protection",
+    "buyerProtectionHint": "Get a refund if your order is not as described",
+    "shipping": "Shipping available",
+    "shippingHint": "Coordinate delivery with the seller"
+  },
+  "description": {
+    "title": "Description",
+    "empty": "The seller has not added a description for this product."
+  },
+  "details": {
+    "title": "Product details",
+    "brand": "Brand",
+    "color": "Color",
+    "condition": "Condition",
+    "conditionDescription": "Condition notes",
+    "category": "Category",
+    "exchangeable": "Exchangeable",
+    "yes": "Yes",
+    "no": "No",
+    "interests": "Interests",
+    "publishedOn": "Published on"
+  },
+  "impact": {
+    "title": "Environmental impact",
+    "subtitle": "By giving this product a second life you save",
+    "co2": "CO₂ saved",
+    "water": "Water saved",
+    "materials": "Materials breakdown",
+    "kg": "kg",
+    "liters": "L"
+  },
+  "badges": {
+    "POPULAR": "Popular",
+    "DISCOUNTED": "Discounted",
+    "WOMAN_OWNED": "Woman owned",
+    "BEST_SELLER": "Best seller",
+    "TOP_RATED": "Top rated",
+    "COMMUNITY_FAVORITE": "Community favorite",
+    "LIMITED_TIME_OFFER": "Limited time offer",
+    "FLASH_SALE": "Flash sale",
+    "BEST_VALUE": "Best value",
+    "HANDMADE": "Handmade",
+    "SUSTAINABLE": "Sustainable",
+    "SUPPORTS_CAUSE": "Supports a cause",
+    "FAMILY_BUSINESS": "Family business",
+    "CHARITY_SUPPORT": "Charity support",
+    "LIMITED_STOCK": "Limited stock",
+    "SEASONAL": "Seasonal",
+    "FREE_SHIPPING": "Free shipping",
+    "FOR_REPAIR": "For repair",
+    "REFURBISHED": "Refurbished",
+    "EXCHANGEABLE": "Exchangeable",
+    "LAST_PRICE": "Last price",
+    "FOR_GIFT": "Great gift",
+    "OPEN_TO_OFFERS": "Open to offers",
+    "OPEN_BOX": "Open box",
+    "CRUELTY_FREE": "Cruelty free",
+    "DELIVERED_TO_HOME": "Delivered to home"
+  },
+  "seller": {
+    "title": "About the seller",
+    "verified": "Verified",
+    "memberSince": "Member since {{date}}",
+    "location": "Location",
+    "phone": "Phone",
+    "noLocation": "Location not provided",
+    "types": {
+      "PERSON": "Person",
+      "STARTUP": "Startup",
+      "COMPANY": "Company"
+    }
+  },
+  "otherProducts": {
+    "title": "More from this seller",
+    "empty": "This seller has no other listings right now.",
+    "loading": "Loading other products…"
+  }
+}

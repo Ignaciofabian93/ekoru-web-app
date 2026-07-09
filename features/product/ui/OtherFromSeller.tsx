@@ -4,7 +4,7 @@ import { ImageOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import type { MarketplaceProduct } from "@/features/marketplace/types";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
@@ -25,6 +25,7 @@ function MiniCard({
   product: MarketplaceProduct;
   lang: string;
 }) {
+  const formatPrice = useFormatPrice();
   const cover = resolveImageUrl(product.images?.[0]);
 
   return (

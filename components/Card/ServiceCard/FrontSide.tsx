@@ -1,6 +1,6 @@
 "use client";
 
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { resolveImageUrl } from "@/utils/resolveImage";
 import {
@@ -36,6 +36,7 @@ function formatDuration(minutes: number, labels: Required<ServiceCardLabels>): s
 }
 
 export default function FrontSide({ service, href, labels, onFlip }: Props) {
+  const formatPrice = useFormatPrice();
   const [imageError, setImageError] = useState(false);
   const { toggleFavorite } = useToggleFavorite();
   const liked = Boolean(service.isLiked);

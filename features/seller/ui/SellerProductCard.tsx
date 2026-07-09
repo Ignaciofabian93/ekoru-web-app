@@ -9,7 +9,7 @@ import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { useIsInCart } from "@/store/useCartStore";
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
 
@@ -33,6 +33,7 @@ interface Props {
 
 export function SellerProductCard({ product, lang }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  const formatPrice = useFormatPrice();
   const { addMarketplaceProduct } = useAddToCart();
   const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);

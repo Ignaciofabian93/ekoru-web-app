@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-import { formatPrice } from "@/data/products";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
 
@@ -34,6 +34,7 @@ export function SearchResultCard({
   lang: string;
 }) {
   const { t } = useTranslation(NAMESPACE);
+  const formatPrice = useFormatPrice();
   const [imageError, setImageError] = useState(false);
   const cover = resolveImageUrl(item.images?.[0]);
   const offerPrice =

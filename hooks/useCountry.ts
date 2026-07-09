@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import { COUNTRY_COOKIE, DEFAULT_COUNTRY, hasCountry } from "@/constants/settings";
 import { getCookie, setCookie } from "@/utils/cookies";
 
@@ -13,19 +13,32 @@ import { getCookie, setCookie } from "@/utils/cookies";
  * Sent as a GraphQL arg (not a header/cookie-forward) so the mobile app, which
  * calls the gateway directly, uses the exact same mechanism.
  */
+
+const listeners = new Set<() => void>();
+
+function subscribe(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function getSnapshot(): string {
+  const saved = getCookie(COUNTRY_COOKIE);
+  return saved && hasCountry(saved) ? saved : DEFAULT_COUNTRY;
+}
+
+// SSR renders the default; the cookie value takes over after hydration.
+function getServerSnapshot(): string {
+  return DEFAULT_COUNTRY;
+}
+
 export function useCountry(): [string, (code: string) => void] {
-  const [country, setCountry] = useState<string>(DEFAULT_COUNTRY);
+  const country = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  useEffect(() => {
-    const saved = getCookie(COUNTRY_COOKIE);
-    if (saved && hasCountry(saved)) setCountry(saved);
-  }, []);
-
-  const changeCountry = (code: string) => {
-    if (code === country || !hasCountry(code)) return;
+  const changeCountry = useCallback((code: string) => {
+    if (!hasCountry(code) || code === getSnapshot()) return;
     setCookie(COUNTRY_COOKIE, code);
-    setCountry(code);
-  };
+    listeners.forEach((listener) => listener());
+  }, []);
 
   return [country, changeCountry];
 }
