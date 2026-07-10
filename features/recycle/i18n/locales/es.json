@@ -1,0 +1,44 @@
+{
+  "header": {
+    "title": "Puntos de reciclaje",
+    "subtitle": "Encuentra puntos de reciclaje cerca de ti"
+  },
+  "map": {
+    "locating": "Obteniendo ubicación…",
+    "loadingPoints": "Cargando puntos…",
+    "count": "{{count}} punto en 5 km",
+    "countPlural": "{{count}} puntos en 5 km",
+    "centerOnMe": "Centrar en mi ubicación",
+    "youAreHere": "Estás aquí"
+  },
+  "permission": {
+    "title": "Permiso de ubicación requerido",
+    "hint": "Permite el acceso a tu ubicación en el navegador para encontrar puntos de reciclaje cercanos.",
+    "retry": "Intentar de nuevo"
+  },
+  "error": {
+    "title": "No se pudo cargar el mapa",
+    "hint": "Revisa tu conexión e intenta de nuevo.",
+    "retry": "Reintentar"
+  },
+  "point": {
+    "fallbackName": "Punto de reciclaje",
+    "noMaterials": "Materiales aceptados no especificados",
+    "close": "Cerrar"
+  },
+  "materials": {
+    "glass": "Vidrio",
+    "paper": "Papel",
+    "cardboard": "Cartón",
+    "plastic": "Plástico",
+    "plastic_bottles": "Botellas",
+    "cans": "Latas",
+    "aluminium": "Aluminio",
+    "metal": "Metales",
+    "clothes": "Ropa",
+    "batteries": "Baterías",
+    "electronics": "Electrónica",
+    "organic": "Orgánico",
+    "wood": "Madera"
+  }
+}

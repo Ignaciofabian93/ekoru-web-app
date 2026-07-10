@@ -1,0 +1,44 @@
+{
+  "header": {
+    "title": "Points de recyclage",
+    "subtitle": "Trouvez des points de recyclage près de chez vous"
+  },
+  "map": {
+    "locating": "Localisation en cours…",
+    "loadingPoints": "Chargement des points…",
+    "count": "{{count}} point dans un rayon de 5 km",
+    "countPlural": "{{count}} points dans un rayon de 5 km",
+    "centerOnMe": "Centrer sur ma position",
+    "youAreHere": "Vous êtes ici"
+  },
+  "permission": {
+    "title": "Autorisation de localisation requise",
+    "hint": "Autorisez l'accès à votre position dans le navigateur pour trouver des points de recyclage à proximité.",
+    "retry": "Réessayer"
+  },
+  "error": {
+    "title": "Impossible de charger la carte",
+    "hint": "Vérifiez votre connexion et réessayez.",
+    "retry": "Réessayer"
+  },
+  "point": {
+    "fallbackName": "Point de recyclage",
+    "noMaterials": "Matériaux acceptés non précisés",
+    "close": "Fermer"
+  },
+  "materials": {
+    "glass": "Verre",
+    "paper": "Papier",
+    "cardboard": "Carton",
+    "plastic": "Plastique",
+    "plastic_bottles": "Bouteilles",
+    "cans": "Canettes",
+    "aluminium": "Aluminium",
+    "metal": "Métaux",
+    "clothes": "Vêtements",
+    "batteries": "Piles",
+    "electronics": "Électronique",
+    "organic": "Organique",
+    "wood": "Bois"
+  }
+}

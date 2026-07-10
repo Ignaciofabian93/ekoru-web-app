@@ -1,0 +1,44 @@
+{
+  "header": {
+    "title": "Recycling points",
+    "subtitle": "Find recycling drop-off points near you"
+  },
+  "map": {
+    "locating": "Getting your location…",
+    "loadingPoints": "Loading points…",
+    "count": "{{count}} point within 5 km",
+    "countPlural": "{{count}} points within 5 km",
+    "centerOnMe": "Center on my location",
+    "youAreHere": "You are here"
+  },
+  "permission": {
+    "title": "Location permission required",
+    "hint": "Allow location access in your browser to find recycling points near you.",
+    "retry": "Try again"
+  },
+  "error": {
+    "title": "Could not load the map",
+    "hint": "Check your connection and try again.",
+    "retry": "Retry"
+  },
+  "point": {
+    "fallbackName": "Recycling point",
+    "noMaterials": "Accepted materials not specified",
+    "close": "Close"
+  },
+  "materials": {
+    "glass": "Glass",
+    "paper": "Paper",
+    "cardboard": "Cardboard",
+    "plastic": "Plastic",
+    "plastic_bottles": "Bottles",
+    "cans": "Cans",
+    "aluminium": "Aluminium",
+    "metal": "Metal",
+    "clothes": "Clothes",
+    "batteries": "Batteries",
+    "electronics": "Electronics",
+    "organic": "Organic",
+    "wood": "Wood"
+  }
+}
