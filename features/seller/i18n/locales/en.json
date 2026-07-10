@@ -66,6 +66,26 @@
     "categoryCountPlural": "{{count}} products",
     "uncategorized": "Other"
   },
+  "storeCatalog": {
+    "title": "Products",
+    "subtitle": "Browse this store's catalog",
+    "empty": "This store has no products yet.",
+    "emptyHint": "Check back later for new products."
+  },
+  "businessInfo": {
+    "policiesTitle": "Buying from this store",
+    "shipping": "Shipping",
+    "returns": "Returns",
+    "serviceTitle": "Services",
+    "serviceArea": "Service area",
+    "travelRadius": "Travel radius",
+    "travelRadiusValue": "{{km}} km",
+    "experience": "Experience",
+    "experienceValue": "{{years}} years",
+    "certifications": "Certifications",
+    "hoursTitle": "Business hours",
+    "closed": "Closed"
+  },
   "card": {
     "addToCart": "Add to cart",
     "added": "Added!",

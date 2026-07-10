@@ -9,6 +9,10 @@ import { DictionaryProvider } from "@/i18n/context";
 import { getSellerDictionary, NAMESPACE } from "../i18n";
 import { SellerContent } from "../ui/SellerContent";
 import { ScreenShell } from "@/components/Layout/ScreenShell";
+import {
+  getStoresDictionary,
+  NAMESPACE as STORE_NAMESPACE,
+} from "@/features/stores/i18n";
 
 interface Props {
   id: string;
@@ -19,9 +23,10 @@ export async function Seller({ id, lang }: Props) {
   // Seller pages render MarketplaceCard (and any other marketplace UI), which
   // looks up keys under the "marketplace" namespace — load both dictionaries
   // so those translations resolve instead of falling back to raw keys.
-  const [sellerDict, marketplaceDict] = await Promise.all([
+  const [sellerDict, marketplaceDict, storeDict] = await Promise.all([
     getSellerDictionary(lang),
     getMarketplaceDictionary(lang),
+    getStoresDictionary(lang),
   ]);
 
   return (
@@ -29,6 +34,7 @@ export async function Seller({ id, lang }: Props) {
       dictionary={{
         [NAMESPACE]: sellerDict,
         [MARKETPLACE_NAMESPACE]: marketplaceDict,
+        [STORE_NAMESPACE]: storeDict,
       }}
     >
       <ScreenShell nav={<Navigation lang={lang} />} lang={lang}>

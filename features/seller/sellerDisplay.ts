@@ -1,5 +1,17 @@
+import type { SellerType } from "@/types/enums";
 import type { Seller } from "@/types/user";
 import { resolveImageUrl } from "@/utils/resolveImage";
+
+import type { SellerKind } from "./types";
+
+// STARTUP and COMPANY accounts are stores (BusinessProfile); PERSON accounts are
+// marketplace sellers (PersonProfile). Defaults to marketplace when the type is
+// not yet known (e.g. while the profile is still loading).
+export function resolveSellerKind(sellerType: SellerType | undefined): SellerKind {
+  return sellerType === "STARTUP" || sellerType === "COMPANY"
+    ? "business"
+    : "marketplace";
+}
 
 export function getSellerName(seller: Seller): string {
   const profile = seller.profile;

@@ -11,8 +11,8 @@ export const GET_SELLER = gql`
   ${SELLER_FIELDS_FRAGMENT}
   ${PERSON_PROFILE_FIELDS_FRAGMENT}
   ${BUSINESS_PROFILE_FIELDS_FRAGMENT}
-  query GetSeller($id: String!) {
-    seller(id: $id) {
+  query GetSeller($id: ID!, $language: Language = ES) {
+    getSeller(id: $id, language: $language) {
       ...SellerFields
       profile {
         ... on PersonProfile {

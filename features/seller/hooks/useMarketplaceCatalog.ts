@@ -15,10 +15,22 @@ import type {
 
 interface Params {
   sellerId: string | undefined;
+  /** Set false to skip the query (e.g. no seller id yet). */
+  enabled?: boolean;
   pageSize?: number;
 }
 
-export function useSellerStorefront({ sellerId, pageSize = 100 }: Params) {
+/**
+ * Second-hand marketplace catalog for a PERSON seller. Groups the seller's
+ * products by product category and exposes the seller identity carried by the
+ * (public) product relation — this is the anonymous-safe way to read a seller's
+ * profile, since the by-id `getSeller` query is auth-gated.
+ */
+export function useMarketplaceCatalog({
+  sellerId,
+  enabled = true,
+  pageSize = 100,
+}: Params) {
   const { t } = useTranslation(NAMESPACE);
 
   const { data, loading, error } = useQuery<{
@@ -29,7 +41,7 @@ export function useSellerStorefront({ sellerId, pageSize = 100 }: Params) {
       page: 1,
       pageSize,
     },
-    skip: !sellerId,
+    skip: !sellerId || !enabled,
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });
@@ -39,6 +51,7 @@ export function useSellerStorefront({ sellerId, pageSize = 100 }: Params) {
     [data],
   );
 
+  // Identity is carried by the public product→seller relation (PersonProfile).
   const seller = useMemo(
     () => products.find((p) => p.seller)?.seller ?? null,
     [products],

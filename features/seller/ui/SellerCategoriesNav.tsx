@@ -3,12 +3,15 @@
 import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
-import type { CategoryGroup } from "../types";
 import clsx from "clsx";
 import { Text } from "@/components/Text/Text";
 
+// Structural shape shared by both the marketplace and store category groups so
+// this nav can drive either catalog.
+type CategoryTab = { id: string; name: string; products: readonly unknown[] };
+
 interface Props {
-  categories: CategoryGroup[];
+  categories: readonly CategoryTab[];
   active: string;
   onChange: (id: string) => void;
   totalCount: number;

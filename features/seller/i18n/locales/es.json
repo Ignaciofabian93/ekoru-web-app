@@ -66,6 +66,26 @@
     "categoryCountPlural": "{{count}} productos",
     "uncategorized": "Otros"
   },
+  "storeCatalog": {
+    "title": "Productos",
+    "subtitle": "Explora el catálogo de esta tienda",
+    "empty": "Esta tienda aún no tiene productos.",
+    "emptyHint": "Vuelve más tarde para ver nuevos productos."
+  },
+  "businessInfo": {
+    "policiesTitle": "Comprar en esta tienda",
+    "shipping": "Envíos",
+    "returns": "Devoluciones",
+    "serviceTitle": "Servicios",
+    "serviceArea": "Área de servicio",
+    "travelRadius": "Radio de desplazamiento",
+    "travelRadiusValue": "{{km}} km",
+    "experience": "Experiencia",
+    "experienceValue": "{{years}} años",
+    "certifications": "Certificaciones",
+    "hoursTitle": "Horario de atención",
+    "closed": "Cerrado"
+  },
   "card": {
     "addToCart": "Agregar al carro",
     "added": "¡Agregado!",
