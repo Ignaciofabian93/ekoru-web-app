@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 
 import {
-  STORE_CATALOG_ITEM_FIELDS_FRAGMENT,
   STORE_CATEGORY_FIELDS_FRAGMENT,
   STORE_PAGE_INFO_FIELDS_FRAGMENT,
   STORE_PRODUCT_DETAIL_FIELDS_FRAGMENT,
@@ -9,10 +8,18 @@ import {
 } from "./fragments";
 
 export const GET_STORES_CATALOG = gql`
-  ${STORE_CATALOG_ITEM_FIELDS_FRAGMENT}
-  query GetStoreCatalog($language: Language = ES) {
+  query GetStoreCatalog($language: Language = ES, $enableSubCategories: Boolean = true) {
     getStoreCatalog(language: $language) {
-      ...StoreCatalogItemFields
+      id
+      name
+      href
+      slug
+      subCategoryItems @include(if: $enableSubCategories) {
+        id
+        name
+        href
+        slug
+      }
     }
   }
 `;

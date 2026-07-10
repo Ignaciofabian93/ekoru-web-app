@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
 
 import {
-  CATALOG_ITEM_FIELDS_FRAGMENT,
   CATEGORY_TRANSLATION_FIELDS_FRAGMENT,
   DEPARTMENT_FIELDS_FRAGMENT,
   ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT,
@@ -11,10 +10,28 @@ import {
 } from "./fragments";
 
 export const GET_MARKETPLACE_CATALOG = gql`
-  ${CATALOG_ITEM_FIELDS_FRAGMENT}
-  query GetMarketplaceCatalog($language: Language = ES) {
+  query GetMarketplaceCatalog(
+    $language: Language
+    $enableCategories: Boolean = true
+    $enableSubCategories: Boolean = true
+  ) {
     getMarketplaceCatalog(language: $language) {
-      ...CatalogItemFields
+      id
+      name
+      href
+      slug
+      categories @include(if: $enableCategories) {
+        id
+        name
+        href
+        slug
+        productCategories @include(if: $enableSubCategories) {
+          id
+          name
+          href
+          slug
+        }
+      }
     }
   }
 `;

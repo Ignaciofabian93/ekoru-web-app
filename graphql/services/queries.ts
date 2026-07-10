@@ -37,11 +37,7 @@ export const GET_SERVICE_SUBCATEGORIES = gql`
     $offset: Int = 0
     $language: Language = ES
   ) {
-    getServiceSubCategories(
-      limit: $limit
-      offset: $offset
-      language: $language
-    ) {
+    getServiceSubCategories(limit: $limit, offset: $offset, language: $language) {
       ...ServiceSubCategoryFields
     }
   }
@@ -92,11 +88,7 @@ export const GET_MY_FAVORITE_SERVICES = gql`
 export const GET_SERVICES = gql`
   ${SERVICE_DETAIL_FIELDS_FRAGMENT}
   ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}
-  query GetServices(
-    $page: Int = 1
-    $pageSize: Int = 10
-    $isActive: Boolean
-  ) {
+  query GetServices($page: Int = 1, $pageSize: Int = 10, $isActive: Boolean) {
     getServices(page: $page, pageSize: $pageSize, isActive: $isActive) {
       pageInfo {
         ...ServicePageInfoFields
@@ -178,6 +170,26 @@ export const GET_SERVICES_BY_PRICING_TYPE = gql`
       }
       nodes {
         ...ServiceDetailFields
+      }
+    }
+  }
+`;
+
+export const GET_SERVICE_CATALOG = gql`
+  query GetServiceCatalog(
+    $language: Language = ES
+    $enableSubCategories: Boolean = true
+  ) {
+    getServiceCatalog(language: $language) {
+      id
+      name
+      href
+      slug
+      subCategoryItems @include(if: $enableSubCategories) {
+        id
+        name
+        href
+        slug
       }
     }
   }

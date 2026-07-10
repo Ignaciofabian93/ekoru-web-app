@@ -42,35 +42,26 @@
   "categories": {
     "title": "Explorez nos catégories",
     "subtitle": "Trouvez ce qui vous fait avancer.",
-    "topPicks": "Coups de cœur",
-    "tags": {
-      "clothing": "Vêtements",
-      "bikes": "Vélos",
-      "plants": "Plantes",
-      "electronics": "Électronique",
-      "organic": "Bio",
-      "zeroWaste": "Zéro déchet",
-      "fairTrade": "Commerce équitable",
-      "repair": "Réparation",
-      "rental": "Location",
-      "swap": "Échange",
-      "upcycle": "Surcyclage"
-    },
     "items": {
       "marketplace": {
         "title": "Marketplace",
-        "description": "Achetez et vendez des articles durables d'occasion",
-        "meta": "567+ produits"
+        "description": "Achetez et vendez des articles durables d'occasion"
       },
       "stores": {
         "title": "Éco Boutiques",
-        "description": "Découvrez des boutiques durables vérifiées près de chez vous",
-        "meta": "89 vérifiées"
+        "description": "Découvrez des boutiques durables vérifiées près de chez vous"
       },
       "services": {
         "title": "Services",
-        "description": "Réparez, louez et échangez — donnez une seconde vie aux objets",
-        "meta": "45 disponibles"
+        "description": "Réparez, louez et échangez — donnez une seconde vie aux objets"
+      },
+      "community": {
+        "title": "Communauté",
+        "description": "Événements, rencontres et initiatives pour être plus durables ensemble"
+      },
+      "blog": {
+        "title": "Blog",
+        "description": "Astuces, guides et expériences partagées par la communauté"
       }
     }
   },

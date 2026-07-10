@@ -42,35 +42,26 @@
   "categories": {
     "title": "Explora nuestras categorías",
     "subtitle": "Encuentra lo que te impulsa.",
-    "topPicks": "Destacados",
-    "tags": {
-      "clothing": "Ropa",
-      "bikes": "Bicicletas",
-      "plants": "Plantas",
-      "electronics": "Electrónica",
-      "organic": "Orgánico",
-      "zeroWaste": "Cero residuos",
-      "fairTrade": "Comercio justo",
-      "repair": "Reparación",
-      "rental": "Arriendo",
-      "swap": "Intercambio",
-      "upcycle": "Reciclaje creativo"
-    },
     "items": {
       "marketplace": {
         "title": "Marketplace",
-        "description": "Compra y vende artículos sostenibles de segunda mano",
-        "meta": "567+ productos"
+        "description": "Compra y vende artículos sostenibles de segunda mano"
       },
       "stores": {
         "title": "Eco Tiendas",
-        "description": "Descubre tiendas sostenibles verificadas cerca de ti",
-        "meta": "89 verificadas"
+        "description": "Descubre tiendas sostenibles verificadas cerca de ti"
       },
       "services": {
         "title": "Servicios",
-        "description": "Repara, arrienda e intercambia — dale una segunda vida a las cosas",
-        "meta": "45 disponibles"
+        "description": "Repara, arrienda e intercambia — dale una segunda vida a las cosas"
+      },
+      "community": {
+        "title": "Comunidad",
+        "description": "Eventos, charlas e iniciativas para ser más sustentables juntos"
+      },
+      "blog": {
+        "title": "Blog",
+        "description": "Tips, guías y experiencias compartidas por la comunidad"
       }
     }
   },

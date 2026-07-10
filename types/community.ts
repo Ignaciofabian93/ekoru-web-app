@@ -7,16 +7,16 @@ export interface CommunityEvent {
   title: string;
   description: string;
   type: CommunityEventType;
-  date: string;        // display string e.g. "Mar 15, 2026"
-  time: string;        // display string e.g. "10:00 – 12:00"
-  location: string;    // venue name or "Online"
+  date: string; // display string e.g. "Mar 15, 2026"
+  time: string; // display string e.g. "10:00 – 12:00"
+  location: string; // venue name or "Online"
   isOnline: boolean;
   organizer: string;
   attendees: number;
   capacity: number;
   tags: string[];
   isFree: boolean;
-  price?: number;      // CLP, only when isFree is false
+  price?: number; // CLP, only when isFree is false
 }
 
 export interface CommunityCategory {
@@ -58,3 +58,18 @@ export interface CommunityComment {
   communityPost?: CommunityPost;
   seller?: Seller;
 }
+
+export type CommunityCatalog = {
+  id: number;
+  category: string;
+  slug: string;
+  href: string;
+  description: string;
+  subcategories: {
+    id: number;
+    subcategory: string;
+    slug: string;
+    href: string;
+    description: string;
+  };
+};

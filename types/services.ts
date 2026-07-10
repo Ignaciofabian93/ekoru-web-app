@@ -1,5 +1,18 @@
 import type { Seller } from "./user";
 
+export type ServiceCatalog = {
+  id: number;
+  name: string;
+  href: string;
+  slug: string;
+  subCategoryItems: {
+    id: number;
+    name: string;
+    href: string;
+    slug: string;
+  }[];
+};
+
 export type Service = {
   id: number;
   name: string;

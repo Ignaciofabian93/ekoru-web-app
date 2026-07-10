@@ -42,35 +42,26 @@
   "categories": {
     "title": "Explore our categories",
     "subtitle": "Find what moves you forward.",
-    "topPicks": "Top picks",
-    "tags": {
-      "clothing": "Clothing",
-      "bikes": "Bikes",
-      "plants": "Plants",
-      "electronics": "Electronics",
-      "organic": "Organic",
-      "zeroWaste": "Zero Waste",
-      "fairTrade": "Fair Trade",
-      "repair": "Repair",
-      "rental": "Rental",
-      "swap": "Swap",
-      "upcycle": "Upcycle"
-    },
     "items": {
       "marketplace": {
         "title": "Marketplace",
-        "description": "Buy & sell pre-loved sustainable items",
-        "meta": "567+ products"
+        "description": "Buy & sell pre-loved sustainable items"
       },
       "stores": {
         "title": "Eco Stores",
-        "description": "Discover verified sustainable shops near you",
-        "meta": "89 verified"
+        "description": "Discover verified sustainable shops near you"
       },
       "services": {
         "title": "Services",
-        "description": "Repair, rent & swap — give things a second life",
-        "meta": "45 available"
+        "description": "Repair, rent & swap — give things a second life"
+      },
+      "community": {
+        "title": "Community",
+        "description": "Events, talks and initiatives to be more sustainable together"
+      },
+      "blog": {
+        "title": "Blog",
+        "description": "Tips, guides and experiences shared by the community"
       }
     }
   },

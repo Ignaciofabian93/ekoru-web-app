@@ -1,14 +1,17 @@
 import { gql } from "@apollo/client";
 
 export const GET_COMMUNITY_CATALOG = gql`
-  query GetCommunityCatalog($language: Language = ES) {
+  query GetCommunityCatalog(
+    $language: Language = ES
+    $enableSubCategories: Boolean = true
+  ) {
     getCommunityCatalog(language: $language) {
       id
       category
       slug
       href
       description
-      subcategories {
+      subcategories @include(if: $enableSubCategories) {
         id
         subcategory
         slug
