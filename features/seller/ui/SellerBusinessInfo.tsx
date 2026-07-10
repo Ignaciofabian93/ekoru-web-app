@@ -72,7 +72,7 @@ export function SellerBusinessInfo({ seller }: { seller: Seller }) {
   if (!hasPolicies && !hasService && !hasHours) return null;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {hasPolicies && (
         <section>
           <Title level="h2" size="h6" weight="medium" className="mb-4">

@@ -22,9 +22,9 @@ interface Params {
 
 /**
  * Second-hand marketplace catalog for a PERSON seller. Groups the seller's
- * products by product category and exposes the seller identity carried by the
- * (public) product relation — this is the anonymous-safe way to read a seller's
- * profile, since the by-id `getSeller` query is auth-gated.
+ * products by product category (the groups drive the filter pills; the flat
+ * `products` list drives the paginated grid). Identity comes from
+ * `useSellerProfile`, so this only needs the catalog.
  */
 export function useMarketplaceCatalog({
   sellerId,
@@ -51,12 +51,6 @@ export function useMarketplaceCatalog({
     [data],
   );
 
-  // Identity is carried by the public product→seller relation (PersonProfile).
-  const seller = useMemo(
-    () => products.find((p) => p.seller)?.seller ?? null,
-    [products],
-  );
-
   const categories: CategoryGroup[] = useMemo(() => {
     const map = new Map<string, CategoryGroup>();
     for (const product of products) {
@@ -73,7 +67,6 @@ export function useMarketplaceCatalog({
   }, [products, t]);
 
   return {
-    seller,
     products,
     categories,
     totalCount: data?.getProductsBySeller?.pageInfo.totalCount ?? products.length,

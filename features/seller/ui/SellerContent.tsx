@@ -1,9 +1,14 @@
 "use client";
 
+import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
 import type { SupportedLanguage } from "@/constants/settings";
+import { StoreProductCard } from "@/features/stores/ui/StoreProductCard";
+import { useTranslation } from "@/i18n/context";
 
 import { useMarketplaceCatalog } from "../hooks/useMarketplaceCatalog";
+import { useSellerProfile } from "../hooks/useSellerProfile";
 import { useStoreCatalog } from "../hooks/useStoreCatalog";
+import { NAMESPACE } from "../i18n";
 import { resolveSellerKind } from "../sellerDisplay";
 import { SellerAbout } from "./SellerAbout";
 import { SellerBusinessInfo } from "./SellerBusinessInfo";
@@ -11,7 +16,6 @@ import { SellerCatalog } from "./SellerCatalog";
 import { SellerDetails } from "./SellerDetails";
 import { SellerHero } from "./SellerHero";
 import { SellerStats } from "./SellerStats";
-import { SellerStoreCatalog } from "./SellerStoreCatalog";
 import { SellerErrorState, SellerLoading, SellerNotFound } from "./SellerStatus";
 
 interface Props {
@@ -24,19 +28,31 @@ function Container({ children }: { children: React.ReactNode }) {
 }
 
 export function SellerContent({ id, lang }: Props) {
-  // Identity comes from the public product→seller relation, not the auth-gated
-  // `getSeller` query. A seller is either a PERSON (marketplace products) or a
-  // business (store products), so exactly one of these carries the seller.
-  const marketplace = useMarketplaceCatalog({ sellerId: id });
-  const store = useStoreCatalog({ sellerId: id });
+  const { t } = useTranslation(NAMESPACE);
 
-  const seller = store.seller ?? marketplace.seller;
+  // 1) Identity — independent of the catalog, so a seller with no products still
+  //    resolves rather than 404'ing.
+  const { seller, loading: profileLoading, error: profileError } = useSellerProfile({
+    sellerId: id,
+    lang,
+  });
+
   const isBusiness = resolveSellerKind(seller?.sellerType) === "business";
+
+  // 2) Catalog — the seller kind decides which product query runs. Both hooks are
+  //    called (rules of hooks) but Apollo skips the one that doesn't apply.
+  const marketplace = useMarketplaceCatalog({
+    sellerId: id,
+    enabled: Boolean(seller) && !isBusiness,
+  });
+  const store = useStoreCatalog({
+    sellerId: id,
+    enabled: Boolean(seller) && isBusiness,
+  });
+
   const catalog = isBusiness ? store : marketplace;
 
-  const loading = marketplace.loading || store.loading;
-
-  if (loading && !seller) {
+  if (profileLoading && !seller) {
     return (
       <Container>
         <SellerLoading />
@@ -44,16 +60,15 @@ export function SellerContent({ id, lang }: Props) {
     );
   }
 
+  if (profileError) {
+    return (
+      <Container>
+        <SellerErrorState lang={lang} />
+      </Container>
+    );
+  }
+
   if (!seller) {
-    // Both catalogs settled with no seller: a hard error on both is an error
-    // state; otherwise the id simply doesn't resolve to a visible seller.
-    if (marketplace.error && store.error) {
-      return (
-        <Container>
-          <SellerErrorState lang={lang} />
-        </Container>
-      );
-    }
     return (
       <Container>
         <SellerNotFound lang={lang} />
@@ -65,35 +80,45 @@ export function SellerContent({ id, lang }: Props) {
     <>
       <SellerHero seller={seller} lang={lang} />
       <div className="mx-auto w-full max-w-7xl px-4 py-6 md:py-8">
-        <div className="mt-2 grid gap-6 md:mt-6 md:grid-cols-3 md:gap-8">
-          <aside className="flex min-w-0 flex-col gap-6 md:col-span-1">
+        <div className="flex flex-col gap-8">
+          {/* Seller info — full width on top */}
+          <div className="flex flex-col gap-6">
             <SellerStats
               productsCount={catalog.totalCount}
               categoriesCount={catalog.categories.length}
               memberSince={seller.createdAt}
             />
-            <SellerAbout seller={seller} />
-            <SellerDetails seller={seller} />
+            <div className="grid gap-6 md:grid-cols-2">
+              <SellerAbout seller={seller} />
+              <SellerDetails seller={seller} />
+            </div>
             {isBusiness && <SellerBusinessInfo seller={seller} />}
-          </aside>
-
-          <div className="min-w-0 md:col-span-2">
-            {isBusiness ? (
-              <SellerStoreCatalog
-                lang={lang}
-                categories={store.categories}
-                totalCount={store.totalCount}
-                loading={store.loading}
-              />
-            ) : (
-              <SellerCatalog
-                lang={lang}
-                categories={marketplace.categories}
-                totalCount={marketplace.totalCount}
-                loading={marketplace.loading}
-              />
-            )}
           </div>
+
+          {/* Catalog — full-width grid below */}
+          {isBusiness ? (
+            <SellerCatalog
+              title={t("storeCatalog.title")}
+              subtitle={t("storeCatalog.subtitle")}
+              emptyTitle={t("storeCatalog.empty")}
+              emptyHint={t("storeCatalog.emptyHint")}
+              products={store.products}
+              loading={store.loading}
+              getKey={(p) => p.id}
+              renderProduct={(p) => <StoreProductCard product={p} lang={lang} />}
+            />
+          ) : (
+            <SellerCatalog
+              title={t("catalog.title")}
+              subtitle={t("catalog.subtitle")}
+              emptyTitle={t("catalog.empty")}
+              emptyHint={t("catalog.emptyHint")}
+              products={marketplace.products}
+              loading={marketplace.loading}
+              getKey={(p) => p.id}
+              renderProduct={(p) => <MarketplaceCard product={p} lang={lang} />}
+            />
+          )}
         </div>
       </div>
     </>

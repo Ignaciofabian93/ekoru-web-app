@@ -129,11 +129,6 @@ export function SellerHero({ seller, lang }: Props) {
             </div>
 
             <div className="text-foreground-secondary flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-sm sm:justify-start">
-              <Badge
-                label={t(`sellerTypes.${seller.sellerType}`)}
-                variant="primary"
-                size="large"
-              />
               <span className="inline-flex items-center gap-1.5">
                 <MapPin size={14} strokeWidth={1.8} className="shrink-0" />
                 {location || t("hero.noLocation")}

@@ -18,10 +18,10 @@ interface Params {
 }
 
 /**
- * Retail/service catalog for a business seller. Fetches the store products,
- * groups them by store sub-category, and exposes the seller identity carried by
- * the (public) product relation — the store product→seller relation already
- * includes the full BusinessProfile, so no auth-gated `getSeller` is needed.
+ * Retail/service catalog for a business seller. Fetches the store products and
+ * groups them by store sub-category (the groups drive the filter pills; the flat
+ * `products` list drives the paginated grid). Identity comes from
+ * `useSellerProfile`, so this only needs the catalog.
  */
 export function useStoreCatalog({ sellerId, enabled = true, pageSize = 100 }: Params) {
   const { t } = useTranslation(NAMESPACE);
@@ -47,12 +47,6 @@ export function useStoreCatalog({ sellerId, enabled = true, pageSize = 100 }: Pa
     [data],
   );
 
-  // Identity is carried by the public product→seller relation (BusinessProfile).
-  const seller = useMemo(
-    () => products.find((p) => p.seller)?.seller ?? null,
-    [products],
-  );
-
   const categories: StoreCategoryGroup[] = useMemo(() => {
     const map = new Map<string, StoreCategoryGroup>();
     for (const product of products) {
@@ -70,7 +64,6 @@ export function useStoreCatalog({ sellerId, enabled = true, pageSize = 100 }: Pa
   }, [products, t]);
 
   return {
-    seller,
     products,
     categories,
     totalCount: data?.getStoreProductsBySeller?.pageInfo.totalCount ?? products.length,

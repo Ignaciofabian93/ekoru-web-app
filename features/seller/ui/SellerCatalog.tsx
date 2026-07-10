@@ -1,68 +1,87 @@
 "use client";
 
 import { Package } from "lucide-react";
-import { useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 
-import { useTranslation } from "@/i18n/context";
+import { Pagination } from "@/components/Pagination/Pagination";
 
-import { NAMESPACE } from "../i18n";
-import type { CategoryGroup } from "../types";
-import { SellerCategoriesNav } from "./SellerCategoriesNav";
-import { SellerCategorySection } from "./SellerCategorySection";
+const PAGE_SIZE = 12;
 
-interface Props {
-  lang: string;
-  categories: CategoryGroup[];
-  totalCount: number;
+interface Props<T> {
+  title: string;
+  subtitle: string;
+  emptyTitle: string;
+  emptyHint: string;
+  products: T[];
   loading?: boolean;
+  getKey: (product: T) => string | number;
+  renderProduct: (product: T) => ReactNode;
 }
 
-export function SellerCatalog({ lang, categories, totalCount, loading }: Props) {
-  const { t } = useTranslation(NAMESPACE);
-  const [active, setActive] = useState("all");
+/**
+ * Seller storefront catalog: a single paginated product grid. Generic over the
+ * product type so it serves both the marketplace and store catalogs.
+ */
+export function SellerCatalog<T>({
+  title,
+  subtitle,
+  emptyTitle,
+  emptyHint,
+  products,
+  loading,
+  getKey,
+  renderProduct,
+}: Props<T>) {
+  const [page, setPage] = useState(1);
 
-  const visible = useMemo<CategoryGroup[]>(
-    () => (active === "all" ? categories : categories.filter((c) => c.id === active)),
-    [active, categories],
+  const totalPages = Math.max(1, Math.ceil(products.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pageItems = useMemo(
+    () => products.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE),
+    [products, currentPage],
   );
 
   return (
     <section className="flex min-w-0 flex-col gap-5">
       <div className="min-w-0">
-        <h2 className="text-lg font-semibold text-foreground sm:text-xl">
-          {t("catalog.title")}
-        </h2>
-        <p className="text-sm text-foreground-secondary">{t("catalog.subtitle")}</p>
+        <h2 className="text-foreground text-lg font-semibold sm:text-xl">{title}</h2>
+        <p className="text-foreground-secondary text-sm">{subtitle}</p>
       </div>
 
-      <SellerCategoriesNav
-        categories={categories}
-        active={active}
-        onChange={setActive}
-        totalCount={totalCount}
-      />
-
-      {loading && categories.length === 0 ? (
-        <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, i) => (
+      {loading && products.length === 0 ? (
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-5">
+          {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
               className="bg-background-secondary aspect-3/4 animate-pulse rounded-xl"
             />
           ))}
         </div>
-      ) : categories.length === 0 ? (
+      ) : products.length === 0 ? (
         <div className="text-foreground-secondary flex flex-col items-center gap-2 py-16 text-center">
           <Package size={44} className="opacity-30" strokeWidth={1.4} />
-          <p className="font-semibold">{t("catalog.empty")}</p>
-          <p className="text-sm">{t("catalog.emptyHint")}</p>
+          <p className="font-semibold">{emptyTitle}</p>
+          <p className="text-sm">{emptyHint}</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-6 md:gap-8">
-          {visible.map((group) => (
-            <SellerCategorySection key={group.id} lang={lang} group={group} />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-5">
+            {pageItems.map((product) => (
+              <div key={getKey(product)} className="min-w-0">
+                {renderProduct(product)}
+              </div>
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setPage}
+              showItemsPerPage={false}
+            />
+          )}
+        </>
       )}
     </section>
   );

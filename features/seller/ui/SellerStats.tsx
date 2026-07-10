@@ -49,11 +49,11 @@ export function SellerStats({ productsCount, categoriesCount, memberSince }: Pro
   ];
 
   return (
-    <div className="grid grid-cols-3 md:grid-cols-1 gap-2 sm:gap-3 mb-3">
+    <div className="grid grid-cols-3 gap-2 sm:gap-3">
       {items.map(({ icon: Icon, label, value }) => (
         <div
           key={label}
-          className="flex flex-col md:flex-row items-center gap-1 md:gap-2 rounded-md border border-border-light px-3 py-3 text-center"
+          className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 rounded-md border border-border-light px-3 py-3 text-center"
         >
           <Icon size={18} strokeWidth={1.8} className="text-primary" />
           <Text variant="span" size="sm">
