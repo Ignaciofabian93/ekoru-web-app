@@ -1,9 +1,17 @@
 "use client";
-
 import clsx from "clsx";
 import { ArrowRight, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  type GradientStops,
+  iconSize,
+  iconStroke,
+  letterSpacing,
+  lineHeight,
+} from "@/design/tokens";
+import { Text } from "../Text/Text";
+import { Title } from "../Title/Title";
 
 const AUTO_PLAY_INTERVAL = 4500;
 
@@ -14,7 +22,7 @@ export interface HeroSlide {
   subtitle: string;
   cta: string;
   href: string;
-  gradient: [string, string, string];
+  gradient: GradientStops;
   Icon: LucideIcon;
 }
 
@@ -39,31 +47,58 @@ function SlideItem({ item }: { item: HeroSlide }) {
       {/* Content — background stays full-width, content aligns to the page width */}
       <div className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col justify-between p-5 pb-11.5">
         <div className="flex flex-row items-center gap-2.5">
-          <div className="flex size-9.5 items-center justify-center rounded-lg border border-white/25 bg-white/18 text-on-primary">
-            <Icon size={18} color="currentColor" strokeWidth={1.5} />
+          <div
+            className={clsx(
+              "flex size-9.5 items-center justify-center",
+              "rounded-lg border border-white/25",
+              "bg-white/18",
+              "text-on-primary",
+            )}
+          >
+            <Icon
+              size={iconSize.md}
+              color="currentColor"
+              strokeWidth={iconStroke.default}
+            />
           </div>
-          <div className="rounded-2xl border border-white/30 bg-white/18 px-3 py-1.25">
-            <span className="font-sans text-xs font-semibold tracking-[0.3px] text-on-primary">
-              {item.label}
-            </span>
-          </div>
+          <Title level="h6" size="h6" color="white">
+            {item.label}
+          </Title>
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <span className="font-sans text-3xl font-bold leading-8.5 tracking-[-0.5px] text-on-primary">
+          <Title
+            level="h2"
+            size="h2"
+            color="white"
+            style={{ lineHeight: lineHeight.tight, letterSpacing: letterSpacing.tight }}
+          >
             {item.title}
-          </span>
-          <span className="font-sans text-sm font-normal leading-5 text-white/82">
+          </Title>
+          <Text variant="p" size="sm" color="white" className="opacity-80">
             {item.subtitle}
-          </span>
+          </Text>
           <Link
             href={item.href}
-            className="mt-0.5 inline-flex flex-row items-center gap-1.25 self-start rounded-2xl border border-white/35 bg-white/18 px-3.5 py-2 text-on-primary transition-colors hover:bg-white/28"
+            className={clsx(
+              "mt-0.5 inline-flex flex-row items-center",
+              "gap-1.25 self-start",
+              "rounded-2xl border border-white/35",
+              "bg-white/18",
+              "px-3.5 py-2",
+              "text-on-primary",
+              "transition-colors",
+              "hover:bg-white/28",
+            )}
           >
-            <span className="font-sans text-sm font-semibold text-on-primary">
+            <Text variant="span" size="sm" weight="semibold" color="white">
               {item.cta}
-            </span>
-            <ArrowRight size={13} color="currentColor" strokeWidth={2.5} />
+            </Text>
+            <ArrowRight
+              size={iconSize.xs}
+              color="currentColor"
+              strokeWidth={iconStroke.strong}
+            />
           </Link>
         </div>
       </div>
@@ -133,7 +168,13 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
       </div>
 
       {/* Dot indicators — aligned to the same max-width column as the content */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-4 mx-auto flex max-w-5xl flex-row items-center justify-end gap-1.25 px-5">
+      <div
+        className={clsx(
+          "pointer-events-none absolute inset-x-0 bottom-4 mx-auto",
+          "flex max-w-5xl flex-row items-center justify-end",
+          "gap-1.25 px-5",
+        )}
+      >
         {slides.map((_, index) => (
           <div
             key={index}

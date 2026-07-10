@@ -8,22 +8,34 @@
         "cta": "Explorer"
       },
       "stores": {
-        "label": "Éco Boutiques",
-        "title": "Locales et vérifiées",
+        "label": "Boutiques Durables",
+        "title": "Commerce local et vérifié",
         "subtitle": "Achetez auprès d'entreprises durables de votre communauté",
         "cta": "Trouver des boutiques"
       },
-      "impact": {
-        "label": "Impact",
-        "title": "Agissez vraiment",
-        "subtitle": "Chaque achat éco-responsable réduit votre empreinte",
-        "cta": "Voir l'impact"
+      "services": {
+        "label": "Services",
+        "title": "Réparez vos objets",
+        "subtitle": "Prolongez la vie de ce qui vous accompagne au quotidien",
+        "cta": "Trouver des services"
       },
-      "circular": {
-        "label": "Circulaire",
-        "title": "Bouclez la boucle",
-        "subtitle": "Vendez, échangez et réparez — donnez une seconde vie à vos objets",
-        "cta": "Rejoindre"
+      "recycle": {
+        "label": "Recyclage",
+        "title": "Découvrez vos points de recyclage",
+        "subtitle": "Consultez la carte et trouvez les points proches de chez vous",
+        "cta": "Voir la carte"
+      },
+      "community": {
+        "label": "Communauté",
+        "title": "Soyons tous un peu plus durables",
+        "subtitle": "Événements, rencontres, tutoriels et plus encore",
+        "cta": "En savoir plus"
+      },
+      "blog": {
+        "label": "Blog",
+        "title": "Contenus informatifs et expériences",
+        "subtitle": "Entraidons-nous en partageant astuces et conseils",
+        "cta": "Voir les sujets"
       }
     }
   },
@@ -84,6 +96,16 @@
     "seeStore": "Voir la boutique",
     "verified": "Vérifiée"
   },
+  "storeProducts": {
+    "title": "Produits Durables",
+    "subtitle": "Articles durables et de qualité",
+    "seeAll": "Voir tout",
+    "addToCart": "Ajouter au panier",
+    "outOfStock": "Rupture de stock",
+    "noProducts": "Aucun produit disponible",
+    "scrollPrevious": "Défiler vers la gauche",
+    "scrollNext": "Défiler vers la droite"
+  },
   "services": {
     "title": "Éco Services",
     "subtitle": "Réparation, location et échange",
@@ -97,21 +119,33 @@
     "subtitle": "Trouvailles durables sélectionnées",
     "seeAll": "Voir tout"
   },
-  "storeProducts": {
-    "title": "De nos boutiques",
-    "subtitle": "Nouveautés de boutiques éco vérifiées",
-    "seeAll": "Voir tout",
-    "addToCart": "Ajouter au panier",
-    "outOfStock": "Rupture de stock",
-    "noProducts": "Aucun produit disponible",
-    "scrollPrevious": "Défiler vers la gauche",
-    "scrollNext": "Défiler vers la droite"
-  },
   "exchange": {
     "title": "Prêts à échanger",
     "subtitle": "Échangez des articles et donnez-leur une seconde vie",
     "seeAll": "Voir tout",
     "scrollPrevious": "Défiler vers la gauche",
     "scrollNext": "Défiler vers la droite"
+  },
+  "adSections": {
+    "marketplace": {
+      "title": "Rejoignez l'économie circulaire",
+      "description": "Achetez, vendez et échangez de manière durable et responsable.",
+      "cta": "Explorer"
+    },
+    "stores": {
+      "title": "Rencontrez les créateurs locaux",
+      "description": "Soutenez les artisans et entrepreneurs de votre communauté.",
+      "cta": "Voir les boutiques"
+    },
+    "services": {
+      "title": "Réparez et réutilisez",
+      "description": "Donnez une seconde vie à vos objets grâce aux services de réparation et de recyclage.",
+      "cta": "Voir les services"
+    },
+    "community": {
+      "title": "Échangez et partagez",
+      "description": "Participez à l'économie collaborative et réduisez le gaspillage.",
+      "cta": "Voir les échanges"
+    }
   }
 }

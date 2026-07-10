@@ -1,8 +1,12 @@
 import clsx from "clsx";
 import React from "react";
+import { lineHeight } from "@/design/tokens";
 
 type Variant = "p" | "span" | "label" | "blockquote" | "small" | "code";
+// Sizes resolve to the design-token font scale (design/tokens.ts fontSize,
+// mirrored in globals.css @theme).
 type Size = "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
+type Leading = keyof typeof lineHeight;
 type Weight = "normal" | "medium" | "semibold" | "bold";
 type TextColor =
   | "default"
@@ -22,6 +26,8 @@ export interface TextProps {
   size?: Size;
   weight?: Weight;
   color?: TextColor;
+  /** Line height from the design tokens. Defaults to `relaxed` (body copy). */
+  leading?: Leading;
   align?: Align;
   style?: React.CSSProperties;
   children?: React.ReactNode;
@@ -91,6 +97,7 @@ const Text = React.forwardRef<HTMLElement, TextProps>(
       size,
       weight,
       color = "default",
+      leading = "relaxed",
       align = "left",
       style,
       children,
@@ -117,7 +124,7 @@ const Text = React.forwardRef<HTMLElement, TextProps>(
 
     const sharedProps = {
       ref: ref as never,
-      style,
+      style: { lineHeight: lineHeight[leading], ...style },
       className: clsx(computed, className),
       onClick,
     };

@@ -139,6 +139,24 @@ export const colors = {
   white: raw.white,
 } as const;
 
+// ─── Gradients (nature palette, dark → light stops) ──────────────
+// Used for hero/carousel slide backgrounds. White text goes on top,
+// so every triple starts dark enough to keep contrast.
+export type GradientStops = readonly [string, string, string];
+
+export const gradients = {
+  // Greens
+  forest: [raw.lime800, "#2d6a0f", raw.lime600], // olive → lime
+  pine: ["#052e16", "#166534", "#16a34a"], // darkest green → grass
+  moss: ["#1a2e05", "#3f6212", raw.lime700], // near-black olive → moss
+  meadow: ["#14532d", "#3f6212", raw.lime500], // pine → fresh lime
+  // Teals / cyans
+  ocean: [raw.cyan700, "#0c7b95", "#14b8a6"], // cyan → teal
+  jungle: ["#134e4a", "#065f46", "#059669"], // dark teal → emerald
+  lagoon: ["#042f2e", "#0f766e", "#2dd4bf"], // deep teal → aqua
+  river: ["#164e63", "#155e75", "#0891b2"], // deep water cyans
+} as const satisfies Record<string, GradientStops>;
+
 // ─── Typography ───────────────────────────────────────────────────
 export const fontFamily = {
   sans: "var(--font-cabin), sans-serif",
@@ -334,6 +352,7 @@ export const zIndex = {
 // ─── Barrel export ────────────────────────────────────────────────
 const tokens = {
   colors,
+  gradients,
   fontFamily,
   fontSize,
   lineHeight,

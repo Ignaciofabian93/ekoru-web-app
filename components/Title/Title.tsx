@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import React from "react";
+import { letterSpacing, lineHeight } from "@/design/tokens";
 
 type Level = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 type Weight = "normal" | "medium" | "semibold" | "bold" | "extrabold";
@@ -29,13 +30,15 @@ export interface TitleProps {
   onClick?: React.MouseEventHandler;
 }
 
+// text-* classes resolve to the design-token font scale (design/tokens.ts
+// fontSize, mirrored in globals.css @theme): 36 / 30 / 24 / 20 / 17 / 15.
 const SIZE_CLASS: Record<Level, string> = {
-  h1: "text-[36px]",
-  h2: "text-[30px]",
-  h3: "text-[26px]",
-  h4: "text-[22px]",
-  h5: "text-[19px]",
-  h6: "text-[17px]",
+  h1: "text-4xl",
+  h2: "text-3xl",
+  h3: "text-2xl",
+  h4: "text-xl",
+  h5: "text-lg",
+  h6: "text-base",
 };
 
 const WEIGHT_CLASS: Record<Weight, string> = {
@@ -83,9 +86,9 @@ const Title = React.forwardRef<HTMLHeadingElement, TitleProps>(
     return (
       <Tag
         ref={ref}
-        style={style}
+        style={{ lineHeight: lineHeight.snug, letterSpacing: letterSpacing.snug, ...style }}
         className={clsx(
-          "m-0 font-sans leading-[1.2] tracking-[-0.4px]",
+          "m-0 font-sans",
           SIZE_CLASS[size ?? level],
           WEIGHT_CLASS[weight],
           COLOR_CLASS[color],

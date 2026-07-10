@@ -3,27 +3,39 @@
     "slides": {
       "marketplace": {
         "label": "Marketplace",
-        "title": "Shop Sustainably",
+        "title": "Shop sustainably",
         "subtitle": "Discover pre-loved products that care for the planet",
         "cta": "Explore now"
       },
       "stores": {
-        "label": "Eco Stores",
-        "title": "Local & Verified",
+        "label": "Sustainable Stores",
+        "title": "Local, verified commerce",
         "subtitle": "Shop from sustainable businesses in your community",
         "cta": "Find stores"
       },
-      "impact": {
-        "label": "Impact",
-        "title": "Make It Count",
-        "subtitle": "Every eco-conscious purchase reduces your footprint",
-        "cta": "See impact"
+      "services": {
+        "label": "Services",
+        "title": "Repair your belongings",
+        "subtitle": "Give a longer life to the things you use every day",
+        "cta": "Find services"
       },
-      "circular": {
-        "label": "Circular",
-        "title": "Close the Loop",
-        "subtitle": "Sell, swap & repair — give your items a second life",
-        "cta": "Join now"
+      "recycle": {
+        "label": "Recycle",
+        "title": "Know your recycling points",
+        "subtitle": "Check the map and find nearby places to recycle",
+        "cta": "View map"
+      },
+      "community": {
+        "label": "Community",
+        "title": "Let's all be a little more sustainable",
+        "subtitle": "Events, talks, tutorials and more",
+        "cta": "Learn more"
+      },
+      "blog": {
+        "label": "Blog",
+        "title": "Insights and shared experiences",
+        "subtitle": "We help each other by sharing tips and advice",
+        "cta": "Browse topics"
       }
     }
   },
@@ -84,6 +96,16 @@
     "seeStore": "See store",
     "verified": "Verified"
   },
+  "storeProducts": {
+    "title": "Sustainable Products",
+    "subtitle": "Sustainable, quality items",
+    "seeAll": "See all",
+    "addToCart": "Add to cart",
+    "outOfStock": "Out of stock",
+    "noProducts": "No products available",
+    "scrollPrevious": "Scroll left",
+    "scrollNext": "Scroll right"
+  },
   "services": {
     "title": "Eco Services",
     "subtitle": "Repair, rent & swap providers",
@@ -97,21 +119,33 @@
     "subtitle": "Handpicked sustainable finds",
     "seeAll": "See all"
   },
-  "storeProducts": {
-    "title": "From our stores",
-    "subtitle": "Fresh finds from verified eco stores",
-    "seeAll": "See all",
-    "addToCart": "Add to cart",
-    "outOfStock": "Out of stock",
-    "noProducts": "No products available",
-    "scrollPrevious": "Scroll left",
-    "scrollNext": "Scroll right"
-  },
   "exchange": {
     "title": "Ready to Swap",
     "subtitle": "Trade items and give them a second life",
     "seeAll": "See all",
     "scrollPrevious": "Scroll left",
     "scrollNext": "Scroll right"
+  },
+  "adSections": {
+    "marketplace": {
+      "title": "Join the circular economy",
+      "description": "Buy, sell and swap sustainably and responsibly.",
+      "cta": "Explore now"
+    },
+    "stores": {
+      "title": "Meet the local makers",
+      "description": "Support the artisans and entrepreneurs in your community.",
+      "cta": "See stores"
+    },
+    "services": {
+      "title": "Repair and reuse",
+      "description": "Give your things a second life with repair and recycling services.",
+      "cta": "See services"
+    },
+    "community": {
+      "title": "Swap and share",
+      "description": "Take part in the collaborative economy and reduce waste.",
+      "cta": "See swaps"
+    }
   }
 }

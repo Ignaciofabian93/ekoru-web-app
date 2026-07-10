@@ -8,22 +8,34 @@
         "cta": "Explorar ahora"
       },
       "stores": {
-        "label": "Eco Tiendas",
-        "title": "Locales y verificadas",
+        "label": "Tiendas Sustentables",
+        "title": "Comercio local y verificado",
         "subtitle": "Compra en negocios sostenibles de tu comunidad",
         "cta": "Buscar tiendas"
       },
-      "impact": {
-        "label": "Impacto",
-        "title": "Haz que cuente",
-        "subtitle": "Cada compra consciente reduce tu huella",
-        "cta": "Ver impacto"
+      "services": {
+        "label": "Servicios",
+        "title": "Repara tus pertenencias",
+        "subtitle": "Dale más vida útil a lo que te acompaña día a día",
+        "cta": "Buscar servicios"
       },
-      "circular": {
-        "label": "Circular",
-        "title": "Cierra el ciclo",
-        "subtitle": "Vende, intercambia y repara — dale una segunda vida a tus cosas",
-        "cta": "Únete ahora"
+      "recycle": {
+        "label": "Recicla",
+        "title": "Conoce tus puntos de reciclaje",
+        "subtitle": "Revisa el mapa y busca tus puntos cercanos para reciclar",
+        "cta": "Ver mapa"
+      },
+      "community": {
+        "label": "Comunidad",
+        "title": "Seamos todos un poco más sustentables",
+        "subtitle": "Eventos, charlas, tutoriales y más",
+        "cta": "Ver información"
+      },
+      "blog": {
+        "label": "Blog",
+        "title": "Material informativo y experiencias",
+        "subtitle": "Entre todos nos ayudamos compartiendo tips y datos",
+        "cta": "Ver temas"
       }
     }
   },
@@ -88,6 +100,8 @@
     "title": "Productos Sustentables",
     "subtitle": "Artículos sostenibles y de calidad",
     "seeAll": "Ver todos",
+    "addToCart": "Agregar al carrito",
+    "outOfStock": "Agotado",
     "noProducts": "No hay productos disponibles",
     "scrollPrevious": "Desplazar a la izquierda",
     "scrollNext": "Desplazar a la derecha"
@@ -104,16 +118,6 @@
     "title": "Productos destacados",
     "subtitle": "Hallazgos sostenibles seleccionados",
     "seeAll": "Ver todos"
-  },
-  "storeProducts": {
-    "title": "Desde nuestras tiendas",
-    "subtitle": "Novedades de tiendas eco verificadas",
-    "seeAll": "Ver todos",
-    "addToCart": "Agregar al carrito",
-    "outOfStock": "Agotado",
-    "noProducts": "No hay productos disponibles",
-    "scrollPrevious": "Desplazar a la izquierda",
-    "scrollNext": "Desplazar a la derecha"
   },
   "exchange": {
     "title": "Listos para intercambiar",
