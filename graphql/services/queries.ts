@@ -194,3 +194,71 @@ export const GET_SERVICE_CATALOG = gql`
     }
   }
 `;
+
+export const GET_SERVICE_CATEGORY_SERVICES_BY_SLUG = gql`
+  ${SERVICE_DETAIL_FIELDS_FRAGMENT}
+  ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}
+  ${SERVICE_CATEGORY_FIELDS_FRAGMENT}
+  query GetServiceCategoryServicesBySlug(
+    $slug: String!
+    $language: Language!
+    $page: Int = 1
+    $pageSize: Int = 12
+    $isActive: Boolean
+    $requireServiceCategoryFetch: Boolean! = true
+  ) {
+    getServiceCategoryServicesBySlug(
+      slug: $slug
+      language: $language
+      page: $page
+      pageSize: $pageSize
+      isActive: $isActive
+    ) {
+      services {
+        nodes {
+          ...ServiceDetailFields
+        }
+        pageInfo {
+          ...ServicePageInfoFields
+        }
+      }
+      serviceCategory @include(if: $requireServiceCategoryFetch) {
+        ...ServiceCategoryFields
+      }
+    }
+  }
+`;
+
+export const GET_SERVICE_SUB_CATEGORY_SERVICES_BY_SLUG = gql`
+  ${SERVICE_DETAIL_FIELDS_FRAGMENT}
+  ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}
+  ${SERVICE_SUB_CATEGORY_FIELDS_FRAGMENT}
+  query GetServiceSubCategoryServicesBySlug(
+    $slug: String!
+    $language: Language!
+    $page: Int = 1
+    $pageSize: Int = 12
+    $isActive: Boolean
+    $requireServiceSubCategoryFetch: Boolean! = true
+  ) {
+    getServiceSubCategoryServicesBySlug(
+      slug: $slug
+      language: $language
+      page: $page
+      pageSize: $pageSize
+      isActive: $isActive
+    ) {
+      services {
+        nodes {
+          ...ServiceDetailFields
+        }
+        pageInfo {
+          ...ServicePageInfoFields
+        }
+      }
+      serviceSubCategory @include(if: $requireServiceSubCategoryFetch) {
+        ...ServiceSubCategoryFields
+      }
+    }
+  }
+`;

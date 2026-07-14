@@ -3,21 +3,30 @@ import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 
 import { getStoresDictionary, NAMESPACE } from "../i18n";
-import { StoreCategoryContent } from "../ui/StoreCategoryContent";
 import { StoreShell } from "../ui/StoreShell";
+import { StoreSubCategoryContent } from "../ui/StoreSubCategoryContent";
 
 interface Props {
   lang: SupportedLanguage;
-  slug: string;
+  categorySlug: string;
+  subCategorySlug: string;
 }
 
-export async function StoreCategory({ lang, slug }: Props) {
+export async function StoreSubCategory({
+  lang,
+  categorySlug,
+  subCategorySlug,
+}: Props) {
   const dict = await getStoresDictionary(lang);
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
       <StoreShell nav={<Navigation lang={lang} />}>
-        <StoreCategoryContent lang={lang} slug={slug} />
+        <StoreSubCategoryContent
+          lang={lang}
+          categorySlug={categorySlug}
+          subCategorySlug={subCategorySlug}
+        />
       </StoreShell>
     </DictionaryProvider>
   );

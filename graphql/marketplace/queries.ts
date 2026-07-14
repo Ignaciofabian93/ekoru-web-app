@@ -595,6 +595,12 @@ export const GET_DEPARTMENT_PRODUCTS_BY_SLUG = gql`
                 allowExchanges
                 personMembershipSubscriptionId
               }
+              ... on BusinessProfile {
+                id
+                sellerId
+                businessName
+                logo
+              }
             }
             sellerLevel {
               id
@@ -737,7 +743,7 @@ export const GET_DEPARTMENT_CATEGORY_PRODUCTS_BY_SLUG = gql`
     $pageSize: Int
     $filter: ProductFilterInput
     $sort: ProductSortInput
-    $requireDepartmentCategoryFetch: Boolean
+    $requireDepartmentCategoryFetch: Boolean! = true
   ) {
     getDepartmentCategoryProductsBySlug(
       slug: $slug
@@ -808,6 +814,12 @@ export const GET_DEPARTMENT_CATEGORY_PRODUCTS_BY_SLUG = gql`
                 coverImage
                 allowExchanges
                 personMembershipSubscriptionId
+              }
+              ... on BusinessProfile {
+                id
+                sellerId
+                businessName
+                logo
               }
             }
             sellerLevel {
@@ -935,7 +947,7 @@ export const GET_PRODUCT_CATEGORY_PRODUCTS_BY_SLUG = gql`
     $pageSize: Int
     $filter: ProductFilterInput
     $sort: ProductSortInput
-    $requireProductCategoryFetch: Boolean
+    $requireProductCategoryFetch: Boolean! = true
   ) {
     getProductCategoryProductsBySlug(
       slug: $slug
@@ -1006,6 +1018,12 @@ export const GET_PRODUCT_CATEGORY_PRODUCTS_BY_SLUG = gql`
                 coverImage
                 allowExchanges
                 personMembershipSubscriptionId
+              }
+              ... on BusinessProfile {
+                id
+                sellerId
+                businessName
+                logo
               }
             }
             sellerLevel {

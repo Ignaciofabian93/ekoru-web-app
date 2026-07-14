@@ -52,9 +52,27 @@ export type PageInfo = {
 
 export type StoreSortField = "createdAt" | "price";
 
-export type SortDirection = "ASC" | "DESC";
+// Matches the stores service's StoreProductSortInput: prisma field name plus
+// lowercase order.
+export type StoreSortInput = {
+  field: StoreSortField;
+  order: "asc" | "desc";
+};
 
 export type StoreSortValue = "newest" | "oldest" | "priceAsc" | "priceDesc";
+
+/* ---- Consolidated category browsing (get*ProductsBySlug) ---- */
+
+export type StoreSubCategoryDetail = {
+  id: number;
+  translation: { id: number; name: string; slug: string; href: string } | null;
+};
+
+export type StoreCategoryDetail = {
+  id: number;
+  translation: { id: number; name: string; slug: string; href: string } | null;
+  storeSubCategory: StoreSubCategoryDetail[];
+};
 
 export type StoreFilters = {
   search: string;

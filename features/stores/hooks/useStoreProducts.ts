@@ -3,13 +3,13 @@ import { useQuery } from "@apollo/client/react";
 
 import { GET_STORE_PRODUCTS } from "@/graphql/stores/queries";
 
-import type { PageInfo, StoreListProduct } from "../types";
+import type { PageInfo, StoreListProduct, StoreSortInput } from "../types";
 
 interface Params {
   page: number;
   pageSize: number;
   filter?: Record<string, unknown>;
-  sort?: { field: string; direction: "ASC" | "DESC" };
+  sort?: StoreSortInput;
 }
 
 export function useStoreProducts({ page, pageSize }: Params) {

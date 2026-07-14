@@ -368,3 +368,75 @@ export const GET_STORE_PRODUCTS_ON_OFFER = gql`
     }
   }
 `;
+
+export const GET_STORE_CATEGORY_PRODUCTS_BY_SLUG = gql`
+  ${STORE_PRODUCT_DETAIL_FIELDS_FRAGMENT}
+  ${STORE_PAGE_INFO_FIELDS_FRAGMENT}
+  ${STORE_CATEGORY_FIELDS_FRAGMENT}
+  query GetStoreCategoryProductsBySlug(
+    $slug: String!
+    $language: Language!
+    $page: Int = 1
+    $pageSize: Int = 12
+    $filter: StoreProductFilterInput
+    $sort: StoreProductSortInput
+    $requireStoreCategoryFetch: Boolean! = true
+  ) {
+    getStoreCategoryProductsBySlug(
+      slug: $slug
+      language: $language
+      page: $page
+      pageSize: $pageSize
+      filter: $filter
+      sort: $sort
+    ) {
+      products {
+        nodes {
+          ...StoreProductDetailFields
+        }
+        pageInfo {
+          ...StorePageInfoFields
+        }
+      }
+      storeCategory @include(if: $requireStoreCategoryFetch) {
+        ...StoreCategoryFields
+      }
+    }
+  }
+`;
+
+export const GET_STORE_SUB_CATEGORY_PRODUCTS_BY_SLUG = gql`
+  ${STORE_PRODUCT_DETAIL_FIELDS_FRAGMENT}
+  ${STORE_PAGE_INFO_FIELDS_FRAGMENT}
+  ${STORE_SUB_CATEGORY_FIELDS_FRAGMENT}
+  query GetStoreSubCategoryProductsBySlug(
+    $slug: String!
+    $language: Language!
+    $page: Int = 1
+    $pageSize: Int = 12
+    $filter: StoreProductFilterInput
+    $sort: StoreProductSortInput
+    $requireStoreSubCategoryFetch: Boolean! = true
+  ) {
+    getStoreSubCategoryProductsBySlug(
+      slug: $slug
+      language: $language
+      page: $page
+      pageSize: $pageSize
+      filter: $filter
+      sort: $sort
+    ) {
+      products {
+        nodes {
+          ...StoreProductDetailFields
+        }
+        pageInfo {
+          ...StorePageInfoFields
+        }
+      }
+      storeSubCategory @include(if: $requireStoreSubCategoryFetch) {
+        ...StoreSubCategoryFields
+      }
+    }
+  }
+`;

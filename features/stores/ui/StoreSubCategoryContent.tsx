@@ -3,28 +3,30 @@ import { Text } from "@/components/Text/Text";
 import { Title } from "@/components/Title/Title";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
-import { useMemo } from "react";
 
-import { useProductsByStoreCategory } from "../hooks/useProductsByStoreCategory";
+import { useProductsByStoreSubCategory } from "../hooks/useProductsByStoreSubCategory";
 import { NAMESPACE } from "../i18n";
-import type { StoreCatalogSubItem } from "../types";
 import { StoreBreadcrumbs } from "./StoreBreadcrumbs";
 import { StoreFilters } from "./StoreFilters";
 import { StoreProductResults } from "./StoreProductResults";
-import { StoreSubCategoryList } from "./StoreSubCategoryList";
 
 interface Props {
   lang: SupportedLanguage;
-  slug: string;
+  categorySlug: string;
+  subCategorySlug: string;
 }
 
-export function StoreCategoryContent({ lang, slug }: Props) {
+export function StoreSubCategoryContent({
+  lang,
+  categorySlug,
+  subCategorySlug,
+}: Props) {
   const { t } = useTranslation(NAMESPACE);
 
   const {
     products,
     pageInfo,
-    storeCategory,
+    storeSubCategory,
     loading,
     filters,
     sort,
@@ -34,42 +36,28 @@ export function StoreCategoryContent({ lang, slug }: Props) {
     reset,
     handlePageChange,
     handlePageSizeChange,
-  } = useProductsByStoreCategory({ language: lang, slug });
+  } = useProductsByStoreSubCategory({ language: lang, slug: subCategorySlug });
 
-  const categoryName = storeCategory?.translation?.name ?? slug;
-
-  const subCategoryItems: StoreCatalogSubItem[] = useMemo(
-    () =>
-      (storeCategory?.storeSubCategory ?? []).map((sub) => ({
-        id: sub.id,
-        name: sub.translation?.name ?? "",
-        slug: sub.translation?.slug ?? "",
-        href: sub.translation?.href ?? "",
-      })),
-    [storeCategory],
-  );
+  const subCategoryName = storeSubCategory?.translation?.name ?? subCategorySlug;
 
   return (
     <div className="flex flex-col gap-8">
       <StoreBreadcrumbs
         rootHref={`/${lang}/stores`}
-        items={[{ label: categoryName }]}
+        items={[
+          { label: categorySlug, href: `/${lang}/stores/${categorySlug}` },
+          { label: subCategoryName },
+        ]}
       />
 
       <div className="flex flex-col gap-1">
         <Title level="h1" size="h3">
-          {t("page.categoryTitle", { name: categoryName })}
+          {t("page.categoryTitle", { name: subCategoryName })}
         </Title>
         <Text color="secondary">
-          {t("page.categorySubtitle", { name: categoryName })}
+          {t("page.categorySubtitle", { name: subCategoryName })}
         </Text>
       </div>
-
-      <StoreSubCategoryList
-        lang={lang}
-        categorySlug={slug}
-        subCategoryItems={subCategoryItems}
-      />
 
       <StoreFilters
         filters={filters}

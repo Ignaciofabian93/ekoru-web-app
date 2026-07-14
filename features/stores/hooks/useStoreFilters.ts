@@ -4,20 +4,16 @@ import { useCallback, useMemo, useState } from "react";
 import {
   DEFAULT_PAGE_SIZE,
   EMPTY_FILTERS,
-  type SortDirection,
   type StoreFilters,
-  type StoreSortField,
+  type StoreSortInput,
   type StoreSortValue,
 } from "../types";
 
-const SORT_MAP: Record<
-  StoreSortValue,
-  { field: StoreSortField; direction: SortDirection }
-> = {
-  newest: { field: "createdAt", direction: "DESC" },
-  oldest: { field: "createdAt", direction: "ASC" },
-  priceAsc: { field: "price", direction: "ASC" },
-  priceDesc: { field: "price", direction: "DESC" },
+const SORT_MAP: Record<StoreSortValue, StoreSortInput> = {
+  newest: { field: "createdAt", order: "desc" },
+  oldest: { field: "createdAt", order: "asc" },
+  priceAsc: { field: "price", order: "asc" },
+  priceDesc: { field: "price", order: "desc" },
 };
 
 export function useStoreFilters() {
@@ -54,7 +50,7 @@ export function useStoreFilters() {
   // does not receive nulls that would short-circuit the where-clause.
   const filterInput = useMemo(() => {
     const input: Record<string, unknown> = {};
-    if (filters.search.trim()) input.search = filters.search.trim();
+    if (filters.search.trim()) input.name = filters.search.trim();
     if (filters.minPrice) input.minPrice = Number(filters.minPrice);
     if (filters.maxPrice) input.maxPrice = Number(filters.maxPrice);
     if (filters.onOfferOnly) input.hasOffer = true;

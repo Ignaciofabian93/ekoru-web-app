@@ -1,14 +1,14 @@
 "use client";
 import type { SupportedLanguage } from "@/constants/settings";
-import { GET_SERVICE_SUB_CATEGORY_SERVICES_BY_SLUG } from "@/graphql/services/queries";
+import { GET_SERVICE_CATEGORY_SERVICES_BY_SLUG } from "@/graphql/services/queries";
 import { useQuery } from "@apollo/client/react";
 import { useState } from "react";
 
-import type { ServiceSubCategoryDetail, ServicesConnection } from "../types";
+import type { ServiceCategoryDetail, ServicesConnection } from "../types";
 
 const DEFAULT_PAGE_SIZE = 12;
 
-export function useServicesBySubcategory({
+export function useServicesByCategory({
   slug,
   language,
 }: {
@@ -18,38 +18,38 @@ export function useServicesBySubcategory({
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
-  // The sub category header only needs to travel once; pagination keeps
-  // serving it from the cache.
-  const requireServiceSubCategoryFetch = page === 1;
+  // The category header and subcategory list only need to travel once;
+  // pagination keeps serving them from the cache.
+  const requireServiceCategoryFetch = page === 1;
 
   const { data, loading, error, previousData } = useQuery<{
-    getServiceSubCategoryServicesBySlug: {
-      serviceSubCategory?: ServiceSubCategoryDetail;
+    getServiceCategoryServicesBySlug: {
+      serviceCategory?: ServiceCategoryDetail;
       services: ServicesConnection;
     } | null;
-  }>(GET_SERVICE_SUB_CATEGORY_SERVICES_BY_SLUG, {
+  }>(GET_SERVICE_CATEGORY_SERVICES_BY_SLUG, {
     variables: {
       slug,
       language: language.toUpperCase(),
       page,
       pageSize,
       isActive: true,
-      requireServiceSubCategoryFetch,
+      requireServiceCategoryFetch,
     },
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });
 
   const payload =
-    data?.getServiceSubCategoryServicesBySlug ??
-    previousData?.getServiceSubCategoryServicesBySlug;
+    data?.getServiceCategoryServicesBySlug ??
+    previousData?.getServiceCategoryServicesBySlug;
 
   return {
     services: payload?.services.nodes ?? [],
     pageInfo: payload?.services.pageInfo,
-    serviceSubCategory:
-      data?.getServiceSubCategoryServicesBySlug?.serviceSubCategory ??
-      previousData?.getServiceSubCategoryServicesBySlug?.serviceSubCategory ??
+    serviceCategory:
+      data?.getServiceCategoryServicesBySlug?.serviceCategory ??
+      previousData?.getServiceCategoryServicesBySlug?.serviceCategory ??
       null,
     loading,
     error,

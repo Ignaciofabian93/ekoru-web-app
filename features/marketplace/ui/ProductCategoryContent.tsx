@@ -3,13 +3,10 @@ import { Text } from "@/components/Text/Text";
 import { Title } from "@/components/Title/Title";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
-import { useMemo } from "react";
 
-import { useProductsByDepartmentCategory } from "../hooks/useProductsByDepartmentCategory";
+import { useProductsByProductCategory } from "../hooks/useProductsByProductCategory";
 import { NAMESPACE } from "../i18n";
-import type { CatalogProductCategory } from "../types";
 import { Breadcrumbs } from "./Breadcrumbs";
-import { ProductCategoryList } from "./ProductCategoryList";
 import { ProductFilters } from "./ProductFilters";
 import { ProductResults } from "./ProductResults";
 
@@ -17,19 +14,21 @@ interface Props {
   lang: SupportedLanguage;
   departmentSlug: string;
   categorySlug: string;
+  productCategorySlug: string;
 }
 
-export function DepartmentCategoryContent({
+export function ProductCategoryContent({
   lang,
   departmentSlug,
   categorySlug,
+  productCategorySlug,
 }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
   const {
     products,
     pageInfo,
-    departmentCategory,
+    productCategory,
     loading,
     filters,
     sort,
@@ -39,20 +38,10 @@ export function DepartmentCategoryContent({
     reset,
     handlePageChange,
     handlePageSizeChange,
-  } = useProductsByDepartmentCategory({ language: lang, slug: categorySlug });
+  } = useProductsByProductCategory({ language: lang, slug: productCategorySlug });
 
-  const categoryName = departmentCategory?.translation?.name ?? categorySlug;
-
-  const productCategories: CatalogProductCategory[] = useMemo(
-    () =>
-      (departmentCategory?.productCategory ?? []).map((pc) => ({
-        id: pc.id,
-        name: pc.translation?.name ?? "",
-        slug: pc.translation?.slug ?? "",
-        href: pc.translation?.href ?? "",
-      })),
-    [departmentCategory],
-  );
+  const productCategoryName =
+    productCategory?.translation?.name ?? productCategorySlug;
 
   return (
     <div className="flex flex-col gap-8">
@@ -63,25 +52,22 @@ export function DepartmentCategoryContent({
             label: departmentSlug,
             href: `/${lang}/marketplace/${departmentSlug}`,
           },
-          { label: categoryName },
+          {
+            label: categorySlug,
+            href: `/${lang}/marketplace/${departmentSlug}/${categorySlug}`,
+          },
+          { label: productCategoryName },
         ]}
       />
 
       <div className="flex flex-col gap-1">
         <Title level="h1" size="h3">
-          {t("page.categoryTitle", { name: categoryName })}
+          {t("page.categoryTitle", { name: productCategoryName })}
         </Title>
         <Text color="secondary">
-          {t("page.categorySubtitle", { name: categoryName })}
+          {t("page.categorySubtitle", { name: productCategoryName })}
         </Text>
       </div>
-
-      <ProductCategoryList
-        lang={lang}
-        departmentSlug={departmentSlug}
-        categorySlug={categorySlug}
-        productCategories={productCategories}
-      />
 
       <ProductFilters
         filters={filters}

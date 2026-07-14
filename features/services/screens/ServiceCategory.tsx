@@ -14,12 +14,11 @@ export async function ServiceCategory({
   slug: string;
 }) {
   const dict = await getServicesDictionary(lang);
-  const language = lang.toUpperCase() as "ES" | "EN" | "FR";
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
       <ScreenShell lang={lang} nav={<Navigation lang={lang} />}>
-        <ServiceCategoryContent lang={lang} language={language} slug={slug} />
+        <ServiceCategoryContent lang={lang} slug={slug} />
       </ScreenShell>
     </DictionaryProvider>
   );
