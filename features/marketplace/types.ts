@@ -40,11 +40,7 @@ export type PageInfo = {
   hasPreviousPage: boolean;
 };
 
-export type ProductSortField =
-  | "createdAt"
-  | "price"
-  | "viewCount"
-  | "updatedAt";
+export type ProductSortField = "createdAt" | "price" | "viewCount" | "updatedAt";
 
 export type SortDirection = "ASC" | "DESC";
 
@@ -56,12 +52,7 @@ export type ProductFilters = {
   isExchangeable: boolean;
 };
 
-export type ProductSortValue =
-  | "newest"
-  | "oldest"
-  | "priceAsc"
-  | "priceDesc"
-  | "popular";
+export type ProductSortValue = "newest" | "oldest" | "priceAsc" | "priceDesc";
 
 export const DEFAULT_PAGE_SIZE = 5;
 

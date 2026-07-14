@@ -19,8 +19,8 @@ const SLIDE_CONFIG: {
   { id: "stores", path: "/stores", gradient: gradients.ocean, Icon: Store },
   { id: "services", path: "/services", gradient: gradients.moss, Icon: Wrench },
   { id: "recycle", path: "/recycle", gradient: gradients.jungle, Icon: Map },
-  { id: "community", path: "/publish", gradient: gradients.meadow, Icon: UsersRound },
-  { id: "blog", path: "/publish", gradient: gradients.river, Icon: Book },
+  { id: "community", path: "/community", gradient: gradients.meadow, Icon: UsersRound },
+  { id: "blog", path: "/blog", gradient: gradients.river, Icon: Book },
 ];
 
 export function HomeHero({ lang }: { lang: string }) {

@@ -43,7 +43,7 @@ export function ProductDetails({
     },
     {
       label: t("details.category"),
-      value: product.productCategory?.productCategoryName,
+      value: product.productCategory?.translation?.name,
     },
     {
       label: t("details.exchangeable"),

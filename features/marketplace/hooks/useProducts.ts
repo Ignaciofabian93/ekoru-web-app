@@ -2,6 +2,7 @@
 import { useQuery } from "@apollo/client/react";
 
 import { GET_PRODUCTS } from "@/graphql/marketplace/queries";
+import type { SortInput } from "@/types/product";
 
 import type { MarketplaceProduct, PageInfo } from "../types";
 
@@ -9,7 +10,7 @@ interface Params {
   page: number;
   pageSize: number;
   filter?: Record<string, unknown>;
-  sort?: { field: string; direction: "ASC" | "DESC" };
+  sort?: SortInput;
 }
 
 export function useProducts({ page, pageSize }: Params) {

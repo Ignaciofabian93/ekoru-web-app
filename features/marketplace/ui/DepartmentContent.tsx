@@ -1,92 +1,77 @@
 "use client";
-import { useTranslation } from "@/i18n/context";
-import { Title } from "@/components/Title/Title";
 import { Text } from "@/components/Text/Text";
+import { Title } from "@/components/Title/Title";
+import type { SupportedLanguage } from "@/constants/settings";
+import { useTranslation } from "@/i18n/context";
 import { useMemo } from "react";
 
-import { useDepartmentBySlug } from "../hooks/useDepartmentBySlug";
-import { useMarketplaceCatalog } from "../hooks/useMarketplaceCatalog";
-import { useProductFilters } from "../hooks/useProductFilters";
+import { useProductsByDepartment } from "../hooks/useProductsByDepartment";
 import { NAMESPACE } from "../i18n";
-import type { Language } from "../types";
+import type { CatalogDepartmentCategory } from "../types";
 import { Breadcrumbs } from "./Breadcrumbs";
 import { CategoryList } from "./CategoryList";
-import { DepartmentList } from "./DepartmentList";
 import { ProductFilters } from "./ProductFilters";
 import { ProductResults } from "./ProductResults";
 
 interface Props {
-  lang: string;
-  language: Language;
+  lang: SupportedLanguage;
   slug: string;
 }
 
-export function DepartmentContent({ lang, language, slug }: Props) {
+export function DepartmentContent({ lang, slug }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
-  const { departments, loading: catalogLoading } = useMarketplaceCatalog(language);
-
   const {
+    products,
+    pageInfo,
+    department,
+    loading,
     filters,
     sort,
-    page,
     pageSize,
     setField,
     setSort,
-    setPage,
-    setPageSize,
     reset,
-    filterInput,
-    sortInput,
-  } = useProductFilters();
+    handlePageChange,
+    handlePageSizeChange,
+  } = useProductsByDepartment({ language: lang, slug });
 
-  const queryVars = useMemo(
-    () => ({
-      slug,
-      language,
-      page,
-      pageSize,
-      filter: filterInput,
-      sort: sortInput,
-    }),
-    [slug, language, page, pageSize, filterInput, sortInput],
+  const departmentName = department?.translation?.name ?? slug;
+
+  const categories: CatalogDepartmentCategory[] = useMemo(
+    () =>
+      (department?.departmentCategory ?? []).map((cat) => ({
+        id: cat.id,
+        name: cat.translation?.name ?? "",
+        slug: cat.translation?.slug ?? "",
+        href: cat.translation?.href ?? "",
+        productCategories: (cat.productCategory ?? []).map((pc) => ({
+          id: pc.id,
+          name: pc.translation?.name ?? "",
+          slug: pc.translation?.slug ?? "",
+          href: pc.translation?.href ?? "",
+        })),
+      })),
+    [department],
   );
-
-  const { department, departmentLoading, products, pageInfo, productsLoading } =
-    useDepartmentBySlug(queryVars);
-
-  const name = department?.name ?? "";
 
   return (
     <div className="flex flex-col gap-8">
       <Breadcrumbs
         rootHref={`/${lang}/marketplace`}
-        items={[{ label: name || slug }]}
+        items={[{ label: departmentName }]}
       />
 
       <div className="flex flex-col gap-1">
         <Title level="h1" size="h3">
-          {departmentLoading && !name
-            ? slug
-            : t("page.departmentTitle", { name })}
+          {t("page.departmentTitle", { name: departmentName })}
         </Title>
         <Text color="secondary">
-          {t("page.departmentSubtitle", { name: name || slug })}
+          {t("page.departmentSubtitle", { name: departmentName })}
         </Text>
       </div>
 
-      <DepartmentList
-        lang={lang}
-        departments={departments}
-        activeSlug={slug}
-        loading={catalogLoading}
-      />
-
-      <CategoryList
-        lang={lang}
-        departmentSlug={slug}
-        categories={department?.categories ?? []}
-      />
+      <CategoryList lang={lang} departmentSlug={slug} categories={categories} />
 
       <ProductFilters
         filters={filters}
@@ -99,11 +84,11 @@ export function DepartmentContent({ lang, language, slug }: Props) {
       <ProductResults
         lang={lang}
         products={products}
-        loading={productsLoading}
+        loading={loading}
         pageInfo={pageInfo}
         pageSize={pageSize}
-        onPageChange={setPage}
-        onPageSizeChange={setPageSize}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
       />
     </div>
   );

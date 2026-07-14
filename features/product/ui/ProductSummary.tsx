@@ -29,12 +29,6 @@ export function ProductSummary({ product }: { product: Product }) {
       ? t("summary.views", { count: String(product.viewCount ?? 0) })
       : t("summary.viewsPlural", { count: String(product.viewCount ?? 0) });
 
-  const priceFormatted = product.hasOffer && product.offerPrice
-    ? formatPrice(product.offerPrice)
-    : formatPrice(product.price);
-
-  const hasDiscount = product.hasOffer && product.offerPrice;
-
   return (
     <div className="flex flex-col gap-3">
       <ProductBadges badges={product.badges ?? []} />
@@ -71,12 +65,9 @@ export function ProductSummary({ product }: { product: Product }) {
       </div>
 
       <div className="flex items-baseline gap-3">
-        <span className="text-3xl font-bold text-primary">{priceFormatted}</span>
-        {hasDiscount && (
-          <span className="text-base text-foreground-tertiary line-through">
-            {formatPrice(product.price)}
-          </span>
-        )}
+        <span className="text-3xl font-bold text-primary">
+          {formatPrice(product.price)}
+        </span>
       </div>
     </div>
   );

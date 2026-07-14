@@ -6,6 +6,7 @@ import {
   GET_DEPARTMENT_BY_SLUG,
   GET_PRODUCTS_BY_DEPARTMENT,
 } from "@/graphql/marketplace/queries";
+import type { SortInput } from "@/types/product";
 
 import type {
   CatalogDepartmentCategory,
@@ -20,7 +21,7 @@ interface Params {
   page: number;
   pageSize: number;
   filter?: Record<string, unknown>;
-  sort?: { field: string; direction: "ASC" | "DESC" };
+  sort?: SortInput;
 }
 
 // Matches DEPARTMENT_FIELDS_FRAGMENT (translation + nested departmentCategory).

@@ -31,8 +31,8 @@ export function ProductContent({ id, lang }: Props) {
   if (error) return <ProductError lang={lang} />;
   if (!product) return <ProductNotFound lang={lang} />;
 
-  const categoryName = product.productCategory?.productCategoryName;
-  const categoryHref = product.productCategory?.href;
+  const categoryName = product.productCategory?.translation?.name;
+  const categoryHref = product.productCategory?.translation?.href;
 
   return (
     <div className="flex flex-col gap-8">

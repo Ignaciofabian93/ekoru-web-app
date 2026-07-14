@@ -2,25 +2,22 @@
 import { useCallback, useMemo, useState } from "react";
 
 import type { ProductCondition } from "@/types/enums";
+import type { SortInput } from "@/types/product";
 
 import {
   DEFAULT_PAGE_SIZE,
   EMPTY_FILTERS,
   type ProductFilters,
   type ProductSortValue,
-  type SortDirection,
-  type ProductSortField,
 } from "../types";
 
-const SORT_MAP: Record<
-  ProductSortValue,
-  { field: ProductSortField; direction: SortDirection }
-> = {
-  newest: { field: "createdAt", direction: "DESC" },
-  oldest: { field: "createdAt", direction: "ASC" },
-  priceAsc: { field: "price", direction: "ASC" },
-  priceDesc: { field: "price", direction: "DESC" },
-  popular: { field: "viewCount", direction: "DESC" },
+// Values match the marketplace service's ProductSortInput: prisma field name
+// plus lowercase order.
+const SORT_MAP: Record<ProductSortValue, SortInput> = {
+  newest: { field: "createdAt", order: "desc" },
+  oldest: { field: "createdAt", order: "asc" },
+  priceAsc: { field: "price", order: "asc" },
+  priceDesc: { field: "price", order: "desc" },
 };
 
 export function useProductFilters() {
@@ -57,11 +54,10 @@ export function useProductFilters() {
   // receive null values that would short-circuit the SQL where-clause.
   const filterInput = useMemo(() => {
     const input: Record<string, unknown> = {};
-    if (filters.search.trim()) input.search = filters.search.trim();
+    if (filters.search.trim()) input.name = filters.search.trim();
     if (filters.minPrice) input.minPrice = Number(filters.minPrice);
     if (filters.maxPrice) input.maxPrice = Number(filters.maxPrice);
-    if (filters.condition)
-      input.condition = filters.condition as ProductCondition;
+    if (filters.condition) input.condition = filters.condition as ProductCondition;
     if (filters.isExchangeable) input.isExchangeable = true;
     return Object.keys(input).length ? input : undefined;
   }, [filters]);

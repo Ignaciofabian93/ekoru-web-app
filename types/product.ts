@@ -7,13 +7,9 @@ import {
 import { type Seller } from "./user";
 
 export type MaterialImpactBreakdown = {
-  // Raw enum key (e.g. "PLASTIC") — stable identifier for icons/logic.
+  __typename: "MaterialImpactBreakdown";
   materialType: string;
-  // Localized, render-ready name resolved by the subgraph for the request
-  // language (falls back to a humanized form of materialType on the backend).
-  materialTypeLabel?: string;
-  // Amount of this material as returned by the API: `quantity` + `unit`
-  // (when unit === "percentage", quantity is the share of the composition).
+  materialTypeLabel: string;
   quantity: number;
   unit: string;
   co2SavingsKG: number;
@@ -21,37 +17,38 @@ export type MaterialImpactBreakdown = {
 };
 
 export type EnvironmentalImpact = {
+  __typename: "EnvironmentalImpact";
   totalCo2SavingsKG: number;
   totalWaterSavingsLT: number;
   materialBreakdown: MaterialImpactBreakdown[];
 };
 
 export type Product = {
+  __typename: "Product";
   id: number;
+  productCategoryId: number;
+  productCategory: ProductCategory;
   name: string;
   description?: string;
   price: number;
-  hasOffer?: boolean;
-  offerPrice?: number;
   sellerId: string;
-  badges?: Badge[];
-  brand?: string;
-  color?: string | null;
-  createdAt?: string;
-  images?: string[];
-  interests?: string[];
-  isActive?: boolean;
-  isExchangeable?: boolean;
-  productCategoryId?: number;
-  updatedAt?: string;
-  condition: ProductCondition;
-  conditionDescription?: string | null;
-  deletedAt?: string; // Soft delete - null means active
-  viewCount?: number;
-  isLiked?: boolean; // Whether the current seller has favorited this product
-  environmentalImpact?: EnvironmentalImpact;
+  // Resolved via federation; queries that only need the card projection omit it.
   seller?: Seller | null;
-  productCategory?: ProductCategory | null;
+  viewCount: number;
+  badges: Badge[] | null;
+  brand: string;
+  color: string | null;
+  images: string[];
+  interests: string[] | null;
+  isActive: boolean;
+  isExchangeable: boolean;
+  condition: ProductCondition;
+  conditionDescription: string | null;
+  isLiked: boolean;
+  environmentalImpact: EnvironmentalImpact | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
 };
 
 export type StoreProduct = {
@@ -177,37 +174,94 @@ export type MaterialImpactEstimate = {
 };
 
 export type ProductCategoryTranslation = {
-  id?: number | string;
+  id: number;
+  productCategoryId: number;
   name: string;
-  slug?: string;
-  href?: string;
+  slug: string;
+  href: string;
+  language: string;
+  createdAt: string;
+  updatedAt: string;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  metaKeywords: string[];
+  keywords: string[];
 };
 
 export type ProductCategory = {
-  id: number | string;
-  departmentCategoryId?: number;
-  keywords?: string[];
-  productCategoryName?: string;
-  size?: ProductSize;
-  averageWeight?: number;
-  weightUnit?: WeightUnit;
-  products?: Product[];
-  materials?: ProductCategoryMaterial[];
-  href?: string;
-  translation?: ProductCategoryTranslation | null;
+  __typename: "ProductCategory";
+  id: number;
+  departmentCategoryId: number;
+  isActive: boolean;
+  sortOrder: number;
+  averageWeight: number;
+  size: ProductSize;
+  weightUnit: WeightUnit;
+  createdAt: string;
+  updatedAt: string;
+  // Single translation resolved for the requested language.
+  translation: ProductCategoryTranslation;
+};
+
+export type DepartmentCategoryTranslation = {
+  __typename: "DepartmentCategoryTranslation";
+  id: number;
+  departmentCategoryId: number;
+  name: string;
+  slug: string;
+  href: string;
+  language: string;
+  createdAt: string;
+  updatedAt: string;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  metaKeywords: string[];
 };
 
 export type DepartmentCategory = {
+  __typename: "DepartmentCategory";
   id: number;
-  departmentCategoryName: string;
   departmentId: number;
+  isActive: boolean;
+  sortOrder: number;
+  translation: DepartmentCategoryTranslation;
   productCategory: ProductCategory[];
+};
+
+export type DepartmentTranslation = {
+  __typename: "DepartmentTranslation";
+  id: number;
+  departmentId: number;
+  name: string;
+  slug: string;
   href: string;
+  language: string;
+  createdAt: string;
+  updatedAt: string;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  metaKeywords: string[];
 };
 
 export type Department = {
+  __typename: "Department";
   id: number;
-  departmentName: string;
+  isActive: boolean;
+  sortOrder: number;
+  translation: DepartmentTranslation;
   departmentCategory: DepartmentCategory[];
-  href: string;
+};
+
+export type FilterInput = {
+  name: string | null;
+  minPrice: number | null;
+  maxPrice: number | null;
+  condition: ProductCondition | null;
+  isExchangeable: boolean | null;
+  badges: Badge[] | null;
+};
+
+export type SortInput = {
+  field: string;
+  order: "asc" | "desc";
 };

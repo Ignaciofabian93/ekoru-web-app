@@ -13,12 +13,11 @@ interface Props {
 
 export async function Department({ lang, slug }: Props) {
   const dict = await getMarketplaceDictionary(lang);
-  const language = lang.toUpperCase() as "ES" | "EN" | "FR";
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
       <MarketplaceShell nav={<Navigation lang={lang} />}>
-        <DepartmentContent lang={lang} language={language} slug={slug} />
+        <DepartmentContent lang={lang} slug={slug} />
       </MarketplaceShell>
     </DictionaryProvider>
   );

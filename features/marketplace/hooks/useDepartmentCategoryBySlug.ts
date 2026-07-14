@@ -6,6 +6,7 @@ import {
   GET_DEPARTMENT_CATEGORY_BY_SLUG,
   GET_PRODUCTS_BY_DEPARTMENT_CATEGORY,
 } from "@/graphql/marketplace/queries";
+import type { SortInput } from "@/types/product";
 
 import type {
   CatalogProductCategory,
@@ -20,7 +21,7 @@ interface Params {
   page: number;
   pageSize: number;
   filter?: Record<string, unknown>;
-  sort?: { field: string; direction: "ASC" | "DESC" };
+  sort?: SortInput;
 }
 
 // Matches the inline selection set on GET_DEPARTMENT_CATEGORY_BY_SLUG.

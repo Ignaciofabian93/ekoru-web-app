@@ -504,3 +504,604 @@ export const GET_EXCHANGEABLE_PRODUCTS = gql`
     }
   }
 `;
+
+export const GET_DEPARTMENT_PRODUCTS_BY_SLUG = gql`
+  query GetDepartmentProductsBySlug(
+    $slug: String!
+    $language: Language!
+    $page: Int = 1
+    $pageSize: Int = 20
+    $filter: ProductFilterInput
+    $sort: ProductSortInput
+    $requireDepartmentFetch: Boolean! = true
+  ) {
+    getDepartmentProductsBySlug(
+      slug: $slug
+      language: $language
+      page: $page
+      pageSize: $pageSize
+      filter: $filter
+      sort: $sort
+    ) {
+      products {
+        pageInfo {
+          currentPage
+          totalPages
+          totalCount
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+          pageSize
+        }
+        nodes {
+          id
+          name
+          description
+          color
+          images
+          brand
+          price
+          productCategoryId
+          badges
+          interests
+          condition
+          conditionDescription
+          isActive
+          isExchangeable
+          sellerId
+          viewCount
+          createdAt
+          updatedAt
+          deletedAt
+          isLiked
+          environmentalImpact {
+            totalCo2SavingsKG
+            totalWaterSavingsLT
+            materialBreakdown {
+              materialType
+              materialTypeLabel
+              quantity
+              unit
+              co2SavingsKG
+              waterSavingsLT
+            }
+          }
+          seller {
+            id
+            email
+            sellerType
+            isActive
+            isVerified
+            createdAt
+            updatedAt
+            address
+            phone
+            website
+            preferredContactMethod
+            socialMediaLinks
+            points
+            profile {
+              ... on PersonProfile {
+                id
+                sellerId
+                firstName
+                lastName
+                displayName
+                bio
+                birthday
+                profileImage
+                coverImage
+                allowExchanges
+                personMembershipSubscriptionId
+              }
+            }
+            sellerLevel {
+              id
+              levelName
+              minPoints
+              maxPoints
+              benefits
+              badgeIcon
+              createdAt
+              updatedAt
+              translations {
+                id
+                sellerLevelId
+                language
+                levelName
+                createdAt
+                updatedAt
+              }
+            }
+            country {
+              id
+              country
+              createdAt
+              updatedAt
+            }
+            region {
+              id
+              region
+              countryId
+            }
+            city {
+              id
+              city
+              regionId
+            }
+            county {
+              id
+              county
+              cityId
+            }
+          }
+          productCategory {
+            id
+            departmentCategoryId
+            averageWeight
+            size
+            weightUnit
+            isActive
+            sortOrder
+            createdAt
+            updatedAt
+            translation {
+              id
+              productCategoryId
+              language
+              name
+              slug
+              keywords
+              href
+              metaTitle
+              metaDescription
+              metaKeywords
+              createdAt
+              updatedAt
+            }
+          }
+        }
+      }
+      department @include(if: $requireDepartmentFetch) {
+        id
+        isActive
+        sortOrder
+        translation {
+          id
+          departmentId
+          language
+          name
+          slug
+          href
+          metaTitle
+          metaDescription
+          metaKeywords
+          createdAt
+          updatedAt
+        }
+        departmentCategory {
+          id
+          departmentId
+          isActive
+          sortOrder
+          translation {
+            id
+            departmentCategoryId
+            language
+            name
+            slug
+            href
+            metaTitle
+            metaDescription
+            metaKeywords
+            createdAt
+            updatedAt
+          }
+          productCategory {
+            id
+            departmentCategoryId
+            averageWeight
+            size
+            weightUnit
+            isActive
+            sortOrder
+            createdAt
+            updatedAt
+            translation {
+              id
+              productCategoryId
+              language
+              name
+              slug
+              keywords
+              href
+              metaTitle
+              metaDescription
+              metaKeywords
+              createdAt
+              updatedAt
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_DEPARTMENT_CATEGORY_PRODUCTS_BY_SLUG = gql`
+  query GetDepartmentCategoryProductsBySlug(
+    $slug: String!
+    $language: Language!
+    $page: Int
+    $pageSize: Int
+    $filter: ProductFilterInput
+    $sort: ProductSortInput
+    $requireDepartmentCategoryFetch: Boolean
+  ) {
+    getDepartmentCategoryProductsBySlug(
+      slug: $slug
+      language: $language
+      page: $page
+      pageSize: $pageSize
+      sort: $sort
+      filter: $filter
+    ) {
+      products {
+        nodes {
+          id
+          name
+          description
+          color
+          images
+          brand
+          price
+          productCategoryId
+          badges
+          interests
+          condition
+          conditionDescription
+          isActive
+          isExchangeable
+          sellerId
+          viewCount
+          createdAt
+          updatedAt
+          deletedAt
+          isLiked
+          environmentalImpact {
+            totalCo2SavingsKG
+            totalWaterSavingsLT
+            materialBreakdown {
+              materialType
+              materialTypeLabel
+              quantity
+              unit
+              co2SavingsKG
+              waterSavingsLT
+            }
+          }
+          seller {
+            id
+            email
+            sellerType
+            isActive
+            isVerified
+            createdAt
+            updatedAt
+            address
+            phone
+            website
+            preferredContactMethod
+            socialMediaLinks
+            points
+            profile {
+              ... on PersonProfile {
+                id
+                sellerId
+                firstName
+                lastName
+                displayName
+                bio
+                birthday
+                profileImage
+                coverImage
+                allowExchanges
+                personMembershipSubscriptionId
+              }
+            }
+            sellerLevel {
+              id
+              levelName
+              minPoints
+              maxPoints
+              benefits
+              badgeIcon
+              createdAt
+              updatedAt
+            }
+            country {
+              id
+              country
+              createdAt
+              updatedAt
+            }
+            region {
+              id
+              region
+              countryId
+            }
+            city {
+              id
+              city
+              regionId
+            }
+            county {
+              id
+              county
+              cityId
+            }
+          }
+          productCategory {
+            id
+            departmentCategoryId
+            averageWeight
+            size
+            weightUnit
+            isActive
+            sortOrder
+            createdAt
+            updatedAt
+            translation {
+              id
+              productCategoryId
+              language
+              name
+              slug
+              keywords
+              href
+              metaTitle
+              metaDescription
+              metaKeywords
+              createdAt
+              updatedAt
+            }
+          }
+        }
+        pageInfo {
+          currentPage
+          totalPages
+          totalCount
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+          pageSize
+        }
+      }
+      departmentCategory @include(if: $requireDepartmentCategoryFetch) {
+        id
+        departmentId
+        isActive
+        sortOrder
+        translation {
+          id
+          departmentCategoryId
+          language
+          name
+          slug
+          href
+          metaTitle
+          metaDescription
+          metaKeywords
+          createdAt
+          updatedAt
+        }
+        productCategory {
+          id
+          departmentCategoryId
+          averageWeight
+          size
+          weightUnit
+          isActive
+          sortOrder
+          createdAt
+          updatedAt
+          translation {
+            id
+            productCategoryId
+            language
+            name
+            slug
+            keywords
+            href
+            metaTitle
+            metaDescription
+            metaKeywords
+            createdAt
+            updatedAt
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_PRODUCT_CATEGORY_PRODUCTS_BY_SLUG = gql`
+  query GetProductCategoryProductsBySlug(
+    $slug: String!
+    $language: Language!
+    $page: Int
+    $pageSize: Int
+    $filter: ProductFilterInput
+    $sort: ProductSortInput
+    $requireProductCategoryFetch: Boolean
+  ) {
+    getProductCategoryProductsBySlug(
+      slug: $slug
+      language: $language
+      page: $page
+      pageSize: $pageSize
+      filter: $filter
+      sort: $sort
+    ) {
+      products {
+        nodes {
+          id
+          name
+          description
+          color
+          images
+          brand
+          price
+          productCategoryId
+          badges
+          interests
+          condition
+          conditionDescription
+          isActive
+          isExchangeable
+          sellerId
+          viewCount
+          createdAt
+          updatedAt
+          deletedAt
+          isLiked
+          environmentalImpact {
+            totalCo2SavingsKG
+            totalWaterSavingsLT
+            materialBreakdown {
+              materialType
+              materialTypeLabel
+              quantity
+              unit
+              co2SavingsKG
+              waterSavingsLT
+            }
+          }
+          seller {
+            id
+            email
+            sellerType
+            isActive
+            isVerified
+            createdAt
+            updatedAt
+            address
+            phone
+            website
+            preferredContactMethod
+            socialMediaLinks
+            points
+            profile {
+              ... on PersonProfile {
+                id
+                sellerId
+                firstName
+                lastName
+                displayName
+                bio
+                birthday
+                profileImage
+                coverImage
+                allowExchanges
+                personMembershipSubscriptionId
+              }
+            }
+            sellerLevel {
+              id
+              levelName
+              minPoints
+              maxPoints
+              benefits
+              badgeIcon
+              createdAt
+              updatedAt
+            }
+            country {
+              id
+              country
+              createdAt
+              updatedAt
+            }
+            region {
+              id
+              region
+              countryId
+            }
+            city {
+              id
+              city
+              regionId
+            }
+            county {
+              id
+              county
+              cityId
+            }
+          }
+          productCategory {
+            id
+            departmentCategoryId
+            averageWeight
+            size
+            weightUnit
+            isActive
+            sortOrder
+            createdAt
+            updatedAt
+            translation {
+              id
+              productCategoryId
+              language
+              name
+              slug
+              keywords
+              href
+              metaTitle
+              metaDescription
+              metaKeywords
+              createdAt
+              updatedAt
+            }
+          }
+        }
+        pageInfo {
+          currentPage
+          totalPages
+          totalCount
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
+          pageSize
+        }
+      }
+      productCategory @include(if: $requireProductCategoryFetch) {
+        id
+        departmentCategoryId
+        averageWeight
+        size
+        weightUnit
+        isActive
+        sortOrder
+        createdAt
+        updatedAt
+        translation {
+          id
+          productCategoryId
+          language
+          name
+          slug
+          keywords
+          href
+          metaTitle
+          metaDescription
+          metaKeywords
+          createdAt
+          updatedAt
+        }
+      }
+    }
+  }
+`;
