@@ -7,10 +7,7 @@ import { Search, SlidersHorizontal, X } from "lucide-react";
 import { useState } from "react";
 
 import { NAMESPACE } from "../i18n";
-import type {
-  ProductFilters as ProductFiltersState,
-  ProductSortValue,
-} from "../types";
+import type { ProductFilters as ProductFiltersState, ProductSortValue } from "../types";
 import type { ProductCondition } from "@/types/enums";
 
 const CONDITION_VALUES: ProductCondition[] = [
@@ -23,13 +20,7 @@ const CONDITION_VALUES: ProductCondition[] = [
   "FOR_PARTS",
 ];
 
-const SORT_VALUES: ProductSortValue[] = [
-  "newest",
-  "oldest",
-  "priceAsc",
-  "priceDesc",
-  "popular",
-];
+const SORT_VALUES: ProductSortValue[] = ["newest", "oldest", "priceAsc", "priceDesc"];
 
 interface Props {
   filters: ProductFiltersState;
@@ -42,13 +33,7 @@ interface Props {
   reset: () => void;
 }
 
-export function ProductFilters({
-  filters,
-  sort,
-  setField,
-  setSort,
-  reset,
-}: Props) {
+export function ProductFilters({ filters, sort, setField, setSort, reset }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const [open, setOpen] = useState(false);
 
@@ -143,7 +128,7 @@ export function ProductFilters({
               value={filters.condition}
               options={conditionOptions}
               onChange={(v) =>
-                setField("condition", (v === "" ? "" : (v as ProductCondition)))
+                setField("condition", v === "" ? "" : (v as ProductCondition))
               }
               placeholder={t("filters.anyCondition")}
             />
