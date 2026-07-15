@@ -4,15 +4,7 @@ import Input from "@/components/Input/Input";
 import Select from "@/components/Select/Select";
 import TextArea from "@/components/TextArea/TextArea";
 import { useTranslation } from "@/i18n/context";
-import {
-  Building2,
-  Globe2,
-  MapPin,
-  Phone,
-  Save,
-  Tags,
-  User,
-} from "lucide-react";
+import { Building2, Globe2, MapPin, Phone, Save, Tags, UserRound } from "lucide-react";
 import { useEditProfile } from "../hooks/useEditProfile";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
@@ -50,7 +42,7 @@ export function EditProfileForm() {
     <form onSubmit={onSubmit} className="flex w-full flex-col gap-5">
       {/* Personal / business identity */}
       <SectionCard
-        icon={isBusiness ? Building2 : User}
+        icon={isBusiness ? Building2 : UserRound}
         title={t("editProfile.personal.title")}
         subtitle={t("editProfile.personal.subtitle")}
       >
@@ -218,13 +210,14 @@ export function EditProfileForm() {
         </div>
       </SectionCard>
 
-      <div className="flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:justify-end">
+      <div className="w-full max-w-6xl mt-12 mx-auto">
         <MainButton
           text={loading ? t("editProfile.actions.saving") : t("editProfile.actions.save")}
           leftIcon={Save}
           loading={loading}
           type="submit"
           size="md"
+          fullWidth
         />
       </div>
     </form>

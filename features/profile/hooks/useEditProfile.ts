@@ -189,9 +189,10 @@ export function useEditProfile() {
       ? `+${form.phoneDial}${form.phoneLocal.replace(/\D/g, "")}`
       : "";
 
+    // None of the update inputs accept an `id` — the users subgraph resolves
+    // the target seller/profile from the auth token (@CurrentSeller).
     try {
       const sellerInput = {
-        id: seller.id,
         phone: phone || undefined,
         website: form.website || undefined,
         address: form.address || undefined,
@@ -207,7 +208,6 @@ export function useEditProfile() {
         await updateBusinessProfile({
           variables: {
             input: {
-              id: businessProfile.id,
               businessName: form.businessName,
               description: form.description,
               // TODO: enable once UpdateBusinessProfileInput exposes `tags`.
@@ -219,7 +219,6 @@ export function useEditProfile() {
         await updatePersonProfile({
           variables: {
             input: {
-              id: personProfile.id,
               firstName: form.firstName,
               lastName: form.lastName,
               displayName: form.displayName,

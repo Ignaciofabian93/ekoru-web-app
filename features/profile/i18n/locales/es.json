@@ -11,10 +11,12 @@
       "success": "Imagen actualizada",
       "error": "No se pudo subir la imagen",
       "invalidType": "Por favor selecciona un archivo de imagen"
-    }
+    },
+    "points": "{{count}} pts"
   },
   "details": {
     "title": "Detalles",
+    "subtitle": "Ubicación y contacto",
     "phone": "Teléfono",
     "address": "Dirección",
     "county": "Comuna",
@@ -53,19 +55,16 @@
     },
     "listings": {
       "title": "Mis publicaciones",
-      "subtitle": "Todo lo que has publicado, agrupado por categoría",
+      "subtitle": "Todo lo que has publicado en un solo lugar",
       "publish": "Publicar nuevo",
       "status": {
         "active": "Activas",
         "sold": "Vendidas",
         "drafts": "Borradores"
       },
-      "uncategorized": "Otros",
-      "countLabel": "{{count}} productos",
-      "viewAll": "Ver todo",
       "empty": {
         "title": "Aún no hay nada aquí",
-        "description": "Empieza a publicar para ver tus productos agrupados por categoría."
+        "description": "Empieza a publicar para ver todos tus productos aquí."
       },
       "actions": {
         "menu": "Acciones del producto",
@@ -106,6 +105,7 @@
   },
   "account": {
     "title": "Mi Cuenta",
+    "subtitle": "Gestiona tu cuenta y preferencias",
     "editProfile": "Editar Perfil",
     "changePassword": "Cambiar Contraseña",
     "orderHistory": "Historial de Pedidos",
@@ -198,6 +198,7 @@
     "confirmPasswordPlaceholder": "Reingresa tu nueva contraseña",
     "tips": {
       "title": "Consejos de contraseña",
+      "subtitle": "Hábitos simples que mantienen tu cuenta segura",
       "length": "Usa al menos 8 caracteres",
       "mix": "Combina letras, números y símbolos",
       "unique": "Evita contraseñas que reutilizas en otros sitios"
@@ -259,6 +260,12 @@
     "card": {
       "remove": "Quitar",
       "view": "Ver"
+    },
+    "serviceCard": {
+      "bookNow": "Reservar",
+      "verified": "Verificado",
+      "priceFrom": "Desde",
+      "reviews": "reseñas"
     },
     "empty": {
       "title": "Aún no tienes favoritos",

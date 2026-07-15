@@ -2,7 +2,7 @@
 import { Text } from "@/components/Text/Text";
 import { useTranslation } from "@/i18n/context";
 import { useSeller } from "@/store/useAuthStore";
-import { Flag, Globe, MapPin, Phone, Pin, PinIcon, UserSquare2 } from "lucide-react";
+import { Flag, Globe, MapPin, Phone, Pin, PinIcon } from "lucide-react";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
 
@@ -13,15 +13,30 @@ export function Details() {
   const ITEMS = [
     { key: "phone", label: t("details.phone"), icon: Phone, value: seller?.phone },
     { key: "address", label: t("details.address"), icon: MapPin, value: seller?.address },
-    { key: "county", label: t("details.county"), icon: Pin, value: seller?.county?.county },
+    {
+      key: "county",
+      label: t("details.county"),
+      icon: Pin,
+      value: seller?.county?.county,
+    },
     { key: "city", label: t("details.city"), icon: PinIcon, value: seller?.city?.city },
-    { key: "region", label: t("details.region"), icon: Flag, value: seller?.region?.region },
-    { key: "country", label: t("details.country"), icon: Globe, value: seller?.country?.country },
+    {
+      key: "region",
+      label: t("details.region"),
+      icon: Flag,
+      value: seller?.region?.region,
+    },
+    {
+      key: "country",
+      label: t("details.country"),
+      icon: Globe,
+      value: seller?.country?.country,
+    },
   ];
 
   return (
-    <SectionCard icon={UserSquare2} title={t("details.title")}>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+    <SectionCard title={t("details.title")} subtitle={t("details.subtitle")}>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
         {ITEMS.map((item) => (
           <div key={item.key} className="flex items-center">
             <div className="bg-primary-light/20 p-3 rounded-lg text-primary">

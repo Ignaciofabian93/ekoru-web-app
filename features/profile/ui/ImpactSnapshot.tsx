@@ -63,13 +63,13 @@ export function ImpactSnapshot() {
         </Link>
       }
     >
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-3 lg:grid-cols-1">
         {stats.map((s) => {
           const Icon = s.icon;
           return (
             <div
               key={s.key}
-              className={`flex flex-col gap-1 rounded-xl bg-gradient-to-br p-3.5 ${s.tone}`}
+              className={`flex flex-col gap-1 rounded-xl bg-linear-to-br p-3.5 ${s.tone}`}
             >
               <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white/70 text-current">
                 <Icon size={14} color="currentColor" strokeWidth={2} />

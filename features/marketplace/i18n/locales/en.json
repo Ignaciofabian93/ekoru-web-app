@@ -50,6 +50,7 @@
   },
   "product": {
     "addToCart": "Add to cart",
+    "favorite": "Save to favorites",
     "added": "Added!",
     "exchangeable": "Exchangeable",
     "noImage": "No image"

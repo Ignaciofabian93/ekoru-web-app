@@ -24,10 +24,34 @@ const IMPACT = {
   productsReused: 12,
   wasteAvoidedKG: 18.4,
   materialBreakdown: [
-    { materialType: "Textile", percentage: 38, weightKG: 5.2, co2SavingsKG: 18.1, waterSavingsLT: 740 },
-    { materialType: "Wood", percentage: 27, weightKG: 6.8, co2SavingsKG: 11.5, waterSavingsLT: 220 },
-    { materialType: "Metal", percentage: 21, weightKG: 4.4, co2SavingsKG: 9.0, waterSavingsLT: 180 },
-    { materialType: "Plastic", percentage: 14, weightKG: 2.0, co2SavingsKG: 4.0, waterSavingsLT: 140 },
+    {
+      materialType: "Textile",
+      percentage: 38,
+      weightKG: 5.2,
+      co2SavingsKG: 18.1,
+      waterSavingsLT: 740,
+    },
+    {
+      materialType: "Wood",
+      percentage: 27,
+      weightKG: 6.8,
+      co2SavingsKG: 11.5,
+      waterSavingsLT: 220,
+    },
+    {
+      materialType: "Metal",
+      percentage: 21,
+      weightKG: 4.4,
+      co2SavingsKG: 9.0,
+      waterSavingsLT: 180,
+    },
+    {
+      materialType: "Plastic",
+      percentage: 14,
+      weightKG: 2.0,
+      co2SavingsKG: 4.0,
+      waterSavingsLT: 140,
+    },
   ],
 };
 
@@ -39,7 +63,10 @@ const LEVELS = [
 ];
 
 function formatNumber(n: number) {
-  return n.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  return n.toLocaleString(undefined, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
 }
 
 export function EnvironmentalImpactPanel() {
@@ -53,7 +80,10 @@ export function EnvironmentalImpactPanel() {
   const currentLevel = LEVELS[currentLevelIdx];
   const nextLevel = LEVELS[currentLevelIdx + 1];
   const progressPct = nextLevel
-    ? Math.min(100, ((points - currentLevel.min) / (nextLevel.min - currentLevel.min)) * 100)
+    ? Math.min(
+        100,
+        ((points - currentLevel.min) / (nextLevel.min - currentLevel.min)) * 100,
+      )
     : 100;
   const pointsToNext = nextLevel ? Math.max(0, nextLevel.min - points) : 0;
   const CurrentIcon = currentLevel.icon;
@@ -134,7 +164,7 @@ export function EnvironmentalImpactPanel() {
           return (
             <div
               key={stat.key}
-              className={`flex flex-col gap-2 rounded-2xl bg-gradient-to-br p-4 ${STAT_TONE[stat.tone]}`}
+              className={`flex flex-col gap-2 rounded-2xl bg-linear-to-br p-4 ${STAT_TONE[stat.tone]}`}
             >
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/70 text-current">
                 <Icon size={18} color="currentColor" strokeWidth={2} />
@@ -167,7 +197,7 @@ export function EnvironmentalImpactPanel() {
         <div className="flex flex-col gap-3">
           <div className="h-2.5 overflow-hidden rounded-full bg-background-secondary">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-success to-primary transition-all duration-500"
+              className="h-full rounded-full bg-linear-to-r from-success to-primary transition-all duration-500"
               style={{ width: `${progressPct}%` }}
             />
           </div>

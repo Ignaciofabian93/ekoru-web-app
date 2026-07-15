@@ -33,8 +33,16 @@ export function ChangePasswordForm() {
 
   const tips = [
     { key: "length", check: lengthValid, label: t("changePassword.tips.length") },
-    { key: "mix", check: /[^A-Za-z0-9]/.test(newPassword) || /\d/.test(newPassword), label: t("changePassword.tips.mix") },
-    { key: "unique", check: notSameValid && newPassword.length > 0, label: t("changePassword.tips.unique") },
+    {
+      key: "mix",
+      check: /[^A-Za-z0-9]/.test(newPassword) || /\d/.test(newPassword),
+      label: t("changePassword.tips.mix"),
+    },
+    {
+      key: "unique",
+      check: notSameValid && newPassword.length > 0,
+      label: t("changePassword.tips.unique"),
+    },
   ];
 
   return (
@@ -85,6 +93,7 @@ export function ChangePasswordForm() {
         icon={ShieldCheck}
         tone="success"
         title={t("changePassword.tips.title")}
+        subtitle={t("changePassword.tips.subtitle")}
       >
         <ul className="flex flex-col gap-2.5">
           {tips.map((tip) => (
@@ -98,11 +107,7 @@ export function ChangePasswordForm() {
               >
                 <Check size={12} color="currentColor" strokeWidth={3} />
               </span>
-              <Text
-                variant="span"
-                size="sm"
-                color={tip.check ? "default" : "tertiary"}
-              >
+              <Text variant="span" size="sm" color={tip.check ? "default" : "tertiary"}>
                 {tip.label}
               </Text>
             </li>
@@ -110,12 +115,17 @@ export function ChangePasswordForm() {
         </ul>
       </SectionCard>
 
-      <div className="flex justify-end">
+      <div className="w-full max-w-6xl mt-12 mx-auto">
         <MainButton
-          text={loading ? t("changePassword.actions.saving") : t("changePassword.actions.save")}
+          text={
+            loading
+              ? t("changePassword.actions.saving")
+              : t("changePassword.actions.save")
+          }
           leftIcon={Save}
           loading={loading}
           type="submit"
+          fullWidth
           size="md"
         />
       </div>

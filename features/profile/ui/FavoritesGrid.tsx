@@ -1,25 +1,19 @@
 "use client";
 import clsx from "clsx";
 import { Heart, Store as StoreIcon, Wrench } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
+import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
+import ServiceCard from "@/components/Card/ServiceCard/ServiceCard";
+import type { ServiceCardData } from "@/components/Card/ServiceCard/types";
 import { Pagination } from "@/components/Pagination/Pagination";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
-import { useFormatPrice } from "@/hooks/useFormatPrice";
-import { useToggleFavorite } from "@/hooks/useToggleFavorite";
+import type { ServiceNode } from "@/features/services/types";
+import { StoreProductCard } from "@/features/stores/ui/StoreProductCard";
 import { useTranslation } from "@/i18n/context";
-import { resolveImageUrl } from "@/utils/resolveImage";
 
-import {
-  useFavorites,
-  type FavoriteCardItem,
-  type FavoritesTab,
-} from "../hooks/useFavorites";
+import { useFavorites, type FavoritesTab } from "../hooks/useFavorites";
 import { NAMESPACE } from "../i18n";
 import { EmptyState } from "./EmptyState";
 
@@ -31,29 +25,51 @@ const TABS: { key: FavoritesTab; icon: typeof Heart }[] = [
   { key: "services", icon: Wrench },
 ];
 
-function hrefFor(item: FavoriteCardItem, lang: string): string {
-  // Services have no single-item route yet → fall back to the catalog.
-  return item.source === "service"
-    ? `/${lang}/services`
-    : `/${lang}/product/${item.id}`;
+// Services have no dedicated detail page yet, so favorite service cards keep
+// the in-card flip/contact interactions without navigating.
+function toServiceCardData(service: ServiceNode): ServiceCardData {
+  return {
+    id: service.id,
+    name: service.name,
+    description: service.description ?? undefined,
+    image: service.images?.[0],
+    providerName: service.seller?.profile?.businessName ?? undefined,
+    providerLogo: service.seller?.profile?.logo ?? undefined,
+    category: service.serviceCategory?.subCategory,
+    priceFrom: service.basePrice ?? undefined,
+    durationMinutes: service.duration ?? undefined,
+    rating: service.averageRating ?? undefined,
+    reviewsCount: service.reviewCount ?? undefined,
+    isVerified: service.seller?.isVerified,
+    isLiked: service.isLiked,
+  };
 }
 
 export function FavoritesGrid() {
   const { t } = useTranslation(NAMESPACE);
-  const formatPrice = useFormatPrice();
   const params = useParams<{ lang?: SupportedLanguage }>();
   const router = useRouter();
   const lang = params.lang ?? DEFAULT_LANGUAGE;
 
   const [tab, setTab] = useState<FavoritesTab>("products");
   const [page, setPage] = useState(1);
-  const { items, pageInfo, loading } = useFavorites(tab, page, PAGE_SIZE);
-  const { toggleFavorite } = useToggleFavorite();
+  const { products, storeProducts, services, pageInfo, loading, isEmpty } =
+    useFavorites(tab, page, PAGE_SIZE);
+
+  const serviceLabels = {
+    bookNow: t("favorites.serviceCard.bookNow"),
+    verified: t("favorites.serviceCard.verified"),
+    priceFromPrefix: t("favorites.serviceCard.priceFrom"),
+    reviews: t("favorites.serviceCard.reviews"),
+  };
 
   function selectTab(next: FavoritesTab) {
     setTab(next);
     setPage(1);
   }
+
+  const hasItems =
+    products.length > 0 || storeProducts.length > 0 || services.length > 0;
 
   return (
     <div className="flex flex-col gap-6">
@@ -80,16 +96,16 @@ export function FavoritesGrid() {
         })}
       </div>
 
-      {loading && items.length === 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
+      {loading && !hasItems ? (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={i}
-              className="aspect-4/5 animate-pulse rounded-2xl bg-background-secondary"
+              className="aspect-3/4 animate-pulse rounded-xl bg-background-secondary"
             />
           ))}
         </div>
-      ) : items.length === 0 ? (
+      ) : isEmpty ? (
         <EmptyState
           icon={Heart}
           title={t("favorites.empty.title")}
@@ -99,68 +115,23 @@ export function FavoritesGrid() {
         />
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => {
-              const cover = resolveImageUrl(item.image);
-              return (
-                <Link
-                  key={`${item.source}-${item.id}`}
-                  href={hrefFor(item, lang)}
-                  className="group relative flex flex-col overflow-hidden rounded-2xl border border-border-light bg-surface shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-md"
-                >
-                  <div className="relative aspect-square w-full bg-linear-to-br from-primary-light/15 to-secondary/10">
-                    {cover ? (
-                      <Image
-                        src={cover}
-                        alt={item.name}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 33vw"
-                        className="object-cover transition-transform group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-primary/30">
-                        <Heart size={48} color="currentColor" strokeWidth={1.5} />
-                      </div>
-                    )}
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        toggleFavorite(item.id, true, item.source);
-                      }}
-                      aria-label={t("favorites.card.remove")}
-                      className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-white/95 text-danger shadow-sm transition-transform hover:scale-105"
-                    >
-                      <Heart
-                        size={16}
-                        color="currentColor"
-                        fill="currentColor"
-                        strokeWidth={2}
-                      />
-                    </button>
-                  </div>
-
-                  <div className="flex flex-1 flex-col gap-1 p-4">
-                    <Title level="h3" size="h6" weight="semibold" numberOfLines={1}>
-                      {item.name}
-                    </Title>
-                    {item.subtitle && (
-                      <Text variant="span" size="sm" color="tertiary">
-                        {item.subtitle}
-                      </Text>
-                    )}
-                    {typeof item.price === "number" && (
-                      <div className="mt-1.5">
-                        <Text variant="span" weight="bold" size="lg" color="primary">
-                          {formatPrice(item.price)}
-                        </Text>
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {tab === "products" &&
+              products.map((product) => (
+                <MarketplaceCard key={product.id} product={product} lang={lang} />
+              ))}
+            {tab === "stores" &&
+              storeProducts.map((product) => (
+                <StoreProductCard key={product.id} product={product} lang={lang} />
+              ))}
+            {tab === "services" &&
+              services.map((service) => (
+                <ServiceCard
+                  key={service.id}
+                  service={toServiceCardData(service)}
+                  labels={serviceLabels}
+                />
+              ))}
           </div>
 
           {pageInfo && pageInfo.totalPages > 1 && (

@@ -51,7 +51,7 @@ export function SectionCard({
             </div>
           )}
           <div className="flex flex-col gap-0.5">
-            <Title level="h3" size="h6" weight="semibold">
+            <Title level="h3" size="h5" weight="semibold">
               {title}
             </Title>
             {subtitle && (

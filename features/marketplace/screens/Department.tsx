@@ -1,7 +1,6 @@
 import { type SupportedLanguage } from "@/constants/settings";
 import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
-
 import { getMarketplaceDictionary, NAMESPACE } from "../i18n";
 import { DepartmentContent } from "../ui/DepartmentContent";
 import { MarketplaceShell } from "../ui/MarketplaceShell";

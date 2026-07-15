@@ -113,7 +113,7 @@ function FrontSide({
 
   return (
     <Link
-      href={`/${lang}/product/${product.id}`}
+      href={`/${lang}/store-product/${product.id}`}
       className="group flex h-full w-full flex-col overflow-hidden rounded-xl border border-border-light bg-surface text-left shadow-sm transition-all hover:border-secondary/40 hover:shadow-md"
     >
       <div className="relative aspect-4/3 w-full shrink-0 bg-background-secondary">

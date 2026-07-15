@@ -11,10 +11,12 @@
       "success": "Image mise à jour",
       "error": "Impossible de télécharger l'image",
       "invalidType": "Veuillez choisir un fichier image"
-    }
+    },
+    "points": "{{count}} pts"
   },
   "details": {
     "title": "Détails",
+    "subtitle": "Localisation et contact",
     "phone": "Téléphone",
     "address": "Adresse",
     "county": "Arrondissement",
@@ -53,19 +55,16 @@
     },
     "listings": {
       "title": "Mes annonces",
-      "subtitle": "Tout ce que vous avez publié, groupé par catégorie",
+      "subtitle": "Tout ce que vous avez publié au même endroit",
       "publish": "Nouvelle annonce",
       "status": {
         "active": "Actives",
         "sold": "Vendues",
         "drafts": "Brouillons"
       },
-      "uncategorized": "Autres",
-      "countLabel": "{{count}} articles",
-      "viewAll": "Tout voir",
       "empty": {
         "title": "Rien pour l'instant",
-        "description": "Commencez à publier pour voir vos produits groupés par catégorie."
+        "description": "Commencez à publier pour voir tous vos produits ici."
       },
       "actions": {
         "menu": "Actions du produit",
@@ -106,6 +105,7 @@
   },
   "account": {
     "title": "Mon Compte",
+    "subtitle": "Gérez votre compte et vos préférences",
     "editProfile": "Modifier le Profil",
     "changePassword": "Changer le Mot de Passe",
     "orderHistory": "Historique des Commandes",
@@ -198,6 +198,7 @@
     "confirmPasswordPlaceholder": "Saisissez à nouveau votre mot de passe",
     "tips": {
       "title": "Conseils",
+      "subtitle": "Des habitudes simples pour protéger votre compte",
       "length": "Utilisez au moins 8 caractères",
       "mix": "Mélangez lettres, chiffres et symboles",
       "unique": "Évitez les mots de passe que vous réutilisez ailleurs"
@@ -259,6 +260,12 @@
     "card": {
       "remove": "Retirer",
       "view": "Voir"
+    },
+    "serviceCard": {
+      "bookNow": "Réserver",
+      "verified": "Vérifié",
+      "priceFrom": "À partir de",
+      "reviews": "avis"
     },
     "empty": {
       "title": "Aucun favori",

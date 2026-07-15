@@ -446,6 +446,8 @@ export const GET_PRODUCTS_BY_DEPARTMENT = gql`
 
 export const GET_MY_FAVORITES = gql`
   ${PRODUCT_FIELDS_FRAGMENT}
+  ${ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT}
+  ${PRODUCT_CARD_SELLER_FIELDS_FRAGMENT}
   query GetMyFavorites($page: Int = 1, $pageSize: Int = 12) {
     getMyFavorites(page: $page, pageSize: $pageSize) {
       nodes {
@@ -457,6 +459,12 @@ export const GET_MY_FAVORITES = gql`
             slug
             href
           }
+        }
+        environmentalImpact {
+          ...EnvironmentalImpactFields
+        }
+        seller {
+          ...ProductCardSellerFields
         }
       }
       pageInfo {

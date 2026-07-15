@@ -1,6 +1,10 @@
 import { ScreenShell } from "@/components/Layout/ScreenShell";
 import { type SupportedLanguage } from "@/constants/settings";
 import { DictionaryProvider } from "@/i18n/context";
+import {
+  getMarketplaceDictionary,
+  NAMESPACE as MARKETPLACE_NAMESPACE,
+} from "@/features/marketplace/i18n";
 import { Navigation } from "@/features/navigation/Navigation";
 
 import { getHomeDictionary, NAMESPACE } from "../i18n";
@@ -15,10 +19,17 @@ import { AdBannerSection } from "../ui/AdBannerSection";
 import { StoreProductsHighlight } from "../ui/StoreProductsHighlight";
 
 export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
-  const dict = await getHomeDictionary(lang);
+  // Home renders MarketplaceCard (product highlights / exchange section),
+  // which translates from the marketplace namespace — load both dictionaries.
+  const [dict, marketplaceDict] = await Promise.all([
+    getHomeDictionary(lang),
+    getMarketplaceDictionary(lang),
+  ]);
 
   return (
-    <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
+    <DictionaryProvider
+      dictionary={{ [NAMESPACE]: dict, [MARKETPLACE_NAMESPACE]: marketplaceDict }}
+    >
       <ScreenShell
         lang={lang}
         nav={<Navigation lang={lang} />}

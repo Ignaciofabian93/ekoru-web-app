@@ -9,15 +9,13 @@ export function Logout() {
   const { handleLogout, loading } = useLogout();
 
   return (
-    <section className="w-full max-w-xl mx-auto flex items-center justify-center mb-8 mt-24 px-8">
-      <MainButton
-        text={t("logout")}
-        variant="error"
-        size="md"
-        fullWidth
-        onPress={handleLogout}
-        loading={loading}
-      />
-    </section>
+    <MainButton
+      text={t("logout")}
+      variant="error"
+      size="md"
+      fullWidth
+      onPress={handleLogout}
+      loading={loading}
+    />
   );
 }

@@ -263,7 +263,9 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                   const isSelected = item.value === value;
                   return (
                     <button
-                      key={String(item.value)}
+                      // Values may legitimately repeat (e.g. phone dial "+1" is
+                      // shared by several countries), so the key needs the index.
+                      key={`${item.value}-${i}`}
                       type="button"
                       onClick={() => handleSelect(item.value)}
                       className={clsx(

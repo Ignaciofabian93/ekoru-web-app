@@ -2,9 +2,10 @@
 
 import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
+import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import { Check, ImageOff, Repeat, RotateCw, ShoppingCart } from "lucide-react";
+import { Check, Heart, ImageOff, Repeat, RotateCw, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -36,11 +37,13 @@ export default function FrontSide({ product, href, onFlip, onAddToCart }: Props)
   const { t } = useTranslation(NAMESPACE);
   const formatPrice = useFormatPrice();
   const { addMarketplaceProduct } = useAddToCart();
+  const { toggleFavorite } = useToggleFavorite();
   const [imageError, setImageError] = useState(false);
   const [popped, setPopped] = useState(false);
   const cover = resolveImageUrl(product.images?.[0]);
   const isOwnProduct = useIsOwnProduct(product.sellerId);
   const inCart = useIsInCart("marketplace", product.id);
+  const liked = Boolean(product.isLiked);
 
   const Container: React.ElementType = href ? Link : "div";
   const containerProps = href ? { href } : {};
@@ -106,14 +109,35 @@ export default function FrontSide({ product, href, onFlip, onAddToCart }: Props)
           </span>
         )}
 
-        <button
-          type="button"
-          onClick={handleFlip}
-          aria-label={t("card.flipToDetails")}
-          className="absolute top-2 right-2 flex size-8 cursor-pointer items-center justify-center rounded-full bg-primary text-on-primary shadow-sm transition-colors hover:bg-primary-active"
-        >
-          <RotateCw size={14} strokeWidth={2.5} />
-        </button>
+        <div className="absolute top-2 right-2 flex items-center gap-1.5">
+          {!isOwnProduct && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFavorite(product.id, liked);
+              }}
+              aria-pressed={liked}
+              aria-label={t("product.favorite")}
+              className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-white/85 shadow-sm transition-colors hover:bg-white"
+            >
+              <Heart
+                size={15}
+                strokeWidth={2}
+                className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
+              />
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={handleFlip}
+            aria-label={t("card.flipToDetails")}
+            className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-primary text-on-primary shadow-sm transition-colors hover:bg-primary-active"
+          >
+            <RotateCw size={14} strokeWidth={2.5} />
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col justify-between gap-2 p-3">

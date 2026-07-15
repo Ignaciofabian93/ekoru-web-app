@@ -11,10 +11,12 @@
       "success": "Image updated",
       "error": "Could not upload the image",
       "invalidType": "Please choose an image file"
-    }
+    },
+    "points": "{{count}} pts"
   },
   "details": {
     "title": "Details",
+    "subtitle": "Location and contact",
     "phone": "Phone",
     "address": "Address",
     "county": "County",
@@ -53,19 +55,16 @@
     },
     "listings": {
       "title": "My listings",
-      "subtitle": "Everything you've published, grouped by category",
+      "subtitle": "Everything you've published in one place",
       "publish": "Publish new",
       "status": {
         "active": "Active",
         "sold": "Sold",
         "drafts": "Drafts"
       },
-      "uncategorized": "Other",
-      "countLabel": "{{count}} items",
-      "viewAll": "View all",
       "empty": {
         "title": "Nothing here yet",
-        "description": "Start publishing to see your products grouped by category."
+        "description": "Start publishing to see all your products here."
       },
       "actions": {
         "menu": "Product actions",
@@ -106,6 +105,7 @@
   },
   "account": {
     "title": "My Account",
+    "subtitle": "Manage your account and preferences",
     "editProfile": "Edit Profile",
     "changePassword": "Change Password",
     "orderHistory": "Order History",
@@ -198,6 +198,7 @@
     "confirmPasswordPlaceholder": "Re-enter your new password",
     "tips": {
       "title": "Password tips",
+      "subtitle": "Simple habits that keep your account safe",
       "length": "Use at least 8 characters",
       "mix": "Mix letters, numbers and symbols",
       "unique": "Avoid passwords you reuse on other sites"
@@ -259,6 +260,12 @@
     "card": {
       "remove": "Remove",
       "view": "View"
+    },
+    "serviceCard": {
+      "bookNow": "Book",
+      "verified": "Verified",
+      "priceFrom": "From",
+      "reviews": "reviews"
     },
     "empty": {
       "title": "No favorites yet",

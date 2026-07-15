@@ -1,12 +1,12 @@
 "use client";
 import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Pagination } from "@/components/Pagination/Pagination";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import type { SellerStorefrontProduct } from "@/features/seller/types";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
 import clsx from "clsx";
-import { ChevronRight, Layers, Package, Plus } from "lucide-react";
+import { Layers, Package, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -32,6 +32,7 @@ import {
 import { SectionCard } from "./SectionCard";
 
 const STATUSES: ListingStatus[] = ["active", "sold", "drafts"];
+const PAGE_SIZE = 12;
 
 function formatPrice(value: number, lang: string) {
   try {
@@ -50,7 +51,8 @@ export function MyListings() {
   const lang = params.lang ?? DEFAULT_LANGUAGE;
 
   const [status, setStatus] = useState<ListingStatus>("active");
-  const { categories, counts, loading } = useMyListings({ status });
+  const [page, setPage] = useState(1);
+  const { products, counts, loading } = useMyListings({ status });
 
   const { remove, toggleActive, update, deleting, updating } = useProductActions();
 
@@ -58,6 +60,14 @@ export function MyListings() {
   // dialog ever mounts, and the menu can stay lightweight.
   const [editTarget, setEditTarget] = useState<SellerStorefrontProduct | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<SellerStorefrontProduct | null>(null);
+
+  const totalPages = Math.max(1, Math.ceil(products.length / PAGE_SIZE));
+  const visible = products.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  function selectStatus(next: ListingStatus) {
+    setStatus(next);
+    setPage(1);
+  }
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -126,7 +136,7 @@ export function MyListings() {
               <button
                 key={s}
                 type="button"
-                onClick={() => setStatus(s)}
+                onClick={() => selectStatus(s)}
                 className={clsx(
                   "flex items-center gap-2 whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors",
                   active
@@ -159,114 +169,92 @@ export function MyListings() {
           {t("dashboard.listings.publish")}
         </Link>
 
-        {/* Content */}
-        {loading && categories.length === 0 ? (
-          <div className="flex flex-col gap-4">
-            {[0, 1].map((i) => (
-              <div key={i} className="animate-pulse">
-                <div className="mb-3 h-4 w-32 rounded bg-background-secondary" />
-                <div className="flex gap-3 overflow-hidden">
-                  {[0, 1, 2, 3].map((j) => (
-                    <div
-                      key={j}
-                      className="h-40 w-32 shrink-0 rounded-xl bg-background-secondary"
-                    />
-                  ))}
-                </div>
-              </div>
+        {/* Content — every published product in one flat grid */}
+        {loading && products.length === 0 ? (
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="aspect-4/5 animate-pulse rounded-xl bg-background-secondary"
+              />
             ))}
           </div>
-        ) : categories.length === 0 ? (
+        ) : products.length === 0 ? (
           <EmptyState
             icon={Package}
             title={t("dashboard.listings.empty.title")}
             description={t("dashboard.listings.empty.description")}
             actionLabel={t("dashboard.listings.publish")}
+            onAction={() => router.push(`/${lang}/publish`)}
           />
         ) : (
-          <div className="flex flex-col gap-6">
-            {categories.map((cat) => (
-              <div key={cat.id} className="flex flex-col gap-3">
-                <header className="flex items-center justify-between gap-3">
-                  <div className="flex items-baseline gap-2">
-                    <Title level="h3" size="h6" weight="semibold">
-                      {cat.name}
-                    </Title>
-                    <Text variant="span" size="sm" color="tertiary">
-                      {t("dashboard.listings.countLabel", {
-                        count: String(cat.products.length),
-                      })}
-                    </Text>
-                  </div>
-                  {cat.href && (
+          <>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {visible.map((product) => {
+                const cover = resolveImageUrl(product.images?.[0]);
+                return (
+                  <div key={product.id} className="relative">
                     <Link
-                      href={`/${lang}${cat.href.startsWith("/") ? cat.href : `/${cat.href}`}`}
-                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold text-primary hover:bg-primary/5"
+                      href={`/${lang}/product/${product.id}`}
+                      className="group flex flex-col overflow-hidden rounded-xl border border-border-light bg-surface shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all hover:border-primary/40 hover:shadow-md"
                     >
-                      {t("dashboard.listings.viewAll")}
-                      <ChevronRight size={14} color="currentColor" strokeWidth={2} />
-                    </Link>
-                  )}
-                </header>
-
-                <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-2">
-                  {cat.products.slice(0, 8).map((product) => {
-                    const cover = resolveImageUrl(product.images?.[0]);
-                    return (
-                      <div
-                        key={product.id}
-                        className="relative w-36 shrink-0"
-                      >
-                        <Link
-                          href={`/${lang}/product/${product.id}`}
-                          className="group flex flex-col overflow-hidden rounded-xl border border-border-light bg-surface shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all hover:border-primary/40 hover:shadow-md"
-                        >
-                          <div className="relative aspect-square w-full bg-background-secondary">
-                            {cover ? (
-                              <Image
-                                src={cover}
-                                alt={product.name}
-                                fill
-                                sizes="144px"
-                                className="object-cover"
-                              />
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center text-primary/30">
-                                <Package size={32} color="currentColor" strokeWidth={1.5} />
-                              </div>
-                            )}
-                            {!product.isActive && (
-                              <span className="absolute left-2 top-2 rounded-full bg-foreground/85 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-                                {t("dashboard.listings.status.drafts")}
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex flex-col gap-0.5 p-2.5">
-                            <Text variant="span" weight="semibold" size="sm" numberOfLines={1}>
-                              {product.name}
-                            </Text>
-                            <Text variant="span" weight="bold" size="sm" color="primary">
-                              ${formatPrice(product.price, lang)}
-                            </Text>
-                          </div>
-                        </Link>
-
-                        {/* Actions menu sits over the card top-right corner; the
-                            menu itself stops propagation so it never triggers
-                            the wrapping link's navigation. */}
-                        <div className="absolute right-2 top-2">
-                          <ProductActionsMenu
-                            actions={buildActions(product)}
-                            ariaLabel={t("dashboard.listings.actions.menu")}
+                      <div className="relative aspect-square w-full bg-background-secondary">
+                        {cover ? (
+                          <Image
+                            src={cover}
+                            alt={product.name}
+                            fill
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
+                            className="object-cover transition-transform group-hover:scale-105"
                           />
-                        </div>
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-primary/30">
+                            <Package size={32} color="currentColor" strokeWidth={1.5} />
+                          </div>
+                        )}
+                        {!product.isActive && (
+                          <span className="absolute left-2 top-2 rounded-full bg-foreground/85 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                            {t("dashboard.listings.status.drafts")}
+                          </span>
+                        )}
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
+                      <div className="flex flex-col gap-0.5 p-2.5">
+                        <Text variant="span" weight="semibold" size="sm" numberOfLines={1}>
+                          {product.name}
+                        </Text>
+                        {product.productCategory?.translation?.name && (
+                          <Text variant="span" size="xs" color="tertiary" numberOfLines={1}>
+                            {product.productCategory.translation.name}
+                          </Text>
+                        )}
+                        <Text variant="span" weight="bold" size="sm" color="primary">
+                          ${formatPrice(product.price, lang)}
+                        </Text>
+                      </div>
+                    </Link>
+
+                    {/* Actions menu sits over the card top-right corner; the
+                        menu itself stops propagation so it never triggers
+                        the wrapping link's navigation. */}
+                    <div className="absolute right-2 top-2">
+                      <ProductActionsMenu
+                        actions={buildActions(product)}
+                        ariaLabel={t("dashboard.listings.actions.menu")}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+              />
+            )}
+          </>
         )}
       </div>
 

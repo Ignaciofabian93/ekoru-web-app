@@ -50,6 +50,7 @@
   },
   "product": {
     "addToCart": "Agregar al carro",
+    "favorite": "Guardar en favoritos",
     "added": "¡Agregado!",
     "exchangeable": "Intercambiable",
     "noImage": "Sin imagen"
