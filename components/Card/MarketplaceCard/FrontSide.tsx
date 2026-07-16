@@ -80,9 +80,9 @@ export default function FrontSide({
   return (
     <Container
       {...containerProps}
-      className="group flex h-full w-full flex-col overflow-hidden rounded-lg border border-border-light bg-surface text-left shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
+      className="group flex h-full w-full flex-col overflow-hidden rounded-lg border border-border-strong bg-surface text-left shadow-md transition-all hover:border-primary/40 hover:shadow-lg"
     >
-      <div className="relative aspect-4/3 w-full shrink-0 bg-background-secondary">
+      <div className="relative w-full h-1/2 shrink-0 bg-background-secondary">
         {cover && !imageError ? (
           <Image
             src={cover}
@@ -120,7 +120,7 @@ export default function FrontSide({
         )}
 
         {(!isOwnProduct || showFlip) && (
-          <div className="absolute top-2 right-2 flex items-center gap-1.5">
+          <div className="absolute top-2 right-2 flex flex-col-reverse items-center gap-1.5">
             {!isOwnProduct && (
               <button
                 type="button"

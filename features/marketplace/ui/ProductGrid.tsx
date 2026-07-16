@@ -17,7 +17,7 @@ export function ProductGrid({ products, lang, loading }: Props) {
 
   if (loading && products.length === 0) {
     return (
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
@@ -39,9 +39,14 @@ export function ProductGrid({ products, lang, loading }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
       {products.map((product, i) => (
-        <MarketplaceCard key={product.id} product={product} lang={lang} priority={i < 4} />
+        <MarketplaceCard
+          key={product.id}
+          product={product}
+          lang={lang}
+          priority={i < 4}
+        />
       ))}
     </div>
   );

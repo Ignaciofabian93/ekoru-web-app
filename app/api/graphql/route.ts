@@ -17,10 +17,19 @@ export async function POST(req: Request) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
+  // Forward the raw cookie header so the gateway can fall back to the
+  // `refreshToken` cookie when the 15-minute access token is expired or already
+  // dropped by the browser. Without it, an expired access token resolves as an
+  // anonymous request and viewer-scoped filters silently stop applying — e.g.
+  // the marketplace would show the logged-in seller their own products, which
+  // are meant to be excluded, until the access token is re-minted.
+  const cookieHeader = req.headers.get("cookie") ?? "";
+
   const res = await fetch(GRAPHQL_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      ...(cookieHeader ? { Cookie: cookieHeader } : {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body,

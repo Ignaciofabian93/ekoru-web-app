@@ -30,6 +30,7 @@ export function Hero({ titleKey, subtitleKey, wallpaper }: HeroProps) {
           color="white"
           className="opacity-90 text-center"
           weight="semibold"
+          align="center"
         >
           {t(subtitleKey)}
         </Text>

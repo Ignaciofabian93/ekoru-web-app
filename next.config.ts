@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
+  allowedDevOrigins: ["192.168.1.9"],
   images: {
     // All images are served from Cloudflare R2 via the ekoru-image-processor's
     // public CDN domains. See docs/R2_IMAGES_SETUP.md.

@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { useApolloClient } from "@apollo/client/react";
 import { Logout } from "@/lib/api/auth";
 import useAuthStore from "@/store/useAuthStore";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
@@ -10,6 +11,7 @@ export function useLogout() {
   const router = useRouter();
   const params = useParams<{ lang?: SupportedLanguage }>();
   const clearSeller = useAuthStore((s) => s.logout);
+  const client = useApolloClient();
   const [loading, setLoading] = useState(false);
 
   const handleLogout = useCallback(async () => {
@@ -20,12 +22,16 @@ export function useLogout() {
       await Logout().catch(() => undefined);
     } finally {
       clearSeller();
+      // Wipe the authenticated cache so the anonymous view is fresh — otherwise
+      // viewer-scoped lists cached for the just-logged-out seller (e.g. the
+      // marketplace grid that excluded their own products) would linger.
+      await client.clearStore().catch(() => undefined);
       const lang = params.lang ?? DEFAULT_LANGUAGE;
       router.push(`/${lang}`);
       router.refresh();
       setLoading(false);
     }
-  }, [clearSeller, params.lang, router]);
+  }, [clearSeller, client, params.lang, router]);
 
   return { handleLogout, loading };
 }

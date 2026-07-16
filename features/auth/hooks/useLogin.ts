@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { isAxiosError } from "axios";
-import { useLazyQuery } from "@apollo/client/react";
+import { useApolloClient, useLazyQuery } from "@apollo/client/react";
 import { Login } from "@/lib/api/auth";
 import { GET_ME } from "@/graphql/auth/login";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
@@ -16,6 +16,7 @@ export function useLogin() {
   const params = useParams<{ lang?: SupportedLanguage }>();
   const searchParams = useSearchParams();
   const setSeller = useAuthStore((s) => s.setSeller);
+  const client = useApolloClient();
   const toast = useToast();
 
   const [email, setEmail] = useState("");
@@ -34,6 +35,11 @@ export function useLogin() {
       // trailing space or capital letter from mobile autocomplete would cause
       // a 400 / "user not found" on an account that actually exists.
       await Login({ email: email.trim().toLowerCase(), password: password.trim() });
+      // Drop any cache accumulated while logged out (or as a previous user).
+      // Viewer-scoped queries — e.g. the marketplace grid, whose owner-exclusion
+      // is derived server-side and not part of the cache key — must refetch
+      // under the new identity instead of showing the previous viewer's list.
+      await client.clearStore().catch(() => undefined);
       const { data } = await fetchMe();
       if (data?.me) setSeller(data.me);
       const lang = params.lang ?? DEFAULT_LANGUAGE;

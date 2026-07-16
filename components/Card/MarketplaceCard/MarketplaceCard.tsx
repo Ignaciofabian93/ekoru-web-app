@@ -45,7 +45,7 @@ export default function MarketplaceCard({
       className={clsx(
         "relative w-full min-w-0 perspective-distant",
         {
-          "aspect-3/4": isOwnProduct,
+          "h-60": isOwnProduct,
           "h-76": !isOwnProduct,
         },
         className,

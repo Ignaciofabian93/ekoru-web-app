@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  ChevronRight,
-  Droplets,
-  Info,
-  Leaf,
-  MapPin,
-  RotateCcw,
-  TrendingUp,
-} from "lucide-react";
+import { ChevronRight, Droplets, Info, Leaf, MapPin, RotateCcw } from "lucide-react";
 import Image from "next/image";
 
 import {
@@ -91,7 +83,7 @@ export default function ProductImpactBack({
   const typeLabel = typeLabelRaw.startsWith("impact.") ? sellerType : typeLabelRaw;
 
   return (
-    <div className="relative flex h-full w-full flex-col overflow-hidden rounded-lg bg-surface shadow-sm">
+    <div className="relative flex h-full w-full flex-col overflow-hidden rounded-lg bg-surface border border-border-strong shadow-md hover:shadow-lg">
       <div className="flex items-center justify-between gap-2 px-3 py-2 border-b-2 border-border-light">
         <Text variant="p" size="sm" weight="semibold">
           {title}
@@ -111,7 +103,6 @@ export default function ProductImpactBack({
           <section className="mb-3">
             <div className="mb-2 flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5">
-                <TrendingUp size={12} className="text-primary" strokeWidth={2} />
                 <Text variant="label" weight="bold" size="sm">
                   {t("impact.environmentalImpact")}
                 </Text>
@@ -170,7 +161,7 @@ export default function ProductImpactBack({
 
         {seller && (
           <section className="border-t-2 border-border-light py-1">
-            <div className="mb-1.5 flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 my-1">
               <Text variant="label" size="sm" weight="bold">
                 {t("impact.seller")}
               </Text>
