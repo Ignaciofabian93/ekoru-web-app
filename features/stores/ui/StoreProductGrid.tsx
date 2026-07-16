@@ -1,13 +1,12 @@
 "use client";
 import { useTranslation } from "@/i18n/context";
 import { Store } from "lucide-react";
-
 import { NAMESPACE } from "../i18n";
-import type { StoreListProduct } from "../types";
-import { StoreProductCard } from "./StoreProductCard";
+import StoreProductCard from "@/components/Card/StoreProductCard/StoreProductCard";
+import type { StoreProduct } from "@/types/product";
 
 interface Props {
-  products: StoreListProduct[];
+  products: StoreProduct[];
   lang: string;
   loading?: boolean;
 }
@@ -39,7 +38,7 @@ export function StoreProductGrid({ products, lang, loading }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
       {products.map((product) => (
         <StoreProductCard key={product.id} product={product} lang={lang} />
       ))}

@@ -62,6 +62,9 @@ export type StoreProduct = {
   hasOffer: boolean;
   offerPrice?: number;
   sellerId: string;
+  // Resolved via federation; card-only queries may omit it. The flip-card back
+  // side renders the seller when present.
+  seller?: Seller | null;
   createdAt: string;
   images: string[];
   isActive: boolean;

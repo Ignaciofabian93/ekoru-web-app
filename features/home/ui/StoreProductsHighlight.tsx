@@ -85,12 +85,7 @@ export function StoreProductsHighlight({ lang }: { lang: SupportedLanguage }) {
           >
             {storeProducts.map((sp) => (
               <div key={sp.id} className="w-44 shrink-0">
-                <StoreProductCard
-                  product={sp}
-                  lang={lang}
-                  addToCartLabel={t("storeProducts.addToCart")}
-                  outOfStockLabel={t("storeProducts.outOfStock")}
-                />
+                <StoreProductCard product={sp} lang={lang} />
               </div>
             ))}
           </div>

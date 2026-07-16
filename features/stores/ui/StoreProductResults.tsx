@@ -4,12 +4,13 @@ import { Text } from "@/components/Text/Text";
 import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
-import { PAGE_SIZE_OPTIONS, type PageInfo, type StoreListProduct } from "../types";
+import { PAGE_SIZE_OPTIONS, type PageInfo } from "../types";
 import { StoreProductGrid } from "./StoreProductGrid";
+import type { StoreProduct } from "@/types/product";
 
 interface Props {
   lang: string;
-  products: StoreListProduct[];
+  products: StoreProduct[];
   loading: boolean;
   pageInfo?: PageInfo;
   pageSize: number;

@@ -19,7 +19,7 @@ export function ScreenShell({ lang, nav, hero, children }: Props) {
         className={clsx("mx-auto w-full", "flex-1", {
           "py-8": hero,
           "py-0": !hero,
-          "px-4": hero,
+          "px-2": hero,
           "px-0": !hero,
         })}
       >

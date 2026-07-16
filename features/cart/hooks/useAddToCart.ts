@@ -147,7 +147,10 @@ export function useAddToCart(currency: Currency = "CLP") {
     return "added";
   }
 
-  function addStoreProduct(product: StoreLike): AddToCartResult {
+  function addStoreProduct(
+    product: StoreLike,
+    quantity: number = 1,
+  ): AddToCartResult {
     const blocked = guard(product.sellerId);
     if (blocked) return blocked;
 
@@ -166,6 +169,8 @@ export function useAddToCart(currency: Currency = "CLP") {
       currency,
       sellerId: product.sellerId,
       sellerName: product.sellerName,
+      // The store clamps to `maxStock`, so an over-count desired quantity is safe.
+      quantity,
       maxStock: stock,
     });
     toast.success(t("toast.added"));

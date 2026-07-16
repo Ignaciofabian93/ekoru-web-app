@@ -11,7 +11,7 @@ export function StoreShell({ nav, hero, children }: Props) {
     <main className="flex-1 bg-background">
       {nav}
       {hero}
-      <div className="mx-auto w-full max-w-4xl px-4 py-8">{children}</div>
+      <div className="mx-auto w-full max-w-4xl px-3 py-8">{children}</div>
     </main>
   );
 }

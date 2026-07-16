@@ -3,7 +3,8 @@ import { useQuery } from "@apollo/client/react";
 
 import { GET_STORE_PRODUCTS } from "@/graphql/stores/queries";
 
-import type { PageInfo, StoreListProduct, StoreSortInput } from "../types";
+import type { PageInfo, StoreSortInput } from "../types";
+import type { StoreProduct } from "@/types/product";
 
 interface Params {
   page: number;
@@ -14,7 +15,7 @@ interface Params {
 
 export function useStoreProducts({ page, pageSize }: Params) {
   const { data, loading, error, previousData } = useQuery<{
-    getStoreProducts: { nodes: StoreListProduct[]; pageInfo: PageInfo };
+    getStoreProducts: { nodes: StoreProduct[]; pageInfo: PageInfo };
   }>(GET_STORE_PRODUCTS, {
     variables: { page, pageSize },
     fetchPolicy: "cache-and-network",

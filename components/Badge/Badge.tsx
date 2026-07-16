@@ -3,7 +3,13 @@
 import clsx from "clsx";
 import { type LucideIcon } from "lucide-react";
 
-type BadgeVariant = "primary" | "secondary" | "tertiary" | "descriptive" | "ghost";
+type BadgeVariant =
+  | "primary"
+  | "secondary"
+  | "tertiary"
+  | "descriptive"
+  | "ghost"
+  | "attention";
 type BadgeSize = "small" | "medium" | "large";
 
 const VARIANT_STYLES: Record<BadgeVariant, string> = {
@@ -11,6 +17,7 @@ const VARIANT_STYLES: Record<BadgeVariant, string> = {
   secondary: "bg-secondary-dark text-white",
   tertiary: "bg-secondary/15 text-secondary",
   descriptive: "bg-primary/10 text-primary",
+  attention: "bg-red-500 text-white",
   ghost: "border border-border-light bg-transparent text-foreground-secondary",
 };
 
@@ -23,7 +30,7 @@ const SIZE_STYLES: Record<BadgeSize, string> = {
 const ICON_SIZE: Record<BadgeSize, number> = { small: 12, medium: 14, large: 16 };
 
 type BadgeProps = {
-  label?: string;
+  label?: string | number;
   variant?: BadgeVariant;
   size?: BadgeSize;
   icon?: LucideIcon;

@@ -85,7 +85,7 @@ export default function ProductImpactBack({
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden rounded-lg bg-surface border border-border-strong shadow-md hover:shadow-lg">
       <div className="flex items-center justify-between gap-2 px-3 py-2 border-b-2 border-border-light">
-        <Text variant="p" size="sm" weight="semibold">
+        <Text variant="p" size="sm" weight="semibold" className="line-clamp-1">
           {title}
         </Text>
         <button

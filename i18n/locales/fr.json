@@ -1,4 +1,12 @@
 {
+  "storeCard": {
+    "noImage": "Pas d'image",
+    "noBrand": "Sans marque",
+    "addToCart": "Ajouter au panier",
+    "outOfStock": "Rupture de stock",
+    "decreaseQuantity": "Diminuer la quantité",
+    "increaseQuantity": "Augmenter la quantité"
+  },
   "metadata": {
     "title": "Ekoru — Marché Durable",
     "description": "Achetez, vendez et recyclez de manière durable. Ekoru est le marché circulaire qui connecte les personnes et les communautés avec l'environnement."

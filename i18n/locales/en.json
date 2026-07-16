@@ -1,4 +1,12 @@
 {
+  "storeCard": {
+    "noImage": "No image",
+    "noBrand": "No brand",
+    "addToCart": "Add to cart",
+    "outOfStock": "Out of stock",
+    "decreaseQuantity": "Decrease quantity",
+    "increaseQuantity": "Increase quantity"
+  },
   "metadata": {
     "title": "Ekoru — Sustainable Marketplace",
     "description": "Buy, sell, and recycle sustainably. Ekoru is the circular marketplace connecting people and communities with the environment."

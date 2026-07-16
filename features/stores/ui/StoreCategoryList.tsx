@@ -1,24 +1,21 @@
 "use client";
 import { Title } from "@/components/Title/Title";
+import { UnderlineTabs, type UnderlineTab } from "@/components/UnderlineTabs/UnderlineTabs";
 import { useTranslation } from "@/i18n/context";
-import clsx from "clsx";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
 
 import { NAMESPACE } from "../i18n";
 import type { StoreCatalogCategory } from "../types";
+
+const ALL_KEY = "__all__";
 
 interface Props {
   lang: string;
   categories: StoreCatalogCategory[];
   activeSlug?: string;
-  /** Adds an "All" pill that points back to the stores root. */
+  /** Adds an "All" tab that points back to the stores root. */
   showAll?: boolean;
   loading?: boolean;
 }
-
-const SCROLL_STEP = 240;
 
 export function StoreCategoryList({
   lang,
@@ -28,34 +25,6 @@ export function StoreCategoryList({
   loading,
 }: Props) {
   const { t } = useTranslation(NAMESPACE);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-
-  const updateScrollState = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const { scrollLeft, scrollWidth, clientWidth } = el;
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
-  }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    updateScrollState();
-    el.addEventListener("scroll", updateScrollState, { passive: true });
-    const observer = new ResizeObserver(updateScrollState);
-    observer.observe(el);
-    return () => {
-      el.removeEventListener("scroll", updateScrollState);
-      observer.disconnect();
-    };
-  }, [updateScrollState, categories.length, showAll]);
-
-  const handleScroll = (delta: number) => {
-    scrollRef.current?.scrollBy({ left: delta, behavior: "smooth" });
-  };
 
   if (loading && categories.length === 0) {
     return (
@@ -63,11 +32,11 @@ export function StoreCategoryList({
         <Title level="h2" size="h5">
           {t("sections.categories")}
         </Title>
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div className="scrollbar-none flex gap-6 overflow-x-auto border-b border-border-light pb-2.5">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="h-9 w-28 shrink-0 animate-pulse rounded-full bg-background-secondary"
+              className="h-4 w-20 shrink-0 animate-pulse rounded bg-background-secondary"
             />
           ))}
         </div>
@@ -75,72 +44,29 @@ export function StoreCategoryList({
     );
   }
 
+  const tabs: UnderlineTab[] = [
+    ...(showAll
+      ? [{ key: ALL_KEY, label: t("sections.allCategories"), href: `/${lang}/stores` }]
+      : []),
+    ...categories.map((cat) => ({
+      key: cat.slug,
+      label: cat.name,
+      href: `/${lang}/stores/${cat.slug}`,
+    })),
+  ];
+
   return (
     <section className="flex flex-col gap-3">
       <Title level="h2" size="h5">
         {t("sections.categories")}
       </Title>
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => handleScroll(-SCROLL_STEP)}
-          aria-label={t("scroll.previous")}
-          disabled={!canScrollLeft}
-          className={clsx(
-            "hidden size-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-sm transition hover:border-primary hover:text-primary md:flex",
-            !canScrollLeft && "pointer-events-none opacity-40",
-          )}
-        >
-          <ChevronLeft size={18} strokeWidth={2} />
-        </button>
-        <div
-          ref={scrollRef}
-          className="scrollbar-none flex min-w-0 flex-1 items-center gap-2 overflow-x-auto"
-        >
-          {showAll && (
-            <Link
-              href={`/${lang}/stores`}
-              className={clsx(
-                "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
-                !activeSlug
-                  ? "bg-primary text-white"
-                  : "border border-border bg-surface text-foreground hover:border-primary hover:text-primary",
-              )}
-            >
-              {t("sections.allCategories")}
-            </Link>
-          )}
-          {categories.map((cat) => {
-            const isActive = cat.slug === activeSlug;
-            return (
-              <Link
-                key={cat.id}
-                href={`/${lang}/stores/${cat.slug}`}
-                className={clsx(
-                  "shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-primary text-white"
-                    : "border border-border bg-surface text-foreground hover:border-primary hover:text-primary",
-                )}
-              >
-                {cat.name}
-              </Link>
-            );
-          })}
-        </div>
-        <button
-          type="button"
-          onClick={() => handleScroll(SCROLL_STEP)}
-          aria-label={t("scroll.next")}
-          disabled={!canScrollRight}
-          className={clsx(
-            "hidden size-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-sm transition hover:border-primary hover:text-primary md:flex",
-            !canScrollRight && "pointer-events-none opacity-40",
-          )}
-        >
-          <ChevronRight size={18} strokeWidth={2} />
-        </button>
-      </div>
+      <UnderlineTabs
+        tabs={tabs}
+        activeKey={activeSlug ?? ALL_KEY}
+        ariaLabel={t("sections.categories")}
+        remeasureKey={lang}
+        scrollable
+      />
     </section>
   );
 }

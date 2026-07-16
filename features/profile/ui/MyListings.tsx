@@ -37,7 +37,7 @@ import {
   type ProductMenuAction,
 } from "./ProductActionsMenu";
 import { SectionCard } from "./SectionCard";
-import { UnderlineTabs } from "./UnderlineTabs";
+import { UnderlineTabs } from "@/components/UnderlineTabs/UnderlineTabs";
 
 /** Which catalog a listing row belongs to. A seller sees one or more of these
  *  depending on their account: PERSON → marketplace; business → store and/or

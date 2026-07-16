@@ -3,8 +3,9 @@ import type { SupportedLanguage } from "@/constants/settings";
 import { GET_STORE_CATEGORY_PRODUCTS_BY_SLUG } from "@/graphql/stores/queries";
 import { useQuery } from "@apollo/client/react";
 
-import type { PageInfo, StoreCategoryDetail, StoreListProduct } from "../types";
+import type { PageInfo, StoreCategoryDetail } from "../types";
 import { useStoreFilters } from "./useStoreFilters";
+import type { StoreProduct } from "@/types/product";
 
 export function useProductsByStoreCategory({
   slug,
@@ -34,7 +35,7 @@ export function useProductsByStoreCategory({
   const { data, loading, error, previousData } = useQuery<{
     getStoreCategoryProductsBySlug: {
       storeCategory?: StoreCategoryDetail;
-      products: { nodes: StoreListProduct[]; pageInfo: PageInfo };
+      products: { nodes: StoreProduct[]; pageInfo: PageInfo };
     };
   }>(GET_STORE_CATEGORY_PRODUCTS_BY_SLUG, {
     variables: {

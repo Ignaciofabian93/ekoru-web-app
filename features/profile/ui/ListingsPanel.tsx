@@ -4,7 +4,7 @@ import type { LucideIcon } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import type { ListingStatus } from "../hooks/useMyListings";
 import { EmptyState } from "./EmptyState";
-import { UnderlineTabs } from "./UnderlineTabs";
+import { UnderlineTabs } from "@/components/UnderlineTabs/UnderlineTabs";
 
 const STATUSES: ListingStatus[] = ["active", "drafts"];
 const PAGE_SIZE = 12;
