@@ -136,6 +136,11 @@ export const PRODUCT_CARD_SELLER_FIELDS_FRAGMENT = gql`
     isVerified
     address
     phone
+    region {
+      id
+      region
+      countryId
+    }
     county {
       id
       county

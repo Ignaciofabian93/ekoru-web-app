@@ -1,25 +1,32 @@
 "use client";
-import { Text } from "@/components/Text/Text";
-import { Pagination } from "@/components/Pagination/Pagination";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import type { SellerStorefrontProduct } from "@/features/seller/types";
+import type { StoreListProduct } from "@/features/stores/types";
+import type { ServiceNode } from "@/features/services/types";
+import type { ServiceCardData } from "@/components/Card/ServiceCard/types";
 import { useTranslation } from "@/i18n/context";
-import { resolveImageUrl } from "@/utils/resolveImage";
-import clsx from "clsx";
-import { Layers, Package, Plus } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { FileText, Layers, Package, Plus, Wrench } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
+import ServiceCard from "@/components/Card/ServiceCard/ServiceCard";
+import { StoreProductCard } from "@/features/stores/ui/StoreProductCard";
+import { LinkButton } from "@/components/Links/LinkButton";
+import { useBusinessProfile, useSellerType } from "@/store/useAuthStore";
+
 import { useMyListings, type ListingStatus } from "../hooks/useMyListings";
-import {
-  useProductActions,
-  type UpdateProductPatch,
-} from "../hooks/useProductActions";
+import { useMyStoreListings } from "../hooks/useMyStoreListings";
+import { useMyServiceListings } from "../hooks/useMyServiceListings";
+import { useProductActions } from "../hooks/useProductActions";
+import { useStoreProductActions } from "../hooks/useStoreProductActions";
+import { useServiceActions } from "../hooks/useServiceActions";
 import { NAMESPACE } from "../i18n";
 import { DeleteProductDialog } from "./DeleteProductDialog";
 import { EditProductDialog } from "./EditProductDialog";
-import { EmptyState } from "./EmptyState";
+import { EditStoreProductDialog } from "./EditStoreProductDialog";
+import { EditServiceDialog } from "./EditServiceDialog";
+import { ListingsPanel, type EmptyCopy } from "./ListingsPanel";
 import {
   Eye,
   Pencil,
@@ -30,18 +37,36 @@ import {
   type ProductMenuAction,
 } from "./ProductActionsMenu";
 import { SectionCard } from "./SectionCard";
+import { UnderlineTabs } from "./UnderlineTabs";
 
-const STATUSES: ListingStatus[] = ["active", "sold", "drafts"];
-const PAGE_SIZE = 12;
+/** Which catalog a listing row belongs to. A seller sees one or more of these
+ *  depending on their account: PERSON → marketplace; business → store and/or
+ *  service per its BusinessType (RETAIL / SERVICES / MIXED). */
+type ListingKind = "marketplace" | "store" | "service";
 
-function formatPrice(value: number, lang: string) {
-  try {
-    return new Intl.NumberFormat(lang, {
-      maximumFractionDigits: 0,
-    }).format(value);
-  } catch {
-    return String(value);
-  }
+type EditTarget =
+  | { kind: "marketplace"; item: SellerStorefrontProduct }
+  | { kind: "store"; item: StoreListProduct }
+  | { kind: "service"; item: ServiceNode };
+
+type DeleteTarget = { kind: ListingKind; id: string | number; name: string };
+
+function serviceToCardData(service: ServiceNode): ServiceCardData {
+  return {
+    id: service.id,
+    name: service.name,
+    description: service.description ?? undefined,
+    image: service.images?.[0],
+    providerName: service.seller?.profile?.businessName ?? undefined,
+    providerLogo: service.seller?.profile?.logo ?? undefined,
+    category: service.serviceCategory?.subCategory,
+    priceFrom: service.basePrice ?? undefined,
+    durationMinutes: service.duration ?? undefined,
+    rating: service.averageRating ?? undefined,
+    reviewsCount: service.reviewCount ?? undefined,
+    isVerified: service.seller?.isVerified,
+    isLiked: service.isLiked,
+  };
 }
 
 export function MyListings() {
@@ -50,229 +75,371 @@ export function MyListings() {
   const router = useRouter();
   const lang = params.lang ?? DEFAULT_LANGUAGE;
 
-  const [status, setStatus] = useState<ListingStatus>("active");
-  const [page, setPage] = useState(1);
-  const { products, counts, loading } = useMyListings({ status });
+  const sellerType = useSellerType();
+  const businessProfile = useBusinessProfile();
 
-  const { remove, toggleActive, update, deleting, updating } = useProductActions();
+  // The seller's account decides which catalogs they manage here.
+  const kinds = useMemo<ListingKind[]>(() => {
+    if (sellerType === "STARTUP" || sellerType === "COMPANY") {
+      switch (businessProfile?.businessType) {
+        case "RETAIL":
+          return ["store"];
+        case "SERVICES":
+          return ["service"];
+        case "MIXED":
+          return ["store", "service"];
+        default:
+          // businessType still hydrating — allow both, mirroring the publish flow.
+          return ["store", "service"];
+      }
+    }
+    return ["marketplace"];
+  }, [sellerType, businessProfile?.businessType]);
 
-  // Editing / deleting target products. Kept here (not per-card) so only one
-  // dialog ever mounts, and the menu can stay lightweight.
-  const [editTarget, setEditTarget] = useState<SellerStorefrontProduct | null>(null);
-  const [deleteTarget, setDeleteTarget] = useState<SellerStorefrontProduct | null>(null);
+  // Derive the effective kind during render (rather than syncing via an effect)
+  // so a seller whose account hydrates after mount always lands on a valid kind.
+  const [selectedKind, setSelectedKind] = useState<ListingKind | null>(null);
+  const activeKind =
+    selectedKind && kinds.includes(selectedKind) ? selectedKind : kinds[0];
 
-  const totalPages = Math.max(1, Math.ceil(products.length / PAGE_SIZE));
-  const visible = products.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  // Each kind remembers its own active/drafts filter.
+  const [statusByKind, setStatusByKind] = useState<Record<ListingKind, ListingStatus>>({
+    marketplace: "active",
+    store: "active",
+    service: "active",
+  });
+  const setStatusFor = (kind: ListingKind, status: ListingStatus) =>
+    setStatusByKind((prev) => ({ ...prev, [kind]: status }));
 
-  function selectStatus(next: ListingStatus) {
-    setStatus(next);
-    setPage(1);
+  // Data — one hook per kind, each skipped unless the kind applies to the seller.
+  const marketplace = useMyListings({
+    status: statusByKind.marketplace,
+    enabled: kinds.includes("marketplace"),
+  });
+  const store = useMyStoreListings({
+    status: statusByKind.store,
+    enabled: kinds.includes("store"),
+  });
+  const service = useMyServiceListings({
+    status: statusByKind.service,
+    enabled: kinds.includes("service"),
+  });
+
+  // Mutations — one hook per subgraph; all mounted, dispatched by target kind.
+  const productActions = useProductActions();
+  const storeActions = useStoreProductActions();
+  const serviceActions = useServiceActions();
+
+  const [editTarget, setEditTarget] = useState<EditTarget | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
+
+  const menuLabel = t("dashboard.listings.actions.menu");
+
+  function buildActions(opts: {
+    isActive: boolean;
+    onView?: () => void;
+    onEdit: () => void;
+    onToggle: () => void;
+    onDelete: () => void;
+  }): ProductMenuAction[] {
+    const { isActive, onView, onEdit, onToggle, onDelete } = opts;
+    return [
+      ...(onView
+        ? [
+            {
+              key: "view",
+              label: t("dashboard.listings.actions.view"),
+              icon: Eye,
+              onSelect: onView,
+            },
+          ]
+        : []),
+      {
+        key: "edit",
+        label: t("dashboard.listings.actions.edit"),
+        icon: Pencil,
+        onSelect: onEdit,
+      },
+      {
+        key: "toggle",
+        label: isActive
+          ? t("dashboard.listings.actions.deactivate")
+          : t("dashboard.listings.actions.activate"),
+        icon: isActive ? PowerOff : Power,
+        onSelect: onToggle,
+      },
+      {
+        key: "delete",
+        label: t("dashboard.listings.actions.delete"),
+        icon: Trash2,
+        tone: "danger" as const,
+        onSelect: onDelete,
+      },
+    ];
   }
+
+  const statusLabel = (s: ListingStatus) => t(`dashboard.listings.status.${s}`);
+  const publishAction = {
+    actionLabel: t("dashboard.listings.publish"),
+    onAction: () => router.push(`/${lang}/publish`),
+  };
+
+  const editingLoading =
+    editTarget?.kind === "marketplace"
+      ? productActions.updating
+      : editTarget?.kind === "store"
+        ? storeActions.updating
+        : serviceActions.updating;
+
+  const deletingLoading =
+    deleteTarget?.kind === "marketplace"
+      ? productActions.deleting
+      : deleteTarget?.kind === "store"
+        ? storeActions.deleting
+        : serviceActions.deleting;
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
-    const ok = await remove(deleteTarget.id);
+    const actions =
+      deleteTarget.kind === "marketplace"
+        ? productActions
+        : deleteTarget.kind === "store"
+          ? storeActions
+          : serviceActions;
+    const ok = await actions.remove(deleteTarget.id);
     if (ok) setDeleteTarget(null);
   };
 
-  const handleEditSave = async (patch: UpdateProductPatch) => {
-    if (!editTarget) return;
-    const ok = await update(editTarget.id, patch);
-    if (ok) setEditTarget(null);
-  };
-
-  const buildActions = (product: SellerStorefrontProduct): ProductMenuAction[] => [
-    {
-      key: "view",
-      label: t("dashboard.listings.actions.view"),
-      icon: Eye,
-      onSelect: () => router.push(`/${lang}/product/${product.id}`),
-    },
-    {
-      key: "edit",
-      label: t("dashboard.listings.actions.edit"),
-      icon: Pencil,
-      onSelect: () => setEditTarget(product),
-    },
-    {
-      key: "toggle",
-      label: product.isActive
-        ? t("dashboard.listings.actions.deactivate")
-        : t("dashboard.listings.actions.activate"),
-      icon: product.isActive ? PowerOff : Power,
-      onSelect: () => toggleActive(product.id, !product.isActive),
-    },
-    {
-      key: "delete",
-      label: t("dashboard.listings.actions.delete"),
-      icon: Trash2,
-      tone: "danger",
-      onSelect: () => setDeleteTarget(product),
-    },
-  ];
+  const editing = editTarget;
 
   return (
     <SectionCard
       icon={Layers}
+      tone="primary"
       title={t("dashboard.listings.title")}
       subtitle={t("dashboard.listings.subtitle")}
       headerRight={
-        <Link
-          href={`/${lang}/publish`}
-          className="hidden sm:inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-bold text-on-primary transition-colors hover:bg-primary-dark"
-        >
-          <Plus size={14} color="currentColor" strokeWidth={2.5} />
-          {t("dashboard.listings.publish")}
-        </Link>
+        <div className="hidden sm:inline-flex">
+          <LinkButton
+            href={`/${lang}/publish`}
+            icon={Plus}
+            label={t("dashboard.listings.publish")}
+            variant="primary"
+          />
+        </div>
       }
     >
       <div className="flex flex-col gap-5">
-        {/* Status tabs */}
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {STATUSES.map((s) => {
-            const active = status === s;
-            const count = counts[s];
-            return (
-              <button
-                key={s}
-                type="button"
-                onClick={() => selectStatus(s)}
-                className={clsx(
-                  "flex items-center gap-2 whitespace-nowrap rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors",
-                  active
-                    ? "bg-primary text-on-primary"
-                    : "border border-border-light bg-surface text-foreground-secondary hover:border-primary/40",
-                )}
-              >
-                {t(`dashboard.listings.status.${s}`)}
-                <span
-                  className={clsx(
-                    "rounded-full px-1.5 text-xs font-bold",
-                    active
-                      ? "bg-on-primary/15 text-on-primary"
-                      : "bg-background-secondary text-foreground-tertiary",
-                  )}
-                >
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+        {/* Kind switch — only when the seller manages more than one catalog (MIXED). */}
+        {kinds.length > 1 && (
+          <UnderlineTabs
+            tabs={kinds.map((k) => ({
+              key: k,
+              label:
+                k === "service"
+                  ? t("dashboard.listings.kinds.services")
+                  : t("dashboard.listings.kinds.products"),
+            }))}
+            activeKey={activeKind}
+            onSelect={(k) => setSelectedKind(k as ListingKind)}
+            ariaLabel={t("dashboard.listings.title")}
+            remeasureKey={lang}
+          />
+        )}
 
         {/* Mobile publish button */}
-        <Link
-          href={`/${lang}/publish`}
-          className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-bold text-on-primary transition-colors hover:bg-primary-dark sm:hidden"
-        >
-          <Plus size={14} color="currentColor" strokeWidth={2.5} />
-          {t("dashboard.listings.publish")}
-        </Link>
-
-        {/* Content — every published product in one flat grid */}
-        {loading && products.length === 0 ? (
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="aspect-4/5 animate-pulse rounded-xl bg-background-secondary"
-              />
-            ))}
-          </div>
-        ) : products.length === 0 ? (
-          <EmptyState
-            icon={Package}
-            title={t("dashboard.listings.empty.title")}
-            description={t("dashboard.listings.empty.description")}
-            actionLabel={t("dashboard.listings.publish")}
-            onAction={() => router.push(`/${lang}/publish`)}
+        <div className="sm:hidden">
+          <LinkButton
+            href={`/${lang}/publish`}
+            icon={Plus}
+            label={t("dashboard.listings.publish")}
           />
-        ) : (
-          <>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {visible.map((product) => {
-                const cover = resolveImageUrl(product.images?.[0]);
-                return (
-                  <div key={product.id} className="relative">
-                    <Link
-                      href={`/${lang}/product/${product.id}`}
-                      className="group flex flex-col overflow-hidden rounded-xl border border-border-light bg-surface shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all hover:border-primary/40 hover:shadow-md"
-                    >
-                      <div className="relative aspect-square w-full bg-background-secondary">
-                        {cover ? (
-                          <Image
-                            src={cover}
-                            alt={product.name}
-                            fill
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
-                            className="object-cover transition-transform group-hover:scale-105"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center text-primary/30">
-                            <Package size={32} color="currentColor" strokeWidth={1.5} />
-                          </div>
-                        )}
-                        {!product.isActive && (
-                          <span className="absolute left-2 top-2 rounded-full bg-foreground/85 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-                            {t("dashboard.listings.status.drafts")}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex flex-col gap-0.5 p-2.5">
-                        <Text variant="span" weight="semibold" size="sm" numberOfLines={1}>
-                          {product.name}
-                        </Text>
-                        {product.productCategory?.translation?.name && (
-                          <Text variant="span" size="xs" color="tertiary" numberOfLines={1}>
-                            {product.productCategory.translation.name}
-                          </Text>
-                        )}
-                        <Text variant="span" weight="bold" size="sm" color="primary">
-                          ${formatPrice(product.price, lang)}
-                        </Text>
-                      </div>
-                    </Link>
+        </div>
 
-                    {/* Actions menu sits over the card top-right corner; the
-                        menu itself stops propagation so it never triggers
-                        the wrapping link's navigation. */}
-                    <div className="absolute right-2 top-2">
-                      <ProductActionsMenu
-                        actions={buildActions(product)}
-                        ariaLabel={t("dashboard.listings.actions.menu")}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={page}
-                totalPages={totalPages}
-                onPageChange={setPage}
+        {activeKind === "marketplace" && (
+          <ListingsPanel
+            status={statusByKind.marketplace}
+            counts={marketplace.counts}
+            onStatusChange={(s) => setStatusFor("marketplace", s)}
+            statusLabel={statusLabel}
+            items={marketplace.products}
+            loading={marketplace.loading}
+            remeasureKey={lang}
+            renderItem={(p) => (
+              <MarketplaceCard
+                key={p.id}
+                product={p}
+                lang={lang}
+                actions={
+                  <ProductActionsMenu
+                    ariaLabel={menuLabel}
+                    actions={buildActions({
+                      isActive: Boolean(p.isActive),
+                      onView: () => router.push(`/${lang}/product/${p.id}`),
+                      onEdit: () => setEditTarget({ kind: "marketplace", item: p }),
+                      onToggle: () => productActions.toggleActive(p.id, !p.isActive),
+                      onDelete: () =>
+                        setDeleteTarget({ kind: "marketplace", id: p.id, name: p.name }),
+                    })}
+                  />
+                }
               />
             )}
-          </>
+            emptyActive={{
+              icon: Package,
+              title: t("dashboard.listings.empty.title"),
+              description: t("dashboard.listings.empty.description"),
+              ...publishAction,
+            }}
+            emptyDrafts={{
+              icon: FileText,
+              title: t("dashboard.listings.emptyDrafts.title"),
+              description: t("dashboard.listings.emptyDrafts.description"),
+            }}
+          />
+        )}
+
+        {activeKind === "store" && (
+          <ListingsPanel
+            status={statusByKind.store}
+            counts={store.counts}
+            onStatusChange={(s) => setStatusFor("store", s)}
+            statusLabel={statusLabel}
+            items={store.products}
+            loading={store.loading}
+            remeasureKey={lang}
+            renderItem={(p) => {
+              const isActive = p.isActive !== false;
+              return (
+                <StoreProductCard
+                  key={p.id}
+                  product={p}
+                  lang={lang}
+                  actions={
+                    <ProductActionsMenu
+                      ariaLabel={menuLabel}
+                      actions={buildActions({
+                        isActive,
+                        onView: () => router.push(`/${lang}/store-product/${p.id}`),
+                        onEdit: () => setEditTarget({ kind: "store", item: p }),
+                        onToggle: () => storeActions.toggleActive(p.id, !isActive),
+                        onDelete: () =>
+                          setDeleteTarget({ kind: "store", id: p.id, name: p.name }),
+                      })}
+                    />
+                  }
+                />
+              );
+            }}
+            emptyActive={{
+              icon: Package,
+              title: t("dashboard.listings.empty.title"),
+              description: t("dashboard.listings.empty.description"),
+              ...publishAction,
+            }}
+            emptyDrafts={{
+              icon: FileText,
+              title: t("dashboard.listings.emptyDrafts.title"),
+              description: t("dashboard.listings.emptyDrafts.description"),
+            }}
+          />
+        )}
+
+        {activeKind === "service" && (
+          <ListingsPanel
+            status={statusByKind.service}
+            counts={service.counts}
+            onStatusChange={(s) => setStatusFor("service", s)}
+            statusLabel={statusLabel}
+            items={service.services}
+            loading={service.loading}
+            remeasureKey={lang}
+            renderItem={(s) => {
+              const isActive = s.isActive !== false;
+              return (
+                <ServiceCard
+                  key={s.id}
+                  service={serviceToCardData(s)}
+                  labels={{
+                    verified: t("favorites.serviceCard.verified"),
+                    priceFromPrefix: t("favorites.serviceCard.priceFrom"),
+                  }}
+                  actions={
+                    <ProductActionsMenu
+                      ariaLabel={menuLabel}
+                      actions={buildActions({
+                        isActive,
+                        onEdit: () => setEditTarget({ kind: "service", item: s }),
+                        onToggle: () => serviceActions.toggleActive(s.id, !isActive),
+                        onDelete: () =>
+                          setDeleteTarget({ kind: "service", id: s.id, name: s.name }),
+                      })}
+                    />
+                  }
+                />
+              );
+            }}
+            emptyActive={
+              {
+                icon: Wrench,
+                title: t("dashboard.listings.emptyService.title"),
+                description: t("dashboard.listings.emptyService.description"),
+                ...publishAction,
+              } satisfies EmptyCopy
+            }
+            emptyDrafts={{
+              icon: FileText,
+              title: t("dashboard.listings.emptyServiceDrafts.title"),
+              description: t("dashboard.listings.emptyServiceDrafts.description"),
+            }}
+          />
         )}
       </div>
 
-      {editTarget && (
+      {editing?.kind === "marketplace" && (
         <EditProductDialog
-          key={editTarget.id}
+          key={editing.item.id}
           isOpen
-          product={editTarget}
-          loading={updating}
+          product={editing.item}
+          loading={editingLoading}
           onClose={() => setEditTarget(null)}
-          onSave={handleEditSave}
+          onSave={async (patch) => {
+            const ok = await productActions.update(editing.item.id, patch);
+            if (ok) setEditTarget(null);
+          }}
+        />
+      )}
+      {editing?.kind === "store" && (
+        <EditStoreProductDialog
+          key={editing.item.id}
+          isOpen
+          product={editing.item}
+          loading={editingLoading}
+          onClose={() => setEditTarget(null)}
+          onSave={async (patch) => {
+            const ok = await storeActions.update(editing.item.id, patch);
+            if (ok) setEditTarget(null);
+          }}
+        />
+      )}
+      {editing?.kind === "service" && (
+        <EditServiceDialog
+          key={editing.item.id}
+          isOpen
+          service={editing.item}
+          loading={editingLoading}
+          onClose={() => setEditTarget(null)}
+          onSave={async (patch) => {
+            const ok = await serviceActions.update(editing.item.id, patch);
+            if (ok) setEditTarget(null);
+          }}
         />
       )}
       {deleteTarget && (
         <DeleteProductDialog
           isOpen
           productName={deleteTarget.name}
-          loading={deleting}
+          loading={deletingLoading}
           onClose={() => setDeleteTarget(null)}
           onConfirm={handleDelete}
         />

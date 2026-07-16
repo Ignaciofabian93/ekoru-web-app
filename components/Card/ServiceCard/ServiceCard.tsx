@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 import {
   DEFAULT_SERVICE_LABELS,
@@ -17,6 +17,10 @@ interface Props {
   labels?: ServiceCardLabels;
   className?: string;
   onContact?: () => void;
+  /** Overlay controls (e.g. an owner actions menu) rendered top-right. When set
+   *  the card enters management mode: customer controls (favorite, flip, book)
+   *  are hidden. */
+  actions?: ReactNode;
 }
 
 export default function ServiceCard({
@@ -25,9 +29,11 @@ export default function ServiceCard({
   labels,
   className,
   onContact,
+  actions,
 }: Props) {
   const [isFlipped, setIsFlipped] = useState(false);
   const flip = () => setIsFlipped((prev) => !prev);
+  const manage = Boolean(actions);
 
   const merged: Required<ServiceCardLabels> = { ...DEFAULT_SERVICE_LABELS, ...labels };
 
@@ -39,7 +45,13 @@ export default function ServiceCard({
           isFlipped ? "pointer-events-none opacity-0" : "opacity-100",
         )}
       >
-        <FrontSide service={service} href={href} labels={merged} onFlip={flip} />
+        <FrontSide
+          service={service}
+          href={href}
+          labels={merged}
+          onFlip={flip}
+          manage={manage}
+        />
       </div>
       <div
         className={clsx(
@@ -55,6 +67,8 @@ export default function ServiceCard({
           onContact={onContact}
         />
       </div>
+
+      {actions && <div className="absolute right-2 top-2 z-20">{actions}</div>}
     </div>
   );
 }

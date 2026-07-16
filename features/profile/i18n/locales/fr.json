@@ -57,6 +57,10 @@
       "title": "Mes annonces",
       "subtitle": "Tout ce que vous avez publié au même endroit",
       "publish": "Nouvelle annonce",
+      "kinds": {
+        "products": "Produits",
+        "services": "Services"
+      },
       "status": {
         "active": "Actives",
         "sold": "Vendues",
@@ -65,6 +69,18 @@
       "empty": {
         "title": "Rien pour l'instant",
         "description": "Commencez à publier pour voir tous vos produits ici."
+      },
+      "emptyDrafts": {
+        "title": "Aucun brouillon",
+        "description": "Les produits que vous enregistrez sans les publier apparaîtront ici."
+      },
+      "emptyService": {
+        "title": "Aucun service pour l'instant",
+        "description": "Commencez à publier pour voir vos services ici."
+      },
+      "emptyServiceDrafts": {
+        "title": "Aucun brouillon",
+        "description": "Les services que vous enregistrez sans les publier apparaîtront ici."
       },
       "actions": {
         "menu": "Actions du produit",
@@ -80,6 +96,8 @@
         "name": "Nom",
         "brand": "Marque",
         "price": "Prix",
+        "stock": "Stock",
+        "duration": "Durée (min)",
         "description": "Description",
         "save": "Enregistrer",
         "saving": "Enregistrement",

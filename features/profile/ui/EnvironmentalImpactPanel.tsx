@@ -13,7 +13,9 @@ import {
   Sprout,
   Trees,
 } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useSellerPoints } from "@/store/useAuthStore";
+import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
 
@@ -62,16 +64,14 @@ const LEVELS = [
   { name: "Forest", min: 1000, icon: Recycle },
 ];
 
-function formatNumber(n: number) {
-  return n.toLocaleString(undefined, {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  });
-}
-
 export function EnvironmentalImpactPanel() {
   const { t } = useTranslation(NAMESPACE);
   const points = useSellerPoints();
+  const params = useParams<{ lang?: SupportedLanguage }>();
+  const lang = params.lang ?? DEFAULT_LANGUAGE;
+
+  const formatNumber = (n: number) =>
+    n.toLocaleString(lang, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
   const currentLevelIdx = LEVELS.reduce(
     (acc, lvl, i) => (points >= lvl.min ? i : acc),
@@ -106,7 +106,7 @@ export function EnvironmentalImpactPanel() {
       key: "water",
       icon: Droplets,
       tone: "info",
-      value: `${IMPACT.totalWaterSavingsLT.toLocaleString()} L`,
+      value: `${IMPACT.totalWaterSavingsLT.toLocaleString(lang)} L`,
       label: t("environmentalImpact.stats.water"),
     },
     {
@@ -203,12 +203,12 @@ export function EnvironmentalImpactPanel() {
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <Text variant="span" size="sm" color="tertiary">
-              {points.toLocaleString()} pts
+              {points.toLocaleString(lang)} pts
             </Text>
             {nextLevel ? (
               <Text variant="span" size="sm" weight="semibold">
                 {t("environmentalImpact.level.pointsToNext", {
-                  points: pointsToNext.toLocaleString(),
+                  points: pointsToNext.toLocaleString(lang),
                   level: nextLevel.name,
                 })}
               </Text>

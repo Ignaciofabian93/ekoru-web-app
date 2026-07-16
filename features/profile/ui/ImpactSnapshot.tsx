@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
+import { LinkButton } from "@/components/Links/LinkButton";
 
 // Lightweight preview — the full Environmental Impact screen owns the
 // detailed numbers. Wire to an aggregated impact endpoint when ready.
@@ -17,8 +18,8 @@ const MOCK_IMPACT = {
   productsReused: 12,
 };
 
-function formatKg(n: number) {
-  return n.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+function formatKg(n: number, locale: string) {
+  return n.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 }
 
 export function ImpactSnapshot() {
@@ -30,13 +31,13 @@ export function ImpactSnapshot() {
     {
       key: "co2",
       icon: Leaf,
-      value: `${formatKg(MOCK_IMPACT.totalCo2SavingsKG)} kg`,
+      value: `${formatKg(MOCK_IMPACT.totalCo2SavingsKG, lang)} kg`,
       tone: "from-success/15 to-success/5 text-success",
     },
     {
       key: "water",
       icon: Droplets,
-      value: `${MOCK_IMPACT.totalWaterSavingsLT.toLocaleString()} L`,
+      value: `${MOCK_IMPACT.totalWaterSavingsLT.toLocaleString(lang)} L`,
       tone: "from-info/15 to-info/5 text-info",
     },
     {
@@ -54,32 +55,44 @@ export function ImpactSnapshot() {
       title={t("dashboard.impact.title")}
       subtitle={t("dashboard.impact.subtitle")}
       headerRight={
-        <Link
-          href={`/${lang}/profile/environmental-impact`}
-          className="hidden sm:inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold text-primary hover:bg-primary/5"
-        >
-          {t("dashboard.impact.viewFull")}
-          <ArrowRight size={14} color="currentColor" strokeWidth={2} />
-        </Link>
+        <div className="hidden sm:inline-flex">
+          <LinkButton
+            href={`/${lang}/profile/environmental-impact`}
+            icon={ArrowRight}
+            variant="ghost"
+            label={t("dashboard.impact.viewFull")}
+            iconPosition="right"
+            size="sm"
+          />
+        </div>
+        // <Link
+        //   href={`/${lang}/profile/environmental-impact`}
+        //   className="hidden sm:inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold text-primary hover:bg-primary/5"
+        // >
+        //   {t("dashboard.impact.viewFull")}
+        //   <ArrowRight size={14} color="currentColor" strokeWidth={2} />
+        // </Link>
       }
     >
-      <div className="grid grid-cols-3 gap-3 lg:grid-cols-1">
+      <div className="flex items-center justify-evenly gap-3">
         {stats.map((s) => {
           const Icon = s.icon;
           return (
             <div
               key={s.key}
-              className={`flex flex-col gap-1 rounded-xl bg-linear-to-br p-3.5 ${s.tone}`}
+              className={`flex items-center w-full gap-4 rounded-xl bg-linear-to-br p-3.5 ${s.tone}`}
             >
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white/70 text-current">
-                <Icon size={14} color="currentColor" strokeWidth={2} />
+              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/70 text-current">
+                <Icon size={22} color="currentColor" strokeWidth={2} />
               </div>
-              <Title level="h3" size="h6" weight="bold" color="default">
-                {s.value}
-              </Title>
-              <Text variant="span" size="xs" color="secondary">
-                {t(`dashboard.impact.${s.key}`)}
-              </Text>
+              <div className="flex flex-col">
+                <Title level="h3" size="h6" weight="bold" color="default">
+                  {s.value}
+                </Title>
+                <Text variant="span" size="xs" color="secondary">
+                  {t(`dashboard.impact.${s.key}`)}
+                </Text>
+              </div>
             </div>
           );
         })}

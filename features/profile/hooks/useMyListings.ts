@@ -13,9 +13,11 @@ export type ListingStatus = "active" | "sold" | "drafts";
 interface Params {
   status: ListingStatus;
   pageSize?: number;
+  /** Skip the query when this kind of listing doesn't apply to the seller. */
+  enabled?: boolean;
 }
 
-export function useMyListings({ status, pageSize = 100 }: Params) {
+export function useMyListings({ status, pageSize = 100, enabled = true }: Params) {
   const seller = useSeller();
   const sellerId = seller?.id;
 
@@ -27,7 +29,7 @@ export function useMyListings({ status, pageSize = 100 }: Params) {
       page: 1,
       pageSize,
     },
-    skip: !sellerId,
+    skip: !sellerId || !enabled,
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });

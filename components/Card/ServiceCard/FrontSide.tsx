@@ -24,6 +24,8 @@ interface Props {
   href?: string;
   labels: Required<ServiceCardLabels>;
   onFlip: () => void;
+  /** Management mode: hide customer controls (favorite, flip, book now). */
+  manage?: boolean;
 }
 
 function formatDuration(minutes: number, labels: Required<ServiceCardLabels>): string {
@@ -35,7 +37,7 @@ function formatDuration(minutes: number, labels: Required<ServiceCardLabels>): s
     : `${hours}${labels.hoursShort} ${mins}${labels.minutesShort}`;
 }
 
-export default function FrontSide({ service, href, labels, onFlip }: Props) {
+export default function FrontSide({ service, href, labels, onFlip, manage = false }: Props) {
   const formatPrice = useFormatPrice();
   const [imageError, setImageError] = useState(false);
   const { toggleFavorite } = useToggleFavorite();
@@ -87,32 +89,36 @@ export default function FrontSide({ service, href, labels, onFlip }: Props) {
           </span>
         )}
 
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleFavorite(Number(service.id), liked, "service");
-          }}
-          aria-pressed={liked}
-          aria-label="favorite"
-          className="absolute top-2 right-11 flex size-8 cursor-pointer items-center justify-center rounded-full bg-white/90 shadow-sm transition-colors hover:bg-white"
-        >
-          <Heart
-            size={14}
-            strokeWidth={2}
-            className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
-          />
-        </button>
+        {!manage && (
+          <>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFavorite(Number(service.id), liked, "service");
+              }}
+              aria-pressed={liked}
+              aria-label="favorite"
+              className="absolute top-2 right-11 flex size-8 cursor-pointer items-center justify-center rounded-full bg-white/90 shadow-sm transition-colors hover:bg-white"
+            >
+              <Heart
+                size={14}
+                strokeWidth={2}
+                className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
+              />
+            </button>
 
-        <button
-          type="button"
-          onClick={handleFlip}
-          aria-label={labels.flipToDetails}
-          className="absolute top-2 right-2 flex size-8 cursor-pointer items-center justify-center rounded-full bg-accent text-white shadow-sm transition-colors hover:bg-accent-hover"
-        >
-          <RotateCw size={14} strokeWidth={2.5} />
-        </button>
+            <button
+              type="button"
+              onClick={handleFlip}
+              aria-label={labels.flipToDetails}
+              className="absolute top-2 right-2 flex size-8 cursor-pointer items-center justify-center rounded-full bg-accent text-white shadow-sm transition-colors hover:bg-accent-hover"
+            >
+              <RotateCw size={14} strokeWidth={2.5} />
+            </button>
+          </>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col justify-between gap-2 p-3">
@@ -167,13 +173,15 @@ export default function FrontSide({ service, href, labels, onFlip }: Props) {
           ) : (
             <span />
           )}
-          <button
-            type="button"
-            onClick={handleFlip}
-            className="cursor-pointer rounded-md bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-accent-hover"
-          >
-            {labels.bookNow}
-          </button>
+          {!manage && (
+            <button
+              type="button"
+              onClick={handleFlip}
+              className="cursor-pointer rounded-md bg-accent px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-accent-hover"
+            >
+              {labels.bookNow}
+            </button>
+          )}
         </div>
       </div>
 

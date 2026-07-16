@@ -34,7 +34,8 @@ export function SectionCard({
   return (
     <section
       className={clsx(
-        "rounded-2xl border border-border-light bg-surface p-5 sm:p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]",
+        // "rounded-2xl border border-border-light bg-surface p-5 sm:p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]",
+        "border-t-2 border-border-light pt-3 my-6",
         className,
       )}
     >

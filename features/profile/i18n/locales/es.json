@@ -57,6 +57,10 @@
       "title": "Mis publicaciones",
       "subtitle": "Todo lo que has publicado en un solo lugar",
       "publish": "Publicar nuevo",
+      "kinds": {
+        "products": "Productos",
+        "services": "Servicios"
+      },
       "status": {
         "active": "Activas",
         "sold": "Vendidas",
@@ -65,6 +69,18 @@
       "empty": {
         "title": "Aún no hay nada aquí",
         "description": "Empieza a publicar para ver todos tus productos aquí."
+      },
+      "emptyDrafts": {
+        "title": "No tienes borradores",
+        "description": "Los productos que guardes sin publicar aparecerán aquí."
+      },
+      "emptyService": {
+        "title": "Aún no ofreces servicios",
+        "description": "Empieza a publicar para ver tus servicios aquí."
+      },
+      "emptyServiceDrafts": {
+        "title": "No tienes borradores",
+        "description": "Los servicios que guardes sin publicar aparecerán aquí."
       },
       "actions": {
         "menu": "Acciones del producto",
@@ -80,6 +96,8 @@
         "name": "Nombre",
         "brand": "Marca",
         "price": "Precio",
+        "stock": "Stock",
+        "duration": "Duración (min)",
         "description": "Descripción",
         "save": "Guardar cambios",
         "saving": "Guardando",

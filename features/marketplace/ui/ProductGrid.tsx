@@ -40,8 +40,8 @@ export function ProductGrid({ products, lang, loading }: Props) {
 
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-      {products.map((product) => (
-        <MarketplaceCard key={product.id} product={product} lang={lang} />
+      {products.map((product, i) => (
+        <MarketplaceCard key={product.id} product={product} lang={lang} priority={i < 4} />
       ))}
     </div>
   );

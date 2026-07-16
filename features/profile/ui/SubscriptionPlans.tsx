@@ -3,11 +3,13 @@ import MainButton from "@/components/Button/MainButton";
 import { Text } from "@/components/Text/Text";
 import { Title } from "@/components/Title/Title";
 import { useTranslation } from "@/i18n/context";
+import { useParams } from "next/navigation";
 import {
   useBusinessProfile,
   usePersonProfile,
   useSellerType,
 } from "@/store/useAuthStore";
+import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import clsx from "clsx";
 import { Check, Crown, Gem, Sparkles, type LucideIcon } from "lucide-react";
 import type {
@@ -45,10 +47,10 @@ const BUSINESS_PLANS: PlanConfig[] = [
   { key: "EXPERT", price: 99.9, currency: "USD", icon: Crown, features: 4 },
 ];
 
-function formatPrice(price: number, currency: string) {
+function formatPrice(price: number, currency: string, locale: string) {
   if (price === 0) return "$0";
   try {
-    return new Intl.NumberFormat(undefined, {
+    return new Intl.NumberFormat(locale, {
       style: "currency",
       currency,
       maximumFractionDigits: 2,
@@ -60,6 +62,8 @@ function formatPrice(price: number, currency: string) {
 
 export function SubscriptionPlans() {
   const { t } = useTranslation(NAMESPACE);
+  const params = useParams<{ lang?: SupportedLanguage }>();
+  const lang = params.lang ?? DEFAULT_LANGUAGE;
   const sellerType: SellerType | null = useSellerType();
   const personProfile = usePersonProfile();
   const businessProfile = useBusinessProfile();
@@ -89,7 +93,7 @@ export function SubscriptionPlans() {
           currentConfig ? (
             <div className="hidden sm:block">
               <Text variant="span" size="sm" color="tertiary">
-                {currentConfig.price === 0 ? "" : `${formatPrice(currentConfig.price, currentConfig.currency)} / ${t("subscription.plans.month")}`}
+                {currentConfig.price === 0 ? "" : `${formatPrice(currentConfig.price, currentConfig.currency, lang)} / ${t("subscription.plans.month")}`}
               </Text>
             </div>
           ) : null
@@ -177,7 +181,7 @@ export function SubscriptionPlans() {
 
               <div className="flex items-baseline gap-1.5">
                 <Title level="h2" size="h3" weight="bold" color={isActive ? "primary" : "default"}>
-                  {formatPrice(plan.price, plan.currency)}
+                  {formatPrice(plan.price, plan.currency, lang)}
                 </Title>
                 {plan.price > 0 && (
                   <Text variant="span" size="sm" color="tertiary">

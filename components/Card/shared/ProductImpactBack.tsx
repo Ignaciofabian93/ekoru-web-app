@@ -1,19 +1,29 @@
 "use client";
 
-import { ChevronRight, Droplets, Info, Leaf, MapPin, RotateCcw } from "lucide-react";
+import {
+  ChevronRight,
+  Droplets,
+  Info,
+  Leaf,
+  MapPin,
+  RotateCcw,
+  TrendingUp,
+} from "lucide-react";
 import Image from "next/image";
 
 import {
   useDisplayName,
   useInitials,
   useProfileImage,
-  useSellerLocation,
+  useSellerRegion,
   useSellerType,
 } from "@/hooks/useSellerData";
 import { useTranslation } from "@/i18n/context";
 import type { EnvironmentalImpact } from "@/types/product";
 import type { Seller } from "@/types/user";
-import { formatMaterialAmount, materialLabel } from "@/utils/impact";
+import { Text } from "@/components/Text/Text";
+import clsx from "clsx";
+import { Badge } from "@/components/Badge/Badge";
 
 type Accent = "primary" | "secondary";
 
@@ -71,25 +81,21 @@ export default function ProductImpactBack({
 
   const displayName = useDisplayName(seller);
   const sellerType = useSellerType(seller);
-  const sellerLocation = useSellerLocation(seller);
+  const sellerRegion = useSellerRegion(seller);
   const profileImage = useProfileImage(seller);
   const initials = useInitials(seller);
 
   const impact = environmentalImpact ?? null;
-  const materials = impact?.materialBreakdown ?? [];
-  const extraMaterials = Math.max(0, materials.length - 2);
 
   const typeLabelRaw = sellerType ? t(`impact.sellerTypes.${sellerType}`) : "";
   const typeLabel = typeLabelRaw.startsWith("impact.") ? sellerType : typeLabelRaw;
 
   return (
-    <div
-      className={`relative flex h-full w-full flex-col overflow-hidden rounded-lg border ${a.border} bg-surface shadow-sm`}
-    >
-      <div
-        className={`flex items-center justify-between gap-2 border-b ${a.border} ${a.headerBg} px-3 py-2`}
-      >
-        <p className={`truncate text-xs font-semibold ${a.headerText}`}>{title}</p>
+    <div className="relative flex h-full w-full flex-col overflow-hidden rounded-lg bg-surface shadow-sm">
+      <div className="flex items-center justify-between gap-2 px-3 py-2 border-b-2 border-border-light">
+        <Text variant="p" size="sm" weight="semibold">
+          {title}
+        </Text>
         <button
           type="button"
           onClick={onFlip}
@@ -105,92 +111,74 @@ export default function ProductImpactBack({
           <section className="mb-3">
             <div className="mb-2 flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5">
-                <Leaf size={12} className="text-primary" strokeWidth={2} />
-                <span className="text-xs font-bold text-foreground">
+                <TrendingUp size={12} className="text-primary" strokeWidth={2} />
+                <Text variant="label" weight="bold" size="sm">
                   {t("impact.environmentalImpact")}
-                </span>
+                </Text>
               </div>
               <button
                 type="button"
                 onClick={onShowImpact}
                 aria-label={t("impact.viewFullImpact")}
-                className="flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-full bg-primary/10 text-primary transition-colors hover:bg-primary/20"
+                className="flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-full text-foreground transition-all hover:brightness-110"
               >
                 <Info size={12} strokeWidth={2.5} />
               </button>
             </div>
 
-            <div className="mb-2 grid grid-cols-2 gap-2">
-              <div className="rounded-md bg-primary-light-bg p-2">
-                <div className="mb-0.5 flex items-center gap-1">
-                  <Leaf size={10} className="text-primary" strokeWidth={2} />
-                  <span className="text-[10px] text-foreground-secondary">
+            <div className="mb-2 grid grid-cols-1">
+              <div className="flex items-center justify-between p-1">
+                <div className="flex items-center gap-1">
+                  <Leaf size={14} className="text-primary" strokeWidth={2} />
+                  <Text variant="span" size="sm" weight="bold" color="secondary">
                     {t("impact.co2")}
-                  </span>
+                  </Text>
                 </div>
-                <span className="text-xs font-bold text-primary">
+                <Text variant="span" size="sm" weight="bold" color="secondary">
                   {formatNumber(impact.totalCo2SavingsKG)} kg
-                </span>
+                </Text>
               </div>
-              <div className="rounded-md bg-info/10 p-2">
-                <div className="mb-0.5 flex items-center gap-1">
-                  <Droplets size={10} className="text-info" strokeWidth={2} />
-                  <span className="text-[10px] text-foreground-secondary">
+              <div className="flex items-center justify-between p-1">
+                <div className="flex items-center gap-1">
+                  <Droplets size={14} className="text-info" strokeWidth={2} />
+                  <Text variant="span" size="sm" weight="bold" color="secondary">
                     {t("impact.water")}
-                  </span>
+                  </Text>
                 </div>
-                <span className="text-xs font-bold text-info">
+                <Text variant="span" size="sm" weight="bold" color="secondary">
                   {formatNumber(impact.totalWaterSavingsLT)} L
-                </span>
+                </Text>
               </div>
             </div>
 
-            {materials.length > 0 && (
-              <div className="flex flex-col gap-0.5">
-                <span className="text-[10px] font-semibold tracking-wide text-foreground-tertiary uppercase">
-                  {t("impact.materials")}
-                </span>
-                {materials.slice(0, 2).map((material, i) => (
-                  <div key={i} className="flex items-center justify-between gap-2">
-                    <span className="flex-1 truncate text-xs text-foreground-secondary">
-                      {materialLabel(material)}
-                    </span>
-                    <span className="text-xs font-semibold text-foreground">
-                      {formatMaterialAmount(material)}
-                    </span>
-                  </div>
-                ))}
-
-                <button
-                  type="button"
-                  onClick={onShowImpact}
-                  className="mt-2 flex cursor-pointer items-center justify-center gap-1 rounded-md bg-primary/10 px-2 py-1.5 text-primary transition-colors hover:bg-primary/20"
-                >
-                  <span className="text-xs font-semibold">
-                    {extraMaterials > 0
-                      ? `${t("impact.viewFullImpact")} (+${extraMaterials})`
-                      : t("impact.viewFullImpact")}
-                  </span>
-                  <ChevronRight size={12} strokeWidth={2.5} />
-                </button>
-              </div>
-            )}
+            <button
+              type="button"
+              onClick={onShowImpact}
+              className={clsx(
+                "my-4 flex w-full cursor-pointer items-center justify-center",
+                "gap-1 rounded-sm bg-primary px-2 py-1.5",
+                "transition-all hover:brightness-110",
+              )}
+            >
+              <Text variant="label" size="sm" color="white">
+                {t("impact.viewFullImpact")}
+              </Text>
+              <ChevronRight size={12} strokeWidth={2.5} color="#fff" />
+            </button>
           </section>
         )}
 
         {seller && (
-          <section className={`border-t ${a.border} pt-3`}>
+          <section className="border-t-2 border-border-light py-1">
             <div className="mb-1.5 flex items-center gap-1.5">
-              <span className="text-xs font-bold text-foreground">{t("impact.seller")}</span>
-              {typeLabel && (
-                <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
-                  {typeLabel}
-                </span>
-              )}
+              <Text variant="label" size="sm" weight="bold">
+                {t("impact.seller")}
+              </Text>
+              {typeLabel && <Badge label={typeLabel} variant="primary" size="small" />}
             </div>
 
             <div className="flex items-center gap-2.5">
-              <div className="relative size-9 shrink-0 overflow-hidden rounded-full bg-background-secondary">
+              <div className="relative size-12 shrink-0 overflow-hidden rounded-full bg-background-secondary">
                 {profileImage ? (
                   <Image
                     src={profileImage}
@@ -205,15 +193,19 @@ export default function ProductImpactBack({
                   </span>
                 )}
               </div>
-              <div className="min-w-0 flex-1">
+              <div className="w-full flex flex-col items-start justify-start">
                 {displayName && (
-                  <p className="truncate text-xs font-semibold text-foreground">{displayName}</p>
+                  <Text variant="p" className="line-clamp-1">
+                    {displayName}
+                  </Text>
                 )}
-                {sellerLocation && (
-                  <p className="flex items-center gap-1 truncate text-[11px] text-foreground-secondary">
-                    <MapPin size={10} strokeWidth={2} className="shrink-0" />
-                    <span className="truncate">{sellerLocation}</span>
-                  </p>
+                {sellerRegion && (
+                  <div className="flex items-center">
+                    <MapPin size={12} className="inline-block" strokeWidth={2} />
+                    <Text variant="span" className="line-clamp-1" size="xs">
+                      {sellerRegion}
+                    </Text>
+                  </div>
                 )}
               </div>
             </div>

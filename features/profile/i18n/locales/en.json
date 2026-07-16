@@ -57,6 +57,10 @@
       "title": "My listings",
       "subtitle": "Everything you've published in one place",
       "publish": "Publish new",
+      "kinds": {
+        "products": "Products",
+        "services": "Services"
+      },
       "status": {
         "active": "Active",
         "sold": "Sold",
@@ -65,6 +69,18 @@
       "empty": {
         "title": "Nothing here yet",
         "description": "Start publishing to see all your products here."
+      },
+      "emptyDrafts": {
+        "title": "No draft products",
+        "description": "Products you save without publishing will show up here."
+      },
+      "emptyService": {
+        "title": "No services yet",
+        "description": "Start publishing to see your services here."
+      },
+      "emptyServiceDrafts": {
+        "title": "No draft services",
+        "description": "Services you save without publishing will show up here."
       },
       "actions": {
         "menu": "Product actions",
@@ -80,6 +96,8 @@
         "name": "Name",
         "brand": "Brand",
         "price": "Price",
+        "stock": "Stock",
+        "duration": "Duration (min)",
         "description": "Description",
         "save": "Save changes",
         "saving": "Saving",

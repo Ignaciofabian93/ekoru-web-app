@@ -9,7 +9,7 @@ import { Check, Heart, ImageOff, RotateCw, ShoppingCart, Star } from "lucide-rea
 import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 import ProductImpactBack from "@/components/Card/shared/ProductImpactBack";
 import EnvironmentalImpactModal from "@/components/EnvironmentalImpactModal/EnvironmentalImpactModal";
@@ -19,12 +19,17 @@ import type { StoreListProduct } from "../types";
 interface Props {
   product: StoreListProduct;
   lang: string;
+  /** Overlay controls (e.g. an owner actions menu) rendered top-right, above the
+   *  card faces so a dropdown isn't clipped. When set the card enters management
+   *  mode: customer controls (favorite, flip) are hidden. */
+  actions?: ReactNode;
 }
 
-export function StoreProductCard({ product, lang }: Props) {
+export function StoreProductCard({ product, lang, actions }: Props) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [impactOpen, setImpactOpen] = useState(false);
   const flip = () => setIsFlipped((prev) => !prev);
+  const manage = Boolean(actions);
 
   return (
     <div className="relative aspect-3/4 w-full min-w-0 perspective-distant">
@@ -40,7 +45,7 @@ export function StoreProductCard({ product, lang }: Props) {
             isFlipped && "pointer-events-none",
           )}
         >
-          <FrontSide product={product} lang={lang} onFlip={flip} />
+          <FrontSide product={product} lang={lang} onFlip={flip} manage={manage} />
         </div>
         <div
           className={clsx(
@@ -59,6 +64,10 @@ export function StoreProductCard({ product, lang }: Props) {
         </div>
       </div>
 
+      {/* Overlay controls sit outside the flip faces so an open dropdown isn't
+          clipped by the 3D transform / overflow-hidden. */}
+      {actions && <div className="absolute right-2 top-2 z-20">{actions}</div>}
+
       {product.environmentalImpact && (
         <EnvironmentalImpactModal
           isOpen={impactOpen}
@@ -75,10 +84,12 @@ function FrontSide({
   product,
   lang,
   onFlip,
+  manage = false,
 }: {
   product: StoreListProduct;
   lang: string;
   onFlip: () => void;
+  manage?: boolean;
 }) {
   const { t } = useTranslation(NAMESPACE);
   const { t: tg } = useTranslation();
@@ -142,33 +153,35 @@ function FrontSide({
           </span>
         )}
 
-        <div className="absolute top-2 right-2 flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleFavorite(product.id, liked, "store");
-            }}
-            aria-pressed={liked}
-            aria-label={t("product.favorite")}
-            className="flex size-8 items-center justify-center rounded-full bg-white/85 shadow-sm transition-colors hover:bg-white"
-          >
-            <Heart
-              size={15}
-              strokeWidth={2}
-              className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
-            />
-          </button>
-          <button
-            type="button"
-            onClick={handleFlip}
-            aria-label={tg("impact.flipToDetails")}
-            className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-secondary text-white shadow-sm transition-colors hover:bg-secondary-dark"
-          >
-            <RotateCw size={14} strokeWidth={2.5} />
-          </button>
-        </div>
+        {!manage && (
+          <div className="absolute top-2 right-2 flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFavorite(product.id, liked, "store");
+              }}
+              aria-pressed={liked}
+              aria-label={t("product.favorite")}
+              className="flex size-8 items-center justify-center rounded-full bg-white/85 shadow-sm transition-colors hover:bg-white"
+            >
+              <Heart
+                size={15}
+                strokeWidth={2}
+                className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
+              />
+            </button>
+            <button
+              type="button"
+              onClick={handleFlip}
+              aria-label={tg("impact.flipToDetails")}
+              className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-secondary text-white shadow-sm transition-colors hover:bg-secondary-dark"
+            >
+              <RotateCw size={14} strokeWidth={2.5} />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col p-2.5 sm:p-3">

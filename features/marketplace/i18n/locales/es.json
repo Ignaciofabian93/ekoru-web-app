@@ -53,7 +53,8 @@
     "favorite": "Guardar en favoritos",
     "added": "¡Agregado!",
     "exchangeable": "Intercambiable",
-    "noImage": "Sin imagen"
+    "noImage": "Sin imagen",
+    "noBrand": "Sin marca"
   },
   "card": {
     "flipToDetails": "Ver detalles",

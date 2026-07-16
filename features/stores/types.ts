@@ -35,6 +35,10 @@ export type StoreListProduct = {
   stock?: number;
   sellerId?: string;
   isLiked?: boolean;
+  // Fetched by the detail fragment; drives the seller's active/drafts split in
+  // their own listings dashboard.
+  isActive?: boolean;
+  description?: string | null;
   // The listing queries fetch the detail fragment, which already includes the
   // environmental impact and seller — the card back side renders both.
   environmentalImpact?: EnvironmentalImpact | null;

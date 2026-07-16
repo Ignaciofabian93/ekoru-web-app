@@ -76,6 +76,8 @@ export const useInitials = (seller: SellerArg) => {
 export const useSellerLocation = (seller: SellerArg) =>
   [seller?.county?.county, seller?.address].filter(Boolean).join(" · ");
 
+export const useSellerRegion = (seller: SellerArg) => seller?.region?.region ?? "";
+
 export const useBusinessType = (seller: SellerArg) =>
   seller?.profile?.__typename === "BusinessProfile"
     ? seller.profile.businessType

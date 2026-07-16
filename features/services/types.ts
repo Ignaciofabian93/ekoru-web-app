@@ -61,6 +61,9 @@ export type ServiceNode = {
   averageRating: number | null;
   reviewCount: number | null;
   isLiked?: boolean;
+  // Fetched by the service fragment; drives the seller's active/drafts split in
+  // their own listings dashboard.
+  isActive?: boolean;
   seller: {
     isVerified: boolean;
     profile: { businessName?: string | null; logo?: string | null } | null;

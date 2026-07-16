@@ -2,13 +2,14 @@
 import { Text } from "@/components/Text/Text";
 import { Title } from "@/components/Title/Title";
 import { useTranslation } from "@/i18n/context";
-import { Activity, Coins, Eye, Heart, TrendingUp } from "lucide-react";
+import { useParams } from "next/navigation";
+import { Activity, Coins, Heart, TrendingUp } from "lucide-react";
+import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
 
 // TODO(activity): wire to a getMyActivitySummary aggregated query.
 const MOCK_ACTIVITY = {
-  views: 248,
   favorites: 32,
   sales: 4,
   pointsEarned: 120,
@@ -16,9 +17,10 @@ const MOCK_ACTIVITY = {
 
 export function ActivitySnapshot() {
   const { t } = useTranslation(NAMESPACE);
+  const params = useParams<{ lang?: SupportedLanguage }>();
+  const lang = params.lang ?? DEFAULT_LANGUAGE;
 
   const stats = [
-    { key: "views", icon: Eye, value: MOCK_ACTIVITY.views },
     { key: "favorites", icon: Heart, value: MOCK_ACTIVITY.favorites },
     { key: "sales", icon: TrendingUp, value: MOCK_ACTIVITY.sales },
     { key: "pointsEarned", icon: Coins, value: MOCK_ACTIVITY.pointsEarned },
@@ -27,6 +29,7 @@ export function ActivitySnapshot() {
   return (
     <SectionCard
       icon={Activity}
+      tone="primary"
       title={t("dashboard.activity.title")}
       subtitle={t("dashboard.activity.subtitle")}
     >
@@ -42,7 +45,7 @@ export function ActivitySnapshot() {
                 <Icon size={16} color="currentColor" strokeWidth={2} />
               </div>
               <Title level="h3" size="h5" weight="bold">
-                {s.value.toLocaleString()}
+                {s.value.toLocaleString(lang)}
               </Title>
               <Text variant="span" size="xs" color="tertiary">
                 {t(`dashboard.activity.${s.key}`)}

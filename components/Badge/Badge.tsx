@@ -8,7 +8,7 @@ type BadgeSize = "small" | "medium" | "large";
 
 const VARIANT_STYLES: Record<BadgeVariant, string> = {
   primary: "bg-primary text-white",
-  secondary: "bg-white text-secondary-dark",
+  secondary: "bg-secondary-dark text-white",
   tertiary: "bg-secondary/15 text-secondary",
   descriptive: "bg-primary/10 text-primary",
   ghost: "border border-border-light bg-transparent text-foreground-secondary",

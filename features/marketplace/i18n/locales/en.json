@@ -53,7 +53,8 @@
     "favorite": "Save to favorites",
     "added": "Added!",
     "exchangeable": "Exchangeable",
-    "noImage": "No image"
+    "noImage": "No image",
+    "noBrand": "No brand"
   },
   "card": {
     "flipToDetails": "Show details",
