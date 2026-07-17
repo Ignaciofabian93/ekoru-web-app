@@ -19,3 +19,10 @@ export const formatInitials = (displayName: string): string => {
 
   return formatted;
 };
+
+export function humanizeSlug(slug: string) {
+  return slug
+    .split("-")
+    .map((word) => (word === "y" ? word : word.charAt(0).toUpperCase() + word.slice(1)))
+    .join(" ");
+}

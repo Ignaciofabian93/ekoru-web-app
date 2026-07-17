@@ -1,14 +1,15 @@
 "use client";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { InnerContentLayout } from "@/components/Layout/ContentLayout";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
-
+import { Fragment } from "react";
 import { useProductsByProductCategory } from "../hooks/useProductsByProductCategory";
 import { NAMESPACE } from "../i18n";
-import { Breadcrumbs } from "./Breadcrumbs";
-import { ProductFilters } from "./ProductFilters";
+import { InnerHero } from "./InnerHero";
+import { MarketplaceFilters } from "./MarketplaceFilters";
 import { ProductResults } from "./ProductResults";
+import { humanizeSlug } from "@/utils/formatters";
+import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
 
 interface Props {
   lang: SupportedLanguage;
@@ -40,52 +41,48 @@ export function ProductCategoryContent({
     handlePageSizeChange,
   } = useProductsByProductCategory({ language: lang, slug: productCategorySlug });
 
-  const productCategoryName =
-    productCategory?.translation?.name ?? productCategorySlug;
+  const productCategoryName = productCategory?.translation?.name ?? productCategorySlug;
+
+  const breadCrumbs: Crumb[] = [
+    { label: t("breadcrumbs.marketplace"), href: `/${lang}/marketplace` },
+    {
+      label: humanizeSlug(departmentSlug),
+      href: `/${lang}/marketplace/${departmentSlug}`,
+    },
+    {
+      label: humanizeSlug(categorySlug),
+      href: `/${lang}/marketplace/${departmentSlug}/${categorySlug}`,
+    },
+    { label: productCategoryName },
+  ];
 
   return (
-    <div className="flex flex-col gap-8">
-      <Breadcrumbs
-        rootHref={`/${lang}/marketplace`}
-        items={[
-          {
-            label: departmentSlug,
-            href: `/${lang}/marketplace/${departmentSlug}`,
-          },
-          {
-            label: categorySlug,
-            href: `/${lang}/marketplace/${departmentSlug}/${categorySlug}`,
-          },
-          { label: productCategoryName },
-        ]}
+    <Fragment>
+      <InnerHero
+        categoryTitle={t("page.categoryTitle", { name: productCategoryName })}
+        categorySubtitle={t("page.categorySubtitle", { name: productCategoryName })}
+        breadCrumbs={breadCrumbs}
       />
 
-      <div className="flex flex-col gap-1">
-        <Title level="h1" size="h3">
-          {t("page.categoryTitle", { name: productCategoryName })}
-        </Title>
-        <Text color="secondary">
-          {t("page.categorySubtitle", { name: productCategoryName })}
-        </Text>
-      </div>
+      <InnerContentLayout>
+        <MarketplaceFilters
+          filters={filters}
+          sort={sort}
+          setField={setField}
+          setSort={setSort}
+          reset={reset}
+        />
 
-      <ProductFilters
-        filters={filters}
-        sort={sort}
-        setField={setField}
-        setSort={setSort}
-        reset={reset}
-      />
-
-      <ProductResults
-        lang={lang}
-        products={products}
-        loading={loading}
-        pageInfo={pageInfo}
-        pageSize={pageSize}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-      />
-    </div>
+        <ProductResults
+          lang={lang}
+          products={products}
+          loading={loading}
+          pageInfo={pageInfo}
+          pageSize={pageSize}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+        />
+      </InnerContentLayout>
+    </Fragment>
   );
 }

@@ -1,0 +1,228 @@
+"use client";
+import { Checkbox } from "@/components/Checkbox/Checkbox";
+import { Input } from "@/components/Input/Input";
+import { Search } from "@/components/Input/Search";
+import { MainButton } from "@/components/Button/MainButton";
+import Modal from "@/components/Modal/Modal";
+import Select from "@/components/Select/Select";
+import { Text } from "@/components/Text/Text";
+import { useTranslation } from "@/i18n/context";
+import type { ProductCondition } from "@/types/enums";
+import { SlidersHorizontal } from "lucide-react";
+import { useState } from "react";
+import { NAMESPACE } from "../i18n";
+import {
+  EMPTY_FILTERS,
+  type ProductFilters as ProductFiltersState,
+  type ProductSortValue,
+} from "../types";
+
+const CONDITION_VALUES: ProductCondition[] = [
+  "NEW",
+  "LIKE_NEW",
+  "OPEN_BOX",
+  "REFURBISHED",
+  "FAIR",
+  "POOR",
+  "FOR_PARTS",
+];
+
+const SORT_VALUES: ProductSortValue[] = ["newest", "oldest", "priceAsc", "priceDesc"];
+
+/** The subset of filters edited inside the modal (search lives in the bar). */
+type FilterDraft = Pick<
+  ProductFiltersState,
+  "minPrice" | "maxPrice" | "condition" | "isExchangeable"
+>;
+
+const pickDraft = (f: ProductFiltersState): FilterDraft => ({
+  minPrice: f.minPrice,
+  maxPrice: f.maxPrice,
+  condition: f.condition,
+  isExchangeable: f.isExchangeable,
+});
+
+const EMPTY_DRAFT: FilterDraft = pickDraft(EMPTY_FILTERS);
+
+const countActive = (d: FilterDraft) =>
+  (d.minPrice ? 1 : 0) +
+  (d.maxPrice ? 1 : 0) +
+  (d.condition ? 1 : 0) +
+  (d.isExchangeable ? 1 : 0);
+
+interface Props {
+  filters: ProductFiltersState;
+  sort: ProductSortValue;
+  setField: <K extends keyof ProductFiltersState>(
+    key: K,
+    value: ProductFiltersState[K],
+  ) => void;
+  setSort: (value: ProductSortValue) => void;
+  reset: () => void;
+}
+
+export function MarketplaceFilters({ filters, sort, setField, setSort }: Props) {
+  const { t } = useTranslation(NAMESPACE);
+  const [open, setOpen] = useState(false);
+  const [draft, setDraft] = useState<FilterDraft>(pickDraft(filters));
+
+  const activeCount = countActive(pickDraft(filters));
+
+  // Seed the draft from the committed filters when opening, so in-modal edits
+  // stay discardable — nothing is applied until the user confirms.
+  const openModal = () => {
+    setDraft(pickDraft(filters));
+    setOpen(true);
+  };
+
+  const sortOptions = SORT_VALUES.map((value) => ({
+    value,
+    label: t(`sort.${value}`),
+  }));
+
+  const conditionOptions = [
+    { value: "", label: t("filters.anyCondition") },
+    ...CONDITION_VALUES.map((value) => ({
+      value,
+      label: t(`conditions.${value}`),
+    })),
+  ];
+
+  const setDraftField = <K extends keyof FilterDraft>(key: K, value: FilterDraft[K]) =>
+    setDraft((prev) => ({ ...prev, [key]: value }));
+
+  const apply = () => {
+    setField("minPrice", draft.minPrice);
+    setField("maxPrice", draft.maxPrice);
+    setField("condition", draft.condition);
+    setField("isExchangeable", draft.isExchangeable);
+    setOpen(false);
+  };
+
+  const clear = () => setDraft(EMPTY_DRAFT);
+
+  return (
+    <section className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
+      <div className="flex-1">
+        <Search
+          size="md"
+          width="full"
+          value={filters.search}
+          onChangeText={(v) => setField("search", v)}
+          placeholder={t("filters.searchPlaceholder")}
+        />
+      </div>
+
+      <div className="flex items-center gap-2 md:gap-3">
+        <div className="w-full md:w-56">
+          <Select
+            size="md"
+            width="full"
+            searchEnabled={false}
+            value={sort}
+            options={sortOptions}
+            onChange={(v) => setSort(v as ProductSortValue)}
+            placeholder={t("filters.sortBy")}
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={openModal}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          className="group flex h-11 shrink-0 items-center gap-2 rounded-md border-2 border-solid border-input-border bg-input-bg px-3 text-base text-foreground outline-none transition-[border-color] duration-150 hover:border-input-border-focus focus-visible:border-input-border-focus"
+        >
+          <SlidersHorizontal
+            size={16}
+            strokeWidth={2}
+            className="text-foreground-tertiary transition-colors group-hover:text-primary"
+          />
+          <span className="hidden font-medium sm:inline">{t("filters.title")}</span>
+          {activeCount > 0 && (
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-on-primary tabular-nums">
+              {activeCount}
+            </span>
+          )}
+        </button>
+      </div>
+
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title={t("filters.title")}
+        size="lg"
+      >
+        <div className="flex flex-col gap-6">
+          {/* Price range */}
+          <div className="flex flex-col gap-2">
+            <Text size="sm" weight="medium" color="secondary">
+              {t("filters.priceRange")}
+            </Text>
+            <div className="flex items-center gap-3">
+              <Input
+                type="number"
+                size="md"
+                value={draft.minPrice}
+                onChangeText={(v) => setDraftField("minPrice", v)}
+                placeholder={t("filters.minPrice")}
+              />
+              <span className="text-foreground-tertiary">–</span>
+              <Input
+                type="number"
+                size="md"
+                value={draft.maxPrice}
+                onChangeText={(v) => setDraftField("maxPrice", v)}
+                placeholder={t("filters.maxPrice")}
+              />
+            </div>
+          </div>
+
+          {/* Condition */}
+          <div className="flex flex-col gap-2">
+            <Text size="sm" weight="medium" color="secondary">
+              {t("filters.condition")}
+            </Text>
+            <Select
+              size="md"
+              width="full"
+              searchEnabled={false}
+              value={draft.condition}
+              options={conditionOptions}
+              onChange={(v) =>
+                setDraftField("condition", v === "" ? "" : (v as ProductCondition))
+              }
+              placeholder={t("filters.anyCondition")}
+            />
+          </div>
+
+          {/* Exchangeable */}
+          <div className="border-t border-border-light pt-5">
+            <Checkbox
+              checked={draft.isExchangeable}
+              onCheckedChange={(v) => setDraftField("isExchangeable", v)}
+              label={t("filters.exchangeableOnly")}
+              description={t("filters.exchangeableHint")}
+            />
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center justify-between gap-3 border-t border-border-light pt-5">
+            <MainButton
+              text={t("filters.clear")}
+              variant="ghost"
+              size="md"
+              onPress={clear}
+            />
+            <MainButton
+              text={t("filters.apply")}
+              variant="primary"
+              size="md"
+              onPress={apply}
+            />
+          </div>
+        </div>
+      </Modal>
+    </section>
+  );
+}

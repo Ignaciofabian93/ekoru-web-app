@@ -29,7 +29,10 @@ export function ProductResults({
   const { t } = useTranslation(NAMESPACE);
 
   const total = pageInfo?.totalCount ?? 0;
-  const countText = total === 1 ? t("results.count", { count: "1" }) : t("results.countPlural", { count: String(total) });
+  const countText =
+    total === 1
+      ? t("results.count", { count: "1" })
+      : t("results.countPlural", { count: String(total) });
 
   const from = total === 0 ? 0 : (pageInfo!.currentPage - 1) * pageInfo!.pageSize + 1;
   const to = total === 0 ? 0 : Math.min(from + products.length - 1, total);

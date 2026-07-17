@@ -128,9 +128,10 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       }
     }, [isOpen, searchEnabled]);
 
-    const handleOpen = () => {
+    const handleToggle = () => {
       if (disabled || readOnly) return;
-      setIsOpen(true);
+      if (isOpen) handleClose();
+      else setIsOpen(true);
     };
 
     const handleClose = () => {
@@ -175,7 +176,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
         {/* Trigger */}
         <button
           type="button"
-          onClick={handleOpen}
+          onClick={handleToggle}
           disabled={disabled || readOnly}
           className={clsx(
             "relative box-border flex flex-row items-center gap-2 rounded-md border-2 border-solid outline-none transition-[border-color] duration-150",

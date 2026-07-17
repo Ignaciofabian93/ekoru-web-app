@@ -1,17 +1,18 @@
 "use client";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { InnerContentLayout } from "@/components/Layout/ContentLayout";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
-import { useMemo } from "react";
-
+import { Fragment, useMemo } from "react";
 import { useProductsByDepartmentCategory } from "../hooks/useProductsByDepartmentCategory";
 import { NAMESPACE } from "../i18n";
 import type { CatalogProductCategory } from "../types";
-import { Breadcrumbs } from "./Breadcrumbs";
-import { ProductCategoryList } from "./ProductCategoryList";
-import { ProductFilters } from "./ProductFilters";
+import { CategoryList } from "./CategoryList";
+import { InnerHero } from "./InnerHero";
+import { MarketplaceFilters } from "./MarketplaceFilters";
 import { ProductResults } from "./ProductResults";
+import { type UnderlineTab } from "@/components/UnderlineTabs/UnderlineTabs";
+import { humanizeSlug } from "@/utils/formatters";
+import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
 
 interface Props {
   lang: SupportedLanguage;
@@ -19,11 +20,7 @@ interface Props {
   categorySlug: string;
 }
 
-export function DepartmentCategoryContent({
-  lang,
-  departmentSlug,
-  categorySlug,
-}: Props) {
+export function DepartmentCategoryContent({ lang, departmentSlug, categorySlug }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
   const {
@@ -41,7 +38,8 @@ export function DepartmentCategoryContent({
     handlePageSizeChange,
   } = useProductsByDepartmentCategory({ language: lang, slug: categorySlug });
 
-  const categoryName = departmentCategory?.translation?.name ?? categorySlug;
+  const categoryName =
+    departmentCategory?.translation?.name ?? humanizeSlug(categorySlug);
 
   const productCategories: CatalogProductCategory[] = useMemo(
     () =>
@@ -54,52 +52,55 @@ export function DepartmentCategoryContent({
     [departmentCategory],
   );
 
+  const breadCrumbs: Crumb[] = [
+    { label: t("breadcrumbs.marketplace"), href: `/${lang}/marketplace` },
+    {
+      label: humanizeSlug(departmentSlug),
+      href: `/${lang}/marketplace/${departmentSlug}`,
+    },
+    { label: categoryName },
+  ];
+
+  const tabs: UnderlineTab[] = productCategories.map((pc) => ({
+    key: pc.slug,
+    label: pc.name,
+    href: `/${lang}/marketplace/${departmentSlug}/${categorySlug}/${pc.slug}`,
+  }));
+
   return (
-    <div className="flex flex-col gap-8">
-      <Breadcrumbs
-        rootHref={`/${lang}/marketplace`}
-        items={[
-          {
-            label: departmentSlug,
-            href: `/${lang}/marketplace/${departmentSlug}`,
-          },
-          { label: categoryName },
-        ]}
+    <Fragment>
+      <InnerHero
+        categoryTitle={t("page.categoryTitle", { name: categoryName })}
+        categorySubtitle={t("page.categorySubtitle", { name: categoryName })}
+        breadCrumbs={breadCrumbs}
       />
 
-      <div className="flex flex-col gap-1">
-        <Title level="h1" size="h3">
-          {t("page.categoryTitle", { name: categoryName })}
-        </Title>
-        <Text color="secondary">
-          {t("page.categorySubtitle", { name: categoryName })}
-        </Text>
-      </div>
+      <InnerContentLayout>
+        <CategoryList
+          tabs={tabs}
+          remeasureKey={lang}
+          label={t("sections.productCategories")}
+          ariaLabel={t("sections.productCategories")}
+        />
 
-      <ProductCategoryList
-        lang={lang}
-        departmentSlug={departmentSlug}
-        categorySlug={categorySlug}
-        productCategories={productCategories}
-      />
+        <MarketplaceFilters
+          filters={filters}
+          sort={sort}
+          setField={setField}
+          setSort={setSort}
+          reset={reset}
+        />
 
-      <ProductFilters
-        filters={filters}
-        sort={sort}
-        setField={setField}
-        setSort={setSort}
-        reset={reset}
-      />
-
-      <ProductResults
-        lang={lang}
-        products={products}
-        loading={loading}
-        pageInfo={pageInfo}
-        pageSize={pageSize}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-      />
-    </div>
+        <ProductResults
+          lang={lang}
+          products={products}
+          loading={loading}
+          pageInfo={pageInfo}
+          pageSize={pageSize}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+        />
+      </InnerContentLayout>
+    </Fragment>
   );
 }

@@ -38,7 +38,10 @@ function getPageNumbers(current: number, total: number, max: number): (number | 
 }
 
 const CHEVRON_BTN =
-  "flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-sm border border-border-light bg-background-secondary text-foreground disabled:cursor-not-allowed disabled:opacity-35";
+  "flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border bg-surface text-foreground-secondary transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border disabled:hover:text-foreground-secondary";
+
+const PAGE_BTN =
+  "flex h-9 min-w-9 shrink-0 cursor-pointer items-center justify-center rounded-md px-3 font-sans text-sm font-semibold transition-colors";
 
 const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
   (
@@ -64,43 +67,51 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
         ref={ref}
         style={style}
         className={clsx(
-          "my-8 flex flex-col gap-3 border-t border-border-strong pt-2",
+          "mt-6 flex flex-col-reverse items-center gap-4 border-t border-border-light pt-4 sm:flex-row sm:justify-between",
           className,
         )}
       >
-        {showItemsPerPage && onItemsPerPageChange && (
-          <div className="my-3 flex flex-col items-end gap-2">
-            <span className="font-sans text-sm font-medium capitalize tracking-[0.6px] text-foreground-secondary">
+        {showItemsPerPage && onItemsPerPageChange ? (
+          <div className="flex items-center gap-2">
+            <span className="whitespace-nowrap font-sans text-sm font-medium text-foreground-secondary">
               {rowsLabel}
             </span>
-            <Select
-              size="sm"
-              width="sm"
-              value={itemsPerPage}
-              searchEnabled={false}
-              dropdownDirection="up"
-              options={itemsPerPageOptions.map((op) => ({ label: op.toString(), value: op }))}
-              onChange={(v) => onItemsPerPageChange(Number(v))}
-            />
+            <div className="w-20">
+              <Select
+                size="sm"
+                width="full"
+                value={itemsPerPage}
+                searchEnabled={false}
+                dropdownDirection="up"
+                options={itemsPerPageOptions.map((op) => ({
+                  label: op.toString(),
+                  value: op,
+                }))}
+                onChange={(v) => onItemsPerPageChange(Number(v))}
+              />
+            </div>
           </div>
+        ) : (
+          <span aria-hidden className="hidden sm:block" />
         )}
 
-        <div className="my-3 flex flex-row items-center gap-1.5">
+        <div className="flex flex-row items-center gap-1">
           <button
             type="button"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
+            aria-label="Previous page"
             className={CHEVRON_BTN}
           >
-            <ChevronLeft size={20} color="currentColor" strokeWidth={2} />
+            <ChevronLeft size={18} color="currentColor" strokeWidth={2} />
           </button>
 
-          <div className="flex flex-1 flex-row items-center justify-center gap-1 overflow-x-auto">
+          <div className="scrollbar-none flex flex-row items-center gap-1 overflow-x-auto">
             {pages.map((page, i) =>
               page === "..." ? (
                 <span
                   key={`ellipsis-${i}`}
-                  className="px-1 text-sm leading-9 text-foreground-tertiary"
+                  className="flex h-9 min-w-9 items-center justify-center text-sm text-foreground-tertiary"
                 >
                   …
                 </span>
@@ -109,19 +120,15 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
                   key={String(page)}
                   type="button"
                   onClick={() => onPageChange(page)}
+                  aria-current={page === currentPage ? "page" : undefined}
                   className={clsx(
-                    "flex h-9 min-w-9 shrink-0 cursor-pointer items-center justify-center rounded-sm border-[1.5px] border-primary px-3",
-                    page === currentPage ? "bg-primary" : "bg-surface",
+                    PAGE_BTN,
+                    page === currentPage
+                      ? "bg-primary text-on-primary shadow-sm"
+                      : "text-foreground-secondary hover:bg-background-secondary hover:text-foreground",
                   )}
                 >
-                  <span
-                    className={clsx(
-                      "font-sans text-sm font-semibold",
-                      page === currentPage ? "text-on-primary" : "text-foreground",
-                    )}
-                  >
-                    {page}
-                  </span>
+                  {page}
                 </button>
               ),
             )}
@@ -131,9 +138,10 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
             type="button"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
+            aria-label="Next page"
             className={CHEVRON_BTN}
           >
-            <ChevronRight size={20} color="currentColor" strokeWidth={2} />
+            <ChevronRight size={18} color="currentColor" strokeWidth={2} />
           </button>
         </div>
       </div>

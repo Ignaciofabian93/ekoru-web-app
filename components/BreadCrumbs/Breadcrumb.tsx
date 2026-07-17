@@ -6,11 +6,18 @@ export interface BreadcrumbItem {
   onPress?: () => void;
 }
 
-interface Props {
-  items: BreadcrumbItem[];
+export interface Crumb {
+  label: string;
+  href?: string;
 }
 
-export default function Breadcrumb({ items }: Props) {
+interface Props {
+  items: BreadcrumbItem[];
+  crumbColor?: "default" | "inverted";
+  chevronColor?: "default" | "inverted";
+}
+
+export default function Breadcrumb({ items, crumbColor, chevronColor }: Props) {
   return (
     <nav className="mb-5 flex flex-row flex-wrap items-center gap-x-0.5 gap-y-1 py-0.5">
       {items.map((item, idx) => {
@@ -20,14 +27,17 @@ export default function Breadcrumb({ items }: Props) {
             {idx > 0 && (
               <ChevronRight
                 size={12}
-                color="currentColor"
+                color={chevronColor === "inverted" ? "white" : "#94a3b8"}
                 strokeWidth={2}
-                className="text-foreground-tertiary"
               />
             )}
             {!isLast && item.onPress ? (
               <button onClick={item.onPress} className="cursor-pointer px-0 py-0.5">
-                <Text size="sm" color="secondary" className="underline">
+                <Text
+                  size="sm"
+                  color={crumbColor === "inverted" ? "white" : "secondary"}
+                  className="underline"
+                >
                   {item.label}
                 </Text>
               </button>
@@ -35,7 +45,13 @@ export default function Breadcrumb({ items }: Props) {
               <Text
                 size="sm"
                 weight={isLast ? "semibold" : "normal"}
-                color={isLast ? "default" : "tertiary"}
+                color={
+                  isLast && crumbColor === "inverted"
+                    ? "white"
+                    : isLast
+                      ? "default"
+                      : "tertiary"
+                }
               >
                 {item.label}
               </Text>
