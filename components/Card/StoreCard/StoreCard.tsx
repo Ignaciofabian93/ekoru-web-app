@@ -12,6 +12,7 @@ import type { SupportedLanguage } from "@/constants/settings";
 import { useNavigation } from "@/hooks/useNavigation";
 import clsx from "clsx";
 import tokens from "@/design/tokens";
+import { Text } from "@/components/Text/Text";
 
 function getInitials(name?: string): string {
   if (!name) return "";
@@ -71,7 +72,7 @@ export default function StoreCard({
             <div
               className={clsx(
                 "w-20 h-20",
-                "p-2.5",
+                // "p-2.5",
                 "rounded-2xl",
                 "bg-white",
                 "overflow-hidden",
@@ -86,12 +87,10 @@ export default function StoreCard({
                   alt={profile?.businessName ?? "logo"}
                   width={64}
                   height={64}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-xl font-bold text-secondary-dark">
-                  {initials}
-                </span>
+                <span className="text-xl font-bold text-secondary-dark">{initials}</span>
               )}
             </div>
           </div>
@@ -112,17 +111,21 @@ export default function StoreCard({
         {/* Right panel — details */}
         <div className="flex flex-col flex-1 min-w-0 px-3.5 py-2">
           <div className="flex items-start justify-between gap-2">
-            <p className="font-bold text-foreground truncate">{profile?.businessName}</p>
+            <Text variant="span" weight="bold" className="truncate">
+              {profile?.businessName}
+            </Text>
           </div>
 
           <div className="flex items-center gap-1 mt-0.5 text-xs text-foreground-secondary">
             <MapPin size={13} className="shrink-0" />
-            <span className="truncate">{location}</span>
+            <Text variant="small" weight="bold" className="truncate">
+              {location}
+            </Text>
           </div>
 
-          <p className="mt-1.5 text-sm text-foreground-secondary line-clamp-3">
+          <Text variant="p" size="sm" color="secondary" className="mt-2 line-clamp-3">
             {profile?.description}
-          </p>
+          </Text>
 
           <div className="flex items-center justify-end gap-2 mt-auto pt-3">
             <button

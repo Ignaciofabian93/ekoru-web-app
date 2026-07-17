@@ -22,12 +22,7 @@ interface Props {
  * dimensions, but is themed teal (secondary) for the stores domain. The front
  * face is purchase-only; the back shows the environmental impact + seller.
  */
-export default function StoreProductCard({
-  product,
-  lang,
-  href,
-  className,
-}: Props) {
+export default function StoreProductCard({ product, lang, href, className }: Props) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [impactOpen, setImpactOpen] = useState(false);
   const flip = () => setIsFlipped((prev) => !prev);

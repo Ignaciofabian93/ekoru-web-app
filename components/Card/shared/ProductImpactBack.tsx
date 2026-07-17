@@ -1,8 +1,6 @@
 "use client";
-
 import { ChevronRight, Droplets, Info, Leaf, MapPin, RotateCcw } from "lucide-react";
 import Image from "next/image";
-
 import {
   useDisplayName,
   useInitials,
@@ -29,24 +27,6 @@ interface Props {
   onShowImpact: () => void;
 }
 
-const ACCENT: Record<
-  Accent,
-  { headerBg: string; headerText: string; flipBtn: string; border: string }
-> = {
-  primary: {
-    headerBg: "bg-primary-light-bg",
-    headerText: "text-primary-dark",
-    flipBtn: "bg-primary text-on-primary hover:bg-primary-active",
-    border: "border-border-light",
-  },
-  secondary: {
-    headerBg: "bg-secondary/10",
-    headerText: "text-secondary-dark",
-    flipBtn: "bg-secondary text-white hover:bg-secondary-dark",
-    border: "border-secondary/30",
-  },
-};
-
 function formatNumber(num: number): string {
   return new Intl.NumberFormat("es-CL", {
     minimumFractionDigits: 1,
@@ -64,13 +44,10 @@ export default function ProductImpactBack({
   title,
   environmentalImpact,
   seller,
-  accent = "primary",
   onFlip,
   onShowImpact,
 }: Props) {
   const { t } = useTranslation();
-  const a = ACCENT[accent];
-
   const displayName = useDisplayName(seller);
   const sellerType = useSellerType(seller);
   const sellerRegion = useSellerRegion(seller);
@@ -92,7 +69,7 @@ export default function ProductImpactBack({
           type="button"
           onClick={onFlip}
           aria-label={t("impact.flipToFront")}
-          className={`flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full shadow-sm transition-colors ${a.flipBtn}`}
+          className="flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full shadow-sm bg-primary text-white transition-colors"
         >
           <RotateCcw size={13} strokeWidth={2.5} />
         </button>

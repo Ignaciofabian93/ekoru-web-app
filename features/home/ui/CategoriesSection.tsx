@@ -1,5 +1,4 @@
 "use client";
-
 import {
   ArrowUpRight,
   BookOpen,
@@ -8,12 +7,14 @@ import {
   UsersRound,
   Wrench,
 } from "lucide-react";
+import { Fragment } from "react";
 import Link from "next/link";
-
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { useCategories } from "../hooks/useCategories";
 import type { SupportedLanguage } from "@/constants/settings";
+import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Text/Text";
 
 type SectionId = "marketplace" | "stores" | "services" | "community" | "blog";
 
@@ -95,13 +96,15 @@ export function CategoriesSection({ lang }: { lang: SupportedLanguage }) {
   ];
 
   return (
-    <div className="mt-4 mb-10">
-      <h2 className="text-xl font-bold text-foreground text-center">
-        {t("categories.title")}
-      </h2>
-      <p className="text-sm text-foreground-secondary text-center mt-1 mb-5">
-        {t("categories.subtitle")}
-      </p>
+    <Fragment>
+      <div className="w-full flex flex-col items-center justify-center gap-3">
+        <Title level="h3" size="h4" weight="semibold" align="center">
+          {t("categories.title")}
+        </Title>
+        <Text variant="p" size="base" align="center">
+          {t("categories.subtitle")}
+        </Text>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
         {sections.map(({ id, Icon, href, gradient, span, loading, categories }) => (
@@ -125,12 +128,12 @@ export function CategoriesSection({ lang }: { lang: SupportedLanguage }) {
               </Link>
             </div>
 
-            <p className="relative text-lg font-bold text-white mb-0.5">
+            <Text variant="p" color="white" weight="bold" size="lg">
               {t(`categories.items.${id}.title`)}
-            </p>
-            <p className="relative text-[13px] text-white/75 leading-snug mb-3.5">
+            </Text>
+            <Text variant="p" color="white" weight="semibold" size="sm" className="mb-6">
               {t(`categories.items.${id}.description`)}
-            </p>
+            </Text>
 
             <div className="relative flex flex-wrap gap-1.5 mt-auto">
               {loading && categories.length === 0
@@ -154,6 +157,6 @@ export function CategoriesSection({ lang }: { lang: SupportedLanguage }) {
           </div>
         ))}
       </div>
-    </div>
+    </Fragment>
   );
 }

@@ -74,7 +74,7 @@ export function ImpactSnapshot() {
         // </Link>
       }
     >
-      <div className="flex items-center justify-evenly gap-3">
+      <div className="flex flex-col items-center justify-evenly gap-3">
         {stats.map((s) => {
           const Icon = s.icon;
           return (

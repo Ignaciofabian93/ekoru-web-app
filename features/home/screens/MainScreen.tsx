@@ -11,7 +11,7 @@ import { CategoriesSection } from "../ui/CategoriesSection";
 import { HomeHero } from "../ui/HomeHero";
 import { StatsSection } from "../ui/StatsSection";
 import { StoresHighlight } from "../ui/StoresHighlight";
-import { ProductsHighlight } from "../ui/ProductsHighlight";
+// import { ProductsHighlight } from "../ui/ProductsHighlight";
 import { ExchangeHighlight } from "../ui/ExchangeHighlight";
 import { ServicesHighlight } from "../ui/ServicesHighlight";
 import { AdBannerSection } from "../ui/AdBannerSection";
@@ -36,8 +36,8 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
         <ContentLayout>
           <CategoriesSection lang={lang} />
           <StatsSection />
-          <AdBannerSection lang={lang} variant="green" domain="stores" />
-          <ProductsHighlight lang={lang} />
+          {/* <AdBannerSection lang={lang} variant="green" domain="stores" />
+          <ProductsHighlight lang={lang} /> */}
           <AdBannerSection lang={lang} variant="teal" domain="stores" />
           <StoresHighlight lang={lang} />
           <StoreProductsHighlight lang={lang} />
