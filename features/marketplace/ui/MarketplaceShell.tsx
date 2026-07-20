@@ -12,7 +12,7 @@ export function MarketplaceShell({ nav, hero, children }: Props) {
     <main className="flex-1 bg-background">
       {nav}
       {hero}
-      <div className={clsx("mx-auto w-full max-w-4xl")}>{children}</div>
+      <div className={clsx("mx-auto w-full")}>{children}</div>
     </main>
   );
 }

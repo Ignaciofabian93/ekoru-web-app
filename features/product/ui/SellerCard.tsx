@@ -1,13 +1,10 @@
 "use client";
-
-import { BadgeCheck, MapPin, MessageCircle, Phone, Store, User } from "lucide-react";
+import { BadgeCheck, MapPin, Phone, Store, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
 import { useTranslation } from "@/i18n/context";
 import type { Seller } from "@/types/user";
 import { resolveImageUrl } from "@/utils/resolveImage";
-
 import { NAMESPACE } from "../i18n";
 
 interface Props {
@@ -42,27 +39,17 @@ export function SellerCard({ lang, seller }: Props) {
   const name = getSellerName(seller);
   const image = getSellerImage(seller);
   const isBusiness = seller.profile?.__typename === "BusinessProfile";
-  const location = [seller.county?.county, seller.address]
-    .filter(Boolean)
-    .join(" · ");
+  const location = [seller.county?.county, seller.address].filter(Boolean).join(" · ");
 
   return (
     <section>
-      <h2 className="mb-3 text-lg font-semibold text-foreground">
-        {t("seller.title")}
-      </h2>
+      <h2 className="mb-3 text-lg font-semibold text-foreground">{t("seller.title")}</h2>
 
       <div className="flex flex-col gap-4 rounded-2xl border border-border-light bg-surface p-4">
         <div className="flex items-center gap-3">
           <div className="bg-background-secondary relative size-14 shrink-0 overflow-hidden rounded-full">
             {image ? (
-              <Image
-                src={image}
-                alt={name}
-                fill
-                sizes="56px"
-                className="object-cover"
-              />
+              <Image src={image} alt={name} fill sizes="56px" className="object-cover" />
             ) : (
               <div className="flex h-full w-full items-center justify-center text-foreground-muted">
                 {isBusiness ? <Store size={22} /> : <User size={22} />}
@@ -115,13 +102,6 @@ export function SellerCard({ lang, seller }: Props) {
             <Store size={16} strokeWidth={2} />
             {t("actions.viewSeller")}
           </Link>
-          <button
-            type="button"
-            className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary-light-bg py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white"
-          >
-            <MessageCircle size={16} strokeWidth={2} />
-            {t("actions.contactSeller")}
-          </button>
         </div>
       </div>
     </section>

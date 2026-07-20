@@ -195,6 +195,7 @@ export type ProductCategory = {
   __typename: "ProductCategory";
   id: number;
   departmentCategoryId: number;
+  departmentCategory: DepartmentCategory;
   isActive: boolean;
   sortOrder: number;
   averageWeight: number;
@@ -225,6 +226,7 @@ export type DepartmentCategory = {
   __typename: "DepartmentCategory";
   id: number;
   departmentId: number;
+  department: Department;
   isActive: boolean;
   sortOrder: number;
   translation: DepartmentCategoryTranslation;

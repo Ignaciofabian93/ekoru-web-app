@@ -40,7 +40,7 @@ export function ProductGallery({ name, images }: Props) {
             })}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
-            className="object-contain"
+            className="object-cover"
             priority={index === 0}
           />
         ) : (
@@ -85,9 +85,7 @@ export function ProductGallery({ name, images }: Props) {
               aria-label={t("gallery.goToImage", { index: String(i + 1) })}
               aria-current={i === index}
               className={`bg-background-secondary relative size-16 shrink-0 overflow-hidden rounded-lg border-2 transition ${
-                i === index
-                  ? "border-primary"
-                  : "border-transparent hover:border-border"
+                i === index ? "border-primary" : "border-transparent hover:border-border"
               }`}
             >
               <Image

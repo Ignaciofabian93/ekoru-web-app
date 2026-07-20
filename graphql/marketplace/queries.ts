@@ -119,9 +119,10 @@ export const GET_PRODUCT_BY_ID = gql`
       name
       description
       color
+      images
       brand
       price
-      images
+      productCategoryId
       badges
       interests
       condition
@@ -130,17 +131,10 @@ export const GET_PRODUCT_BY_ID = gql`
       isExchangeable
       sellerId
       viewCount
-      isLiked
       createdAt
       updatedAt
-      productCategory {
-        id
-        translation {
-          name
-          slug
-          href
-        }
-      }
+      deletedAt
+      isLiked
       environmentalImpact {
         totalCo2SavingsKG
         totalWaterSavingsLT
@@ -157,26 +151,104 @@ export const GET_PRODUCT_BY_ID = gql`
         id
         email
         sellerType
+        isActive
         isVerified
+        createdAt
+        updatedAt
         address
         phone
+        website
+        preferredContactMethod
+        socialMediaLinks
+        points
+        profile {
+          ... on PersonProfile {
+            id
+            sellerId
+            firstName
+            lastName
+            displayName
+            bio
+            birthday
+            profileImage
+            coverImage
+            allowExchanges
+            personMembershipSubscriptionId
+          }
+        }
+        sellerLevel {
+          id
+          levelName
+          minPoints
+          maxPoints
+          benefits
+          badgeIcon
+          createdAt
+          updatedAt
+        }
+        country {
+          id
+          country
+          createdAt
+          updatedAt
+        }
+        region {
+          id
+          region
+          countryId
+        }
+        city {
+          id
+          city
+          regionId
+        }
         county {
           id
           county
           cityId
         }
-        profile {
-          ... on PersonProfile {
+      }
+      productCategory {
+        id
+        departmentCategoryId
+        averageWeight
+        size
+        weightUnit
+        isActive
+        sortOrder
+        createdAt
+        updatedAt
+        translation {
+          id
+          language
+          name
+          slug
+          href
+        }
+        departmentCategory {
+          id
+          translation {
             id
-            firstName
-            lastName
-            displayName
-            profileImage
+            departmentCategoryId
+            language
+            name
+            slug
+            href
+            metaTitle
+            metaDescription
+            metaKeywords
+            createdAt
+            updatedAt
           }
-          ... on BusinessProfile {
+          department {
             id
-            businessName
-            logo
+            translation {
+              id
+              language
+              name
+              slug
+              href
+            }
           }
         }
       }

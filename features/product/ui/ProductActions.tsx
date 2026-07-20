@@ -1,17 +1,13 @@
 "use client";
-
-import { Check, Heart, PackageCheck, Share2, ShoppingCart, Zap } from "lucide-react";
+import { Check, Heart, PackageCheck, Share2, ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
-import { cartGroupId, useIsInCart } from "@/store/useCartStore";
+import { useIsInCart } from "@/store/useCartStore";
 import { useTranslation } from "@/i18n/context";
 import type { Product } from "@/types/product";
-
 import { NAMESPACE } from "../i18n";
 import { useShareProduct } from "../../../hooks/useShareProduct";
 
@@ -22,7 +18,6 @@ interface Props {
 
 export function ProductActions({ lang, product }: Props) {
   const { t } = useTranslation(NAMESPACE);
-  const router = useRouter();
   const { addMarketplaceProduct } = useAddToCart();
   const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
@@ -43,15 +38,6 @@ export function ProductActions({ lang, product }: Props) {
       setTimeout(() => setPopped(false), 400);
     }
     return result === "added" || result === "exists";
-  }
-
-  function handleBuyNow() {
-    // Only proceed to checkout when the item is actually in the cart. If the
-    // user is anonymous, the helper already redirected to login.
-    if (handleAddToCart() || inCart) {
-      const g = encodeURIComponent(cartGroupId("marketplace", product.sellerId));
-      router.push(`/${lang}/cart/checkout?g=${g}`);
-    }
   }
 
   return (
@@ -91,15 +77,6 @@ export function ProductActions({ lang, product }: Props) {
               <ShoppingCart size={20} strokeWidth={2} />
             </Link>
           </div>
-
-          <button
-            type="button"
-            onClick={handleBuyNow}
-            className="flex items-center justify-center gap-2 rounded-xl border border-border bg-surface py-3 text-base font-semibold text-foreground transition-colors hover:bg-background-secondary"
-          >
-            <Zap size={18} strokeWidth={2} />
-            {t("actions.buyNow")}
-          </button>
         </>
       )}
 
