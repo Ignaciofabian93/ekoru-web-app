@@ -43,7 +43,7 @@ export default function MarketplaceCard({
   return (
     <div
       className={clsx(
-        "relative w-full min-w-0 perspective-distant",
+        "relative min-w-46 w-full max-w-50",
         {
           "h-60": isOwnProduct,
           "h-76": !isOwnProduct,

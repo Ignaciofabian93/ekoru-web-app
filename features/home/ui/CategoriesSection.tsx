@@ -7,7 +7,6 @@ import {
   UsersRound,
   Wrench,
 } from "lucide-react";
-import { Fragment } from "react";
 import Link from "next/link";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
@@ -15,6 +14,8 @@ import { useCategories } from "../hooks/useCategories";
 import type { SupportedLanguage } from "@/constants/settings";
 import { Title } from "@/components/Title/Title";
 import { Text } from "@/components/Text/Text";
+import { Layout } from "@/components/Layout/Layout";
+import { SectionTitleWrapper } from "./Wrapper";
 
 type SectionId = "marketplace" | "stores" | "services" | "community" | "blog";
 
@@ -96,15 +97,15 @@ export function CategoriesSection({ lang }: { lang: SupportedLanguage }) {
   ];
 
   return (
-    <Fragment>
-      <div className="w-full flex flex-col items-center justify-center gap-3">
+    <Layout.Section>
+      <SectionTitleWrapper>
         <Title level="h3" size="h4" weight="semibold" align="center">
           {t("categories.title")}
         </Title>
         <Text variant="p" size="base" align="center">
           {t("categories.subtitle")}
         </Text>
-      </div>
+      </SectionTitleWrapper>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
         {sections.map(({ id, Icon, href, gradient, span, loading, categories }) => (
@@ -157,6 +158,6 @@ export function CategoriesSection({ lang }: { lang: SupportedLanguage }) {
           </div>
         ))}
       </div>
-    </Fragment>
+    </Layout.Section>
   );
 }

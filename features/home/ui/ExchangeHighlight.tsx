@@ -1,8 +1,6 @@
 "use client";
-import clsx from "clsx";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
 import { type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
@@ -10,8 +8,9 @@ import { useExchangeableProducts } from "../hooks/useExchangeableProducts";
 import { NAMESPACE } from "../i18n";
 import { Title } from "@/components/Title/Title";
 import { Text } from "@/components/Text/Text";
-
-const SCROLL_STEP = 360;
+import { Layout } from "@/components/Layout/Layout";
+import { SectionTitleWrapper } from "./Wrapper";
+import { CardScroller } from "@/components/Card/CardScroller/CardScroller";
 
 export function ExchangeHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
@@ -51,71 +50,44 @@ export function ExchangeHighlight({ lang }: { lang: SupportedLanguage }) {
   if (!loading && products.length === 0) return null;
 
   return (
-    <Fragment>
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <Title level="h3" size="h4" weight="semibold">
-              {t("exchange.title")}
-            </Title>
-            <Text variant="p" size="base">
-              {t("exchange.subtitle")}
-            </Text>
-          </div>
-          <Link
-            href={`/${lang}/marketplace?exchangeable=true`}
-            className="text-sm font-semibold text-primary underline"
-          >
-            {t("exchange.seeAll")}
-          </Link>
+    <Layout.Section>
+      <SectionTitleWrapper direction="row" align="start" justify="between">
+        <div>
+          <Title level="h3" size="h4" weight="semibold">
+            {t("exchange.title")}
+          </Title>
+          <Text variant="p" size="base">
+            {t("exchange.subtitle")}
+          </Text>
         </div>
+        <Link
+          href={`/${lang}/marketplace?exchangeable=true`}
+          className="text-sm font-semibold text-primary underline"
+        >
+          {t("exchange.seeAll")}
+        </Link>
+      </SectionTitleWrapper>
 
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => handleScroll(-SCROLL_STEP)}
-            aria-label={t("exchange.scrollPrevious")}
-            disabled={!canScrollLeft}
-            className={clsx(
-              "hidden size-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-sm transition hover:border-primary hover:text-primary md:flex",
-              !canScrollLeft && "pointer-events-none opacity-40",
-            )}
-          >
-            <ChevronLeft size={18} strokeWidth={2} />
-          </button>
-
-          <div
-            ref={scrollRef}
-            className="scrollbar-none -mx-1 flex min-w-0 flex-1 snap-x snap-mandatory gap-2 overflow-x-auto px-1 pb-2"
-          >
-            {loading && products.length === 0
-              ? Array.from({ length: 8 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="aspect-3/4 w-44 shrink-0 snap-start animate-pulse rounded-lg bg-background-secondary"
-                  />
-                ))
-              : products.map((product) => (
-                  <div key={product.id} className="w-44 shrink-0 snap-start">
-                    <MarketplaceCard product={product} lang={lang} />
-                  </div>
-                ))}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => handleScroll(SCROLL_STEP)}
-            aria-label={t("exchange.scrollNext")}
-            disabled={!canScrollRight}
-            className={clsx(
-              "hidden size-9 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-foreground shadow-sm transition hover:border-primary hover:text-primary md:flex",
-              !canScrollRight && "pointer-events-none opacity-40",
-            )}
-          >
-            <ChevronRight size={18} strokeWidth={2} />
-          </button>
-        </div>
-      </div>
-    </Fragment>
+      <CardScroller
+        handleScroll={handleScroll}
+        canScrollLeft={canScrollLeft}
+        canScrollRight={canScrollRight}
+        scrollPreviousAriaLabel={t("exchange.scrollPrevious")}
+        scrollNextAriaLabel={t("exchange.scrollNext")}
+      >
+        {loading && products.length === 0
+          ? Array.from({ length: 8 }).map((_, i) => (
+              <div
+                key={i}
+                className="aspect-3/4 w-44 shrink-0 snap-start animate-pulse rounded-lg bg-background-secondary"
+              />
+            ))
+          : products.map((product) => (
+              <div key={product.id} className="snap-start">
+                <MarketplaceCard product={product} lang={lang} />
+              </div>
+            ))}
+      </CardScroller>
+    </Layout.Section>
   );
 }

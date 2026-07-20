@@ -2,9 +2,10 @@
 import { Package2, ScanBarcode, Store, TrendingUp, UsersRound } from "lucide-react";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
-import { Fragment } from "react";
 import { Title } from "@/components/Title/Title";
 import { Text } from "@/components/Text/Text";
+import { Layout } from "@/components/Layout/Layout";
+import { SectionTitleWrapper } from "./Wrapper";
 
 const STATS = [
   { key: "activeUsers", value: "1,234", Icon: UsersRound },
@@ -37,37 +38,35 @@ export function StatsSection() {
   const { t } = useTranslation(NAMESPACE);
 
   return (
-    <Fragment>
-      <div className="flex flex-col gap-3">
-        <div className="w-full flex flex-col items-center justify-center gap-3">
-          <Title level="h3" size="h4" weight="semibold" align="center">
-            {t("stats.title")}
-          </Title>
-          <Text variant="p" size="base" align="center">
-            {t("stats.subtitle")}
-          </Text>
-        </div>
-
-        <div className="relative my-1 overflow-hidden py-3.5">
-          <div className="flex animate-marquee">
-            {[...STATS, ...STATS].map((stat, i) => (
-              <StatItem
-                key={i}
-                label={t(`stats.items.${stat.key}`)}
-                value={stat.value}
-                Icon={stat.Icon}
-              />
-            ))}
-          </div>
-          {/* Fade edges */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-linear-to-r from-background to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-linear-to-l from-background to-transparent" />
-        </div>
-
-        <Text variant="small" align="center" color="tertiary">
-          {t("stats.caption")}
+    <Layout.Section>
+      <SectionTitleWrapper>
+        <Title level="h3" size="h4" weight="semibold" align="center">
+          {t("stats.title")}
+        </Title>
+        <Text variant="p" size="base" align="center">
+          {t("stats.subtitle")}
         </Text>
+      </SectionTitleWrapper>
+
+      <div className="relative my-1 overflow-hidden py-1.5">
+        <div className="flex animate-marquee">
+          {[...STATS, ...STATS].map((stat, i) => (
+            <StatItem
+              key={i}
+              label={t(`stats.items.${stat.key}`)}
+              value={stat.value}
+              Icon={stat.Icon}
+            />
+          ))}
+        </div>
+        {/* Fade edges */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-linear-to-r from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-linear-to-l from-background to-transparent" />
       </div>
-    </Fragment>
+
+      <Text variant="small" align="center" color="tertiary" weight="bold">
+        {t("stats.caption")}
+      </Text>
+    </Layout.Section>
   );
 }
