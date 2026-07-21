@@ -14,9 +14,9 @@
     "noImage": "Sin imagen disponible",
     "previous": "Imagen anterior",
     "next": "Imagen siguiente",
-    "goToImage": "Ir a la imagen {{index}}",
-    "imageAlt": "{{name}} – imagen {{index}} de {{total}}",
-    "thumbnailAlt": "Miniatura {{index}}"
+    "goToImage": "Ir a la imagen",
+    "imageAlt": "Imagen de producto",
+    "thumbnailAlt": "Miniatura"
   },
   "actions": {
     "addToCart": "Agregar al carro",
@@ -125,6 +125,8 @@
   "otherProducts": {
     "title": "Más productos de este vendedor",
     "empty": "Este vendedor no tiene otras publicaciones por ahora.",
-    "loading": "Cargando otros productos…"
+    "loading": "Cargando otros productos…",
+    "scrollPrevious": "Ver productos anteriores",
+    "scrollNext": "Ver más productos"
   }
 }

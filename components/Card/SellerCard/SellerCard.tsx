@@ -1,10 +1,8 @@
 "use client";
 import { BadgeCheck, Store, User, UserRound } from "lucide-react";
 import Image from "next/image";
-import { useTranslation } from "@/i18n/context";
 import type { Seller } from "@/types/user";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import { NAMESPACE } from "../i18n";
 import { Title } from "@/components/Title/Title";
 import { Badge } from "@/components/Badge/Badge";
 import { Text } from "@/components/Text/Text";
@@ -13,6 +11,10 @@ import { LinkButton } from "@/components/Links/LinkButton";
 interface Props {
   lang: string;
   seller: Seller;
+  title: string;
+  verifiedLabel: string;
+  sellerTypeLabel: string;
+  viewSellerLabel: string;
 }
 
 function getSellerName(seller: Seller): string {
@@ -36,9 +38,14 @@ function getSellerImage(seller: Seller): string | undefined {
   return resolveImageUrl(raw);
 }
 
-export function SellerCard({ lang, seller }: Props) {
-  const { t } = useTranslation(NAMESPACE);
-
+export function SellerCard({
+  lang,
+  seller,
+  title,
+  verifiedLabel,
+  sellerTypeLabel,
+  viewSellerLabel,
+}: Props) {
   const name = getSellerName(seller);
   const image = getSellerImage(seller);
   const isBusiness = seller.profile?.__typename === "BusinessProfile";
@@ -46,7 +53,7 @@ export function SellerCard({ lang, seller }: Props) {
   return (
     <div className="px-2">
       <Title level="h5" size="h5" weight="semibold" className="mb-3">
-        {t("seller.title")}
+        {title}
       </Title>
 
       <div className="flex flex-col gap-4 rounded-2xl border border-border-light bg-white p-4">
@@ -67,14 +74,14 @@ export function SellerCard({ lang, seller }: Props) {
             <div className="flex items-center justify-start gap-1">
               {seller.isVerified && (
                 <Badge
-                  label={t("seller.verified")}
+                  label={verifiedLabel}
                   variant="primary"
                   icon={BadgeCheck}
                   size="small"
                 />
               )}
               <Badge
-                label={t(`seller.types.${seller.sellerType}`)}
+                label={sellerTypeLabel}
                 size="small"
                 variant="secondary"
                 icon={UserRound}
@@ -87,7 +94,7 @@ export function SellerCard({ lang, seller }: Props) {
           <LinkButton
             href={`/${lang}/seller/${seller.id}`}
             icon={UserRound}
-            label={t("actions.viewSeller")}
+            label={viewSellerLabel}
             fullWidth
           />
         </div>

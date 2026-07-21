@@ -2,17 +2,28 @@
 import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import { NAMESPACE } from "../i18n";
 
-interface Props {
-  name: string;
+interface ImageGalleryProps {
+  productName: string;
   images: string[];
+  galleryImageAlt: string;
+  galleryNoImage: string;
+  galleryPrevious: string;
+  galleryNext: string;
+  galleryThumbnailAlt: string;
+  galleryGoToImage: string;
 }
 
-export function StoreProductGallery({ name, images }: Props) {
-  const { t } = useTranslation(NAMESPACE);
+export function ProductGallery({
+  images,
+  galleryImageAlt,
+  galleryNext,
+  galleryPrevious,
+  galleryNoImage,
+  galleryGoToImage,
+  galleryThumbnailAlt,
+}: ImageGalleryProps) {
   const [index, setIndex] = useState(0);
 
   const urls = images.map((img) => resolveImageUrl(img)).filter(Boolean) as string[];
@@ -30,11 +41,7 @@ export function StoreProductGallery({ name, images }: Props) {
         {current ? (
           <Image
             src={current}
-            alt={t("gallery.imageAlt", {
-              name,
-              index: String(index + 1),
-              total: String(total),
-            })}
+            alt={galleryImageAlt}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
             className="object-cover"
@@ -43,7 +50,7 @@ export function StoreProductGallery({ name, images }: Props) {
         ) : (
           <div className="flex flex-col items-center gap-2 text-foreground-muted">
             <ImageOff size={48} strokeWidth={1.5} />
-            <span className="text-sm">{t("gallery.noImage")}</span>
+            <span className="text-sm">{galleryNoImage}</span>
           </div>
         )}
 
@@ -52,7 +59,7 @@ export function StoreProductGallery({ name, images }: Props) {
             <button
               type="button"
               onClick={() => go(-1)}
-              aria-label={t("gallery.previous")}
+              aria-label={galleryPrevious}
               className="absolute top-1/2 left-3 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-foreground shadow-sm transition hover:bg-white"
             >
               <ChevronLeft size={20} strokeWidth={2} />
@@ -60,7 +67,7 @@ export function StoreProductGallery({ name, images }: Props) {
             <button
               type="button"
               onClick={() => go(1)}
-              aria-label={t("gallery.next")}
+              aria-label={galleryNext}
               className="absolute top-1/2 right-3 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-foreground shadow-sm transition hover:bg-white"
             >
               <ChevronRight size={20} strokeWidth={2} />
@@ -79,7 +86,7 @@ export function StoreProductGallery({ name, images }: Props) {
               key={url + i}
               type="button"
               onClick={() => setIndex(i)}
-              aria-label={t("gallery.goToImage", { index: String(i + 1) })}
+              aria-label={galleryGoToImage}
               aria-current={i === index}
               className={`bg-background-secondary relative size-16 shrink-0 overflow-hidden rounded-lg border-2 transition ${
                 i === index ? "border-primary" : "border-transparent hover:border-border"
@@ -87,7 +94,7 @@ export function StoreProductGallery({ name, images }: Props) {
             >
               <Image
                 src={url}
-                alt={t("gallery.thumbnailAlt", { index: String(i + 1) })}
+                alt={galleryThumbnailAlt}
                 fill
                 sizes="64px"
                 className="object-cover"

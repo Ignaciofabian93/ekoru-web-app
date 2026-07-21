@@ -7,16 +7,16 @@
     "errorHint": "Please check your connection and try again."
   },
   "breadcrumbs": {
-    "marketplace": "Marketplace",
+    "stores": "Stores",
     "product": "Product"
   },
   "gallery": {
     "noImage": "No image available",
     "previous": "Previous image",
     "next": "Next image",
-    "goToImage": "Go to image {{index}}",
-    "imageAlt": "{{name}} – image {{index}} of {{total}}",
-    "thumbnailAlt": "Thumbnail {{index}}"
+    "goToImage": "Go to image",
+    "imageAlt": "Product image",
+    "thumbnailAlt": "Thumbnail"
   },
   "actions": {
     "addToCart": "Add to cart",
@@ -126,6 +126,8 @@
   "otherProducts": {
     "title": "More from this seller",
     "empty": "This seller has no other listings right now.",
-    "loading": "Loading other products…"
+    "loading": "Loading other products…",
+    "scrollPrevious": "View previous products",
+    "scrollNext": "View more products"
   }
 }

@@ -1,10 +1,7 @@
 "use client";
-
 import type { SupportedLanguage } from "@/constants/settings";
-
 import { StoreProductDescription } from "./StoreProductDescription";
 import { StoreProductDetails } from "./StoreProductDetails";
-import { StoreProductGallery } from "./StoreProductGallery";
 import { StoreProductImpact } from "./StoreProductImpact";
 import {
   StoreProductError,
@@ -14,9 +11,15 @@ import {
 import { StoreProductSummary } from "./StoreProductSummary";
 import { StoreProductTrust } from "./StoreProductTrust";
 import { useStoreProduct } from "../hooks/useStoreProduct";
-import { StoreProductBreadcrumbs } from "./StoreProductBreadcrumbs";
 import { StoreProductActions } from "./StoreProductActions";
 import { OtherFromBusiness } from "./OtherFromBusiness";
+import { Layout } from "@/components/Layout/Layout";
+import Breadcrumb, { type Crumb } from "@/components/BreadCrumbs/Breadcrumb";
+import { useTranslation } from "@/i18n/context";
+import { useNavigation } from "@/hooks/useNavigation";
+import { NAMESPACE } from "../i18n";
+import { ProductGallery } from "@/components/ProductGallery/ProductGallery";
+import { SellerCard } from "@/components/Card/SellerCard/SellerCard";
 
 interface Props {
   id: string;
@@ -25,51 +28,89 @@ interface Props {
 
 export function StoreProductContent({ id, lang }: Props) {
   const { product, loading, error } = useStoreProduct(id);
+  const { t } = useTranslation(NAMESPACE);
+  const { navigateTo } = useNavigation();
 
   if (loading && !product) return <StoreProductLoading />;
   if (error) return <StoreProductError lang={lang} />;
   if (!product) return <StoreProductNotFound lang={lang} />;
 
-  const categoryName = product.storeSubCategory?.translation.name;
-  const categoryHref = product.storeSubCategory?.translation.href;
+  const subcategoryName = product.storeSubCategory?.translation.name;
+  const subcategoryHref = product.storeSubCategory?.translation.href;
+  const categoryName = product.storeSubCategory?.storeCategory?.translation.name;
+  const categoryHref = product.storeSubCategory?.storeCategory?.translation.href;
+
+  const breadCrumbs: Crumb[] = [
+    { label: t("breadcrumbs.stores"), href: `/${lang}/stores` },
+    {
+      label: categoryName,
+      href: `/${lang}/stores/${categoryHref}`,
+    },
+    {
+      label: subcategoryName,
+      href: `/${lang}/stores/${categoryHref}/${subcategoryHref}`,
+    },
+    { label: product.name },
+  ];
 
   return (
-    <div className="flex flex-col gap-8">
-      <StoreProductBreadcrumbs
-        lang={lang}
-        categoryName={categoryName}
-        categoryHref={categoryHref}
-        productName={product.name}
+    <div>
+      <Breadcrumb
+        items={breadCrumbs.map((c) => ({
+          label: c.label,
+          onPress: c.href ? () => navigateTo({ route: c.href as string }) : undefined,
+        }))}
+        crumbColor="default"
+        chevronColor="default"
       />
+      <Layout.Section>
+        <div className="grid gap-6 md:grid-cols-2 md:gap-10">
+          <ProductGallery
+            productName={product.name}
+            images={product.images ?? []}
+            galleryImageAlt={t("gallery.imageAlt")}
+            galleryNoImage={t("gallery.noImage")}
+            galleryNext={t("gallery.next")}
+            galleryPrevious={t("gallery.previous")}
+            galleryGoToImage={t("gallery.goToImage")}
+            galleryThumbnailAlt={t("gallery.thumbnailAlt")}
+          />
 
-      <div className="grid gap-6 md:grid-cols-2 md:gap-10">
-        <StoreProductGallery name={product.name} images={product.images ?? []} />
-
-        <div className="flex flex-col gap-5">
-          <StoreProductSummary product={product} />
-          <StoreProductActions lang={lang} product={product} />
-          <StoreProductTrust />
+          <div className="flex flex-col gap-5">
+            <StoreProductSummary product={product} />
+            <StoreProductActions lang={lang} product={product} />
+            <StoreProductTrust />
+          </div>
         </div>
-      </div>
 
-      <div className="grid gap-8 md:grid-cols-3">
-        <div className="flex flex-col gap-8 md:col-span-2">
-          <StoreProductDescription description={product.description} />
-          <StoreProductDetails product={product} lang={lang} />
-          <StoreProductImpact impact={product.environmentalImpact} />
+        <div className="grid gap-8 md:grid-cols-3">
+          <div className="flex flex-col gap-8 md:col-span-2">
+            <StoreProductDescription description={product.description} />
+            <StoreProductDetails product={product} lang={lang} />
+            <StoreProductImpact impact={product.environmentalImpact} />
+          </div>
+          <div className="flex flex-col gap-8 md:col-span-1">
+            {product.seller && (
+              <SellerCard
+                lang={lang}
+                seller={product.seller}
+                title={t("seller.title")}
+                verifiedLabel={t("seller.verified")}
+                sellerTypeLabel={t(`seller.types.${product.seller.sellerType}`)}
+                viewSellerLabel={t("actions.viewSeller")}
+              />
+            )}
+          </div>
         </div>
-        {/* <div className="flex flex-col gap-8 md:col-span-1">
-          {product.seller && <SellerCard lang={lang} seller={product.seller} />}
-        </div> */}
-      </div>
 
-      {product.sellerId && (
-        <OtherFromBusiness
-          lang={lang}
-          sellerId={product.sellerId}
-          excludeProductId={product.id}
-        />
-      )}
+        {product.sellerId && (
+          <OtherFromBusiness
+            lang={lang}
+            sellerId={product.sellerId}
+            excludeProductId={product.id}
+          />
+        )}
+      </Layout.Section>
     </div>
   );
 }

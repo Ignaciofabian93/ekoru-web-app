@@ -75,10 +75,171 @@ export const GET_STORE_SUBCATEGORY_BY_SLUG = gql`
 `;
 
 export const GET_STORE_PRODUCT_BY_ID = gql`
-  ${STORE_PRODUCT_DETAIL_FIELDS_FRAGMENT}
   query GetStoreProductById($id: ID!) {
     getStoreProductById(id: $id) {
-      ...StoreProductDetailFields
+      id
+      name
+      description
+      stock
+      barcode
+      sku
+      price
+      hasOffer
+      offerPrice
+      sellerId
+      images
+      isActive
+      badges
+      color
+      brand
+      averageRating
+      reviewsNumber
+      likesCount
+      saleCount
+      viewCount
+      materialComposition
+      recycledContent
+      weight
+      weightUnit
+      length
+      width
+      height
+      dimensionUnit
+      lowStockThreshold
+      isLowStock
+      tags
+      metaTitle
+      metaDescription
+      warranty
+      warrantyDuration
+      features
+      createdAt
+      updatedAt
+      deletedAt
+      isLiked
+      materials {
+        id
+        materialTypeId
+        materialType
+        label
+        percentage
+      }
+      environmentalImpact {
+        totalCo2SavingsKG
+        totalWaterSavingsLT
+        materialBreakdown {
+          materialType
+          materialTypeLabel
+          quantity
+          unit
+          co2SavingsKG
+          waterSavingsLT
+        }
+      }
+      seller {
+        id
+        email
+        sellerType
+        isActive
+        isVerified
+        createdAt
+        updatedAt
+        address
+        phone
+        website
+        preferredContactMethod
+        socialMediaLinks
+        points
+        profile {
+          ... on BusinessProfile {
+            id
+            sellerId
+            businessName
+            description
+            logo
+            coverImage
+            businessType
+            legalBusinessName
+            taxId
+            businessStartDate
+            legalRepresentative
+            legalRepresentativeTaxId
+            shippingPolicy
+            returnPolicy
+            serviceArea
+            yearsOfExperience
+            certifications
+            travelRadius
+            businessHours
+            createdAt
+            updatedAt
+            businessMembershipSubscriptionId
+          }
+        }
+        sellerLevel {
+          id
+          levelName
+          minPoints
+          maxPoints
+          benefits
+          badgeIcon
+          createdAt
+          updatedAt
+        }
+        country {
+          id
+          country
+          createdAt
+          updatedAt
+        }
+        region {
+          id
+          region
+          countryId
+        }
+        city {
+          id
+          city
+          regionId
+        }
+        county {
+          id
+          county
+          cityId
+        }
+      }
+      storeSubCategory {
+        id
+        storeCategoryId
+        averageWeight
+        size
+        weightUnit
+        isActive
+        translation {
+          id
+          storeSubCategoryId
+          language
+          name
+          slug
+          keywords
+          href
+          metaTitle
+          metaDescription
+          createdAt
+          updatedAt
+        }
+        storeCategory {
+          id
+          translation {
+            id
+            storeCategoryId
+            language
+            name
+            slug
+            href
+          }
+        }
+      }
     }
   }
 `;

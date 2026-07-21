@@ -10,10 +10,12 @@ import { ProductImpact } from "./ProductImpact";
 import { ProductError, ProductLoading, ProductNotFound } from "./ProductStatus";
 import { ProductSummary } from "./ProductSummary";
 import { ProductTrust } from "./ProductTrust";
-import { SellerCard } from "./SellerCard";
+import { SellerCard } from "@/components/Card/SellerCard/SellerCard";
 import Breadcrumb, { type Crumb } from "@/components/BreadCrumbs/Breadcrumb";
 import { useNavigation } from "@/hooks/useNavigation";
 import { Layout } from "@/components/Layout/Layout";
+import { useTranslation } from "@/i18n/context";
+import { NAMESPACE } from "../i18n";
 
 interface Props {
   id: string;
@@ -23,6 +25,7 @@ interface Props {
 export function ProductContent({ id, lang }: Props) {
   const { product, loading, error } = useProduct(id);
   const { navigateTo } = useNavigation();
+  const { t } = useTranslation(NAMESPACE);
 
   if (loading && !product) return <ProductLoading />;
   if (error) return <ProductError lang={lang} />;
@@ -82,7 +85,16 @@ export function ProductContent({ id, lang }: Props) {
             <ProductImpact impact={product.environmentalImpact} />
           </div>
           <div className="flex flex-col gap-8 md:col-span-1">
-            {product.seller && <SellerCard lang={lang} seller={product.seller} />}
+            {product.seller && (
+              <SellerCard
+                lang={lang}
+                seller={product.seller}
+                title={t("seller.title")}
+                verifiedLabel={t("seller.verified")}
+                sellerTypeLabel={t(`seller.types.${product.seller.sellerType}`)}
+                viewSellerLabel={t("actions.viewSeller")}
+              />
+            )}
           </div>
         </div>
 

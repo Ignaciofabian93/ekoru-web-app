@@ -1,4 +1,5 @@
 import {
+  type DimensionUnit,
   type Badge,
   type ProductCondition,
   type ProductSize,
@@ -52,36 +53,51 @@ export type Product = {
 };
 
 export type StoreProduct = {
-  id: number;
-  name: string;
-  description: string;
-  stock: number;
-  barcode?: string;
-  sku?: string;
-  price: number;
-  hasOffer: boolean;
-  offerPrice?: number;
-  sellerId: string;
-  // Resolved via federation; card-only queries may omit it. The flip-card back
-  // side renders the seller when present.
-  seller?: Seller | null;
+  __typename: "StoreProduct";
+  averageRating: number;
+  badges: Badge[];
+  barcode: string;
+  brand: string;
+  color: string;
   createdAt: string;
+  deletedAt: string | null;
+  description: string;
+  dimensionUnit: DimensionUnit;
+  environmentalImpact?: EnvironmentalImpact;
+  features: string[];
+  hasOffer: boolean;
+  height: number;
+  id: number;
   images: string[];
   isActive: boolean;
-  updatedAt: string;
-  badges: Badge[];
-  brand?: string;
-  color?: string;
-  ratingCount: number;
-  averageRating: number;
-  reviewsNumber: number;
-  storeSubCategoryId: number;
-  storeSubCategory: StoreSubCategory;
-  /** Seller-declared material composition (material + percentage). */
+  isLiked: boolean;
+  isLowStock: boolean;
+  length: number;
+  likesCount: number;
+  lowStockThreshold: number;
   materials?: StoreProductMaterialComposition[];
-  /** Environmental impact summary, computed from this product's composition. */
-  environmentalImpact?: EnvironmentalImpact;
-  deletedAt?: string;
+  metaDescription: string | null;
+  metaTitle: string | null;
+  name: string;
+  offerPrice?: number;
+  price: number;
+  recycledContent: number;
+  reviewsNumber: number;
+  saleCount: number;
+  seller?: Seller | null;
+  sellerId: string;
+  sku?: string;
+  stock: number;
+  storeSubCategory: StoreSubCategory;
+  tags: string[];
+  updatedAt: string;
+  viewCount: number;
+  warranty: boolean;
+  warrantyDuration: number;
+  weight: number;
+  weightUnit: WeightUnit;
+  width: number;
+  storeSubCategoryId: number;
 };
 
 export type ProductVariant = {
@@ -129,11 +145,19 @@ export type StoreCategory = {
   category: string;
   subcategories: StoreSubCategory[];
   href: string;
+  translation: {
+    id: number;
+    storeCategoryId: number;
+    language: string;
+    name: string;
+    href: string;
+  };
 };
 
 export type StoreSubCategory = {
   id: number;
   storeCategoryId: number;
+  storeCategory: StoreCategory;
   averageWeight: number;
   size: ProductSize;
   weightUnit: WeightUnit;

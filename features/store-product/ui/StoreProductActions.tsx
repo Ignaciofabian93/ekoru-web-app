@@ -1,25 +1,16 @@
 "use client";
-
-import {
-  Check,
-  //  Heart,
-  PackageCheck,
-  Share2,
-  ShoppingCart,
-  Zap,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Check, Heart, PackageCheck, Share2, ShoppingCart } from "lucide-react";
 import { useState } from "react";
-
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
-// import { useToggleFavorite } from "@/hooks/useToggleFavorite";
-import { cartGroupId, useIsInCart } from "@/store/useCartStore";
+import { useToggleFavorite } from "@/hooks/useToggleFavorite";
+import { useIsInCart } from "@/store/useCartStore";
 import { useTranslation } from "@/i18n/context";
 import type { StoreProduct } from "@/types/product";
 
 import { NAMESPACE } from "../i18n";
 import { useShareProduct } from "@/hooks/useShareProduct";
+import Link from "next/link";
 
 interface Props {
   lang: string;
@@ -28,14 +19,13 @@ interface Props {
 
 export function StoreProductActions({ lang, product }: Props) {
   const { t } = useTranslation(NAMESPACE);
-  const router = useRouter();
   const { addStoreProduct } = useAddToCart();
-  // const { toggleFavorite } = useToggleFavorite();
+  const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
   // Store items are stock-bounded; once a line exists the button reflects that
   // it's in the cart and quantity is managed from the cart itself.
   const inCart = useIsInCart("store", product.id);
-  // const liked = Boolean(product.isLiked);
+  const liked = Boolean(product.isLiked);
   const [popped, setPopped] = useState(false);
   const { share, copied } = useShareProduct({
     title: product.name,
@@ -49,15 +39,6 @@ export function StoreProductActions({ lang, product }: Props) {
       setTimeout(() => setPopped(false), 400);
     }
     return result === "added" || result === "exists";
-  }
-
-  function handleBuyNow() {
-    // Only proceed to checkout when the item is actually in the cart. If the
-    // user is anonymous, the helper already redirected to login.
-    if (handleAddToCart() || inCart) {
-      const g = encodeURIComponent(cartGroupId("store", product.sellerId));
-      router.push(`/${lang}/cart/checkout?g=${g}`);
-    }
   }
 
   return (
@@ -89,21 +70,19 @@ export function StoreProductActions({ lang, product }: Props) {
               )}
               {inCart ? t("actions.added") : t("actions.addToCart")}
             </button>
+            <Link
+              href={`/${lang}/cart`}
+              aria-label={t("actions.viewCart")}
+              className="flex w-14 items-center justify-center rounded-xl border-2 border-primary text-primary transition-colors hover:bg-primary-light-bg"
+            >
+              <ShoppingCart size={20} strokeWidth={2} />
+            </Link>
           </div>
-
-          <button
-            type="button"
-            onClick={handleBuyNow}
-            className="flex items-center justify-center gap-2 rounded-xl border border-border bg-surface py-3 text-base font-semibold text-foreground transition-colors hover:bg-background-secondary"
-          >
-            <Zap size={18} strokeWidth={2} />
-            {t("actions.buyNow")}
-          </button>
         </>
       )}
 
       <div className="flex gap-2">
-        {/* <button
+        <button
           type="button"
           onClick={() => toggleFavorite(product.id, liked)}
           aria-pressed={liked}
@@ -119,7 +98,7 @@ export function StoreProductActions({ lang, product }: Props) {
             className={liked ? "fill-red-500 text-red-500" : ""}
           />
           {liked ? t("actions.saved") : t("actions.save")}
-        </button> */}
+        </button>
         <button
           type="button"
           onClick={share}

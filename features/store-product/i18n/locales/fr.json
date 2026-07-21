@@ -7,16 +7,16 @@
     "errorHint": "Veuillez vérifier votre connexion et réessayer."
   },
   "breadcrumbs": {
-    "marketplace": "Marketplace",
+    "stores": "Boutiques",
     "product": "Produit"
   },
   "gallery": {
     "noImage": "Aucune image disponible",
     "previous": "Image précédente",
     "next": "Image suivante",
-    "goToImage": "Aller à l'image {{index}}",
-    "imageAlt": "{{name}} – image {{index}} sur {{total}}",
-    "thumbnailAlt": "Miniature {{index}}"
+    "goToImage": "Aller à l'image",
+    "imageAlt": "Produit image",
+    "thumbnailAlt": "Miniature"
   },
   "actions": {
     "addToCart": "Ajouter au panier",
@@ -126,6 +126,8 @@
   "otherProducts": {
     "title": "Plus de ce vendeur",
     "empty": "Ce vendeur n'a pas d'autres annonces pour le moment.",
-    "loading": "Chargement des autres produits…"
+    "loading": "Chargement des autres produits…",
+    "scrollPrevious": "Voir les produits précédents",
+    "scrollNext": "Voir plus de produits"
   }
 }
