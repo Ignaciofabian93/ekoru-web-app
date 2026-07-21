@@ -1,26 +1,26 @@
 "use client";
-
 import { useTranslation } from "@/i18n/context";
-
 import { NAMESPACE } from "../i18n";
+import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Text/Text";
 
 export function ProductDescription({ description }: { description?: string | null }) {
   const { t } = useTranslation(NAMESPACE);
 
   return (
-    <section>
-      <h2 className="mb-3 text-lg font-semibold text-foreground">
+    <div className="flex flex-col items-start justify-center gap-3 px-2">
+      <Title level="h5" size="h5" weight="semibold">
         {t("description.title")}
-      </h2>
+      </Title>
       {description ? (
-        <p className="leading-relaxed whitespace-pre-line text-foreground-secondary">
+        <Text variant="p" className="leading-relaxed">
           {description}
-        </p>
+        </Text>
       ) : (
-        <p className="text-sm text-foreground-tertiary italic">
+        <Text variant="p" className="leading-relaxed">
           {t("description.empty")}
-        </p>
+        </Text>
       )}
-    </section>
+    </div>
   );
 }

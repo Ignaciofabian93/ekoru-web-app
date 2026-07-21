@@ -1,10 +1,13 @@
 import { type SupportedLanguage } from "@/constants/settings";
 import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
-
 import { getProductDictionary, NAMESPACE } from "../i18n";
+import {
+  getMarketplaceDictionary,
+  NAMESPACE as MARKETPLACE_NAMESPACE,
+} from "@/features/marketplace/i18n";
 import { ProductContent } from "../ui/ProductContent";
-import { ProductShell } from "../ui/ProductShell";
+import { Layout } from "@/components/Layout/Layout";
 
 interface Props {
   id: string;
@@ -12,13 +15,27 @@ interface Props {
 }
 
 export async function Product({ id, lang }: Props) {
-  const dict = await getProductDictionary(lang);
+  // The marketplace dictionary is loaded alongside the product one because
+  // OtherFromSeller renders MarketplaceCard, which reads the marketplace
+  // namespace (conditions, card labels, add-to-cart, etc.).
+  const [dict, marketplaceDict] = await Promise.all([
+    getProductDictionary(lang),
+    getMarketplaceDictionary(lang),
+  ]);
 
   return (
-    <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <ProductShell nav={<Navigation lang={lang} />}>
-        <ProductContent id={id} lang={lang} />
-      </ProductShell>
+    <DictionaryProvider
+      dictionary={{
+        [NAMESPACE]: dict,
+        [MARKETPLACE_NAMESPACE]: marketplaceDict,
+      }}
+    >
+      <Layout.Screen>
+        <Navigation lang={lang} />
+        <Layout.Container size="default">
+          <ProductContent id={id} lang={lang} />
+        </Layout.Container>
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

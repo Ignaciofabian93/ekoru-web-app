@@ -24,7 +24,7 @@ export function InnerHero({
       style={{ backgroundImage: `url(${WALLPAPER})` }}
     >
       <div className="absolute inset-0 bg-black/70" aria-hidden />
-      <div className="relative z-10 mx-auto max-w-5xl flex flex-col gap-2 items-start justify-start h-full text-white px-2 py-2">
+      <div className="relative z-10 mx-auto max-w-4xl flex flex-col gap-2 items-start justify-start h-full text-white px-2 py-4">
         <Breadcrumb
           items={breadCrumbs.map((c) => ({
             label: c.label,

@@ -10,6 +10,7 @@ interface LinkButtonProps {
   variant?: "primary" | "outlined" | "ghost";
   size?: "sm" | "md" | "lg";
   iconPosition?: "left" | "right";
+  fullWidth?: boolean;
 }
 
 export function LinkButton({
@@ -19,6 +20,7 @@ export function LinkButton({
   variant = "primary",
   size = "md",
   iconPosition = "left",
+  fullWidth = false,
 }: LinkButtonProps) {
   const STYLES_MAP = {
     primary: "bg-primary border-2 border-primary text-white hover:brightness-110",
@@ -40,6 +42,7 @@ export function LinkButton({
         "px-3 py-1.5 transition-all duration-200 ease-in-out cursor-pointer",
         STYLES_MAP[variant],
         SIZE_MAP[size],
+        fullWidth && "w-full",
       )}
     >
       {iconPosition === "left" && (

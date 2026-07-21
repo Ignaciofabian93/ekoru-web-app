@@ -13,6 +13,7 @@ import { ProductTrust } from "./ProductTrust";
 import { SellerCard } from "./SellerCard";
 import Breadcrumb, { type Crumb } from "@/components/BreadCrumbs/Breadcrumb";
 import { useNavigation } from "@/hooks/useNavigation";
+import { Layout } from "@/components/Layout/Layout";
 
 interface Props {
   id: string;
@@ -54,7 +55,7 @@ export function ProductContent({ id, lang }: Props) {
   ];
 
   return (
-    <div className="px-2 py-2">
+    <div>
       <Breadcrumb
         items={breadCrumbs.map((c) => ({
           label: c.label,
@@ -63,35 +64,36 @@ export function ProductContent({ id, lang }: Props) {
         crumbColor="default"
         chevronColor="default"
       />
+      <Layout.Section>
+        <div className="grid gap-6 md:grid-cols-2 md:gap-10">
+          <ProductGallery name={product.name} images={product.images ?? []} />
 
-      <div className="grid gap-6 md:grid-cols-2 md:gap-10">
-        <ProductGallery name={product.name} images={product.images ?? []} />
-
-        <div className="flex flex-col gap-5">
-          <ProductSummary product={product} />
-          <ProductActions lang={lang} product={product} />
-          <ProductTrust />
+          <div className="flex flex-col gap-5">
+            <ProductSummary product={product} />
+            <ProductActions lang={lang} product={product} />
+            <ProductTrust />
+          </div>
         </div>
-      </div>
 
-      <div className="grid gap-8 md:grid-cols-3">
-        <div className="flex flex-col gap-8 md:col-span-2">
-          <ProductDescription description={product.description} />
-          <ProductDetails product={product} lang={lang} />
-          <ProductImpact impact={product.environmentalImpact} />
+        <div className="grid gap-8 md:grid-cols-3">
+          <div className="flex flex-col gap-8 md:col-span-2">
+            <ProductDescription description={product.description} />
+            <ProductDetails product={product} lang={lang} />
+            <ProductImpact impact={product.environmentalImpact} />
+          </div>
+          <div className="flex flex-col gap-8 md:col-span-1">
+            {product.seller && <SellerCard lang={lang} seller={product.seller} />}
+          </div>
         </div>
-        <div className="flex flex-col gap-8 md:col-span-1">
-          {product.seller && <SellerCard lang={lang} seller={product.seller} />}
-        </div>
-      </div>
 
-      {product.sellerId && (
-        <OtherFromSeller
-          lang={lang}
-          sellerId={product.sellerId}
-          excludeProductId={product.id}
-        />
-      )}
+        {product.sellerId && (
+          <OtherFromSeller
+            lang={lang}
+            sellerId={product.sellerId}
+            excludeProductId={product.id}
+          />
+        )}
+      </Layout.Section>
     </div>
   );
 }

@@ -126,6 +126,8 @@
   "otherProducts": {
     "title": "More from this seller",
     "empty": "This seller has no other listings right now.",
-    "loading": "Loading other products…"
+    "loading": "Loading other products…",
+    "scrollPrevious": "View previous products",
+    "scrollNext": "View more products"
   }
 }

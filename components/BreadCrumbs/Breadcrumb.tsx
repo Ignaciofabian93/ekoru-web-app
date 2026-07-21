@@ -19,7 +19,7 @@ interface Props {
 
 export default function Breadcrumb({ items, crumbColor, chevronColor }: Props) {
   return (
-    <nav className="mb-5 flex flex-row flex-wrap items-center gap-x-0.5 gap-y-1 py-0.5">
+    <nav className="flex flex-row flex-wrap items-center ml-2 mb-6 -mt-2">
       {items.map((item, idx) => {
         const isLast = idx === items.length - 1;
         return (

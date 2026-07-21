@@ -1,10 +1,11 @@
 "use client";
-
 import { useTranslation } from "@/i18n/context";
 import type { SupportedLanguage } from "@/constants/settings";
 import type { Product } from "@/types/product";
-
 import { NAMESPACE } from "../i18n";
+import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Text/Text";
+import clsx from "clsx";
 
 const LOCALE_MAP: Record<SupportedLanguage, string> = {
   es: "es-CL",
@@ -56,32 +57,50 @@ export function ProductDetails({
   ].filter((r) => r.value);
 
   return (
-    <section>
-      <h2 className="mb-3 text-lg font-semibold text-foreground">
+    <div className="px-2">
+      <Title level="h5" size="h5" weight="semibold" className="mb-3">
         {t("details.title")}
-      </h2>
-      <dl className="bg-surface flex flex-col divide-y divide-border-light overflow-hidden rounded-2xl border border-border-light">
+      </Title>
+      <dl
+        className={clsx(
+          "bg-white flex flex-col divide-y divide-border-light",
+          "overflow-hidden rounded-2xl border border-border-light",
+        )}
+      >
         {rows.map((row) => (
           <div
             key={row.label}
             className="flex items-center justify-between gap-4 px-4 py-3"
           >
-            <dt className="text-sm text-foreground-secondary">{row.label}</dt>
-            <dd className="text-sm font-medium text-foreground">{row.value}</dd>
+            <dt>
+              <Text variant="span" size="sm" weight="bold">
+                {row.label}
+              </Text>
+            </dt>
+            <dd className="text-sm font-medium text-foreground">
+              <Text variant="span" size="sm" weight="semibold" color="default">
+                {row.value}
+              </Text>
+            </dd>
           </div>
         ))}
       </dl>
 
       {product.conditionDescription && (
         <div className="mt-3 rounded-xl bg-background-secondary border border-border-light px-4 py-3">
-          <p className="text-xs font-semibold tracking-wide text-foreground-tertiary uppercase">
+          <Text
+            variant="p"
+            size="xs"
+            weight="semibold"
+            className="tracking-wide uppercase"
+          >
             {t("details.conditionDescription")}
-          </p>
-          <p className="mt-1 text-sm text-foreground-secondary">
+          </Text>
+          <Text variant="p" size="sm">
             {product.conditionDescription}
-          </p>
+          </Text>
         </div>
       )}
-    </section>
+    </div>
   );
 }

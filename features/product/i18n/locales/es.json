@@ -126,6 +126,8 @@
   "otherProducts": {
     "title": "Más productos de este vendedor",
     "empty": "Este vendedor no tiene otras publicaciones por ahora.",
-    "loading": "Cargando otros productos…"
+    "loading": "Cargando otros productos…",
+    "scrollPrevious": "Ver productos anteriores",
+    "scrollNext": "Ver más productos"
   }
 }
