@@ -3,7 +3,8 @@ import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 import { getMarketplaceDictionary, NAMESPACE } from "../i18n";
 import { DepartmentContent } from "../ui/DepartmentContent";
-import { MarketplaceShell } from "../ui/MarketplaceShell";
+import { Layout } from "@/components/Layout/Layout";
+import { Footer } from "@/features/footer/Footer";
 
 interface Props {
   lang: SupportedLanguage;
@@ -15,9 +16,11 @@ export async function Department({ lang, slug }: Props) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <MarketplaceShell nav={<Navigation lang={lang} />}>
+      <Layout.Screen>
+        <Navigation lang={lang} />
         <DepartmentContent lang={lang} slug={slug} />
-      </MarketplaceShell>
+        <Footer lang={lang} />
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

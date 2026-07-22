@@ -1,5 +1,4 @@
 "use client";
-import { InnerContentLayout } from "@/components/Layout/ContentLayout";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import { Fragment } from "react";
@@ -10,6 +9,7 @@ import { MarketplaceFilters } from "./MarketplaceFilters";
 import { ProductResults } from "./ProductResults";
 import { humanizeSlug } from "@/utils/formatters";
 import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
+import { Layout } from "@/components/Layout/Layout";
 
 interface Props {
   lang: SupportedLanguage;
@@ -64,25 +64,27 @@ export function ProductCategoryContent({
         breadCrumbs={breadCrumbs}
       />
 
-      <InnerContentLayout>
-        <MarketplaceFilters
-          filters={filters}
-          sort={sort}
-          setField={setField}
-          setSort={setSort}
-          reset={reset}
-        />
+      <Layout.Container size="default">
+        <Layout.Section>
+          <MarketplaceFilters
+            filters={filters}
+            sort={sort}
+            setField={setField}
+            setSort={setSort}
+            reset={reset}
+          />
 
-        <ProductResults
-          lang={lang}
-          products={products}
-          loading={loading}
-          pageInfo={pageInfo}
-          pageSize={pageSize}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-        />
-      </InnerContentLayout>
+          <ProductResults
+            lang={lang}
+            products={products}
+            loading={loading}
+            pageInfo={pageInfo}
+            pageSize={pageSize}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+          />
+        </Layout.Section>
+      </Layout.Container>
     </Fragment>
   );
 }

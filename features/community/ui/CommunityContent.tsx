@@ -2,6 +2,7 @@
 import { useCommunityCatalog } from "../hooks/useCommunityCatalog";
 import type { Language } from "../types";
 import { CommunityCatalogList } from "./CommunityCatalogList";
+import { Layout } from "@/components/Layout/Layout";
 
 interface Props {
   lang: string;
@@ -12,8 +13,8 @@ export function CommunityContent({ lang, language }: Props) {
   const { categories, loading } = useCommunityCatalog(language);
 
   return (
-    <div className="flex flex-col gap-8">
+    <Layout.Section>
       <CommunityCatalogList lang={lang} categories={categories} loading={loading} />
-    </div>
+    </Layout.Section>
   );
 }

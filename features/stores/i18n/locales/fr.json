@@ -16,10 +16,12 @@
     "search": "Rechercher",
     "searchPlaceholder": "Rechercher des produits...",
     "sortBy": "Trier par",
+    "priceRange": "Fourchette de prix",
     "minPrice": "Prix minimum",
     "maxPrice": "Prix maximum",
     "onOfferOnly": "En promotion uniquement",
     "clear": "Effacer",
+    "apply": "Appliquer",
     "perPage": "Par page"
   },
   "sort": {

@@ -4,7 +4,8 @@ import { DictionaryProvider } from "@/i18n/context";
 
 import { getBlogDictionary, NAMESPACE } from "../i18n";
 import { BlogCategoryContent } from "../ui/BlogCategoryContent";
-import { ScreenShell } from "@/components/Layout/ScreenShell";
+import { Layout } from "@/components/Layout/Layout";
+import { Footer } from "@/features/footer/Footer";
 
 export async function BlogCategory({
   lang,
@@ -18,9 +19,11 @@ export async function BlogCategory({
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <ScreenShell lang={lang} nav={<Navigation lang={lang} />}>
+      <Layout.Screen>
+        <Navigation lang={lang} />
         <BlogCategoryContent lang={lang} language={language} slug={slug} />
-      </ScreenShell>
+        <Footer lang={lang} />
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

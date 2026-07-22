@@ -1,7 +1,12 @@
 {
   "page": {
     "title": "Servicios",
-    "subtitle": "Encuentra proveedores de confianza para todo lo que necesitas, de forma sostenible"
+    "subtitle": "Encuentra proveedores de confianza para todo lo que necesitas, de forma sostenible",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Descubre servicios en {{name}}"
+  },
+  "breadcrumbs": {
+    "services": "Servicios"
   },
   "sections": {
     "categories": "Categorías",

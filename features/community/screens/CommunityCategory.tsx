@@ -4,7 +4,8 @@ import { DictionaryProvider } from "@/i18n/context";
 
 import { getCommunityDictionary, NAMESPACE } from "../i18n";
 import { CommunityCategoryContent } from "../ui/CommunityCategoryContent";
-import { ScreenShell } from "@/components/Layout/ScreenShell";
+import { Layout } from "@/components/Layout/Layout";
+import { Footer } from "@/features/footer/Footer";
 
 export async function CommunityCategory({
   lang,
@@ -18,9 +19,11 @@ export async function CommunityCategory({
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <ScreenShell lang={lang} nav={<Navigation lang={lang} />}>
+      <Layout.Screen>
+        <Navigation lang={lang} />
         <CommunityCategoryContent lang={lang} language={language} slug={slug} />
-      </ScreenShell>
+        <Footer lang={lang} />
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

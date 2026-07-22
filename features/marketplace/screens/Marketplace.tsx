@@ -3,8 +3,9 @@ import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 import { getMarketplaceDictionary, NAMESPACE } from "../i18n";
 import { MarketplaceContent } from "../ui/MarketplaceContent";
-import { MarketplaceShell } from "../ui/MarketplaceShell";
 import { Hero } from "../ui/Hero";
+import { Layout } from "@/components/Layout/Layout";
+import { Footer } from "@/features/footer/Footer";
 
 export async function Marketplace({ lang }: { lang: SupportedLanguage }) {
   const dict = await getMarketplaceDictionary(lang);
@@ -14,14 +15,14 @@ export async function Marketplace({ lang }: { lang: SupportedLanguage }) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <MarketplaceShell
-        nav={<Navigation lang={lang} />}
-        hero={
-          <Hero titleKey="page.title" subtitleKey="page.subtitle" wallpaper={WALLPAPER} />
-        }
-      >
-        <MarketplaceContent lang={lang} language={language} />
-      </MarketplaceShell>
+      <Layout.Screen>
+        <Navigation lang={lang} />
+        <Hero titleKey="page.title" subtitleKey="page.subtitle" wallpaper={WALLPAPER} />
+        <Layout.Container size="default">
+          <MarketplaceContent lang={lang} language={language} />
+        </Layout.Container>
+        <Footer lang={lang} />
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

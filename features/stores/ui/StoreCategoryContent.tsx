@@ -1,17 +1,17 @@
 "use client";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 
 import { useProductsByStoreCategory } from "../hooks/useProductsByStoreCategory";
 import { NAMESPACE } from "../i18n";
 import type { StoreCatalogSubItem } from "../types";
-import { StoreBreadcrumbs } from "./StoreBreadcrumbs";
+import { StoreInnerHero } from "./StoreInnerHero";
 import { StoreFilters } from "./StoreFilters";
 import { StoreProductResults } from "./StoreProductResults";
 import { StoreSubCategoryList } from "./StoreSubCategoryList";
+import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
+import { Layout } from "@/components/Layout/Layout";
 
 interface Props {
   lang: SupportedLanguage;
@@ -49,45 +49,46 @@ export function StoreCategoryContent({ lang, slug }: Props) {
     [storeCategory],
   );
 
+  const breadCrumbs: Crumb[] = [
+    { label: t("breadcrumbs.stores"), href: `/${lang}/stores` },
+    { label: categoryName },
+  ];
+
   return (
-    <div className="flex flex-col gap-8">
-      <StoreBreadcrumbs
-        rootHref={`/${lang}/stores`}
-        items={[{ label: categoryName }]}
+    <Fragment>
+      <StoreInnerHero
+        categoryTitle={t("page.categoryTitle", { name: categoryName })}
+        categorySubtitle={t("page.categorySubtitle", { name: categoryName })}
+        breadCrumbs={breadCrumbs}
       />
 
-      <div className="flex flex-col gap-1">
-        <Title level="h1" size="h3">
-          {t("page.categoryTitle", { name: categoryName })}
-        </Title>
-        <Text color="secondary">
-          {t("page.categorySubtitle", { name: categoryName })}
-        </Text>
-      </div>
+      <Layout.Container size="default">
+        <Layout.Section>
+          <StoreSubCategoryList
+            lang={lang}
+            categorySlug={slug}
+            subCategoryItems={subCategoryItems}
+          />
 
-      <StoreSubCategoryList
-        lang={lang}
-        categorySlug={slug}
-        subCategoryItems={subCategoryItems}
-      />
+          <StoreFilters
+            filters={filters}
+            sort={sort}
+            setField={setField}
+            setSort={setSort}
+            reset={reset}
+          />
 
-      <StoreFilters
-        filters={filters}
-        sort={sort}
-        setField={setField}
-        setSort={setSort}
-        reset={reset}
-      />
-
-      <StoreProductResults
-        lang={lang}
-        products={products}
-        loading={loading}
-        pageInfo={pageInfo}
-        pageSize={pageSize}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-      />
-    </div>
+          <StoreProductResults
+            lang={lang}
+            products={products}
+            loading={loading}
+            pageInfo={pageInfo}
+            pageSize={pageSize}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+          />
+        </Layout.Section>
+      </Layout.Container>
+    </Fragment>
   );
 }

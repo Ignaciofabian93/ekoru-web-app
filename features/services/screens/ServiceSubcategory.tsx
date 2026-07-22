@@ -4,7 +4,8 @@ import { DictionaryProvider } from "@/i18n/context";
 
 import { getServicesDictionary, NAMESPACE } from "../i18n";
 import { ServiceSubcategoryContent } from "../ui/ServiceSubcategoryContent";
-import { ScreenShell } from "@/components/Layout/ScreenShell";
+import { Layout } from "@/components/Layout/Layout";
+import { Footer } from "@/features/footer/Footer";
 
 export async function ServiceSubcategory({
   lang,
@@ -19,13 +20,15 @@ export async function ServiceSubcategory({
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <ScreenShell lang={lang} nav={<Navigation lang={lang} />}>
+      <Layout.Screen>
+        <Navigation lang={lang} />
         <ServiceSubcategoryContent
           lang={lang}
           categorySlug={categorySlug}
           slug={slug}
         />
-      </ScreenShell>
+        <Footer lang={lang} />
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

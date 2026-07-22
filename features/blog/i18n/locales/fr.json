@@ -1,7 +1,12 @@
 {
   "page": {
     "title": "Blog",
-    "subtitle": "Idées, guides et histoires pour vivre et consommer de façon plus consciente"
+    "subtitle": "Idées, guides et histoires pour vivre et consommer de façon plus consciente",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Articles et idées sur {{name}}"
+  },
+  "breadcrumbs": {
+    "blog": "Blog"
   },
   "sections": {
     "categories": "Catégories"
@@ -15,7 +20,9 @@
     "noPosts": "Aucun article pour le moment",
     "noPostsHint": "Nous préparons de nouveaux contenus pour cette catégorie",
     "notFound": "Catégorie introuvable",
-    "notFoundHint": "Cette catégorie a peut-être été déplacée ou supprimée"
+    "notFoundHint": "Cette catégorie a peut-être été déplacée ou supprimée",
+    "postNotFound": "Article introuvable",
+    "postNotFoundHint": "Cet article a peut-être été déplacé ou supprimé"
   },
   "results": {
     "empty": "Aucune catégorie disponible pour le moment",

@@ -9,6 +9,7 @@ import type { Language } from "../types";
 import { DetailEmptyState } from "./DetailEmptyState";
 import { ServiceCategoryScroll } from "./ServiceCategoryScroll";
 import { ServiceList } from "./ServiceList";
+import { Layout } from "@/components/Layout/Layout";
 
 interface Props {
   lang: string;
@@ -21,7 +22,7 @@ export function ServicesContent({ lang, language }: Props) {
   const { services, loading: servicesLoading } = useServices();
 
   return (
-    <div className="flex flex-col gap-8">
+    <Layout.Section>
       <ServiceCategoryScroll
         lang={lang}
         categories={categories}
@@ -51,6 +52,6 @@ export function ServicesContent({ lang, language }: Props) {
           <ServiceList services={services} />
         )}
       </section>
-    </div>
+    </Layout.Section>
   );
 }

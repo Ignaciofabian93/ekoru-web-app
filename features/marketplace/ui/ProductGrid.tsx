@@ -5,6 +5,7 @@ import { ShoppingCart } from "lucide-react";
 import { NAMESPACE } from "../i18n";
 import type { MarketplaceProduct } from "../types";
 import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
+import { ProductGridListLayout } from "@/components/Layout/ProductListGrid";
 
 interface Props {
   products: MarketplaceProduct[];
@@ -39,7 +40,7 @@ export function ProductGrid({ products, lang, loading }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+    <ProductGridListLayout>
       {products.map((product, i) => (
         <MarketplaceCard
           key={product.id}
@@ -48,6 +49,6 @@ export function ProductGrid({ products, lang, loading }: Props) {
           priority={i < 4}
         />
       ))}
-    </div>
+    </ProductGridListLayout>
   );
 }

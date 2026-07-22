@@ -54,9 +54,9 @@ export type ProductFilters = {
 
 export type ProductSortValue = "newest" | "oldest" | "priceAsc" | "priceDesc";
 
-export const DEFAULT_PAGE_SIZE = 5;
+export const DEFAULT_PAGE_SIZE = 10;
 
-export const PAGE_SIZE_OPTIONS = [5, 12, 24, 48];
+export const PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50];
 
 export const EMPTY_FILTERS: ProductFilters = {
   search: "",

@@ -3,8 +3,9 @@ import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 
 import { getStoresDictionary, NAMESPACE } from "../i18n";
-import { StoreShell } from "../ui/StoreShell";
 import { StoreSubCategoryContent } from "../ui/StoreSubCategoryContent";
+import { Layout } from "@/components/Layout/Layout";
+import { Footer } from "@/features/footer/Footer";
 
 interface Props {
   lang: SupportedLanguage;
@@ -21,13 +22,15 @@ export async function StoreSubCategory({
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <StoreShell nav={<Navigation lang={lang} />}>
+      <Layout.Screen>
+        <Navigation lang={lang} />
         <StoreSubCategoryContent
           lang={lang}
           categorySlug={categorySlug}
           subCategorySlug={subCategorySlug}
         />
-      </StoreShell>
+        <Footer lang={lang} />
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

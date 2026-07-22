@@ -5,7 +5,8 @@ import { DictionaryProvider } from "@/i18n/context";
 import { getServicesDictionary, NAMESPACE } from "../i18n";
 import { ServicesContent } from "../ui/ServicesContent";
 import { ServicesHero } from "../ui/ServicesHero";
-import { ScreenShell } from "@/components/Layout/ScreenShell";
+import { Layout } from "@/components/Layout/Layout";
+import { Footer } from "@/features/footer/Footer";
 
 export async function Services({ lang }: { lang: SupportedLanguage }) {
   const dict = await getServicesDictionary(lang);
@@ -13,9 +14,14 @@ export async function Services({ lang }: { lang: SupportedLanguage }) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <ScreenShell lang={lang} nav={<Navigation lang={lang} />} hero={<ServicesHero />}>
-        <ServicesContent lang={lang} language={language} />
-      </ScreenShell>
+      <Layout.Screen>
+        <Navigation lang={lang} />
+        <ServicesHero />
+        <Layout.Container size="default">
+          <ServicesContent lang={lang} language={language} />
+        </Layout.Container>
+        <Footer lang={lang} />
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

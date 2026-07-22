@@ -1,7 +1,12 @@
 {
   "page": {
     "title": "Communauté",
-    "subtitle": "Connectez-vous, partagez et grandissez avec ceux qui bâtissent un monde plus durable"
+    "subtitle": "Connectez-vous, partagez et grandissez avec ceux qui bâtissent un monde plus durable",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Explorez des thèmes et des conversations sur {{name}}"
+  },
+  "breadcrumbs": {
+    "community": "Communauté"
   },
   "sections": {
     "categories": "Catégories"

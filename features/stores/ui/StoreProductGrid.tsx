@@ -4,6 +4,7 @@ import { Store } from "lucide-react";
 import { NAMESPACE } from "../i18n";
 import StoreProductCard from "@/components/Card/StoreProductCard/StoreProductCard";
 import type { StoreProduct } from "@/types/product";
+import { ProductGridListLayout } from "@/components/Layout/ProductListGrid";
 
 interface Props {
   products: StoreProduct[];
@@ -38,10 +39,10 @@ export function StoreProductGrid({ products, lang, loading }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+    <ProductGridListLayout>
       {products.map((product) => (
         <StoreProductCard key={product.id} product={product} lang={lang} />
       ))}
-    </div>
+    </ProductGridListLayout>
   );
 }

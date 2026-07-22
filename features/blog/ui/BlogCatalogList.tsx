@@ -23,11 +23,11 @@ export function BlogCatalogList({ lang, categories, loading }: Props) {
       </Title>
 
       {loading && categories.length === 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="h-48 animate-pulse rounded-2xl bg-background-secondary"
+              className="h-52 animate-pulse rounded-2xl bg-background-secondary"
             />
           ))}
         </div>
@@ -39,7 +39,7 @@ export function BlogCatalogList({ lang, categories, loading }: Props) {
           </Text>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
             <BlogCategoryCard key={category.id} lang={lang} category={category} />
           ))}

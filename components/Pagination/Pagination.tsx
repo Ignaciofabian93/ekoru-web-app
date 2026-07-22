@@ -52,7 +52,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
       itemsPerPage = 10,
       onItemsPerPageChange,
       showItemsPerPage = true,
-      itemsPerPageOptions = [10, 25, 50, 100],
+      itemsPerPageOptions = [10, 20, 30, 40, 50],
       rowsLabel = "Items per page",
       maxPageButtons = 5,
       style,
@@ -76,7 +76,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
             <span className="whitespace-nowrap font-sans text-sm font-medium text-foreground-secondary">
               {rowsLabel}
             </span>
-            <div className="w-20">
+            <div className="w-30">
               <Select
                 size="sm"
                 width="full"

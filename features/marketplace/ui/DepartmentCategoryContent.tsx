@@ -1,5 +1,4 @@
 "use client";
-import { InnerContentLayout } from "@/components/Layout/ContentLayout";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import { Fragment, useMemo } from "react";
@@ -13,6 +12,7 @@ import { ProductResults } from "./ProductResults";
 import { type UnderlineTab } from "@/components/UnderlineTabs/UnderlineTabs";
 import { humanizeSlug } from "@/utils/formatters";
 import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
+import { Layout } from "@/components/Layout/Layout";
 
 interface Props {
   lang: SupportedLanguage;
@@ -75,32 +75,34 @@ export function DepartmentCategoryContent({ lang, departmentSlug, categorySlug }
         breadCrumbs={breadCrumbs}
       />
 
-      <InnerContentLayout>
-        <CategoryList
-          tabs={tabs}
-          remeasureKey={lang}
-          label={t("sections.productCategories")}
-          ariaLabel={t("sections.productCategories")}
-        />
+      <Layout.Container size="default">
+        <Layout.Section>
+          <CategoryList
+            tabs={tabs}
+            remeasureKey={lang}
+            label={t("sections.productCategories")}
+            ariaLabel={t("sections.productCategories")}
+          />
 
-        <MarketplaceFilters
-          filters={filters}
-          sort={sort}
-          setField={setField}
-          setSort={setSort}
-          reset={reset}
-        />
+          <MarketplaceFilters
+            filters={filters}
+            sort={sort}
+            setField={setField}
+            setSort={setSort}
+            reset={reset}
+          />
 
-        <ProductResults
-          lang={lang}
-          products={products}
-          loading={loading}
-          pageInfo={pageInfo}
-          pageSize={pageSize}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-        />
-      </InnerContentLayout>
+          <ProductResults
+            lang={lang}
+            products={products}
+            loading={loading}
+            pageInfo={pageInfo}
+            pageSize={pageSize}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+          />
+        </Layout.Section>
+      </Layout.Container>
     </Fragment>
   );
 }

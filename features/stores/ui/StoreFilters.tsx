@@ -1,20 +1,36 @@
 "use client";
+import { Checkbox } from "@/components/Checkbox/Checkbox";
 import { Input } from "@/components/Input/Input";
+import { Search } from "@/components/Input/Search";
+import { MainButton } from "@/components/Button/MainButton";
+import Modal from "@/components/Modal/Modal";
 import Select from "@/components/Select/Select";
 import { Text } from "@/components/Text/Text";
 import { useTranslation } from "@/i18n/context";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
-
 import { NAMESPACE } from "../i18n";
-import type { StoreFilters as StoreFiltersState, StoreSortValue } from "../types";
+import {
+  EMPTY_FILTERS,
+  type StoreFilters as StoreFiltersState,
+  type StoreSortValue,
+} from "../types";
 
-const SORT_VALUES: StoreSortValue[] = [
-  "newest",
-  "oldest",
-  "priceAsc",
-  "priceDesc",
-];
+const SORT_VALUES: StoreSortValue[] = ["newest", "oldest", "priceAsc", "priceDesc"];
+
+/** The subset of filters edited inside the modal (search lives in the bar). */
+type FilterDraft = Pick<StoreFiltersState, "minPrice" | "maxPrice" | "onOfferOnly">;
+
+const pickDraft = (f: StoreFiltersState): FilterDraft => ({
+  minPrice: f.minPrice,
+  maxPrice: f.maxPrice,
+  onOfferOnly: f.onOfferOnly,
+});
+
+const EMPTY_DRAFT: FilterDraft = pickDraft(EMPTY_FILTERS);
+
+const countActive = (d: FilterDraft) =>
+  (d.minPrice ? 1 : 0) + (d.maxPrice ? 1 : 0) + (d.onOfferOnly ? 1 : 0);
 
 interface Props {
   filters: StoreFiltersState;
@@ -27,50 +43,51 @@ interface Props {
   reset: () => void;
 }
 
-export function StoreFilters({
-  filters,
-  sort,
-  setField,
-  setSort,
-  reset,
-}: Props) {
+export function StoreFilters({ filters, sort, setField, setSort }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const [open, setOpen] = useState(false);
+  const [draft, setDraft] = useState<FilterDraft>(pickDraft(filters));
+
+  const activeCount = countActive(pickDraft(filters));
+
+  // Seed the draft from the committed filters when opening, so in-modal edits
+  // stay discardable — nothing is applied until the user confirms.
+  const openModal = () => {
+    setDraft(pickDraft(filters));
+    setOpen(true);
+  };
 
   const sortOptions = SORT_VALUES.map((value) => ({
     value,
     label: t(`sort.${value}`),
   }));
 
+  const setDraftField = <K extends keyof FilterDraft>(key: K, value: FilterDraft[K]) =>
+    setDraft((prev) => ({ ...prev, [key]: value }));
+
+  const apply = () => {
+    setField("minPrice", draft.minPrice);
+    setField("maxPrice", draft.maxPrice);
+    setField("onOfferOnly", draft.onOfferOnly);
+    setOpen(false);
+  };
+
+  const clear = () => setDraft(EMPTY_DRAFT);
+
   return (
-    <section className="flex flex-col gap-3">
-      <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
-        <div className="relative flex-1">
-          <Search
-            size={16}
-            className="absolute top-1/2 left-3 -translate-y-1/2 text-foreground-tertiary"
-            strokeWidth={2}
-          />
-          <input
-            type="search"
-            value={filters.search}
-            onChange={(e) => setField("search", e.target.value)}
-            placeholder={t("filters.searchPlaceholder")}
-            className="h-11 w-full rounded-xl border border-border bg-surface pr-3 pl-10 text-sm text-foreground placeholder:text-foreground-tertiary focus:ring-2 focus:ring-border-focus focus:outline-none"
-          />
-        </div>
+    <section className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
+      <div className="flex-1">
+        <Search
+          size="md"
+          width="full"
+          value={filters.search}
+          onChangeText={(v) => setField("search", v)}
+          placeholder={t("filters.searchPlaceholder")}
+        />
+      </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          className="flex items-center gap-2 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-medium text-foreground hover:border-primary hover:text-primary"
-        >
-          <SlidersHorizontal size={16} strokeWidth={2} />
-          {t("filters.title")}
-        </button>
-
-        <div className="md:w-56">
+      <div className="flex items-center gap-2 md:gap-3">
+        <div className="w-full md:w-56">
           <Select
             size="md"
             width="full"
@@ -81,53 +98,85 @@ export function StoreFilters({
             placeholder={t("filters.sortBy")}
           />
         </div>
+
+        <button
+          type="button"
+          onClick={openModal}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          className="group flex h-11 shrink-0 items-center gap-2 rounded-md border-2 border-solid border-input-border bg-input-bg px-3 text-base text-foreground outline-none transition-[border-color] duration-150 hover:border-input-border-focus focus-visible:border-input-border-focus"
+        >
+          <SlidersHorizontal
+            size={16}
+            strokeWidth={2}
+            className="text-foreground-tertiary transition-colors group-hover:text-primary"
+          />
+          <span className="hidden font-medium sm:inline">{t("filters.title")}</span>
+          {activeCount > 0 && (
+            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-on-primary tabular-nums">
+              {activeCount}
+            </span>
+          )}
+        </button>
       </div>
 
-      {open && (
-        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 md:flex-row md:items-end">
-          <div className="flex flex-1 flex-col gap-1">
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title={t("filters.title")}
+        size="lg"
+      >
+        <div className="flex flex-col gap-6">
+          {/* Price range */}
+          <div className="flex flex-col gap-2">
             <Text size="sm" weight="medium" color="secondary">
-              {t("filters.minPrice")}
+              {t("filters.priceRange")}
             </Text>
-            <Input
-              type="number"
-              size="md"
-              value={filters.minPrice}
-              onChangeText={(v) => setField("minPrice", v)}
-              placeholder="0"
+            <div className="flex items-center gap-3">
+              <Input
+                type="number"
+                size="md"
+                value={draft.minPrice}
+                onChangeText={(v) => setDraftField("minPrice", v)}
+                placeholder={t("filters.minPrice")}
+              />
+              <span className="text-foreground-tertiary">–</span>
+              <Input
+                type="number"
+                size="md"
+                value={draft.maxPrice}
+                onChangeText={(v) => setDraftField("maxPrice", v)}
+                placeholder={t("filters.maxPrice")}
+              />
+            </div>
+          </div>
+
+          {/* On offer only */}
+          <div className="border-t border-border-light pt-5">
+            <Checkbox
+              checked={draft.onOfferOnly}
+              onCheckedChange={(v) => setDraftField("onOfferOnly", v)}
+              label={t("filters.onOfferOnly")}
             />
           </div>
-          <div className="flex flex-1 flex-col gap-1">
-            <Text size="sm" weight="medium" color="secondary">
-              {t("filters.maxPrice")}
-            </Text>
-            <Input
-              type="number"
+
+          {/* Actions */}
+          <div className="flex items-center justify-between gap-3 border-t border-border-light pt-5">
+            <MainButton
+              text={t("filters.clear")}
+              variant="ghost"
               size="md"
-              value={filters.maxPrice}
-              onChangeText={(v) => setField("maxPrice", v)}
-              placeholder="0"
+              onPress={clear}
+            />
+            <MainButton
+              text={t("filters.apply")}
+              variant="primary"
+              size="md"
+              onPress={apply}
             />
           </div>
-          <label className="flex shrink-0 items-center gap-2 self-center pt-5 md:pt-0">
-            <input
-              type="checkbox"
-              checked={filters.onOfferOnly}
-              onChange={(e) => setField("onOfferOnly", e.target.checked)}
-              className="size-4 accent-primary"
-            />
-            <Text size="sm">{t("filters.onOfferOnly")}</Text>
-          </label>
-          <button
-            type="button"
-            onClick={reset}
-            className="flex items-center gap-1.5 self-center rounded-lg px-3 py-2 text-sm font-medium text-foreground-secondary hover:bg-background-secondary hover:text-foreground"
-          >
-            <X size={14} strokeWidth={2} />
-            {t("filters.clear")}
-          </button>
         </div>
-      )}
+      </Modal>
     </section>
   );
 }

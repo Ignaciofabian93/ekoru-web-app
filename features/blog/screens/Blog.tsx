@@ -5,7 +5,8 @@ import { DictionaryProvider } from "@/i18n/context";
 import { getBlogDictionary, NAMESPACE } from "../i18n";
 import { BlogContent } from "../ui/BlogContent";
 import { BlogHero } from "../ui/BlogHero";
-import { ScreenShell } from "@/components/Layout/ScreenShell";
+import { Layout } from "@/components/Layout/Layout";
+import { Footer } from "@/features/footer/Footer";
 
 export async function Blog({ lang }: { lang: SupportedLanguage }) {
   const dict = await getBlogDictionary(lang);
@@ -13,9 +14,14 @@ export async function Blog({ lang }: { lang: SupportedLanguage }) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <ScreenShell lang={lang} nav={<Navigation lang={lang} />} hero={<BlogHero />}>
-        <BlogContent lang={lang} language={language} />
-      </ScreenShell>
+      <Layout.Screen>
+        <Navigation lang={lang} />
+        <BlogHero />
+        <Layout.Container size="default">
+          <BlogContent lang={lang} language={language} />
+        </Layout.Container>
+        <Footer lang={lang} />
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

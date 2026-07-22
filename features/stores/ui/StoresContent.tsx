@@ -1,6 +1,5 @@
 "use client";
 import { useMemo } from "react";
-
 import { useStoreCatalog } from "../hooks/useStoreCatalog";
 import { useStoreFilters } from "../hooks/useStoreFilters";
 import { useStoreProducts } from "../hooks/useStoreProducts";
@@ -8,6 +7,7 @@ import type { Language } from "../types";
 import { StoreCategoryList } from "./StoreCategoryList";
 import { StoreFilters } from "./StoreFilters";
 import { StoreProductResults } from "./StoreProductResults";
+import { Layout } from "@/components/Layout/Layout";
 
 interface Props {
   lang: string;
@@ -39,12 +39,8 @@ export function StoresContent({ lang, language }: Props) {
   const { products, pageInfo, loading } = useStoreProducts(productsQuery);
 
   return (
-    <div className="flex flex-col gap-8">
-      <StoreCategoryList
-        lang={lang}
-        categories={categories}
-        loading={catalogLoading}
-      />
+    <Layout.Section>
+      <StoreCategoryList lang={lang} categories={categories} loading={catalogLoading} />
 
       <StoreFilters
         filters={filters}
@@ -63,6 +59,6 @@ export function StoresContent({ lang, language }: Props) {
         onPageChange={setPage}
         onPageSizeChange={setPageSize}
       />
-    </div>
+    </Layout.Section>
   );
 }

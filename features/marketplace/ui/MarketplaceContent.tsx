@@ -1,7 +1,7 @@
 "use client";
 import { useTranslation } from "@/i18n/context";
 import { type UnderlineTab } from "@/components/UnderlineTabs/UnderlineTabs";
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import { useMarketplaceCatalog } from "../hooks/useMarketplaceCatalog";
 import { useProductFilters } from "../hooks/useProductFilters";
 import { useProducts } from "../hooks/useProducts";
@@ -10,7 +10,7 @@ import type { Language } from "../types";
 import { CategoryList } from "./CategoryList";
 import { MarketplaceFilters } from "./MarketplaceFilters";
 import { ProductResults } from "./ProductResults";
-import { InnerContentLayout } from "@/components/Layout/ContentLayout";
+import { Layout } from "@/components/Layout/Layout";
 
 const ALL_KEY = "__all__";
 
@@ -62,35 +62,33 @@ export function MarketplaceContent({ lang, language }: Props) {
     : [];
 
   return (
-    <Fragment>
-      <InnerContentLayout>
-        <CategoryList
-          tabs={departmentTabs}
-          activeKey={ALL_KEY}
-          remeasureKey={lang}
-          loading={catalogLoading}
-          label={t("sections.departments")}
-          ariaLabel={t("sections.departments")}
-        />
+    <Layout.Section>
+      <CategoryList
+        tabs={departmentTabs}
+        activeKey={ALL_KEY}
+        remeasureKey={lang}
+        loading={catalogLoading}
+        label={t("sections.departments")}
+        ariaLabel={t("sections.departments")}
+      />
 
-        <MarketplaceFilters
-          filters={filters}
-          sort={sort}
-          setField={setField}
-          setSort={setSort}
-          reset={reset}
-        />
+      <MarketplaceFilters
+        filters={filters}
+        sort={sort}
+        setField={setField}
+        setSort={setSort}
+        reset={reset}
+      />
 
-        <ProductResults
-          lang={lang}
-          products={products}
-          loading={loading}
-          pageInfo={pageInfo}
-          pageSize={pageSize}
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
-        />
-      </InnerContentLayout>
-    </Fragment>
+      <ProductResults
+        lang={lang}
+        products={products}
+        loading={loading}
+        pageInfo={pageInfo}
+        pageSize={pageSize}
+        onPageChange={setPage}
+        onPageSizeChange={setPageSize}
+      />
+    </Layout.Section>
   );
 }

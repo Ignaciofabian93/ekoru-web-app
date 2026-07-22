@@ -4,7 +4,8 @@ import { DictionaryProvider } from "@/i18n/context";
 
 import { getStoresDictionary, NAMESPACE } from "../i18n";
 import { StoreCategoryContent } from "../ui/StoreCategoryContent";
-import { StoreShell } from "../ui/StoreShell";
+import { Layout } from "@/components/Layout/Layout";
+import { Footer } from "@/features/footer/Footer";
 
 interface Props {
   lang: SupportedLanguage;
@@ -16,9 +17,11 @@ export async function StoreCategory({ lang, slug }: Props) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <StoreShell nav={<Navigation lang={lang} />}>
+      <Layout.Screen>
+        <Navigation lang={lang} />
         <StoreCategoryContent lang={lang} slug={slug} />
-      </StoreShell>
+        <Footer lang={lang} />
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

@@ -1,7 +1,12 @@
 {
   "page": {
     "title": "Services",
-    "subtitle": "Find trusted providers for everything you need, the sustainable way"
+    "subtitle": "Find trusted providers for everything you need, the sustainable way",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Discover services in {{name}}"
+  },
+  "breadcrumbs": {
+    "services": "Services"
   },
   "sections": {
     "categories": "Categories",

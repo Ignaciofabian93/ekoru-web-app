@@ -1,7 +1,12 @@
 {
   "page": {
     "title": "Services",
-    "subtitle": "Trouvez des prestataires de confiance pour tous vos besoins, de façon durable"
+    "subtitle": "Trouvez des prestataires de confiance pour tous vos besoins, de façon durable",
+    "categoryTitle": "{{name}}",
+    "categorySubtitle": "Découvrez des services dans {{name}}"
+  },
+  "breadcrumbs": {
+    "services": "Services"
   },
   "sections": {
     "categories": "Catégories",

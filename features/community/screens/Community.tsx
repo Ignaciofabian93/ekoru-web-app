@@ -5,7 +5,8 @@ import { DictionaryProvider } from "@/i18n/context";
 import { getCommunityDictionary, NAMESPACE } from "../i18n";
 import { CommunityContent } from "../ui/CommunityContent";
 import { CommunityHero } from "../ui/CommunityHero";
-import { ScreenShell } from "@/components/Layout/ScreenShell";
+import { Layout } from "@/components/Layout/Layout";
+import { Footer } from "@/features/footer/Footer";
 
 export async function Community({ lang }: { lang: SupportedLanguage }) {
   const dict = await getCommunityDictionary(lang);
@@ -13,9 +14,14 @@ export async function Community({ lang }: { lang: SupportedLanguage }) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <ScreenShell lang={lang} nav={<Navigation lang={lang} />} hero={<CommunityHero />}>
-        <CommunityContent lang={lang} language={language} />
-      </ScreenShell>
+      <Layout.Screen>
+        <Navigation lang={lang} />
+        <CommunityHero />
+        <Layout.Container size="default">
+          <CommunityContent lang={lang} language={language} />
+        </Layout.Container>
+        <Footer lang={lang} />
+      </Layout.Screen>
     </DictionaryProvider>
   );
 }

@@ -2,7 +2,6 @@
 import { Pagination } from "@/components/Pagination/Pagination";
 import { Text } from "@/components/Text/Text";
 import { useTranslation } from "@/i18n/context";
-
 import { NAMESPACE } from "../i18n";
 import { PAGE_SIZE_OPTIONS, type MarketplaceProduct, type PageInfo } from "../types";
 import { ProductGrid } from "./ProductGrid";
