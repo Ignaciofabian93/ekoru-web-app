@@ -136,7 +136,7 @@ export default function FrontSide({
           {showRating && (
             <p className="mt-0.5 flex items-center gap-1 text-xs text-foreground-secondary">
               <Star size={12} className="fill-amber-400 text-amber-400" strokeWidth={0} />
-              {product.averageRating.toFixed(1)}
+              {product?.averageRating?.toFixed(1) ?? 0}
               <span className="text-foreground-tertiary">({product.reviewsNumber})</span>
             </p>
           )}
