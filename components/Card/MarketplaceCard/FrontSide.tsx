@@ -104,13 +104,15 @@ export default function FrontSide({
           </div>
         )}
 
-        <span
-          className={`absolute bottom-2 left-2 rounded-md px-2 py-0.5 text-xs font-medium ${
-            CONDITION_STYLES[product.condition] ?? "bg-white/90 text-foreground"
-          }`}
-        >
-          {t(`conditions.${product.condition}`)}
-        </span>
+        {product.condition && (
+          <span
+            className={`absolute bottom-2 left-2 rounded-md px-2 py-0.5 text-xs font-medium ${
+              CONDITION_STYLES[product.condition] ?? "bg-white/90 text-foreground"
+            }`}
+          >
+            {t(`conditions.${product.condition}`)}
+          </span>
+        )}
 
         {isExchangeable && (
           <span className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-md bg-gray-700 px-2 py-0.5 text-xs font-medium text-white shadow-sm">

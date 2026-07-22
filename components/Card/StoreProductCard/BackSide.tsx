@@ -1,10 +1,10 @@
 "use client";
 
 import ProductImpactBack from "@/components/Card/shared/ProductImpactBack";
-import type { StoreProduct } from "@/types/product";
+import type { StoreProductCardProduct } from "./types";
 
 interface Props {
-  product: StoreProduct;
+  product: StoreProductCardProduct;
   onFlip: () => void;
   onShowImpact: () => void;
 }

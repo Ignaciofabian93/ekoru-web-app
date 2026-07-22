@@ -5,13 +5,12 @@ import { useState } from "react";
 
 import EnvironmentalImpactModal from "@/components/EnvironmentalImpactModal/EnvironmentalImpactModal";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
-import type { StoreProduct } from "@/types/product";
-
 import BackSide from "./BackSide";
 import FrontSide from "./FrontSide";
+import type { StoreProductCardProduct } from "./types";
 
 interface Props {
-  product: StoreProduct;
+  product: StoreProductCardProduct;
   lang?: string;
   href?: string;
   className?: string;

@@ -1,9 +1,7 @@
 "use client";
 import { useQuery } from "@apollo/client/react";
-
 import { SEARCH } from "@/graphql/search/queries";
 import type { Language } from "@/graphql/enums/enums";
-
 import type { SearchResponse } from "../types";
 
 interface Params {

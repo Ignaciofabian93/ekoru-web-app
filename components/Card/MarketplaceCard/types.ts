@@ -4,5 +4,16 @@
 import type { Product } from "@/types/product";
 import type { Seller } from "@/types/user";
 
-export type MarketplaceCardProduct = Product;
+/**
+ * The card projection: only the fields the card cannot render without are
+ * required, everything else on `Product` stays optional. A full `Product` is
+ * still assignable, but lightweight projections (e.g. federated search hits)
+ * can feed the card without fabricating a whole product.
+ */
+export type MarketplaceCardProduct = Pick<
+  Product,
+  "id" | "name" | "price" | "sellerId"
+> &
+  Partial<Omit<Product, "id" | "name" | "price" | "sellerId">>;
+
 export type MarketplaceCardSeller = Seller;

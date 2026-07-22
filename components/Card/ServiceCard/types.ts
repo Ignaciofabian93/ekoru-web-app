@@ -9,7 +9,7 @@ export type ServiceCardData = {
   city?: string;
   address?: string;
   priceFrom?: number;
-  durationMinutes?: number;
+  durationMinutes?: string;
   rating?: number;
   reviewsCount?: number;
   isVerified?: boolean;

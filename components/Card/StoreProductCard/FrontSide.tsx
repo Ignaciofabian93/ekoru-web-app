@@ -6,15 +6,15 @@ import { useState } from "react";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
-import type { StoreProduct } from "@/types/product";
 import { resolveImageUrl } from "@/utils/resolveImage";
+import type { StoreProductCardProduct } from "./types";
 import { AddToCartButton } from "../MarketplaceCard/CTA";
 import { Badge } from "@/components/Badge/Badge";
 import { cleanText } from "@/utils/formatters";
 import { Text } from "@/components/Text/Text";
 
 interface Props {
-  product: StoreProduct;
+  product: StoreProductCardProduct;
   href?: string;
   onFlip: () => void;
   isOwnProduct?: boolean;
@@ -34,14 +34,15 @@ export default function FrontSide({
 
   const cover = resolveImageUrl(product.images?.[0]);
 
-  const outOfStock = (product.stock ?? 0) <= 0;
+  // Unknown stock (projections that don't select it) is not "out of stock".
+  const outOfStock = typeof product.stock === "number" && product.stock <= 0;
   const hasOffer =
     product.hasOffer && typeof product.offerPrice === "number" && product.offerPrice > 0;
   const unitPrice = hasOffer ? (product.offerPrice as number) : product.price;
   const discountPct = hasOffer
     ? Math.round(100 - ((product.offerPrice as number) / product.price) * 100)
     : 0;
-  const showRating = product.reviewsNumber > 0;
+  const showRating = (product.reviewsNumber ?? 0) > 0;
 
   const Container: React.ElementType = href ? Link : "div";
   const containerProps = href ? { href } : {};

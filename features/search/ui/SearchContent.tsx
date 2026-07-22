@@ -1,16 +1,15 @@
 "use client";
 import { useState } from "react";
-
 import { Pagination } from "@/components/Pagination/Pagination";
 import { Text } from "@/components/Text/Text";
 import type { Language } from "@/graphql/enums/enums";
 import { useCountry } from "@/hooks/useCountry";
 import { useTranslation } from "@/i18n/context";
-
 import { useSearch } from "../hooks/useSearch";
 import { NAMESPACE } from "../i18n";
 import { SEARCH_PAGE_SIZE } from "../types";
 import { SearchResultsGrid } from "./SearchResultsGrid";
+import { Title } from "@/components/Title/Title";
 
 interface Props {
   lang: string;
@@ -47,11 +46,11 @@ export function SearchContent({ lang, language, query }: Props) {
   return (
     <section className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold text-foreground">
+        <Title level="h4" size="h4" weight="bold">
           {t("heading", { query })}
-        </h1>
+        </Title>
         {!error && (
-          <Text size="sm" color="secondary">
+          <Text variant="p" size="sm" color="secondary">
             {total === 1
               ? t("count", { count: "1" })
               : t("countPlural", { count: String(total) })}
@@ -61,8 +60,12 @@ export function SearchContent({ lang, language, query }: Props) {
 
       {error ? (
         <div className="text-foreground-secondary py-16 text-center">
-          <p className="font-semibold">{t("error.title")}</p>
-          <p className="mt-1 text-sm">{t("error.hint")}</p>
+          <Text variant="p" weight="semibold">
+            {t("error.title")}
+          </Text>
+          <Text variant="p" size="sm">
+            {t("error.hint")}
+          </Text>
         </div>
       ) : (
         <>
