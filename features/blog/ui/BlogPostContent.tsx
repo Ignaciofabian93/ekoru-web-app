@@ -84,9 +84,7 @@ export function BlogPostContent({ lang, language, categorySlug, slug }: Props) {
           <Breadcrumb
             items={breadCrumbs.map((c) => ({
               label: c.label,
-              onPress: c.href
-                ? () => navigateTo({ route: c.href as string })
-                : undefined,
+              onPress: c.href ? () => navigateTo({ route: c.href as string }) : undefined,
             }))}
             crumbColor="inverted"
             chevronColor="inverted"
@@ -112,12 +110,12 @@ export function BlogPostContent({ lang, language, categorySlug, slug }: Props) {
       <Layout.Container size="narrow">
         <Layout.Section className="px-2">
           {translation.excerpt && (
-            <Text size="lg" color="secondary" className="leading-relaxed break-words">
+            <Text size="lg" color="secondary" className="leading-relaxed wrap-break-word">
               {translation.excerpt}
             </Text>
           )}
           {translation.content && (
-            <div className="max-w-full min-w-0 text-base leading-relaxed whitespace-pre-wrap break-words text-foreground [overflow-wrap:anywhere]">
+            <div className="max-w-full min-w-0 text-base leading-relaxed whitespace-pre-wrap wrap-break-word text-foreground">
               {translation.content}
             </div>
           )}
