@@ -56,7 +56,7 @@ export type ServiceNode = {
   name: string;
   description: string | null;
   basePrice: number | null;
-  duration: number | null;
+  duration: string | null;
   images: string[] | null;
   averageRating: number | null;
   reviewCount: number | null;
