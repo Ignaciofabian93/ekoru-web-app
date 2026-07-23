@@ -28,7 +28,10 @@ export type ShippingAddressInput = {
 };
 
 export type CheckoutItemInput = {
-  productId: number;
+  /** Set for marketplace (peer-to-peer) products. Mutually exclusive with storeProductId. */
+  productId?: number;
+  /** Set for store (business catalog) products. Mutually exclusive with productId. */
+  storeProductId?: number;
   quantity: number;
 };
 

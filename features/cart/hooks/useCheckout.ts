@@ -136,7 +136,15 @@ export function useCheckout() {
       const orderRes = await createOrder({
         variables: {
           input: {
-            items: items.map((i) => ({ productId: i.productId, quantity: i.quantity })),
+            // A cart group is single-source, so each line maps to the id field
+            // its owning subgraph expects: marketplace → productId, store →
+            // storeProductId. (Store cart items keep the StoreProduct id in
+            // `productId` client-side.)
+            items: items.map((i) =>
+              i.source === "store"
+                ? { storeProductId: i.productId, quantity: i.quantity }
+                : { productId: i.productId, quantity: i.quantity },
+            ),
             shippingMethod,
             shippingAddress: meta.requiresAddress
               ? (address as ShippingAddressInput)
