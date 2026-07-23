@@ -165,7 +165,9 @@ export function useCheckout() {
 
       const paymentRes = await createPayment({
         variables: {
-          input: { orderId: order.id, provider, returnUrl },
+          // Order.id is a GraphQL ID (returned as a string), but createPayment's
+          // orderId is an Int — coerce so variable validation doesn't reject it.
+          input: { orderId: Number(order.id), provider, returnUrl },
         },
       });
       const result = paymentRes.data?.createPayment;
