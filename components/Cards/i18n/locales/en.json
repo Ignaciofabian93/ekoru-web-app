@@ -1,0 +1,47 @@
+{
+  "condition": {
+    "NEW": "New",
+    "OPEN_BOX": "Open box",
+    "LIKE_NEW": "Like new",
+    "FAIR": "Fair",
+    "POOR": "Poor",
+    "FOR_PARTS": "For parts",
+    "REFURBISHED": "Refurbished"
+  },
+  "badges": {
+    "exchangeable": "Exchangeable"
+  },
+  "meta": {
+    "noBrand": "No brand"
+  },
+  "actions": {
+    "like": "Add to favorites",
+    "unlike": "Remove from favorites",
+    "showImpact": "Show environmental impact",
+    "showDetails": "Show details",
+    "flipBack": "Back to product"
+  },
+  "cta": {
+    "MARKETPLACE": "View details",
+    "STORE": "Add to cart",
+    "SERVICE": "Book now"
+  },
+  "impact": {
+    "title": "Environmental impact",
+    "viewFull": "View full impact",
+    "viewFullShort": "View impact",
+    "co2": "CO₂ saved",
+    "water": "Water saved",
+    "co2Short": "CO₂",
+    "waterShort": "Water",
+    "co2Value": "{{value}} kg",
+    "waterValue": "{{value}} L"
+  },
+  "exchange": {
+    "trigger": "See exchange interests",
+    "title": "Exchange",
+    "anyOffer": "Open to any offer",
+    "propose": "Propose an exchange",
+    "close": "Close"
+  }
+}

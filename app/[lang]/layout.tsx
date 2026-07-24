@@ -20,6 +20,7 @@ import {
   getDrawerDictionary,
   NAMESPACE as DRAWER_NAMESPACE,
 } from "@/components/Drawer/i18n";
+import { getCardsDictionary, NAMESPACE as CARD_NAMESPACE } from "@/components/Cards/i18n";
 
 const cabin = Cabin({
   variable: "--font-cabin",
@@ -128,9 +129,10 @@ export default async function RootLayout({
 
   if (!hasLocale(lang)) notFound();
 
-  const [dict, drawerDict] = await Promise.all([
+  const [dict, drawerDict, cardsDict] = await Promise.all([
     getDictionary(lang),
     getDrawerDictionary(lang),
+    getCardsDictionary(lang),
   ]);
 
   return (
@@ -144,6 +146,7 @@ export default async function RootLayout({
             <DictionaryProvider
               dictionary={{
                 [DRAWER_NAMESPACE]: drawerDict,
+                [CARD_NAMESPACE]: cardsDict,
               }}
             >
               <DrawerProvider>

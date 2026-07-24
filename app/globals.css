@@ -8,10 +8,10 @@ html {
 /* ── react-toastify: remap colored-theme palette to brand colors ──── */
 :root {
   --toastify-color-success: #22c55e; /* --color-success */
-  --toastify-color-error: #ef4444;   /* --color-danger */
+  --toastify-color-error: #ef4444; /* --color-danger */
   --toastify-color-warning: #eab308; /* --color-warning */
-  --toastify-color-info: #3b82f6;    /* --color-info */
-  --toastify-z-index: 9999;          /* always on top of modals/overlays */
+  --toastify-color-info: #3b82f6; /* --color-info */
+  --toastify-z-index: 9999; /* always on top of modals/overlays */
 }
 
 @theme {
@@ -91,21 +91,21 @@ html {
   --color-nature-rose-dark: #be123c;
 
   /* ── Font sizes (matches mobile token scale) ────────────────── */
-  --text-xs: 0.6875rem;   /* 11px — eyebrow labels, captions */
-  --text-sm: 0.8125rem;   /* 13px — secondary labels, tags */
+  --text-xs: 0.6875rem; /* 11px — eyebrow labels, captions */
+  --text-sm: 0.8125rem; /* 13px — secondary labels, tags */
   --text-base: 0.9375rem; /* 15px — body copy */
-  --text-lg: 1.0625rem;   /* 17px — large body */
-  --text-xl: 1.25rem;     /* 20px — h4, section heads */
-  --text-2xl: 1.5rem;     /* 24px — h3 */
-  --text-3xl: 1.875rem;   /* 30px — hero titles */
-  --text-4xl: 2.25rem;    /* 36px — display */
+  --text-lg: 1.0625rem; /* 17px — large body */
+  --text-xl: 1.25rem; /* 20px — h4, section heads */
+  --text-2xl: 1.5rem; /* 24px — h3 */
+  --text-3xl: 1.875rem; /* 30px — hero titles */
+  --text-4xl: 2.25rem; /* 36px — display */
 
   /* ── Border radius ──────────────────────────────────────────── */
   --radius-none: 0px;
-  --radius-sm: 0.5rem;    /* 8px  — sm buttons */
-  --radius-md: 0.625rem;  /* 10px — inputs, md/lg buttons */
-  --radius-lg: 0.75rem;   /* 12px — product cards */
-  --radius-xl: 0.875rem;  /* 14px — store cards */
+  --radius-sm: 0.5rem; /* 8px  — sm buttons */
+  --radius-md: 0.625rem; /* 10px — inputs, md/lg buttons */
+  --radius-lg: 0.75rem; /* 12px — product cards */
+  --radius-xl: 0.875rem; /* 14px — store cards */
   --radius-2xl: 1.125rem; /* 18px — category / hero cards */
   --radius-full: 9999px;
 
@@ -125,10 +125,13 @@ html {
   --z-toast: 50;
 
   /* ── Min heights for interactive elements ───────────────────── */
-  --min-h-btn-sm: 2rem;    /* 32px */
-  --min-h-btn-md: 2.5rem;  /* 40px */
-  --min-h-btn-lg: 3rem;    /* 48px */
-  --min-h-input: 2.75rem;  /* 44px */
+  --min-h-btn-sm: 2rem; /* 32px */
+  --min-h-btn-md: 2.5rem; /* 40px */
+  --min-h-btn-lg: 3rem; /* 48px */
+  --min-h-input: 2.75rem; /* 44px */
+
+  /* Breakpoints */
+  --breakpoint-xs: 22rem; /* 352px */
 }
 
 body {
@@ -140,8 +143,12 @@ body {
 
 /* ── Marquee animation for StatsSection ────────────────────── */
 @keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 .animate-marquee {
   animation: marquee 18s linear infinite;
@@ -149,12 +156,24 @@ body {
 
 /* ── Multi-step wizard transitions (Register form) ──────────── */
 @keyframes step-in-forward {
-  from { opacity: 0; transform: translateX(28px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 @keyframes step-in-back {
-  from { opacity: 0; transform: translateX(-28px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 .animate-step-forward {
   animation: step-in-forward 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -164,8 +183,14 @@ body {
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .animate-fade-up {
   animation: fade-up 0.3s ease both;
@@ -173,10 +198,18 @@ body {
 
 /* ── Add-to-cart button feedback ────────────────────────────── */
 @keyframes cart-pop {
-  0%   { transform: scale(1); }
-  35%  { transform: scale(0.92); }
-  70%  { transform: scale(1.06); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(0.92);
+  }
+  70% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 .animate-cart-pop {
   animation: cart-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1);

@@ -18,6 +18,7 @@ import type {
   SellerType,
 } from "@/types/enums";
 import { NAMESPACE } from "../i18n";
+import { useSubscribe } from "../hooks/useSubscribe";
 import { SectionCard } from "./SectionCard";
 
 type PersonPlanKey = PersonSubscriptionPlan;
@@ -76,6 +77,7 @@ export function SubscriptionPlans() {
 
   const groupKey = isBusiness ? "business" : "person";
   const currentConfig = plans.find((p) => p.key === currentPlan);
+  const { subscribe, pendingKey, isSubscribable } = useSubscribe();
 
   return (
     <div className="flex flex-col gap-5">
@@ -203,13 +205,32 @@ export function SubscriptionPlans() {
                 ))}
               </ul>
 
-              <MainButton
-                text={isActive ? t("subscription.plans.active") : t("subscription.plans.select")}
-                variant={isActive ? "outline" : isHighlight ? "secondary" : "primary"}
-                size="md"
-                fullWidth
-                disabled={isActive}
-              />
+              {(() => {
+                // FREEMIUM (price 0) isn't a payment; only paid plans that
+                // resolved to a real membership id are subscribable.
+                const isPaid = plan.price > 0;
+                const canSubscribe =
+                  !isActive && isPaid && isSubscribable(plan.key);
+                const isPending = pendingKey === plan.key;
+                return (
+                  <MainButton
+                    text={
+                      isActive
+                        ? t("subscription.plans.active")
+                        : t("subscription.plans.select")
+                    }
+                    variant={
+                      isActive ? "outline" : isHighlight ? "secondary" : "primary"
+                    }
+                    size="md"
+                    fullWidth
+                    disabled={isActive || !canSubscribe || isPending}
+                    onClick={
+                      canSubscribe ? () => void subscribe(plan.key) : undefined
+                    }
+                  />
+                );
+              })()}
             </div>
           );
         })}

@@ -1,11 +1,10 @@
 "use client";
 import { useTranslation } from "@/i18n/context";
 import { ShoppingCart } from "lucide-react";
-
 import { NAMESPACE } from "../i18n";
 import type { MarketplaceProduct } from "../types";
-import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
 import { ProductGridListLayout } from "@/components/Layout/ProductListGrid";
+import { MarketplaceCard } from "@/components/Cards/MarketplaceCard";
 
 interface Props {
   products: MarketplaceProduct[];
@@ -46,7 +45,7 @@ export function ProductGrid({ products, lang, loading }: Props) {
           key={product.id}
           product={product}
           lang={lang}
-          priority={i < 4}
+          priority={i < 2}
         />
       ))}
     </ProductGridListLayout>

@@ -1,0 +1,47 @@
+{
+  "condition": {
+    "NEW": "Neuf",
+    "OPEN_BOX": "Boîte ouverte",
+    "LIKE_NEW": "Comme neuf",
+    "FAIR": "Correct",
+    "POOR": "Médiocre",
+    "FOR_PARTS": "Pour pièces",
+    "REFURBISHED": "Reconditionné"
+  },
+  "badges": {
+    "exchangeable": "Échangeable"
+  },
+  "meta": {
+    "noBrand": "Sans marque"
+  },
+  "actions": {
+    "like": "Ajouter aux favoris",
+    "unlike": "Retirer des favoris",
+    "showImpact": "Voir l'impact environnemental",
+    "showDetails": "Voir les détails",
+    "flipBack": "Retour au produit"
+  },
+  "cta": {
+    "MARKETPLACE": "Voir les détails",
+    "STORE": "Ajouter au panier",
+    "SERVICE": "Réserver"
+  },
+  "impact": {
+    "title": "Impact environnemental",
+    "viewFull": "Voir l'impact complet",
+    "viewFullShort": "Voir l'impact",
+    "co2": "CO₂ économisé",
+    "water": "Eau économisée",
+    "co2Short": "CO₂",
+    "waterShort": "Eau",
+    "co2Value": "{{value}} kg",
+    "waterValue": "{{value}} L"
+  },
+  "exchange": {
+    "trigger": "Voir les intérêts d'échange",
+    "title": "l'échange",
+    "anyOffer": "Ouvert à toute offre",
+    "propose": "Proposer un échange",
+    "close": "Fermer"
+  }
+}
