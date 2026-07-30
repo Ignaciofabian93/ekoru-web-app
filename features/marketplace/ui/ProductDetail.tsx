@@ -2,15 +2,20 @@
 
 import { conditionLabel } from "@/data/products";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
+import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
+import { useIsAuthenticated } from "@/store/useAuthStore";
+import { useMyListings } from "@/features/profile/hooks/useMyListings";
+import { useDealActions } from "@/features/deals/hooks/useDealActions";
 import type { Product } from "@/types/product";
 import { formatMaterialAmount, materialLabel } from "@/utils/impact";
 import {
+  ArrowLeftRight,
   Droplets,
+  HandCoins,
   ImageOff,
   Leaf,
   MapPin,
   Phone,
-  ShoppingCart,
   User,
 } from "lucide-react";
 import Link from "next/link";
@@ -32,12 +37,11 @@ const SELLER_TYPE_LABELS: Record<string, string> = {
 
 export function ProductDetail({ product, lang }: { product: Product; lang: string }) {
   const formatPrice = useFormatPrice();
-  const [added, setAdded] = useState(false);
-
-  function handleAddToCart() {
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
-  }
+  const isOwn = useIsOwnProduct(product.sellerId);
+  const isAuthed = useIsAuthenticated();
+  const { proposeSaleDeal, proposeExchangeDeal, busyId } = useDealActions();
+  const [exchangeOpen, setExchangeOpen] = useState(false);
+  const busy = busyId === product.id;
 
   return (
     <div className="flex-1 bg-background">
@@ -176,23 +180,96 @@ export function ProductDetail({ product, lang }: { product: Product; lang: strin
         )}
       </div>
 
-      {/* Sticky footer CTA */}
-      <div className="sticky bottom-0 bg-background border-t border-border px-4 py-3 flex gap-3">
-        <button
-          onClick={handleAddToCart}
-          className={`flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-base transition-colors ${
-            added ? "bg-success text-white" : "bg-primary text-white hover:opacity-90"
-          }`}
-        >
-          <ShoppingCart size={20} strokeWidth={2} />
-          {added ? "Added to cart!" : "Add to cart"}
-        </button>
-        <Link
-          href={`/${lang}/cart`}
-          className="w-14 flex items-center justify-center border-2 border-primary rounded-xl text-primary hover:bg-primary-light-bg transition-colors"
-        >
-          <ShoppingCart size={20} strokeWidth={2} />
-        </Link>
+      {/* Sticky footer CTA — marketplace is cash + in person, so this starts a
+          P2P deal (buy or exchange), not an online checkout. */}
+      {!isOwn && (
+        <div className="sticky bottom-0 bg-background border-t border-border px-4 py-3 flex gap-3">
+          <button
+            onClick={() => void proposeSaleDeal(product.id)}
+            disabled={busy || !isAuthed}
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold text-base bg-primary text-white hover:opacity-90 transition-colors disabled:opacity-50"
+          >
+            <HandCoins size={20} strokeWidth={2} />
+            {isAuthed ? "Solicitar compra" : "Inicia sesión para comprar"}
+          </button>
+          {product.isExchangeable && isAuthed && (
+            <button
+              onClick={() => setExchangeOpen(true)}
+              disabled={busy}
+              className="flex items-center justify-center gap-2 px-4 rounded-xl border-2 border-primary text-primary hover:bg-primary-light-bg transition-colors disabled:opacity-50"
+            >
+              <ArrowLeftRight size={20} strokeWidth={2} />
+              <span className="hidden sm:inline">Intercambiar</span>
+            </button>
+          )}
+        </div>
+      )}
+      {isOwn && (
+        <div className="sticky bottom-0 bg-background border-t border-border px-4 py-3 text-center text-sm text-foreground-tertiary">
+          Este es tu producto.{" "}
+          <Link href={`/${lang}/deals`} className="text-primary underline">
+            Ver solicitudes
+          </Link>
+        </div>
+      )}
+
+      {exchangeOpen && (
+        <ExchangeModal
+          requestedProductId={product.id}
+          onClose={() => setExchangeOpen(false)}
+          onOffer={(offeredId) => {
+            setExchangeOpen(false);
+            void proposeExchangeDeal(product.id, offeredId);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+/** Lets the buyer pick one of their own active products to offer in a trade. */
+function ExchangeModal({
+  requestedProductId,
+  onClose,
+  onOffer,
+}: {
+  requestedProductId: number;
+  onClose: () => void;
+  onOffer: (offeredProductId: number) => void;
+}) {
+  const { products, loading } = useMyListings({ status: "active" });
+  const options = products.filter((p) => p.id !== requestedProductId);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center"
+      onClick={onClose}
+    >
+      <div
+        className="max-h-[70vh] w-full max-w-md overflow-y-auto rounded-t-2xl bg-surface p-5 sm:rounded-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p className="mb-3 text-base font-semibold text-foreground">
+          Ofrece uno de tus productos
+        </p>
+        {loading && <p className="text-sm text-foreground-tertiary">Cargando…</p>}
+        {!loading && options.length === 0 && (
+          <p className="text-sm text-foreground-tertiary">
+            No tienes productos activos para ofrecer.
+          </p>
+        )}
+        <div className="flex flex-col gap-2">
+          {options.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => onOffer(p.id)}
+              className="flex items-center gap-3 rounded-lg border border-border-light p-2 text-left hover:border-primary/40"
+            >
+              <span className="min-w-0 flex-1 truncate text-sm font-medium">{p.name}</span>
+              <ArrowLeftRight size={16} className="shrink-0 text-primary" />
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
