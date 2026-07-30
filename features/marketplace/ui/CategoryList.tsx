@@ -1,9 +1,9 @@
 "use client";
-import { Title } from "@/components/Title/Title";
+import { Title } from "@/components/Primitives/Title";
 import {
-  UnderlineTabs,
-  type UnderlineTab,
-} from "@/components/UnderlineTabs/UnderlineTabs";
+  Tabs,
+  type Tab,
+} from "@/components/Patterns/Tabs";
 
 const ALL_KEY = "__all__";
 
@@ -11,7 +11,7 @@ interface Props {
   /** Section heading, e.g. "Departments", "Categories" or "Product types". */
   label: string;
   ariaLabel: string;
-  tabs: UnderlineTab[];
+  tabs: Tab[];
   /** Key of the active tab. Falls back to the "All" tab when omitted. */
   activeKey?: string;
   /** Bump when a label's width changes outside `tabs` (usually the language). */
@@ -57,7 +57,7 @@ export function CategoryList({
       <Title level="h2" size="h5">
         {label}
       </Title>
-      <UnderlineTabs
+      <Tabs
         tabs={tabs}
         activeKey={activeKey ?? ALL_KEY}
         ariaLabel={ariaLabel}

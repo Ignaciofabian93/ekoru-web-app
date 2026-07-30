@@ -1,5 +1,5 @@
 "use client";
-import Input from "@/components/Input/Input";
+import { Input } from "@/components/Primitives/Inputs";
 import { useTranslation } from "@/i18n/context";
 
 /** Optional product barcode (EAN / UPC). Shown next to the SKU field. */

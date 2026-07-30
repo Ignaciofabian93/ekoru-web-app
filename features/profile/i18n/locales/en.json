@@ -127,6 +127,7 @@
     "editProfile": "Edit Profile",
     "changePassword": "Change Password",
     "orderHistory": "Order History",
+    "exchanges": "Exchanges",
     "favorites": "Favorites",
     "environmentalImpact": "Environmental Impact",
     "subscription": "Subscription",
@@ -455,6 +456,33 @@
     "deactivate": "Deactivate",
     "deleteAccount": "Delete Account",
     "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone."
+  },
+  "exchanges": {
+    "title": "Exchange proposals",
+    "subtitle": "Offers to swap items with other members.",
+    "tabs": { "received": "Received", "sent": "Sent" },
+    "empty": {
+      "received": "No incoming proposals yet.",
+      "sent": "You haven't sent any proposals yet."
+    },
+    "youGive": "You give",
+    "youGet": "You get",
+    "from": "From {{name}}",
+    "to": "To {{name}}",
+    "even": "Even swap",
+    "youAdd": "You add {{amount}}",
+    "theyAdd": "They add {{amount}}",
+    "accept": "Accept",
+    "decline": "Decline",
+    "notesLabel": "Note",
+    "status": {
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "DECLINED": "Declined",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+    "stubNotice": "Exchange proposals aren't live yet — this is sample data."
   },
   "logout": "Log Out",
   "back": "Back"

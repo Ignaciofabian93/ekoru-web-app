@@ -7,7 +7,7 @@ import { useState } from "react";
 import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
 import ServiceCard from "@/components/Card/ServiceCard/ServiceCard";
 import type { ServiceCardData } from "@/components/Card/ServiceCard/types";
-import { Pagination } from "@/components/Pagination/Pagination";
+import { Pagination } from "@/components/Patterns/Pagination";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import type { ServiceNode } from "@/features/services/types";
 import { StoreProductCard } from "@/features/stores/ui/StoreProductCard";
@@ -15,7 +15,7 @@ import { useTranslation } from "@/i18n/context";
 
 import { useFavorites, type FavoritesTab } from "../hooks/useFavorites";
 import { NAMESPACE } from "../i18n";
-import { EmptyState } from "./EmptyState";
+import { EmptyState } from "@/components/Feedback/EmptyState";
 
 const PAGE_SIZE = 12;
 
@@ -53,8 +53,11 @@ export function FavoritesGrid() {
 
   const [tab, setTab] = useState<FavoritesTab>("products");
   const [page, setPage] = useState(1);
-  const { products, storeProducts, services, pageInfo, loading, isEmpty } =
-    useFavorites(tab, page, PAGE_SIZE);
+  const { products, storeProducts, services, pageInfo, loading, isEmpty } = useFavorites(
+    tab,
+    page,
+    PAGE_SIZE,
+  );
 
   const serviceLabels = {
     bookNow: t("favorites.serviceCard.bookNow"),
@@ -68,8 +71,7 @@ export function FavoritesGrid() {
     setPage(1);
   }
 
-  const hasItems =
-    products.length > 0 || storeProducts.length > 0 || services.length > 0;
+  const hasItems = products.length > 0 || storeProducts.length > 0 || services.length > 0;
 
   return (
     <div className="flex flex-col gap-6">
@@ -107,6 +109,7 @@ export function FavoritesGrid() {
         </div>
       ) : isEmpty ? (
         <EmptyState
+          variant="prominent"
           icon={Heart}
           title={t("favorites.empty.title")}
           description={t("favorites.empty.description")}
@@ -118,7 +121,12 @@ export function FavoritesGrid() {
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {tab === "products" &&
               products.map((product, i) => (
-                <MarketplaceCard key={product.id} product={product} lang={lang} priority={i < 4} />
+                <MarketplaceCard
+                  key={product.id}
+                  product={product}
+                  lang={lang}
+                  priority={i < 4}
+                />
               ))}
             {tab === "stores" &&
               storeProducts.map((product) => (

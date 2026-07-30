@@ -1,7 +1,7 @@
 "use client";
 
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { useBusinessProfile } from "@/hooks/useSellerData";
 import { useTranslation } from "@/i18n/context";
 import type { Seller } from "@/types/user";
@@ -59,9 +59,9 @@ export function SellerBusinessInfo({ seller }: { seller: Seller }) {
   const hasPolicies = Boolean(profile.shippingPolicy || profile.returnPolicy);
   const hasService = Boolean(
     profile.serviceArea ||
-      isPresent(profile.travelRadius) ||
-      isPresent(profile.yearsOfExperience) ||
-      (profile.certifications && profile.certifications.length > 0),
+    isPresent(profile.travelRadius) ||
+    isPresent(profile.yearsOfExperience) ||
+    (profile.certifications && profile.certifications.length > 0),
   );
   const hoursEntries =
     profile.businessHours && typeof profile.businessHours === "object"
@@ -158,10 +158,7 @@ export function SellerBusinessInfo({ seller }: { seller: Seller }) {
             {hoursEntries.map(([day, value]) => {
               const { closed, text } = formatHours(value);
               return (
-                <div
-                  key={day}
-                  className="flex items-center justify-between gap-4 py-2"
-                >
+                <div key={day} className="flex items-center justify-between gap-4 py-2">
                   <dt className="text-sm text-foreground">{titleCase(day)}</dt>
                   <Text variant="span" size="sm" weight="medium">
                     {closed || !text ? t("businessInfo.closed") : text}

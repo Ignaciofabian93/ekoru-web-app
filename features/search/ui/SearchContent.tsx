@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Pagination } from "@/components/Pagination/Pagination";
-import { Text } from "@/components/Text/Text";
+import { Pagination } from "@/components/Patterns/Pagination";
+import { Text } from "@/components/Primitives/Text";
 import type { Language } from "@/graphql/enums/enums";
 import { useCountry } from "@/hooks/useCountry";
 import { useTranslation } from "@/i18n/context";
@@ -9,7 +9,7 @@ import { useSearch } from "../hooks/useSearch";
 import { NAMESPACE } from "../i18n";
 import { SEARCH_PAGE_SIZE } from "../types";
 import { SearchResultsGrid } from "./SearchResultsGrid";
-import { Title } from "@/components/Title/Title";
+import { Title } from "@/components/Primitives/Title";
 
 interface Props {
   lang: string;

@@ -4,13 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import type { SupportedLanguage } from "@/constants/settings";
-import ServiceProviderCard from "@/components/Card/ServiceProviderCard/ServiceProviderCard";
+import { ServiceProviderCard } from "@/components/Cards";
 import { useServicesHomeData } from "../hooks/useServices";
-import { Title } from "@/components/Title/Title";
-import { Text } from "@/components/Text/Text";
-import { Layout } from "@/components/Layout/Layout";
-import { SectionTitleWrapper } from "./Wrapper";
-import { CardScroller } from "@/components/Card/CardScroller/CardScroller";
+import { Text } from "@/components/Primitives/Text";
+import { Section } from "@/components/Layout";
+import { SectionHeader } from "@/components/Patterns/SectionHeader";
+import { CardScroller } from "@/components/Cards/CardScroller";
 
 export function ServicesHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
@@ -46,33 +45,31 @@ export function ServicesHighlight({ lang }: { lang: SupportedLanguage }) {
   };
 
   return (
-    <Layout.Section>
-      <SectionTitleWrapper direction="row" align="start" justify="between">
-        <div>
-          <Title level="h3" size="h4" weight="semibold">
-            {t("services.title")}
-          </Title>
-          <Text variant="p" size="base">
-            {t("services.subtitle")}
-          </Text>
-        </div>
-        <Link
-          href={`/${lang}/services`}
-          className="text-sm font-semibold text-primary underline"
-        >
-          {t("services.seeAll")}
-        </Link>
-      </SectionTitleWrapper>
+    <Section ariaLabel={t("services.title")}>
+      <SectionHeader
+        align="start"
+        title={t("services.title")}
+        subtitle={t("services.subtitle")}
+        action={
+          <Link
+            href={`/${lang}/services`}
+            className="shrink-0 rounded-sm text-sm font-semibold text-primary underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {t("services.seeAll")}
+          </Link>
+        }
+      />
       {sellers && sellers.length > 0 ? (
         <CardScroller
           handleScroll={handleScroll}
+          scrollRef={scrollRef}
           canScrollLeft={canScrollLeft}
           canScrollRight={canScrollRight}
           scrollPreviousAriaLabel={t("services.scrollPrevious")}
           scrollNextAriaLabel={t("services.scrollNext")}
         >
           {sellers.map((seller) => (
-            <ServiceProviderCard key={seller.id} {...seller} />
+            <ServiceProviderCard key={seller.id} provider={seller} lang={lang} />
           ))}
         </CardScroller>
       ) : (
@@ -80,6 +77,6 @@ export function ServicesHighlight({ lang }: { lang: SupportedLanguage }) {
           {t("services.noServices")}
         </Text>
       )}
-    </Layout.Section>
+    </Section>
   );
 }

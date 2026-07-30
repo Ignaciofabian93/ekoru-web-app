@@ -2,9 +2,9 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Lock } from "lucide-react";
 
-import MainButton from "@/components/Button/MainButton";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Button } from "@/components/Primitives/Button";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { type SupportedLanguage } from "@/constants/settings";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
@@ -113,7 +113,7 @@ export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
 
           <nav className="flex items-center justify-between gap-3">
             {checkout.step !== "shipping" ? (
-              <MainButton
+              <Button
                 variant="outline"
                 size="md"
                 text={t("checkout.back")}
@@ -125,7 +125,7 @@ export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
             )}
 
             {checkout.step !== "review" ? (
-              <MainButton
+              <Button
                 variant="primary"
                 size="md"
                 text={t("checkout.actions.continue")}
@@ -137,7 +137,7 @@ export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
                 }
               />
             ) : (
-              <MainButton
+              <Button
                 variant="primary"
                 size="md"
                 text={t("checkout.actions.pay", {

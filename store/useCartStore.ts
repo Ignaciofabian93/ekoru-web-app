@@ -33,10 +33,8 @@ export type CartItem = {
  * Two products from different sources can share the same numeric id (separate
  * tables), so a line is identified by source + productId, never id alone.
  */
-export const cartLineId = (
-  source: CartItemSource,
-  productId: number,
-): string => `${source}-${productId}`;
+export const cartLineId = (source: CartItemSource, productId: number): string =>
+  `${source}-${productId}`;
 
 const sameLine = (i: CartItem, productId: number, source: CartItemSource) =>
   i.productId === productId && i.source === source;
@@ -48,10 +46,8 @@ const sameLine = (i: CartItem, productId: number, source: CartItemSource) =>
  * Source is part of the key so a marketplace seller and a store business never
  * merge even if their ids collide across tables.
  */
-export const cartGroupId = (
-  source: CartItemSource,
-  sellerId: string,
-): string => `${source}:${sellerId}`;
+export const cartGroupId = (source: CartItemSource, sellerId: string): string =>
+  `${source}:${sellerId}`;
 
 /** One seller/business worth of cart lines — the unit of a single transaction. */
 export type CartGroup = {
@@ -111,11 +107,7 @@ interface CartState {
 
   addItem: (item: Omit<CartItem, "quantity"> & { quantity?: number }) => void;
   removeItem: (productId: number, source: CartItemSource) => void;
-  updateQuantity: (
-    productId: number,
-    source: CartItemSource,
-    quantity: number,
-  ) => void;
+  updateQuantity: (productId: number, source: CartItemSource, quantity: number) => void;
   clear: () => void;
   /** Removes every line for one seller group (used after that group is paid). */
   clearGroup: (source: CartItemSource, sellerId: string) => void;
@@ -144,11 +136,7 @@ const useCartStore = create<CartState>()(
                   ? {
                       ...i,
                       maxStock,
-                      quantity: clampQuantity(
-                        i.source,
-                        i.quantity + quantity,
-                        maxStock,
-                      ),
+                      quantity: clampQuantity(i.source, i.quantity + quantity, maxStock),
                     }
                   : i,
               ),
@@ -218,9 +206,7 @@ export const useCartCount = () =>
   useCartStore((s) => s.items.reduce((acc, i) => acc + i.quantity, 0));
 
 export const useCartSubtotal = () =>
-  useCartStore((s) =>
-    s.items.reduce((acc, i) => acc + i.unitPrice * i.quantity, 0),
-  );
+  useCartStore((s) => s.items.reduce((acc, i) => acc + i.unitPrice * i.quantity, 0));
 
 export const useCartIsEmpty = () => useCartStore((s) => s.items.length === 0);
 
@@ -230,7 +216,6 @@ export const useIsInCart = (source: CartItemSource, productId: number) =>
     s.items.some((i) => i.productId === productId && i.source === source),
   );
 
-export const useCartCurrency = () =>
-  useCartStore((s) => s.items[0]?.currency ?? "CLP");
+export const useCartCurrency = () => useCartStore((s) => s.items[0]?.currency ?? "CLP");
 
 export default useCartStore;

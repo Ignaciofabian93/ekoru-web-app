@@ -1,10 +1,10 @@
 "use client";
-import { Pagination } from "@/components/Pagination/Pagination";
+import { Pagination } from "@/components/Patterns/Pagination";
 import type { LucideIcon } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import type { ListingStatus } from "../hooks/useMyListings";
-import { EmptyState } from "./EmptyState";
-import { UnderlineTabs } from "@/components/UnderlineTabs/UnderlineTabs";
+import { EmptyState } from "@/components/Feedback/EmptyState";
+import { Tabs } from "@/components/Patterns/Tabs";
 
 const STATUSES: ListingStatus[] = ["active", "drafts"];
 const PAGE_SIZE = 12;
@@ -69,7 +69,7 @@ export function ListingsPanel<T>({
 
   return (
     <div className="flex flex-col gap-5">
-      <UnderlineTabs
+      <Tabs
         tabs={tabs}
         activeKey={status}
         onSelect={(k) => onStatusChange(k as ListingStatus)}
@@ -88,6 +88,7 @@ export function ListingsPanel<T>({
         </div>
       ) : items.length === 0 ? (
         <EmptyState
+          variant="prominent"
           icon={empty.icon}
           title={empty.title}
           description={empty.description}

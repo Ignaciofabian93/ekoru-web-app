@@ -43,9 +43,7 @@ export function RecyclePermissionDenied({ onRetry }: { onRetry: () => void }) {
     <Centered>
       <MapPin size={52} strokeWidth={1.5} className="text-foreground-muted" />
       <p className="text-foreground mt-2 font-semibold">{t("permission.title")}</p>
-      <p className="text-foreground-secondary max-w-sm text-sm">
-        {t("permission.hint")}
-      </p>
+      <p className="text-foreground-secondary max-w-sm text-sm">{t("permission.hint")}</p>
       <RetryButton label={t("permission.retry")} onRetry={onRetry} />
     </Centered>
   );

@@ -2,8 +2,8 @@
 import clsx from "clsx";
 import { ShieldCheck } from "lucide-react";
 
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import type { Currency } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import type { PaymentProviderId } from "@/types/checkout";
@@ -50,7 +50,9 @@ export function PaymentMethodPicker({ value, currency, onChange }: Props) {
                 <div
                   className={clsx(
                     "flex size-10 shrink-0 items-center justify-center rounded-lg font-sans text-xs font-bold",
-                    selected ? "bg-primary text-on-primary" : "bg-background-secondary text-primary",
+                    selected
+                      ? "bg-primary text-on-primary"
+                      : "bg-background-secondary text-primary",
                   )}
                 >
                   {provider.id.slice(0, 2)}

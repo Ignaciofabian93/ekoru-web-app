@@ -1,12 +1,10 @@
 import { type SupportedLanguage } from "@/constants/settings";
-import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 
 import { getServicesDictionary, NAMESPACE } from "../i18n";
 import { ServicesContent } from "../ui/ServicesContent";
-import { ServicesHero } from "../ui/ServicesHero";
-import { Layout } from "@/components/Layout/Layout";
-import { Footer } from "@/features/footer/Footer";
+import { PageHero } from "@/components/Patterns/PageHero";
+import { PageLayout } from "@/components/Layout";
 
 export async function Services({ lang }: { lang: SupportedLanguage }) {
   const dict = await getServicesDictionary(lang);
@@ -14,14 +12,9 @@ export async function Services({ lang }: { lang: SupportedLanguage }) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <Layout.Screen>
-        <Navigation lang={lang} />
-        <ServicesHero />
-        <Layout.Container size="default">
-          <ServicesContent lang={lang} language={language} />
-        </Layout.Container>
-        <Footer lang={lang} />
-      </Layout.Screen>
+      <PageLayout hero={<PageHero title={dict.page.title} subtitle={dict.page.subtitle} />} width="default">
+        <ServicesContent lang={lang} language={language} />
+      </PageLayout>
     </DictionaryProvider>
   );
 }

@@ -1,11 +1,9 @@
 import { type SupportedLanguage } from "@/constants/settings";
-import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 
 import { getServicesDictionary, NAMESPACE } from "../i18n";
 import { ServiceCategoryContent } from "../ui/ServiceCategoryContent";
-import { Layout } from "@/components/Layout/Layout";
-import { Footer } from "@/features/footer/Footer";
+import { PageLayout } from "@/components/Layout";
 
 export async function ServiceCategory({
   lang,
@@ -18,11 +16,9 @@ export async function ServiceCategory({
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <Layout.Screen>
-        <Navigation lang={lang} />
+      <PageLayout contained={false}>
         <ServiceCategoryContent lang={lang} slug={slug} />
-        <Footer lang={lang} />
-      </Layout.Screen>
+      </PageLayout>
     </DictionaryProvider>
   );
 }

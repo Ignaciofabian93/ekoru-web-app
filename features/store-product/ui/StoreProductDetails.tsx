@@ -3,9 +3,9 @@ import { useTranslation } from "@/i18n/context";
 import type { SupportedLanguage } from "@/constants/settings";
 import type { StoreProduct } from "@/types/product";
 import { NAMESPACE } from "../i18n";
-import { Title } from "@/components/Title/Title";
+import { Title } from "@/components/Primitives/Title";
 import clsx from "clsx";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 
 const LOCALE_MAP: Record<SupportedLanguage, string> = {
   es: "es-CL",

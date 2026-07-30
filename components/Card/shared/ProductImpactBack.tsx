@@ -11,9 +11,9 @@ import {
 import { useTranslation } from "@/i18n/context";
 import type { EnvironmentalImpact } from "@/types/product";
 import type { Seller } from "@/types/user";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import clsx from "clsx";
-import { Badge } from "@/components/Badge/Badge";
+import { Badge } from "@/components/Primitives/Badge";
 
 type Accent = "primary" | "secondary";
 

@@ -14,7 +14,7 @@ import {
   User,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import clsx from "clsx";
@@ -28,10 +28,11 @@ import useAuthStore, {
   useProfileImage,
 } from "@/store/useAuthStore";
 import { NAMESPACE } from "./i18n";
+import { DRAWER_PANEL_ID } from "./constants/data";
 import { useDrawerMarketplace } from "./hooks/useDrawerMarketplace";
 
-import MainButton from "../Button/MainButton";
-import { Title } from "../Title/Title";
+import { Button } from "@/components/Primitives/Button";
+import { Title } from "@/components/Primitives/Title";
 import { Accordion, type AccordionSectionDef } from "./Accordion";
 import MenuRow from "./MenuRow";
 import { useDrawerBlogs } from "./hooks/useDrawerBlogs";
@@ -156,10 +157,25 @@ export default function Drawer() {
     return () => document.removeEventListener("keydown", onKey);
   }, [closeDrawer]);
 
+  // Opening moves focus into the panel and closing hands it back to whatever
+  // opened it (the navbar menu button), so keyboard users aren't stranded.
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    if (isOpen) {
+      openerRef.current = document.activeElement as HTMLElement | null;
+      closeButtonRef.current?.focus();
+    } else {
+      openerRef.current?.focus();
+      openerRef.current = null;
+    }
+  }, [isOpen]);
+
   return (
     <>
       {/* Backdrop */}
       <div
+        aria-hidden
         onClick={closeDrawer}
         className={clsx(
           "fixed inset-0 z-100 bg-black/40 transition-opacity duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]",
@@ -167,8 +183,15 @@ export default function Drawer() {
         )}
       />
 
-      {/* Drawer panel */}
+      {/* Drawer panel — always mounted, so it has to be inert while closed or
+          its links stay in the tab order and in the accessibility tree. */}
       <div
+        id={DRAWER_PANEL_ID}
+        role="dialog"
+        aria-modal="true"
+        aria-label={t("header")}
+        inert={!isOpen}
+        aria-hidden={!isOpen}
         className={clsx(
           "fixed inset-y-0 right-0 z-101 flex w-80 flex-col bg-surface shadow-lg transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]",
           isOpen ? "translate-x-0" : "translate-x-full",
@@ -180,11 +203,13 @@ export default function Drawer() {
             {t("header")}
           </span>
           <button
+            ref={closeButtonRef}
             type="button"
             onClick={closeDrawer}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm bg-background-tertiary text-foreground-secondary"
+            aria-label={t("a11y.close")}
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm bg-background-tertiary text-foreground-secondary outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
-            <X size={20} color="currentColor" strokeWidth={2} />
+            <X size={20} color="currentColor" strokeWidth={2} aria-hidden />
           </button>
         </div>
 
@@ -196,7 +221,7 @@ export default function Drawer() {
               {profileImage ? (
                 <Image
                   src={profileImage}
-                  alt="Profile"
+                  alt=""
                   width={100}
                   height={100}
                   className="size-32.5 shrink-0 rounded-full object-cover"
@@ -291,7 +316,7 @@ export default function Drawer() {
           {/* Auth action */}
           <div className="w-full flex items-center mt-3">
             {seller ? (
-              <MainButton
+              <Button
                 variant="error"
                 text={t("logOut")}
                 className="mx-4 mt-3"
@@ -303,7 +328,7 @@ export default function Drawer() {
                 }}
               />
             ) : (
-              <MainButton
+              <Button
                 text={t("logIn")}
                 className="mx-4 mt-3"
                 fullWidth

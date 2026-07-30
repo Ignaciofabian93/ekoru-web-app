@@ -4,7 +4,7 @@ import { useTranslation } from "@/i18n/context";
 import type { Seller } from "@/types/user";
 
 import { NAMESPACE } from "../i18n";
-import { Title } from "@/components/Title/Title";
+import { Title } from "@/components/Primitives/Title";
 import { useBusinessType, useSellerLocation } from "@/hooks/useSellerData";
 
 export function SellerDetails({ seller }: { seller: Seller }) {

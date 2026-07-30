@@ -9,22 +9,49 @@
     "REFURBISHED": "Reconditionné"
   },
   "badges": {
-    "exchangeable": "Échangeable"
+    "exchangeable": "Échangeable",
+    "offer": "Promotion",
+    "discount": "-{{value}} %",
+    "soldOut": "Épuisé",
+    "verified": "Vérifié"
   },
   "meta": {
-    "noBrand": "Sans marque"
+    "noBrand": "Sans marque",
+    "noBusinessName": "Boutique sans nom",
+    "noBusinessType": "Boutique"
+  },
+  "businessType": {
+    "RETAIL": "Ventes",
+    "SERVICES": "Services",
+    "MIXED": "Ventes et services"
+  },
+  "stock": {
+    "lowStock": "Plus que {{value}}",
+    "outOfStock": "Rupture de stock"
+  },
+  "rating": {
+    "label": "{{value}} sur 5",
+    "reviews": "({{value}})"
+  },
+  "quantity": {
+    "label": "Quantité",
+    "decrease": "Réduire la quantité",
+    "increase": "Augmenter la quantité"
   },
   "actions": {
     "like": "Ajouter aux favoris",
     "unlike": "Retirer des favoris",
     "showImpact": "Voir l'impact environnemental",
     "showDetails": "Voir les détails",
-    "flipBack": "Retour au produit"
+    "flipBack": "Retour au produit",
+    "added": "Ajouté"
   },
   "cta": {
     "MARKETPLACE": "Voir les détails",
     "STORE": "Ajouter au panier",
-    "SERVICE": "Réserver"
+    "SERVICE": "Réserver",
+    "BUSINESS": "Voir la boutique",
+    "PROVIDER": "Voir le prestataire"
   },
   "impact": {
     "title": "Impact environnemental",

@@ -5,12 +5,11 @@ import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { useStoresHomeData } from "../hooks/useStores";
 import type { SupportedLanguage } from "@/constants/settings";
-import StoreCard from "@/components/Card/StoreCard/StoreCard";
-import { Title } from "@/components/Title/Title";
-import { Text } from "@/components/Text/Text";
-import { Layout } from "@/components/Layout/Layout";
-import { SectionTitleWrapper } from "./Wrapper";
-import { CardScroller } from "@/components/Card/CardScroller/CardScroller";
+import { Text } from "@/components/Primitives/Text";
+import { Section } from "@/components/Layout";
+import { SectionHeader } from "@/components/Patterns/SectionHeader";
+import { CardScroller } from "@/components/Cards/CardScroller";
+import { StoresCard } from "@/components/Cards";
 
 export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
@@ -46,39 +45,31 @@ export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
   };
 
   return (
-    <Layout.Section gap={3}>
-      <SectionTitleWrapper direction="row" align="start" justify="between">
-        <div>
-          <Title level="h3" size="h4" weight="semibold">
-            {t("stores.title")}
-          </Title>
-          <Text variant="p" size="base">
-            {t("stores.subtitle")}
-          </Text>
-        </div>
-        <Link
-          href={`/${lang}/stores`}
-          className="text-sm font-semibold text-primary underline"
-        >
-          {t("stores.seeAll")}
-        </Link>
-      </SectionTitleWrapper>
+    <Section ariaLabel={t("stores.title")}>
+      <SectionHeader
+        align="start"
+        title={t("stores.title")}
+        subtitle={t("stores.subtitle")}
+        action={
+          <Link
+            href={`/${lang}/stores`}
+            className="shrink-0 rounded-sm text-sm font-semibold text-primary underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {t("stores.seeAll")}
+          </Link>
+        }
+      />
       {sellers && sellers.length > 0 ? (
         <CardScroller
           handleScroll={handleScroll}
+          scrollRef={scrollRef}
           canScrollLeft={canScrollLeft}
           canScrollRight={canScrollRight}
           scrollPreviousAriaLabel={t("stores.scrollPrevious")}
           scrollNextAriaLabel={t("stores.scrollNext")}
         >
           {sellers.map((seller) => (
-            <StoreCard
-              key={seller.id}
-              seller={seller}
-              ctaText={t("stores.seeStore")}
-              verifiedLabel={t("stores.verified")}
-              lang={lang}
-            />
+            <StoresCard key={seller.id} store={seller} lang={lang} />
           ))}
         </CardScroller>
       ) : (
@@ -86,6 +77,6 @@ export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
           {t("stores.noStores")}
         </Text>
       )}
-    </Layout.Section>
+    </Section>
   );
 }

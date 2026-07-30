@@ -1,10 +1,10 @@
 "use client";
-import { useTranslation } from "@/i18n/context";
 import { Store } from "lucide-react";
-import { NAMESPACE } from "../i18n";
 import StoreProductCard from "@/components/Card/StoreProductCard/StoreProductCard";
+import { ResultsGrid } from "@/components/Patterns/ResultsGrid";
+import { useTranslation } from "@/i18n/context";
 import type { StoreProduct } from "@/types/product";
-import { ProductGridListLayout } from "@/components/Layout/ProductListGrid";
+import { NAMESPACE } from "../i18n";
 
 interface Props {
   products: StoreProduct[];
@@ -15,34 +15,16 @@ interface Props {
 export function StoreProductGrid({ products, lang, loading }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
-  if (loading && products.length === 0) {
-    return (
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div
-            key={i}
-            className="bg-background-secondary aspect-3/4 animate-pulse rounded-xl"
-          />
-        ))}
-      </div>
-    );
-  }
-
-  if (products.length === 0) {
-    return (
-      <div className="text-foreground-secondary py-16 text-center">
-        <Store size={48} className="mx-auto mb-4 opacity-30" strokeWidth={1.5} />
-        <p className="font-semibold">{t("results.empty")}</p>
-        <p className="mt-1 text-sm">{t("results.emptyHint")}</p>
-      </div>
-    );
-  }
-
   return (
-    <ProductGridListLayout>
-      {products.map((product) => (
+    <ResultsGrid
+      items={products}
+      loading={loading}
+      emptyIcon={Store}
+      emptyTitle={t("results.empty")}
+      emptyHint={t("results.emptyHint")}
+      renderItem={(product) => (
         <StoreProductCard key={product.id} product={product} lang={lang} />
-      ))}
-    </ProductGridListLayout>
+      )}
+    />
   );
 }

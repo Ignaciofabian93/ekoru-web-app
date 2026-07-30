@@ -1,5 +1,5 @@
 "use client";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import clsx from "clsx";
 import { Check } from "lucide-react";

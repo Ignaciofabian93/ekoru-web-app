@@ -1,6 +1,6 @@
 "use client";
 import { useTranslation } from "@/i18n/context";
-import { type UnderlineTab } from "@/components/UnderlineTabs/UnderlineTabs";
+import { type Tab } from "@/components/Patterns/Tabs";
 import { useMemo } from "react";
 import { useMarketplaceCatalog } from "../hooks/useMarketplaceCatalog";
 import { useProductFilters } from "../hooks/useProductFilters";
@@ -10,7 +10,7 @@ import type { Language } from "../types";
 import { CategoryList } from "./CategoryList";
 import { MarketplaceFilters } from "./MarketplaceFilters";
 import { ProductResults } from "./ProductResults";
-import { Layout } from "@/components/Layout/Layout";
+import { Section } from "@/components/Layout";
 
 const ALL_KEY = "__all__";
 
@@ -46,7 +46,7 @@ export function MarketplaceContent({ lang, language }: Props) {
 
   // Only build the row once departments arrive; an empty list keeps the
   // CategoryList skeleton visible while the catalog loads.
-  const departmentTabs: UnderlineTab[] = departments.length
+  const departmentTabs: Tab[] = departments.length
     ? [
         {
           key: ALL_KEY,
@@ -62,7 +62,7 @@ export function MarketplaceContent({ lang, language }: Props) {
     : [];
 
   return (
-    <Layout.Section>
+    <Section>
       <CategoryList
         tabs={departmentTabs}
         activeKey={ALL_KEY}
@@ -89,6 +89,6 @@ export function MarketplaceContent({ lang, language }: Props) {
         onPageChange={setPage}
         onPageSizeChange={setPageSize}
       />
-    </Layout.Section>
+    </Section>
   );
 }

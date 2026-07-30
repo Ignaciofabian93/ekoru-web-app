@@ -1,7 +1,7 @@
 "use client";
-import MainButton from "@/components/Button/MainButton";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Button } from "@/components/Primitives/Button";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import clsx from "clsx";
@@ -10,7 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { ShippingStage } from "@/types/enums";
 import { NAMESPACE } from "../i18n";
-import { EmptyState } from "./EmptyState";
+import { EmptyState } from "@/components/Feedback/EmptyState";
 
 interface OrderItemPreview {
   name: string;
@@ -120,6 +120,7 @@ export function OrdersList() {
   if (orders.length === 0) {
     return (
       <EmptyState
+        variant="prominent"
         icon={PackageSearch}
         title={t("orders.empty.title")}
         description={t("orders.empty.description")}
@@ -155,6 +156,7 @@ export function OrdersList() {
 
       {filtered.length === 0 ? (
         <EmptyState
+          variant="prominent"
           icon={PackageSearch}
           title={t("orders.empty.title")}
           description={t("orders.empty.description")}
@@ -190,10 +192,7 @@ export function OrdersList() {
 
               <ul className="flex flex-col gap-2 border-y border-border-light py-3">
                 {order.items.map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-3 text-sm text-foreground"
-                  >
+                  <li key={i} className="flex items-center gap-3 text-sm text-foreground">
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-background-secondary text-foreground-tertiary">
                       <PackageCheck size={16} color="currentColor" strokeWidth={1.8} />
                     </div>
@@ -216,18 +215,14 @@ export function OrdersList() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {order.status === "SHIPPED" && (
-                    <MainButton
+                    <Button
                       text={t("orders.card.track")}
                       variant="outline"
                       size="sm"
                       leftIcon={Truck}
                     />
                   )}
-                  <MainButton
-                    text={t("orders.card.viewDetails")}
-                    variant="ghost"
-                    size="sm"
-                  />
+                  <Button text={t("orders.card.viewDetails")} variant="ghost" size="sm" />
                 </div>
               </footer>
             </article>

@@ -1,5 +1,5 @@
 "use client";
-import { Select } from "@/components/Select/Select";
+import { Select } from "@/components/Primitives/Select";
 import { useTranslation } from "@/i18n/context";
 import type { ProductCondition } from "@/types/enums";
 

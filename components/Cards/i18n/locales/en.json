@@ -9,22 +9,49 @@
     "REFURBISHED": "Refurbished"
   },
   "badges": {
-    "exchangeable": "Exchangeable"
+    "exchangeable": "Exchangeable",
+    "offer": "Offer",
+    "discount": "-{{value}}%",
+    "soldOut": "Sold out",
+    "verified": "Verified"
   },
   "meta": {
-    "noBrand": "No brand"
+    "noBrand": "No brand",
+    "noBusinessName": "Unnamed store",
+    "noBusinessType": "Store"
+  },
+  "businessType": {
+    "RETAIL": "Retail",
+    "SERVICES": "Services",
+    "MIXED": "Retail & services"
+  },
+  "stock": {
+    "lowStock": "Only {{value}} left",
+    "outOfStock": "Out of stock"
+  },
+  "rating": {
+    "label": "{{value}} out of 5",
+    "reviews": "({{value}})"
+  },
+  "quantity": {
+    "label": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity"
   },
   "actions": {
     "like": "Add to favorites",
     "unlike": "Remove from favorites",
     "showImpact": "Show environmental impact",
     "showDetails": "Show details",
-    "flipBack": "Back to product"
+    "flipBack": "Back to product",
+    "added": "Added"
   },
   "cta": {
     "MARKETPLACE": "View details",
     "STORE": "Add to cart",
-    "SERVICE": "Book now"
+    "SERVICE": "Book now",
+    "BUSINESS": "See store",
+    "PROVIDER": "See provider"
   },
   "impact": {
     "title": "Environmental impact",

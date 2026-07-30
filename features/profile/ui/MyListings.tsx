@@ -12,7 +12,7 @@ import { useMemo, useState } from "react";
 import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
 import ServiceCard from "@/components/Card/ServiceCard/ServiceCard";
 import { StoreProductCard } from "@/features/stores/ui/StoreProductCard";
-import { LinkButton } from "@/components/Links/LinkButton";
+import { LinkButton } from "@/components/Primitives/LinkButton";
 import { useBusinessProfile, useSellerType } from "@/store/useAuthStore";
 
 import { useMyListings, type ListingStatus } from "../hooks/useMyListings";
@@ -37,7 +37,7 @@ import {
   type ProductMenuAction,
 } from "./ProductActionsMenu";
 import { SectionCard } from "./SectionCard";
-import { UnderlineTabs } from "@/components/UnderlineTabs/UnderlineTabs";
+import { Tabs } from "@/components/Patterns/Tabs";
 
 /** Which catalog a listing row belongs to. A seller sees one or more of these
  *  depending on their account: PERSON → marketplace; business → store and/or
@@ -232,7 +232,7 @@ export function MyListings() {
       <div className="flex flex-col gap-5">
         {/* Kind switch — only when the seller manages more than one catalog (MIXED). */}
         {kinds.length > 1 && (
-          <UnderlineTabs
+          <Tabs
             tabs={kinds.map((k) => ({
               key: k,
               label:

@@ -4,8 +4,8 @@ import { useTranslation } from "@/i18n/context";
 import type { EnvironmentalImpact } from "@/types/product";
 import { formatMaterialAmount, materialLabel } from "@/utils/impact";
 import { NAMESPACE } from "../i18n";
-import { Title } from "@/components/Title/Title";
-import { Text } from "@/components/Text/Text";
+import { Title } from "@/components/Primitives/Title";
+import { Text } from "@/components/Primitives/Text";
 import clsx from "clsx";
 
 export function ProductImpact({ impact }: { impact?: EnvironmentalImpact | null }) {

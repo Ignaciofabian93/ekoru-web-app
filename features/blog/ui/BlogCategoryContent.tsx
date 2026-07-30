@@ -1,7 +1,7 @@
 "use client";
-import { Pagination } from "@/components/Pagination/Pagination";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Pagination } from "@/components/Patterns/Pagination";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 import { Newspaper } from "lucide-react";
 import { Fragment, useState } from "react";
@@ -11,10 +11,10 @@ import { useBlogPosts } from "../hooks/useBlogPosts";
 import { NAMESPACE } from "../i18n";
 import type { Language } from "../types";
 import { humanizeSlug } from "@/utils/formatters";
-import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
-import { BlogInnerHero } from "./BlogInnerHero";
+import type { Crumb } from "@/components/Patterns/Breadcrumb";
+import { BreadcrumbHero } from "@/components/Patterns/BreadcrumbHero";
 import { BlogPostCard } from "./BlogPostCard";
-import { Layout } from "@/components/Layout/Layout";
+import { Container, Section } from "@/components/Layout";
 
 interface Props {
   lang: string;
@@ -43,16 +43,16 @@ export function BlogCategoryContent({ lang, language, slug }: Props) {
 
   return (
     <Fragment>
-      <BlogInnerHero
-        categoryTitle={t("page.categoryTitle", { name })}
-        categorySubtitle={
+      <BreadcrumbHero
+        title={t("page.categoryTitle", { name })}
+        subtitle={
           translation?.description || t("page.categorySubtitle", { name })
         }
         breadCrumbs={breadCrumbs}
       />
 
-      <Layout.Container size="default">
-        <Layout.Section>
+      <Container width="default">
+        <Section>
           {loading && !category ? (
             <div className="flex flex-col gap-3">
               <div className="h-8 w-2/3 animate-pulse rounded-lg bg-background-secondary" />
@@ -116,8 +116,8 @@ export function BlogCategoryContent({ lang, language, slug }: Props) {
               )}
             </section>
           )}
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     </Fragment>
   );
 }

@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { Minus, Plus, Trash2 } from "lucide-react";
 
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 import type { CartItem } from "@/store/useCartStore";
@@ -20,8 +20,7 @@ export function CartItemRow({ item, onIncrease, onDecrease, onRemove }: Props) {
   const formatPrice = useFormatPrice();
   const image = resolveImageUrl(item.image);
   const lineTotal = item.unitPrice * item.quantity;
-  const atMax =
-    typeof item.maxStock === "number" && item.quantity >= item.maxStock;
+  const atMax = typeof item.maxStock === "number" && item.quantity >= item.maxStock;
 
   return (
     <li className="flex gap-3 rounded-xl border border-border-light bg-surface p-3">

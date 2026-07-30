@@ -5,7 +5,7 @@ import { LayoutGrid, Package, Sparkles } from "lucide-react";
 import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 
 interface Props {
   productsCount: number;

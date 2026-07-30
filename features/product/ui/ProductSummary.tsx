@@ -5,9 +5,9 @@ import { useTranslation } from "@/i18n/context";
 import type { Product } from "@/types/product";
 import { NAMESPACE } from "../i18n";
 import { ProductBadges } from "./ProductBadges";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
-import { Badge } from "@/components/Badge/Badge";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
+import { Badge } from "@/components/Primitives/Badge";
 
 export function ProductSummary({ product }: { product: Product }) {
   const { t } = useTranslation(NAMESPACE);

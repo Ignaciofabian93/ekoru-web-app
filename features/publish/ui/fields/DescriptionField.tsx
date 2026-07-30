@@ -1,6 +1,6 @@
 "use client";
-import { Text } from "@/components/Text/Text";
-import TextArea from "@/components/TextArea/TextArea";
+import { Text } from "@/components/Primitives/Text";
+import { TextArea } from "@/components/Primitives/TextArea";
 import { useTranslation } from "@/i18n/context";
 
 export function DescriptionField({

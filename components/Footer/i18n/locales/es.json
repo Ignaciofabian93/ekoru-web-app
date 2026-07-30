@@ -1,0 +1,121 @@
+{
+  "slogan": "Una nueva forma de relacionarnos con las cosas y construir comunidad.",
+  "platform": {
+    "title": "Plataforma",
+    "howItWorks": "¿Cómo funciona?",
+    "forPeople": "Para personas",
+    "forShops": "Para tiendas",
+    "forCompanies": "Para empresas",
+    "ourImpact": "Nuestro impacto"
+  },
+  "resources": {
+    "title": "Recursos",
+    "blog": "Blog",
+    "guides": "Guías",
+    "faq": "Preguntas frecuentes",
+    "helpCenter": "Centro de ayuda",
+    "community": "Comunidad"
+  },
+  "newsletter": {
+    "title": "Newsletter",
+    "description": "Recibe noticias sobre economía circular y novedades de EKORU",
+    "placeholder": "Tu email"
+  },
+  "contact": {
+    "location": "Santiago, Chile",
+    "email": "contacto@ekoru.cl"
+  },
+  "legal": {
+    "copyright": "© 2026 EKORU. Todos los derechos reservados.",
+    "termsAndPolicies": "Términos, políticas y condiciones"
+  },
+  "a11y": {
+    "footerLabel": "Pie de página del sitio",
+    "logoAlt": "EKORU",
+    "closeModal": "Cerrar",
+    "instagram": "Visita a Ekoru en Instagram",
+    "linkedin": "Visita a Ekoru en LinkedIn",
+    "emailInputLabel": "Ingresa tu email para el newsletter",
+    "subscribeLabel": "Suscribirse al newsletter",
+    "locationLabel": "Ubicación de la oficina",
+    "emailContactLabel": "Envíanos un email"
+  },
+  "modal": {
+    "cta": {
+      "downloadLabel": "Descarga la app en",
+      "ios": "App Store",
+      "android": "Google Play",
+      "web": "Continuar en la web"
+    },
+    "howItWorks": {
+      "title": "Cómo funciona EKORU",
+      "description": "EKORU es una plataforma de economía circular que conecta personas, tiendas y empresas para darle una segunda vida a los productos.",
+      "point1": "Publica o encuentra artículos cerca de ti",
+      "point2": "Coordina intercambios, compras o donaciones",
+      "point3": "Reduce residuos y fortalece tu comunidad"
+    },
+    "forPeople": {
+      "title": "EKORU para personas",
+      "description": "Encuentra artículos únicos de segunda mano o dale un nuevo hogar a lo que ya no usas.",
+      "point1": "Compra y vende artículos en tu comunidad",
+      "point2": "Ahorra dinero y reduce tu huella ambiental",
+      "point3": "Conéctate con personas que comparten tus valores"
+    },
+    "forShops": {
+      "title": "EKORU para tiendas",
+      "description": "Amplía tu base de clientes y destácate con sustentabilidad real.",
+      "point1": "Lista inventario de segunda mano o sobrestock",
+      "point2": "Atrae clientes con conciencia ecológica",
+      "point3": "Fortalece tu marca con los valores de la economía circular"
+    },
+    "forCompanies": {
+      "title": "EKORU para empresas",
+      "description": "Convierte tus compromisos de sustentabilidad en impacto medible.",
+      "point1": "Gestiona y redistribuye activos corporativos",
+      "point2": "Ofrece beneficios de economía circular a tus empleados",
+      "point3": "Mide tu impacto ESG con datos reales"
+    },
+    "ourImpact": {
+      "title": "Nuestro impacto",
+      "description": "Cada transacción en EKORU es un paso hacia un mundo más sostenible.",
+      "point1": "Miles de artículos con una segunda vida",
+      "point2": "Emisiones de CO₂ reducidas a través del consumo compartido",
+      "point3": "Una comunidad creciente comprometida con la circularidad"
+    },
+    "blog": {
+      "title": "Blog de EKORU",
+      "description": "Explora artículos sobre economía circular, consejos de sustentabilidad e historias de la comunidad.",
+      "point1": "Ideas para vivir de forma más sostenible",
+      "point2": "Noticias y actualizaciones de la plataforma EKORU",
+      "point3": "Historias de éxito de nuestra comunidad"
+    },
+    "guides": {
+      "title": "Guías",
+      "description": "Aprende a sacar el máximo provecho de EKORU con guías paso a paso.",
+      "point1": "Primeros pasos en EKORU",
+      "point2": "Cómo publicar tu primer artículo",
+      "point3": "Consejos para transacciones seguras y fluidas"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "description": "Encuentra respuestas rápidas a las preguntas más comunes sobre EKORU.",
+      "point1": "Cómo crear y gestionar tu cuenta",
+      "point2": "Pagos, envíos y devoluciones explicados",
+      "point3": "Cómo reportar un problema o disputa"
+    },
+    "helpCenter": {
+      "title": "Centro de ayuda",
+      "description": "Nuestro equipo de soporte está aquí para ayudarte en cada paso.",
+      "point1": "Explora artículos y guías prácticas",
+      "point2": "Chatea con nuestro equipo de soporte",
+      "point3": "Reporta un problema o comparte tu opinión"
+    },
+    "community": {
+      "title": "Comunidad EKORU",
+      "description": "Únete a miles de personas construyendo una economía más circular.",
+      "point1": "Comparte consejos, experiencias y hallazgos",
+      "point2": "Participa en eventos locales de sustentabilidad",
+      "point3": "Conéctate con personas que se preocupan por el planeta"
+    }
+  }
+}

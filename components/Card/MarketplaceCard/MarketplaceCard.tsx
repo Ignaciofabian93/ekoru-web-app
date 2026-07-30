@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import { useState, type ReactNode } from "react";
 
-import EnvironmentalImpactModal from "@/components/EnvironmentalImpactModal/EnvironmentalImpactModal";
+import ImpactModal from "@/components/Cards/ImpactModal";
 import type { MarketplaceCardProduct } from "./types";
 import CardBackSide from "./BackSide";
 import CardFrontSide from "./FrontSide";
@@ -92,7 +92,7 @@ export default function MarketplaceCard({
       {actions && <div className="absolute right-2 top-2 z-20">{actions}</div>}
 
       {product.environmentalImpact && (
-        <EnvironmentalImpactModal
+        <ImpactModal
           isOpen={impactOpen}
           onClose={() => setImpactOpen(false)}
           environmentalImpact={product.environmentalImpact}

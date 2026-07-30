@@ -8,11 +8,12 @@ import {
   KeyRound,
   Leaf,
   PackagePlus,
+  Repeat2,
   Settings,
   UserRoundPen,
   type LucideIcon,
 } from "lucide-react";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
@@ -43,6 +44,12 @@ const ITEMS: AccountItem[] = [
     route: "/profile/orders",
     icon: PackagePlus,
     labelKey: "account.orderHistory",
+  },
+  {
+    key: "exchanges",
+    route: "/profile/exchanges",
+    icon: Repeat2,
+    labelKey: "account.exchanges",
   },
   {
     key: "favorites",

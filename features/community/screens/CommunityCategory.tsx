@@ -1,11 +1,9 @@
 import { type SupportedLanguage } from "@/constants/settings";
-import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 
 import { getCommunityDictionary, NAMESPACE } from "../i18n";
 import { CommunityCategoryContent } from "../ui/CommunityCategoryContent";
-import { Layout } from "@/components/Layout/Layout";
-import { Footer } from "@/features/footer/Footer";
+import { PageLayout } from "@/components/Layout";
 
 export async function CommunityCategory({
   lang,
@@ -19,11 +17,9 @@ export async function CommunityCategory({
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <Layout.Screen>
-        <Navigation lang={lang} />
+      <PageLayout contained={false}>
         <CommunityCategoryContent lang={lang} language={language} slug={slug} />
-        <Footer lang={lang} />
-      </Layout.Screen>
+      </PageLayout>
     </DictionaryProvider>
   );
 }

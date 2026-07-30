@@ -1,11 +1,10 @@
 "use client";
-import { Checkbox } from "@/components/Checkbox/Checkbox";
-import { Input } from "@/components/Input/Input";
-import { Search } from "@/components/Input/Search";
-import { MainButton } from "@/components/Button/MainButton";
-import Modal from "@/components/Modal/Modal";
-import Select from "@/components/Select/Select";
-import { Text } from "@/components/Text/Text";
+import { Checkbox } from "@/components/Primitives/Checkbox";
+import { Input, SearchInput } from "@/components/Primitives/Inputs";
+import { Button } from "@/components/Primitives/Button";
+import { Modal } from "@/components/Overlays/Modal";
+import { Select } from "@/components/Primitives/Select";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import type { ProductCondition } from "@/types/enums";
 import { SlidersHorizontal } from "lucide-react";
@@ -104,7 +103,7 @@ export function MarketplaceFilters({ filters, sort, setField, setSort }: Props) 
   return (
     <section className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
       <div className="flex-1">
-        <Search
+        <SearchInput
           size="md"
           width="full"
           value={filters.search}
@@ -208,13 +207,13 @@ export function MarketplaceFilters({ filters, sort, setField, setSort }: Props) 
 
           {/* Actions */}
           <div className="flex items-center justify-between gap-3 border-t border-border-light pt-5">
-            <MainButton
+            <Button
               text={t("filters.clear")}
               variant="ghost"
               size="md"
               onPress={clear}
             />
-            <MainButton
+            <Button
               text={t("filters.apply")}
               variant="primary"
               size="md"

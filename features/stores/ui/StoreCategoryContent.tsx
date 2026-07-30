@@ -6,12 +6,12 @@ import { Fragment, useMemo } from "react";
 import { useProductsByStoreCategory } from "../hooks/useProductsByStoreCategory";
 import { NAMESPACE } from "../i18n";
 import type { StoreCatalogSubItem } from "../types";
-import { StoreInnerHero } from "./StoreInnerHero";
+import { BreadcrumbHero } from "@/components/Patterns/BreadcrumbHero";
 import { StoreFilters } from "./StoreFilters";
 import { StoreProductResults } from "./StoreProductResults";
 import { StoreSubCategoryList } from "./StoreSubCategoryList";
-import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
-import { Layout } from "@/components/Layout/Layout";
+import type { Crumb } from "@/components/Patterns/Breadcrumb";
+import { Container, Section } from "@/components/Layout";
 
 interface Props {
   lang: SupportedLanguage;
@@ -56,14 +56,14 @@ export function StoreCategoryContent({ lang, slug }: Props) {
 
   return (
     <Fragment>
-      <StoreInnerHero
-        categoryTitle={t("page.categoryTitle", { name: categoryName })}
-        categorySubtitle={t("page.categorySubtitle", { name: categoryName })}
+      <BreadcrumbHero
+        title={t("page.categoryTitle", { name: categoryName })}
+        subtitle={t("page.categorySubtitle", { name: categoryName })}
         breadCrumbs={breadCrumbs}
       />
 
-      <Layout.Container size="default">
-        <Layout.Section>
+      <Container width="default">
+        <Section>
           <StoreSubCategoryList
             lang={lang}
             categorySlug={slug}
@@ -87,8 +87,8 @@ export function StoreCategoryContent({ lang, slug }: Props) {
             onPageChange={handlePageChange}
             onPageSizeChange={handlePageSizeChange}
           />
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     </Fragment>
   );
 }

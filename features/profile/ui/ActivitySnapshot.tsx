@@ -1,6 +1,5 @@
 "use client";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { StatTile } from "@/components/Patterns/StatTile";
 import { useTranslation } from "@/i18n/context";
 import { useParams } from "next/navigation";
 import { Activity, Coins, Heart, TrendingUp } from "lucide-react";
@@ -34,25 +33,14 @@ export function ActivitySnapshot() {
       subtitle={t("dashboard.activity.subtitle")}
     >
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {stats.map((s) => {
-          const Icon = s.icon;
-          return (
-            <div
-              key={s.key}
-              className="flex flex-col gap-1.5 rounded-xl bg-background-secondary/60 p-3.5"
-            >
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-surface text-primary">
-                <Icon size={16} color="currentColor" strokeWidth={2} />
-              </div>
-              <Title level="h3" size="h5" weight="bold">
-                {s.value.toLocaleString(lang)}
-              </Title>
-              <Text variant="span" size="xs" color="tertiary">
-                {t(`dashboard.activity.${s.key}`)}
-              </Text>
-            </div>
-          );
-        })}
+        {stats.map((s) => (
+          <StatTile
+            key={s.key}
+            icon={s.icon}
+            value={s.value.toLocaleString(lang)}
+            label={t(`dashboard.activity.${s.key}`)}
+          />
+        ))}
       </div>
     </SectionCard>
   );

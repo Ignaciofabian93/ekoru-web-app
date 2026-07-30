@@ -1,7 +1,7 @@
 "use client";
-import MainButton from "@/components/Button/MainButton";
-import Input from "@/components/Input/Input";
-import { Text } from "@/components/Text/Text";
+import { Button } from "@/components/Primitives/Button";
+import { Input } from "@/components/Primitives/Inputs";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import { Check, KeyRound, Lock, Save, ShieldCheck } from "lucide-react";
 import { useChangePassword } from "../hooks/useChangePassword";
@@ -116,7 +116,7 @@ export function ChangePasswordForm() {
       </SectionCard>
 
       <div className="w-full max-w-6xl mt-12 mx-auto">
-        <MainButton
+        <Button
           text={
             loading
               ? t("changePassword.actions.saving")

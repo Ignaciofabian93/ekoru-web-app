@@ -1,6 +1,6 @@
 "use client";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 

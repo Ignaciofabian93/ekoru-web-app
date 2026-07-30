@@ -1,17 +1,17 @@
 "use client";
 import { useTranslation } from "@/i18n/context";
-import { Title } from "@/components/Title/Title";
+import { Title } from "@/components/Primitives/Title";
 import { MessagesSquare } from "lucide-react";
 import { Fragment } from "react";
 
 import { useCommunitySubcategory } from "../hooks/useCommunitySubcategory";
 import { NAMESPACE } from "../i18n";
 import type { Language } from "../types";
-import { DetailEmptyState } from "./DetailEmptyState";
-import { CommunityInnerHero } from "./CommunityInnerHero";
+import { EmptyState } from "@/components/Feedback/EmptyState";
+import { BreadcrumbHero } from "@/components/Patterns/BreadcrumbHero";
 import { humanizeSlug } from "@/utils/formatters";
-import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
-import { Layout } from "@/components/Layout/Layout";
+import type { Crumb } from "@/components/Patterns/Breadcrumb";
+import { Container, Section } from "@/components/Layout";
 
 interface Props {
   lang: string;
@@ -45,40 +45,38 @@ export function CommunitySubcategoryContent({
 
   return (
     <Fragment>
-      <CommunityInnerHero
-        categoryTitle={t("page.categoryTitle", { name })}
-        categorySubtitle={
-          translation?.description || t("page.categorySubtitle", { name })
-        }
+      <BreadcrumbHero
+        title={t("page.categoryTitle", { name })}
+        subtitle={translation?.description || t("page.categorySubtitle", { name })}
         breadCrumbs={breadCrumbs}
       />
 
-      <Layout.Container size="default">
-        <Layout.Section>
+      <Container width="default">
+        <Section>
           {loading && !subcategory ? (
             <div className="flex flex-col gap-3">
               <div className="h-8 w-2/3 animate-pulse rounded-lg bg-background-secondary" />
               <div className="h-4 w-full animate-pulse rounded bg-background-secondary" />
             </div>
           ) : !translation ? (
-            <DetailEmptyState
+            <EmptyState
               title={t("detail.notFound")}
-              hint={t("detail.notFoundHint")}
+              description={t("detail.notFoundHint")}
             />
           ) : (
             <section className="flex flex-col gap-4">
               <Title level="h2" size="h5">
                 {t("detail.postsTitle")}
               </Title>
-              <DetailEmptyState
+              <EmptyState
                 title={t("detail.noPosts")}
-                hint={t("detail.noPostsHint")}
+                description={t("detail.noPostsHint")}
                 icon={MessagesSquare}
               />
             </section>
           )}
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     </Fragment>
   );
 }

@@ -1,9 +1,9 @@
 "use client";
-import MainButton from "@/components/Button/MainButton";
-import Input from "@/components/Input/Input";
-import Modal from "@/components/Modal/Modal";
-import TextArea from "@/components/TextArea/TextArea";
-import { Text } from "@/components/Text/Text";
+import { Button } from "@/components/Primitives/Button";
+import { Input } from "@/components/Primitives/Inputs";
+import { Modal } from "@/components/Overlays/Modal";
+import { TextArea } from "@/components/Primitives/TextArea";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import { DollarSign, Save } from "lucide-react";
 import { useState } from "react";
@@ -89,15 +89,19 @@ export function EditProductDialog({
         />
 
         <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <MainButton
+          <Button
             text={t("dashboard.listings.edit.cancel")}
             variant="outline"
             size="md"
             onPress={onClose}
             disabled={loading}
           />
-          <MainButton
-            text={loading ? t("dashboard.listings.edit.saving") : t("dashboard.listings.edit.save")}
+          <Button
+            text={
+              loading
+                ? t("dashboard.listings.edit.saving")
+                : t("dashboard.listings.edit.save")
+            }
             variant="primary"
             size="md"
             leftIcon={Save}

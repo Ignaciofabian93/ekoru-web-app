@@ -1,7 +1,7 @@
 "use client";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
-import MainButton from "@/components/Button/MainButton";
+import { Button } from "@/components/Primitives/Button";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 
 export function Logout() {
@@ -9,7 +9,7 @@ export function Logout() {
   const { handleLogout, loading } = useLogout();
 
   return (
-    <MainButton
+    <Button
       text={t("logout")}
       variant="error"
       size="md"

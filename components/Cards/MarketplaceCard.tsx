@@ -11,12 +11,7 @@ export function MarketplaceCard({
   priority: boolean;
 }) {
   return (
-    <Card
-      key={product.id}
-      orientation="vertical"
-      hasBackSide
-      href={`/${lang}/product/${product.id}`}
-    >
+    <Card orientation="vertical" hasBackSide href={`/${lang}/product/${product.id}`}>
       <Card.FrontSide>
         <Card.Header
           coverImageString={product.images?.[0] ?? ""}
@@ -33,6 +28,7 @@ export function MarketplaceCard({
           brand={product.brand}
           price={product.price}
           isExchangeable={product.isExchangeable}
+          exchangeRedirectUrl={`/${lang}/product/${product.id}?mode=exchange`}
         />
         <Card.Footer itemType="MARKETPLACE" url={`/${lang}/product/${product.id}`} />
       </Card.FrontSide>

@@ -1,8 +1,8 @@
 "use client";
-import MainButton from "@/components/Button/MainButton";
-import Input from "@/components/Input/Input";
-import Select from "@/components/Select/Select";
-import TextArea from "@/components/TextArea/TextArea";
+import { Button } from "@/components/Primitives/Button";
+import { Input } from "@/components/Primitives/Inputs";
+import { Select } from "@/components/Primitives/Select";
+import { TextArea } from "@/components/Primitives/TextArea";
 import { useTranslation } from "@/i18n/context";
 import { Building2, Globe2, MapPin, Phone, Save, Tags, UserRound } from "lucide-react";
 import { useEditProfile } from "../hooks/useEditProfile";
@@ -211,7 +211,7 @@ export function EditProfileForm() {
       </SectionCard>
 
       <div className="w-full max-w-6xl mt-12 mx-auto">
-        <MainButton
+        <Button
           text={loading ? t("editProfile.actions.saving") : t("editProfile.actions.save")}
           leftIcon={Save}
           loading={loading}

@@ -6,13 +6,13 @@ import { useProductsByDepartmentCategory } from "../hooks/useProductsByDepartmen
 import { NAMESPACE } from "../i18n";
 import type { CatalogProductCategory } from "../types";
 import { CategoryList } from "./CategoryList";
-import { InnerHero } from "./InnerHero";
+import { BreadcrumbHero } from "@/components/Patterns/BreadcrumbHero";
 import { MarketplaceFilters } from "./MarketplaceFilters";
 import { ProductResults } from "./ProductResults";
-import { type UnderlineTab } from "@/components/UnderlineTabs/UnderlineTabs";
+import { type Tab } from "@/components/Patterns/Tabs";
 import { humanizeSlug } from "@/utils/formatters";
-import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
-import { Layout } from "@/components/Layout/Layout";
+import type { Crumb } from "@/components/Patterns/Breadcrumb";
+import { Container, Section } from "@/components/Layout";
 
 interface Props {
   lang: SupportedLanguage;
@@ -61,7 +61,7 @@ export function DepartmentCategoryContent({ lang, departmentSlug, categorySlug }
     { label: categoryName },
   ];
 
-  const tabs: UnderlineTab[] = productCategories.map((pc) => ({
+  const tabs: Tab[] = productCategories.map((pc) => ({
     key: pc.slug,
     label: pc.name,
     href: `/${lang}/marketplace/${departmentSlug}/${categorySlug}/${pc.slug}`,
@@ -69,14 +69,14 @@ export function DepartmentCategoryContent({ lang, departmentSlug, categorySlug }
 
   return (
     <Fragment>
-      <InnerHero
-        categoryTitle={t("page.categoryTitle", { name: categoryName })}
-        categorySubtitle={t("page.categorySubtitle", { name: categoryName })}
+      <BreadcrumbHero
+        title={t("page.categoryTitle", { name: categoryName })}
+        subtitle={t("page.categorySubtitle", { name: categoryName })}
         breadCrumbs={breadCrumbs}
       />
 
-      <Layout.Container size="default">
-        <Layout.Section>
+      <Container width="default">
+        <Section>
           <CategoryList
             tabs={tabs}
             remeasureKey={lang}
@@ -101,8 +101,8 @@ export function DepartmentCategoryContent({ lang, departmentSlug, categorySlug }
             onPageChange={handlePageChange}
             onPageSizeChange={handlePageSizeChange}
           />
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     </Fragment>
   );
 }

@@ -13,9 +13,7 @@ import { ExchangeHighlight } from "../ui/ExchangeHighlight";
 import { ServicesHighlight } from "../ui/ServicesHighlight";
 import { AdBannerSection } from "../ui/AdBannerSection";
 import { StoreProductsHighlight } from "../ui/StoreProductsHighlight";
-import { Layout } from "@/components/Layout/Layout";
-import { Navigation } from "@/features/navigation/Navigation";
-import { Footer } from "@/features/footer/Footer";
+import { PageLayout } from "@/components/Layout";
 
 export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
   const [dict, marketplaceDict] = await Promise.all([
@@ -27,22 +25,17 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
     <DictionaryProvider
       dictionary={{ [NAMESPACE]: dict, [MARKETPLACE_NAMESPACE]: marketplaceDict }}
     >
-      <Layout.Screen>
-        <Navigation lang={lang} />
-        <HomeHero lang={lang} />
-        <Layout.Container size="default">
-          <CategoriesSection lang={lang} />
-          <StatsSection />
-          <AdBannerSection lang={lang} variant="teal" domain="stores" />
-          <StoresHighlight lang={lang} />
-          <StoreProductsHighlight lang={lang} />
-          <AdBannerSection lang={lang} variant="amber" domain="services" />
-          <ServicesHighlight lang={lang} />
-          <AdBannerSection lang={lang} variant="green" domain="marketplace" />
-          <ExchangeHighlight lang={lang} />
-        </Layout.Container>
-        <Footer lang={lang} />
-      </Layout.Screen>
+      <PageLayout hero={<HomeHero lang={lang} />} width="default">
+        <CategoriesSection lang={lang} />
+        <StatsSection />
+        <AdBannerSection lang={lang} variant="teal" domain="stores" />
+        <StoresHighlight lang={lang} />
+        <StoreProductsHighlight lang={lang} />
+        <AdBannerSection lang={lang} variant="amber" domain="services" />
+        <ServicesHighlight lang={lang} />
+        <AdBannerSection lang={lang} variant="green" domain="marketplace" />
+        <ExchangeHighlight lang={lang} />
+      </PageLayout>
     </DictionaryProvider>
   );
 }

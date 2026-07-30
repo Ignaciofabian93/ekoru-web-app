@@ -1,12 +1,16 @@
 "use client";
 import { Info } from "lucide-react";
 
-import MainButton from "@/components/Button/MainButton";
-import { Text } from "@/components/Text/Text";
+import { Button } from "@/components/Primitives/Button";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import { useCart } from "../hooks/useCart";
 
-export function MidPointNotice({ onContactSeller }: { onContactSeller: (sellerId?: string) => void }) {
+export function MidPointNotice({
+  onContactSeller,
+}: {
+  onContactSeller: (sellerId?: string) => void;
+}) {
   const { t } = useTranslation("cart");
   const { items } = useCart();
   const sellerId = items[0]?.sellerId;
@@ -22,7 +26,7 @@ export function MidPointNotice({ onContactSeller }: { onContactSeller: (sellerId
       <Text variant="small" color="secondary">
         {t("checkout.shipping.midPoint.note")}
       </Text>
-      <MainButton
+      <Button
         variant="secondary_outline"
         size="sm"
         text={t("checkout.shipping.midPoint.cta")}

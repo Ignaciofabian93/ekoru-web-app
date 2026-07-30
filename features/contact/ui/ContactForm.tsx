@@ -1,9 +1,9 @@
 "use client";
 import { useMemo } from "react";
-import MainButton from "@/components/Button/MainButton";
-import Input from "@/components/Input/Input";
-import { Select, type Option } from "@/components/Select/Select";
-import TextArea from "@/components/TextArea/TextArea";
+import { Button } from "@/components/Primitives/Button";
+import { Input } from "@/components/Primitives/Inputs";
+import { Select, type Option } from "@/components/Primitives/Select";
+import { TextArea } from "@/components/Primitives/TextArea";
 import { useTranslation } from "@/i18n/context";
 import { isValidEmail } from "@/utils/inputValidations";
 import { Mail, Send, Tag, User } from "lucide-react";
@@ -80,7 +80,7 @@ export function ContactForm() {
         rows={6}
       />
 
-      <MainButton
+      <Button
         text={t("form.submit")}
         type="submit"
         loading={loading}

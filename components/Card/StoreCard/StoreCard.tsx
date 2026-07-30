@@ -7,12 +7,12 @@ import {
   getProfileImage,
   getSellerLocation,
 } from "@/utils/sellerInformation";
-import { Badge } from "@/components/Badge/Badge";
+import { Badge } from "@/components/Primitives/Badge";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useNavigation } from "@/hooks/useNavigation";
 import clsx from "clsx";
 import tokens from "@/design/tokens";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 
 function getInitials(name?: string): string {
   if (!name) return "";

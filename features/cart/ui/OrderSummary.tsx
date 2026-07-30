@@ -1,6 +1,6 @@
 "use client";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import type { Currency } from "@/constants/settings";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
@@ -48,10 +48,16 @@ export function OrderSummary({
       </Text>
 
       <dl className="flex flex-col gap-2 border-t border-border-light pt-3">
-        <Row label={t("checkout.summary.subtotal")} value={formatPrice(subtotal, currency)} />
+        <Row
+          label={t("checkout.summary.subtotal")}
+          value={formatPrice(subtotal, currency)}
+        />
         <Row label={t("checkout.summary.shipping")} value={shippingLabel} />
         {typeof taxAmount === "number" && taxAmount > 0 ? (
-          <Row label={t("checkout.summary.tax")} value={formatPrice(taxAmount, currency)} />
+          <Row
+            label={t("checkout.summary.tax")}
+            value={formatPrice(taxAmount, currency)}
+          />
         ) : null}
       </dl>
 

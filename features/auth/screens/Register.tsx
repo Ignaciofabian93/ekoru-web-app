@@ -1,10 +1,9 @@
-import { EkoruLogo } from "@/components/EkoruLogo/EkoruLogo";
 import { type SupportedLanguage } from "@/constants/settings";
 import { DictionaryProvider } from "@/i18n/context";
-
 import { getAuthDictionary, NAMESPACE } from "../i18n";
 import { AuthShell } from "../ui/AuthShell";
 import { RegisterForm } from "../ui/RegisterForm";
+import { EkoruLogo } from "@/components/Primitives/EkoruLogo";
 
 export async function Register({ lang }: { lang: SupportedLanguage }) {
   const dict = await getAuthDictionary(lang);
@@ -13,7 +12,7 @@ export async function Register({ lang }: { lang: SupportedLanguage }) {
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
       <AuthShell
         lang={lang}
-        logo={<EkoruLogo lang={lang} width={4096} height={996} className="w-48" />}
+        logo={<EkoruLogo className="w-50" enableRedirection={false} />}
         subtitleKey="page.registerCta"
         footer={{
           textKey: "actions.hasAccount",

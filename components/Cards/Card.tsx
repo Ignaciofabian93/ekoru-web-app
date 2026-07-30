@@ -2,22 +2,28 @@
 import { resolveImageUrl } from "@/utils/resolveImage";
 import clsx from "clsx";
 import {
+  BadgeCheck,
   ChevronRight,
   Droplets,
   Heart,
   ImageOff,
   Info,
   Leaf,
+  MapPin,
+  Minus,
+  Plus,
   Repeat,
   RotateCw,
+  Star,
   X,
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { Text } from "../Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
 import Link from "next/link";
 import type {
+  BrandAccent,
   CardBackBodyProps,
   CardBackFooterProps,
   CardBackHeaderProps,
@@ -25,13 +31,14 @@ import type {
   CardBodyProps,
   CardFlipButtonProps,
   CardFooterProps,
+  CardFooterState,
   CardFrontSideProps,
   CardHeaderProps,
   CardProps,
   Orientation,
 } from "./types/Card.types";
 import { CardProvider, useCard } from "./context/Card.context";
-import { Button } from "../Primitives/Button/Button";
+import { Button } from "../Primitives/Button";
 import {
   useDisplayName,
   useInitials,
@@ -169,9 +176,63 @@ function Description() {
   );
 }
 
-// Used on store products to select the amount of items
-// depending on product stock
-// function QuantityStepper() {}
+const STEP_BUTTON =
+  "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md border border-border bg-surface text-foreground transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border disabled:hover:text-foreground";
+
+/**
+ * Picks how many units of a store product to add, from 0 up to the available
+ * stock. Clamping lives here so a caller can't drive the value out of range.
+ *
+ * `relative z-20` lifts it above the front face's stretched link, so the
+ * buttons take their own clicks instead of navigating.
+ */
+function QuantityStepper({
+  value,
+  max,
+  onChange,
+}: {
+  value: number;
+  max: number;
+  onChange: (next: number) => void;
+}) {
+  const { t } = useTranslation(NAMESPACE);
+  const set = (next: number) => onChange(Math.max(0, Math.min(max, next)));
+
+  return (
+    <div
+      role="group"
+      aria-label={t("quantity.label")}
+      className="relative z-20 flex items-center gap-1.5"
+    >
+      <button
+        type="button"
+        aria-label={t("quantity.decrease")}
+        disabled={value <= 0}
+        onClick={() => set(value - 1)}
+        className={STEP_BUTTON}
+      >
+        <Minus size={13} strokeWidth={2.5} aria-hidden />
+      </button>
+      {/* aria-live so the new count is announced after a press — the buttons
+          keep focus, so nothing else would surface the change. */}
+      <span
+        aria-live="polite"
+        className="min-w-5 text-center font-sans text-sm font-bold text-foreground tabular-nums"
+      >
+        {value}
+      </span>
+      <button
+        type="button"
+        aria-label={t("quantity.increase")}
+        disabled={value >= max}
+        onClick={() => set(value + 1)}
+        className={STEP_BUTTON}
+      >
+        <Plus size={13} strokeWidth={2.5} aria-hidden />
+      </button>
+    </div>
+  );
+}
 
 // A small round control that toggles the flip. Reused by the front (Header)
 // and back faces so both sides flip the same way.
@@ -287,34 +348,151 @@ const CONDITION_STYLES: Record<string, string> = {
   FOR_PARTS: "bg-red-50 text-red-600",
 };
 
+const ACCENT_PANEL: Record<BrandAccent, string> = {
+  primary: "bg-linear-to-br from-primary-dark to-primary",
+  secondary: "bg-linear-to-br from-secondary-dark to-secondary",
+  amber: "bg-linear-to-br from-amber-800 to-amber-500",
+};
+
+const ACCENT_TEXT: Record<BrandAccent, string> = {
+  primary: "text-primary-dark",
+  secondary: "text-secondary-dark",
+  amber: "text-amber-700",
+};
+
+/**
+ * The seller-card counterpart to a product photo: a tinted, softly patterned
+ * panel with the logo on a light tile, so brand marks of any shape or color
+ * stay legible instead of being cropped like a photo.
+ */
+function BrandPanel({
+  logo,
+  imageAlt,
+  initials,
+  accent,
+  isVerified,
+  priority,
+}: {
+  logo?: string;
+  imageAlt: string;
+  initials?: string;
+  accent: BrandAccent;
+  isVerified: boolean;
+  priority?: boolean;
+}) {
+  const { orientation } = useCard();
+  const { t } = useTranslation(NAMESPACE);
+  const [logoError, setLogoError] = useState<boolean>(false);
+
+  return (
+    <figure
+      className={clsx(
+        "relative m-0 flex shrink-0 flex-col items-center justify-between overflow-hidden",
+        HEADER_CLASS[orientation],
+        ACCENT_PANEL[accent],
+      )}
+    >
+      {/* Soft depth, not content — kept out of the a11y tree. */}
+      <div aria-hidden className="absolute -top-6 -left-8 size-24 rounded-full bg-white/10" />
+      <div aria-hidden className="absolute -right-6 bottom-2 size-16 rounded-full bg-white/10" />
+
+      <div className="relative z-10 flex w-full flex-1 items-center justify-center px-4 pt-4 pb-8">
+        <div className="flex size-20 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-black/5">
+          {logo && !logoError ? (
+            <Image
+              src={logo}
+              alt={imageAlt}
+              width={80}
+              height={80}
+              priority={priority}
+              onError={() => setLogoError(true)}
+              className="size-full object-cover"
+            />
+          ) : (
+            <span className={clsx("text-xl font-bold", ACCENT_TEXT[accent])}>
+              {initials}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {isVerified && (
+        <div className="absolute inset-x-0 bottom-2 z-10 flex justify-center">
+          <span
+            className={clsx(
+              "inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold shadow-md",
+              ACCENT_TEXT[accent],
+            )}
+          >
+            <BadgeCheck size={13} strokeWidth={2.5} aria-hidden />
+            {t("badges.verified")}
+          </span>
+        </div>
+      )}
+    </figure>
+  );
+}
+
 function Header({
   coverImageString,
   imageAlt,
   priority,
   condition,
   isExchangeable = false,
+  hasOffer = false,
+  discountPercent,
+  isSoldOut = false,
   isLikeEnabled = true,
   isLiked = false,
   flipLabel,
+  isProduct = true,
+  isVerified = false,
+  initials,
+  accent = "secondary",
 }: CardHeaderProps) {
   const { orientation, hasBackSide } = useCard();
   const { t } = useTranslation(NAMESPACE);
   const cover = resolveImageUrl(coverImageString);
   const [imageError, setImageError] = useState<boolean>(false);
 
+  // Seller cards show a brand panel instead of a photo, and carry none of the
+  // product chrome (condition, offer, favorite, flip).
+  if (!isProduct) {
+    return (
+      <BrandPanel
+        logo={cover}
+        imageAlt={imageAlt}
+        initials={initials}
+        accent={accent}
+        isVerified={isVerified}
+        priority={priority}
+      />
+    );
+  }
+
   return (
     // `relative` is required: <Image fill> is absolutely positioned and would
     // otherwise size itself against the nearest positioned ancestor further up.
-    <div className={clsx("relative shrink-0 overflow-hidden", HEADER_CLASS[orientation])}>
+    <div
+      className={clsx(
+        "relative shrink-0 overflow-hidden",
+        HEADER_CLASS[orientation],
+        "bg-slate-600",
+      )}
+    >
       {cover && !imageError ? (
         <Image
           src={cover}
           alt={imageAlt}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={priority}
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 240px"
           onError={() => setImageError(true)}
-          className="object-cover transition-transform duration-300"
+          className={clsx(
+            "h-full w-full object-cover transition-transform duration-300",
+            // Sold-out stock is still browsable, just visually de-emphasised.
+            isSoldOut && "opacity-45 saturate-50",
+          )}
           loading="eager"
         />
       ) : (
@@ -338,11 +516,29 @@ function Header({
         </span>
       )}
 
-      {isExchangeable && (
-        <span className="pointer-events-none absolute top-2 left-2 z-20 inline-flex items-center gap-1 rounded-md bg-gray-700 px-2 py-0.5 text-xs font-medium text-white shadow-sm">
-          <Repeat size={11} strokeWidth={2.5} />
-          {t("badges.exchangeable")}
-        </span>
+      {/* Stacked so a product can carry more than one status at once (an
+          exchangeable item on promotion, say) without the badges overlapping. */}
+      {(isExchangeable || hasOffer || isSoldOut) && (
+        <div className="pointer-events-none absolute top-2 left-2 z-20 flex flex-col items-start gap-1">
+          {hasOffer && (
+            <span className="inline-flex items-center rounded-md bg-danger px-2 py-0.5 text-xs font-semibold text-white shadow-sm">
+              {discountPercent
+                ? t("badges.discount", { value: String(Math.round(discountPercent)) })
+                : t("badges.offer")}
+            </span>
+          )}
+          {isSoldOut && (
+            <span className="inline-flex items-center rounded-md bg-gray-800 px-2 py-0.5 text-xs font-semibold text-white shadow-sm">
+              {t("badges.soldOut")}
+            </span>
+          )}
+          {isExchangeable && (
+            <span className="inline-flex items-center gap-1 rounded-md bg-gray-700 px-2 py-0.5 text-xs font-medium text-white shadow-sm">
+              <Repeat size={11} strokeWidth={2.5} />
+              {t("badges.exchangeable")}
+            </span>
+          )}
+        </div>
       )}
 
       {/* Controls sit above the stretched link (z-20 > z-10) so they take their
@@ -482,27 +678,89 @@ function Body({
   brand,
   name,
   price,
+  hasOffer = false,
+  offerPrice,
   isExchangeable = false,
   interests,
-  onProposeExchange,
+  exchangeRedirectUrl,
+  averageRating,
+  reviewsNumber,
+  stock,
+  isLowStock = false,
+  quantity,
+  onQuantityChange,
+  maxQuantity,
+  businessName,
+  businessType,
+  location,
+  description,
 }: CardBodyProps) {
   const { t } = useTranslation(NAMESPACE);
   const formatPrice = useFormatPrice();
+  const { navigateTo } = useNavigation();
+
+  // An "offer" only counts when it actually undercuts the list price —
+  // otherwise the struck-through original would read as nonsense.
+  const onOffer =
+    hasOffer && typeof offerPrice === "number" && typeof price === "number" && offerPrice < price;
+  const hasRating = typeof averageRating === "number" && averageRating > 0;
+  const isSoldOut = typeof stock === "number" && stock <= 0;
+
+
+  // Seller cards describe a business, not a listing: no brand, price or
+  // exchange row, but a location and a blurb instead.
+  if (!isProduct) {
+    return (
+      <div className="flex flex-1 flex-col justify-start gap-1 px-3.5 py-2.5">
+        <Text variant="p" size="base" weight="bold" color="default" numberOfLines={1}>
+          {businessName ?? t("meta.noBusinessName")}
+        </Text>
+        <Text
+          variant="span"
+          size="xs"
+          weight="bold"
+          color="secondary"
+          className="uppercase"
+        >
+          {businessType ? t(`businessType.${businessType}`) : t("meta.noBusinessType")}
+        </Text>
+
+        {location && (
+          <div className="mt-0.5 flex items-center gap-1 text-foreground-secondary">
+            <MapPin size={13} strokeWidth={2} aria-hidden className="shrink-0" />
+            <Text variant="span" size="xs" color="secondary" numberOfLines={1}>
+              {location}
+            </Text>
+          </div>
+        )}
+
+        {description && (
+          <Text
+            variant="p"
+            size="sm"
+            color="secondary"
+            className="mt-1"
+            numberOfLines={2}
+          >
+            {description}
+          </Text>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-1 flex-col justify-start gap-2 px-3 py-2">
       <div>
-        {isProduct && (
-          <Text
-            variant="span"
-            size="xs"
-            weight="bold"
-            color="secondary"
-            className="uppercase"
-          >
-            {brand ?? t("meta.noBrand")}
-          </Text>
-        )}
+        <Text
+          variant="span"
+          size="xs"
+          weight="bold"
+          color="secondary"
+          className="uppercase"
+        >
+          {brand ?? t("meta.noBrand")}
+        </Text>
         <Text
           variant="span"
           size="sm"
@@ -514,32 +772,115 @@ function Body({
         </Text>
       </div>
 
-      <div className="flex h-8 w-full items-center justify-between gap-2">
-        {price && (
-          <Text variant="span" size="lg" color="primary" weight="bold">
-            {formatPrice(price)}
+      {hasRating && (
+        <div className="flex items-center gap-1">
+          <Star
+            size={12}
+            strokeWidth={1.5}
+            aria-hidden
+            className="shrink-0 fill-amber-400 text-amber-400"
+          />
+          <Text
+            variant="span"
+            size="xs"
+            weight="bold"
+            color="default"
+            aria-label={t("rating.label", { value: averageRating.toFixed(1) })}
+          >
+            {averageRating.toFixed(1)}
           </Text>
+          {typeof reviewsNumber === "number" && reviewsNumber > 0 && (
+            <Text variant="span" size="xs" color="tertiary">
+              {t("rating.reviews", { value: String(reviewsNumber) })}
+            </Text>
+          )}
+        </div>
+      )}
+
+      {(isSoldOut || isLowStock) && (
+        <Text variant="span" size="xs" weight="bold" color={isSoldOut ? "error" : "warning"}>
+          {isSoldOut
+            ? t("stock.outOfStock")
+            : t("stock.lowStock", { value: String(stock ?? 0) })}
+        </Text>
+      )}
+
+      <div className="flex h-8 w-full items-center justify-between gap-2">
+        {onOffer ? (
+          <div className="flex items-baseline gap-1.5">
+            <Text variant="span" size="lg" color="primary" weight="bold">
+              {formatPrice(offerPrice)}
+            </Text>
+            <Text variant="span" size="xs" color="tertiary" className="line-through">
+              {formatPrice(price)}
+            </Text>
+          </div>
+        ) : (
+          price && (
+            <Text variant="span" size="lg" color="primary" weight="bold">
+              {formatPrice(price)}
+            </Text>
+          )
         )}
-        {isExchangeable && (
-          <ExchangeButton interests={interests} onPropose={onProposeExchange} />
+        {isExchangeable && exchangeRedirectUrl && (
+          <ExchangeButton
+            interests={interests}
+            onPropose={() => navigateTo({ route: exchangeRedirectUrl })}
+          />
         )}
       </div>
+
+      {/* Its own row: the card is narrow, so the stepper would crowd the price
+          if it shared that line. Hidden with no stock — the CTA already carries
+          the sold-out message. The checks are inline because narrowing through
+          an aliased boolean doesn't hold for destructured params. */}
+      {typeof quantity === "number" &&
+        typeof maxQuantity === "number" &&
+        maxQuantity > 0 &&
+        onQuantityChange && (
+          <div className="flex w-full items-center justify-center">
+            <QuantityStepper
+              value={quantity}
+              max={maxQuantity}
+              onChange={onQuantityChange}
+            />
+          </div>
+        )}
     </div>
   );
 }
 
-function Footer({ itemType, url }: CardFooterProps) {
+function Footer({
+  itemType,
+  url,
+  onAction,
+  state = "default",
+  disabled = false,
+  loading,
+}: CardFooterProps) {
   const { t } = useTranslation(NAMESPACE);
   const { navigateTo } = useNavigation();
+
+  // The CTA label is chosen by item type — t(`cta.MARKETPLACE`) / `cta.STORE` /
+  // etc. — unless a state overrides it.
+  const LABEL: Record<CardFooterState, string> = {
+    default: t(`cta.${itemType}`),
+    added: t("actions.added"),
+    unavailable: t("stock.outOfStock"),
+  };
+
   // `relative z-20` lifts the footer's controls above the stretched link so
-  // they receive their own clicks rather than triggering navigation. The CTA
-  // label is chosen by item type — t(`cta.MARKETPLACE`) / `cta.STORE` / etc.
+  // they receive their own clicks rather than triggering navigation.
   return (
     <div className="relative z-20 mt-auto flex items-center gap-2 px-2 pb-2">
       <Button
-        variant="primary"
-        label={t(`cta.${itemType}`)}
-        onClick={() => navigateTo({ route: url })}
+        variant={state === "added" ? "success" : "primary"}
+        text={LABEL[state]}
+        fullWidth
+        size="sm"
+        disabled={disabled || state === "unavailable"}
+        loading={loading}
+        onPress={onAction ?? (() => navigateTo({ route: url }))}
       />
     </div>
   );
@@ -601,7 +942,7 @@ const ORIENTATION_SIZE: Record<Orientation, string> = {
   // Vertical height is content-driven (image + body); horizontal is a fixed
   // banner height that the faces fill via `h-full`.
   vertical: "min-w-0",
-  horizontal: "h-[170px]",
+  horizontal: "min-w-80 h-[170px]",
 };
 
 const WRAPPER_SIZE: Record<Orientation, string> = {

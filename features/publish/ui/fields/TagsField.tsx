@@ -1,6 +1,6 @@
 "use client";
-import Input from "@/components/Input/Input";
-import { Text } from "@/components/Text/Text";
+import { Input } from "@/components/Primitives/Inputs";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import { X } from "lucide-react";
 import { useState } from "react";
@@ -45,8 +45,7 @@ export function TagsField({
     if (!exists) onChange([...value, tag]);
   };
 
-  const removeAt = (index: number) =>
-    onChange(value.filter((_, i) => i !== index));
+  const removeAt = (index: number) => onChange(value.filter((_, i) => i !== index));
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" || e.key === ",") {

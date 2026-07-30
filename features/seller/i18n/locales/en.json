@@ -4,7 +4,11 @@
     "notFound": "Seller not found",
     "notFoundHint": "This seller profile is not available right now.",
     "error": "Could not load this seller",
-    "errorHint": "Please check your connection and try again."
+    "errorHint": "Please check your connection and try again.",
+    "authRequired": "Sign in to view this seller",
+    "authRequiredHint": "Seller profiles are only visible to members. Sign in or create a free account to browse their listings.",
+    "signIn": "Sign in",
+    "createAccount": "Create account"
   },
   "breadcrumbs": {
     "marketplace": "Marketplace",

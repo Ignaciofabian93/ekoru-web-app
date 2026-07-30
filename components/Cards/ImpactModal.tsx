@@ -3,7 +3,7 @@ import { Droplets, Info, Leaf, Sprout } from "lucide-react";
 import { useTranslation } from "@/i18n/context";
 import type { EnvironmentalImpact } from "@/types/product";
 import { formatMaterialAmount, materialLabel, materialPercentage } from "@/utils/impact";
-import Modal from "../Overlays/Modal/Modal";
+import { Modal } from "../Overlays/Modal";
 
 export interface ImpactModalProps {
   isOpen?: boolean;

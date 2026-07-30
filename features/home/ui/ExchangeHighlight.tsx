@@ -6,11 +6,9 @@ import { type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import { useExchangeableProducts } from "../hooks/useExchangeableProducts";
 import { NAMESPACE } from "../i18n";
-import { Title } from "@/components/Title/Title";
-import { Text } from "@/components/Text/Text";
-import { Layout } from "@/components/Layout/Layout";
-import { SectionTitleWrapper } from "./Wrapper";
-import { CardScroller } from "@/components/Card/CardScroller/CardScroller";
+import { Section } from "@/components/Layout";
+import { SectionHeader } from "@/components/Patterns/SectionHeader";
+import { CardScroller } from "@/components/Cards/CardScroller";
 
 export function ExchangeHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
@@ -50,26 +48,24 @@ export function ExchangeHighlight({ lang }: { lang: SupportedLanguage }) {
   if (!loading && products.length === 0) return null;
 
   return (
-    <Layout.Section>
-      <SectionTitleWrapper direction="row" align="start" justify="between">
-        <div>
-          <Title level="h3" size="h4" weight="semibold">
-            {t("exchange.title")}
-          </Title>
-          <Text variant="p" size="base">
-            {t("exchange.subtitle")}
-          </Text>
-        </div>
-        <Link
-          href={`/${lang}/marketplace?exchangeable=true`}
-          className="text-sm font-semibold text-primary underline"
-        >
-          {t("exchange.seeAll")}
-        </Link>
-      </SectionTitleWrapper>
+    <Section ariaLabel={t("exchange.title")}>
+      <SectionHeader
+        align="start"
+        title={t("exchange.title")}
+        subtitle={t("exchange.subtitle")}
+        action={
+          <Link
+            href={`/${lang}/marketplace?exchangeable=true`}
+            className="shrink-0 rounded-sm text-sm font-semibold text-primary underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {t("exchange.seeAll")}
+          </Link>
+        }
+      />
 
       <CardScroller
         handleScroll={handleScroll}
+        scrollRef={scrollRef}
         canScrollLeft={canScrollLeft}
         canScrollRight={canScrollRight}
         scrollPreviousAriaLabel={t("exchange.scrollPrevious")}
@@ -88,6 +84,6 @@ export function ExchangeHighlight({ lang }: { lang: SupportedLanguage }) {
               </div>
             ))}
       </CardScroller>
-    </Layout.Section>
+    </Section>
   );
 }

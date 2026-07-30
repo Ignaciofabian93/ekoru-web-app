@@ -12,10 +12,9 @@ import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { useCategories } from "../hooks/useCategories";
 import type { SupportedLanguage } from "@/constants/settings";
-import { Title } from "@/components/Title/Title";
-import { Text } from "@/components/Text/Text";
-import { Layout } from "@/components/Layout/Layout";
-import { SectionTitleWrapper } from "./Wrapper";
+import { Text } from "@/components/Primitives/Text";
+import { Grid, Section } from "@/components/Layout";
+import { SectionHeader } from "@/components/Patterns/SectionHeader";
 
 type SectionId = "marketplace" | "stores" | "services" | "community" | "blog";
 
@@ -97,17 +96,10 @@ export function CategoriesSection({ lang }: { lang: SupportedLanguage }) {
   ];
 
   return (
-    <Layout.Section>
-      <SectionTitleWrapper>
-        <Title level="h3" size="h4" weight="semibold" align="center">
-          {t("categories.title")}
-        </Title>
-        <Text variant="p" size="base" align="center">
-          {t("categories.subtitle")}
-        </Text>
-      </SectionTitleWrapper>
+    <Section ariaLabel={t("categories.title")}>
+      <SectionHeader title={t("categories.title")} subtitle={t("categories.subtitle")} />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+      <Grid cols={1} sm={2} lg={6} gap={3}>
         {sections.map(({ id, Icon, href, gradient, span, loading, categories }) => (
           <div
             key={id}
@@ -157,7 +149,7 @@ export function CategoriesSection({ lang }: { lang: SupportedLanguage }) {
             </div>
           </div>
         ))}
-      </div>
-    </Layout.Section>
+      </Grid>
+    </Section>
   );
 }

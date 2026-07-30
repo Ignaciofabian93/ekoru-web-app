@@ -7,7 +7,7 @@ import type { Language } from "../types";
 import { StoreCategoryList } from "./StoreCategoryList";
 import { StoreFilters } from "./StoreFilters";
 import { StoreProductResults } from "./StoreProductResults";
-import { Layout } from "@/components/Layout/Layout";
+import { Section } from "@/components/Layout";
 
 interface Props {
   lang: string;
@@ -39,7 +39,7 @@ export function StoresContent({ lang, language }: Props) {
   const { products, pageInfo, loading } = useStoreProducts(productsQuery);
 
   return (
-    <Layout.Section>
+    <Section>
       <StoreCategoryList lang={lang} categories={categories} loading={catalogLoading} />
 
       <StoreFilters
@@ -59,6 +59,6 @@ export function StoresContent({ lang, language }: Props) {
         onPageChange={setPage}
         onPageSizeChange={setPageSize}
       />
-    </Layout.Section>
+    </Section>
   );
 }

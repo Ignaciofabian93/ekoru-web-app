@@ -4,12 +4,12 @@ import { useTranslation } from "@/i18n/context";
 import { Fragment } from "react";
 import { useProductsByProductCategory } from "../hooks/useProductsByProductCategory";
 import { NAMESPACE } from "../i18n";
-import { InnerHero } from "./InnerHero";
+import { BreadcrumbHero } from "@/components/Patterns/BreadcrumbHero";
 import { MarketplaceFilters } from "./MarketplaceFilters";
 import { ProductResults } from "./ProductResults";
 import { humanizeSlug } from "@/utils/formatters";
-import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
-import { Layout } from "@/components/Layout/Layout";
+import type { Crumb } from "@/components/Patterns/Breadcrumb";
+import { Container, Section } from "@/components/Layout";
 
 interface Props {
   lang: SupportedLanguage;
@@ -58,14 +58,14 @@ export function ProductCategoryContent({
 
   return (
     <Fragment>
-      <InnerHero
-        categoryTitle={t("page.categoryTitle", { name: productCategoryName })}
-        categorySubtitle={t("page.categorySubtitle", { name: productCategoryName })}
+      <BreadcrumbHero
+        title={t("page.categoryTitle", { name: productCategoryName })}
+        subtitle={t("page.categorySubtitle", { name: productCategoryName })}
         breadCrumbs={breadCrumbs}
       />
 
-      <Layout.Container size="default">
-        <Layout.Section>
+      <Container width="default">
+        <Section>
           <MarketplaceFilters
             filters={filters}
             sort={sort}
@@ -83,8 +83,8 @@ export function ProductCategoryContent({
             onPageChange={handlePageChange}
             onPageSizeChange={handlePageSizeChange}
           />
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     </Fragment>
   );
 }

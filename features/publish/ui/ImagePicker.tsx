@@ -1,5 +1,5 @@
 "use client";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import clsx from "clsx";
 import { ImagePlus, X } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
@@ -27,7 +27,10 @@ export function ImagePicker({
 
   // Derive preview URLs from the files, and revoke them when the set changes
   // or the component unmounts so the object URLs don't leak.
-  const previews = useMemo(() => images.map((file) => URL.createObjectURL(file)), [images]);
+  const previews = useMemo(
+    () => images.map((file) => URL.createObjectURL(file)),
+    [images],
+  );
 
   useEffect(() => {
     return () => previews.forEach((url) => URL.revokeObjectURL(url));

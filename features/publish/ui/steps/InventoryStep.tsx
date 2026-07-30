@@ -34,10 +34,7 @@ export function InventoryStep({ form, setField, invalid }: InventoryStepProps) {
           invalid={invalid.stock}
         />
       </div>
-      <HasOfferField
-        value={form.hasOffer}
-        onChange={(v) => setField("hasOffer", v)}
-      />
+      <HasOfferField value={form.hasOffer} onChange={(v) => setField("hasOffer", v)} />
       {form.hasOffer && (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <OfferPriceField
@@ -55,10 +52,7 @@ export function InventoryStep({ form, setField, invalid }: InventoryStepProps) {
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <SkuField value={form.sku} onChange={(v) => setField("sku", v)} />
-        <BarcodeField
-          value={form.barcode}
-          onChange={(v) => setField("barcode", v)}
-        />
+        <BarcodeField value={form.barcode} onChange={(v) => setField("barcode", v)} />
       </div>
     </div>
   );

@@ -5,17 +5,19 @@ import { OtherFromSeller } from "./OtherFromSeller";
 import { ProductActions } from "./ProductActions";
 import { ProductDescription } from "./ProductDescription";
 import { ProductDetails } from "./ProductDetails";
-import { ProductGallery } from "./ProductGallery";
+import { ProductGallery } from "@/components/Patterns/ProductGallery";
 import { ProductImpact } from "./ProductImpact";
 import { ProductError, ProductLoading, ProductNotFound } from "./ProductStatus";
 import { ProductSummary } from "./ProductSummary";
 import { ProductTrust } from "./ProductTrust";
 import { SellerCard } from "@/components/Card/SellerCard/SellerCard";
-import Breadcrumb, { type Crumb } from "@/components/BreadCrumbs/Breadcrumb";
+import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
 import { useNavigation } from "@/hooks/useNavigation";
-import { Layout } from "@/components/Layout/Layout";
+import { Section } from "@/components/Layout";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
+import { useSearchParams } from "next/navigation";
+import { ExchangeProposal } from "./ExchangeProposal";
 
 interface Props {
   id: string;
@@ -26,10 +28,16 @@ export function ProductContent({ id, lang }: Props) {
   const { product, loading, error } = useProduct(id);
   const { navigateTo } = useNavigation();
   const { t } = useTranslation(NAMESPACE);
+  const searchParams = useSearchParams();
 
   if (loading && !product) return <ProductLoading />;
   if (error) return <ProductError lang={lang} />;
   if (!product) return <ProductNotFound lang={lang} />;
+
+  // Entered via the card's "propose an exchange" CTA (`?mode=exchange`). Only
+  // honored for products the seller actually marked exchangeable.
+  const isExchangeMode =
+    searchParams.get("mode") === "exchange" && product.isExchangeable;
 
   const { productCategory } = product;
 
@@ -67,14 +75,35 @@ export function ProductContent({ id, lang }: Props) {
         crumbColor="default"
         chevronColor="default"
       />
-      <Layout.Section>
+      <Section>
         <div className="grid gap-6 md:grid-cols-2 md:gap-10">
-          <ProductGallery name={product.name} images={product.images ?? []} />
+          <ProductGallery
+            images={product.images ?? []}
+            labels={{
+              imageAlt: (index, total) =>
+                t("gallery.imageAlt", {
+                  name: product.name,
+                  index: String(index),
+                  total: String(total),
+                }),
+              noImage: t("gallery.noImage"),
+              previous: t("gallery.previous"),
+              next: t("gallery.next"),
+              thumbnailAlt: (index) => t("gallery.thumbnailAlt", { index: String(index) }),
+              goToImage: (index) => t("gallery.goToImage", { index: String(index) }),
+            }}
+          />
 
           <div className="flex flex-col gap-5">
             <ProductSummary product={product} />
-            <ProductActions lang={lang} product={product} />
-            <ProductTrust />
+            {isExchangeMode ? (
+              <ExchangeProposal product={product} lang={lang} />
+            ) : (
+              <>
+                <ProductActions lang={lang} product={product} />
+                <ProductTrust />
+              </>
+            )}
           </div>
         </div>
 
@@ -105,7 +134,7 @@ export function ProductContent({ id, lang }: Props) {
             excludeProductId={product.id}
           />
         )}
-      </Layout.Section>
+      </Section>
     </div>
   );
 }

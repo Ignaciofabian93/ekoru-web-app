@@ -1,11 +1,9 @@
 import { type SupportedLanguage } from "@/constants/settings";
-import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 
 import { getStoresDictionary, NAMESPACE } from "../i18n";
 import { StoreSubCategoryContent } from "../ui/StoreSubCategoryContent";
-import { Layout } from "@/components/Layout/Layout";
-import { Footer } from "@/features/footer/Footer";
+import { PageLayout } from "@/components/Layout";
 
 interface Props {
   lang: SupportedLanguage;
@@ -13,24 +11,18 @@ interface Props {
   subCategorySlug: string;
 }
 
-export async function StoreSubCategory({
-  lang,
-  categorySlug,
-  subCategorySlug,
-}: Props) {
+export async function StoreSubCategory({ lang, categorySlug, subCategorySlug }: Props) {
   const dict = await getStoresDictionary(lang);
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <Layout.Screen>
-        <Navigation lang={lang} />
+      <PageLayout contained={false}>
         <StoreSubCategoryContent
           lang={lang}
           categorySlug={categorySlug}
           subCategorySlug={subCategorySlug}
         />
-        <Footer lang={lang} />
-      </Layout.Screen>
+      </PageLayout>
     </DictionaryProvider>
   );
 }

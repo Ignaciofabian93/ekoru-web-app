@@ -4,8 +4,8 @@ import { useTranslation } from "@/i18n/context";
 import type { StoreProduct } from "@/types/product";
 import { NAMESPACE } from "../i18n";
 import { StoreProductBadges } from "./StoreProductBadges";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 
 export function StoreProductSummary({ product }: { product: StoreProduct }) {
   const formatPrice = useFormatPrice();

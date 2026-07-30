@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { NAMESPACE } from "@/features/marketplace/i18n";
 import type { MarketplaceCardProduct } from "./types";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import { AddToCartButton, ExchangeButton } from "./CTA";
 
 const CONDITION_STYLES: Record<string, string> = {

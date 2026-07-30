@@ -97,9 +97,7 @@ export function SellerProductCard({ product, lang }: Props) {
           <Heart
             size={15}
             strokeWidth={2}
-            className={
-              liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"
-            }
+            className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
           />
         </button>
       </div>

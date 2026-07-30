@@ -12,7 +12,7 @@ import clsx from "clsx";
 import { useState, type ReactNode } from "react";
 
 import ProductImpactBack from "@/components/Card/shared/ProductImpactBack";
-import EnvironmentalImpactModal from "@/components/EnvironmentalImpactModal/EnvironmentalImpactModal";
+import ImpactModal from "@/components/Cards/ImpactModal";
 import { NAMESPACE } from "../i18n";
 import type { StoreListProduct } from "../types";
 
@@ -69,7 +69,7 @@ export function StoreProductCard({ product, lang, actions }: Props) {
       {actions && <div className="absolute right-2 top-2 z-20">{actions}</div>}
 
       {product.environmentalImpact && (
-        <EnvironmentalImpactModal
+        <ImpactModal
           isOpen={impactOpen}
           onClose={() => setImpactOpen(false)}
           environmentalImpact={product.environmentalImpact}
@@ -169,7 +169,9 @@ function FrontSide({
               <Heart
                 size={15}
                 strokeWidth={2}
-                className={liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"}
+                className={
+                  liked ? "fill-red-500 text-red-500" : "text-foreground-secondary"
+                }
               />
             </button>
             <button
@@ -205,7 +207,9 @@ function FrontSide({
               </span>
             </>
           ) : (
-            <span className="text-sm font-bold text-primary">{formatPrice(product.price)}</span>
+            <span className="text-sm font-bold text-primary">
+              {formatPrice(product.price)}
+            </span>
           )}
         </div>
 

@@ -16,8 +16,8 @@ import {
   useInitials,
   useSellerLocation,
 } from "@/hooks/useSellerData";
-import { Title } from "@/components/Title/Title";
-import { Badge } from "@/components/Badge/Badge";
+import { Title } from "@/components/Primitives/Title";
+import { Badge } from "@/components/Primitives/Badge";
 
 const LOCALE_MAP: Record<SupportedLanguage, string> = {
   es: "es-CL",

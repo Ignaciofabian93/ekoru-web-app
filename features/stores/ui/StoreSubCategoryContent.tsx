@@ -5,12 +5,12 @@ import { Fragment } from "react";
 
 import { useProductsByStoreSubCategory } from "../hooks/useProductsByStoreSubCategory";
 import { NAMESPACE } from "../i18n";
-import { StoreInnerHero } from "./StoreInnerHero";
+import { BreadcrumbHero } from "@/components/Patterns/BreadcrumbHero";
 import { StoreFilters } from "./StoreFilters";
 import { StoreProductResults } from "./StoreProductResults";
 import { humanizeSlug } from "@/utils/formatters";
-import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
-import { Layout } from "@/components/Layout/Layout";
+import type { Crumb } from "@/components/Patterns/Breadcrumb";
+import { Container, Section } from "@/components/Layout";
 
 interface Props {
   lang: SupportedLanguage;
@@ -18,11 +18,7 @@ interface Props {
   subCategorySlug: string;
 }
 
-export function StoreSubCategoryContent({
-  lang,
-  categorySlug,
-  subCategorySlug,
-}: Props) {
+export function StoreSubCategoryContent({ lang, categorySlug, subCategorySlug }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
   const {
@@ -53,14 +49,14 @@ export function StoreSubCategoryContent({
 
   return (
     <Fragment>
-      <StoreInnerHero
-        categoryTitle={t("page.categoryTitle", { name: subCategoryName })}
-        categorySubtitle={t("page.categorySubtitle", { name: subCategoryName })}
+      <BreadcrumbHero
+        title={t("page.categoryTitle", { name: subCategoryName })}
+        subtitle={t("page.categorySubtitle", { name: subCategoryName })}
         breadCrumbs={breadCrumbs}
       />
 
-      <Layout.Container size="default">
-        <Layout.Section>
+      <Container width="default">
+        <Section>
           <StoreFilters
             filters={filters}
             sort={sort}
@@ -78,8 +74,8 @@ export function StoreSubCategoryContent({
             onPageChange={handlePageChange}
             onPageSizeChange={handlePageSizeChange}
           />
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     </Fragment>
   );
 }

@@ -2,7 +2,7 @@
 import { ShieldCheck, Truck, Undo2 } from "lucide-react";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import clsx from "clsx";
 
 export function ProductTrust() {

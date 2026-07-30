@@ -1,6 +1,6 @@
 "use client";
-import Input from "@/components/Input/Input";
-import { Text } from "@/components/Text/Text";
+import { Input } from "@/components/Primitives/Inputs";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 
 /** Optional percentage of recycled content in the product (0–100). */

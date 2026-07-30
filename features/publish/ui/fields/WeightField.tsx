@@ -1,6 +1,6 @@
 "use client";
-import Input from "@/components/Input/Input";
-import { Select } from "@/components/Select/Select";
+import { Input } from "@/components/Primitives/Inputs";
+import { Select } from "@/components/Primitives/Select";
 import { useTranslation } from "@/i18n/context";
 import type { WeightUnit } from "@/types/enums";
 

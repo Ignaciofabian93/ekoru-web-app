@@ -1,6 +1,6 @@
 "use client";
-import Input from "@/components/Input/Input";
-import { Select } from "@/components/Select/Select";
+import { Input } from "@/components/Primitives/Inputs";
+import { Select } from "@/components/Primitives/Select";
 import { useTranslation } from "@/i18n/context";
 
 /** Optional warranty flag (yes/no) for a store product; picking "yes" reveals

@@ -1,5 +1,5 @@
 "use client";
-import Input from "@/components/Input/Input";
+import { Input } from "@/components/Primitives/Inputs";
 import { useTranslation } from "@/i18n/context";
 
 /** Discounted price shown when an offer is active. Must be below the regular

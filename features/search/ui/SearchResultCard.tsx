@@ -37,8 +37,7 @@ export function SearchResultCard({
   const formatPrice = useFormatPrice();
   const [imageError, setImageError] = useState(false);
   const cover = resolveImageUrl(item.images?.[0]);
-  const offerPrice =
-    typeof item.offerPrice === "number" ? item.offerPrice : null;
+  const offerPrice = typeof item.offerPrice === "number" ? item.offerPrice : null;
   const basePrice = typeof item.price === "number" ? item.price : null;
   const showsOffer = item.hasOffer && offerPrice !== null;
   const price = showsOffer ? offerPrice : basePrice;

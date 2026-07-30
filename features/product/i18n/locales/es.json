@@ -129,5 +129,26 @@
     "loading": "Cargando otros productos…",
     "scrollPrevious": "Ver productos anteriores",
     "scrollNext": "Ver más productos"
+  },
+  "exchange": {
+    "title": "Proponer un intercambio",
+    "receive": "Tú recibes",
+    "yourOffer": "Tu oferta",
+    "noProducts": "Aún no tienes publicaciones activas para ofrecer.",
+    "theirValue": "Su artículo",
+    "yourValue": "Tu artículo",
+    "even": "Intercambio parejo — sin diferencia",
+    "youAdd": "Agregarías {{amount}} para equilibrarlo",
+    "theyAdd": "Agregarían {{amount}} para equilibrarlo",
+    "notesLabel": "Mensaje (opcional)",
+    "notesPlaceholder": "Añade una nota para el vendedor…",
+    "send": "Enviar propuesta",
+    "sending": "Enviando…",
+    "sent": "Propuesta enviada",
+    "sentHint": "El vendedor será notificado y podrá aceptar o rechazar tu oferta.",
+    "loginRequired": "Inicia sesión para proponer un intercambio.",
+    "loginCta": "Iniciar sesión",
+    "ownProduct": "Esta es tu propia publicación.",
+    "stubNotice": "Las propuestas de intercambio aún no están activas — esto es una vista previa del flujo."
   }
 }

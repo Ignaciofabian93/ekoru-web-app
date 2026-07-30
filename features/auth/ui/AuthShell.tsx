@@ -3,8 +3,8 @@ import Link from "next/link";
 import { type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import type { AuthKey } from "../i18n";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 
 type FooterLink = {
   textKey: AuthKey;

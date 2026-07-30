@@ -26,6 +26,7 @@ export type DrawerDictionary = {
   environmentalImpact: string;
   logOut: string;
   logIn: string;
+  a11y: { close: string };
   sellerType: Record<string, string>;
 };
 

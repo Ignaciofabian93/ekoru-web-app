@@ -1,5 +1,5 @@
 import type { SupportedLanguage } from "@/constants/settings";
-import type { ProductCondition } from "@/types/enums";
+import type { BusinessType, ProductCondition } from "@/types/enums";
 import type { ItemType } from "../types/Card.types";
 
 const loaders = {
@@ -18,9 +18,37 @@ export type CardsDictionary = {
   condition: Record<ProductCondition, string>;
   badges: {
     exchangeable: string;
+    /** Generic promotion badge, used when no percentage is known. */
+    offer: string;
+    /** e.g. "-{{value}}%" — pass the whole-number discount as `value`. */
+    discount: string;
+    soldOut: string;
+    /** Pill on the seller brand panel. */
+    verified: string;
   };
   meta: {
     noBrand: string;
+    noBusinessName: string;
+    noBusinessType: string;
+  };
+  /** Keyed by BusinessType so a new enum member fails to compile until translated. */
+  businessType: Record<BusinessType, string>;
+  stock: {
+    /** e.g. "Only {{value}} left" — pass the remaining count as `value`. */
+    lowStock: string;
+    outOfStock: string;
+  };
+  rating: {
+    /** Accessible name, e.g. "{{value}} out of 5". */
+    label: string;
+    /** e.g. "({{value}})" — pass the review count as `value`. */
+    reviews: string;
+  };
+  quantity: {
+    /** Accessible name of the stepper group. */
+    label: string;
+    decrease: string;
+    increase: string;
   };
   actions: {
     like: string;
@@ -31,6 +59,8 @@ export type CardsDictionary = {
     showDetails: string;
     /** Back → front flip control. */
     flipBack: string;
+    /** Confirmation flashed on the CTA after a successful add-to-cart. */
+    added: string;
   };
   /** Primary call-to-action label, chosen by the card's ItemType. */
   cta: Record<ItemType, string>;

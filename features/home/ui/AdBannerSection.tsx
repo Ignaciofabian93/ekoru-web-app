@@ -1,5 +1,5 @@
 "use client";
-import AdBanner, { type AdBannerVariant } from "@/components/AdBanner/AdBanner";
+import { AdBanner, type AdBannerVariant } from "@/components/Patterns/AdBanner/AdBanner";
 import type { SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
 import { useTranslation } from "@/i18n/context";

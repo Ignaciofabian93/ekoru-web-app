@@ -1,5 +1,4 @@
 import { type SupportedLanguage } from "@/constants/settings";
-import { Navigation } from "@/features/navigation/Navigation";
 import {
   getMarketplaceDictionary,
   NAMESPACE as MARKETPLACE_NAMESPACE,
@@ -10,9 +9,9 @@ import {
 } from "@/features/stores/i18n";
 import { DictionaryProvider } from "@/i18n/context";
 import { getProfileDictionary, NAMESPACE } from "../i18n";
-import { ScreenShell } from "@/components/Layout/ScreenShell";
 import { FavoritesGrid } from "../ui/FavoritesGrid";
 import { ProfileHeader } from "../ui/ProfileHeader";
+import { PageLayout } from "@/components/Layout";
 
 export async function FavoritesScreen({ lang }: { lang: SupportedLanguage }) {
   // Favorites render the real marketplace/store cards, which translate from
@@ -31,11 +30,9 @@ export async function FavoritesScreen({ lang }: { lang: SupportedLanguage }) {
         [STORE_NAMESPACE]: storeDict,
       }}
     >
-      <ScreenShell lang={lang} nav={<Navigation lang={lang} />} hero={<ProfileHeader />}>
-        <div className="mx-auto w-full max-w-6xl">
-          <FavoritesGrid />
-        </div>
-      </ScreenShell>
+      <PageLayout hero={<ProfileHeader />} width="default">
+        <FavoritesGrid />
+      </PageLayout>
     </DictionaryProvider>
   );
 }

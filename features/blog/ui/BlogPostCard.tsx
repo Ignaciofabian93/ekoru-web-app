@@ -2,8 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Newspaper } from "lucide-react";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { resolveImageUrl } from "@/utils/resolveImage";
 import type { BlogPost } from "../types";
 

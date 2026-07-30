@@ -15,12 +15,20 @@ import { DictionaryProvider } from "@/i18n/context";
 import { ApolloWrapper } from "@/lib/apollo/ApolloWrapper";
 import { DrawerProvider } from "@/context/DrawerContext";
 import Drawer from "@/components/Drawer/Drawer";
-import { ToastProvider } from "@/components/Toast/ToastProvider";
+import { ToastProvider } from "@/components/Feedback/Toast";
 import {
   getDrawerDictionary,
   NAMESPACE as DRAWER_NAMESPACE,
 } from "@/components/Drawer/i18n";
+import {
+  getNavigationDictionary,
+  NAMESPACE as NAVIGATION_NAMESPACE,
+} from "@/components/Navigation/i18n";
 import { getCardsDictionary, NAMESPACE as CARD_NAMESPACE } from "@/components/Cards/i18n";
+import {
+  getFooterDictionary,
+  NAMESPACE as FOOTER_NAMESPACE,
+} from "@/components/Footer/i18n";
 
 const cabin = Cabin({
   variable: "--font-cabin",
@@ -129,10 +137,12 @@ export default async function RootLayout({
 
   if (!hasLocale(lang)) notFound();
 
-  const [dict, drawerDict, cardsDict] = await Promise.all([
+  const [dict, drawerDict, navigationDict, cardsDict, footerDict] = await Promise.all([
     getDictionary(lang),
     getDrawerDictionary(lang),
+    getNavigationDictionary(lang),
     getCardsDictionary(lang),
+    getFooterDictionary(lang),
   ]);
 
   return (
@@ -146,7 +156,9 @@ export default async function RootLayout({
             <DictionaryProvider
               dictionary={{
                 [DRAWER_NAMESPACE]: drawerDict,
+                [NAVIGATION_NAMESPACE]: navigationDict,
                 [CARD_NAMESPACE]: cardsDict,
+                [FOOTER_NAMESPACE]: footerDict,
               }}
             >
               <DrawerProvider>

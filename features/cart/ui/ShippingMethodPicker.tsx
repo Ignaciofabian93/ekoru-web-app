@@ -1,8 +1,8 @@
 "use client";
 import clsx from "clsx";
 
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 import type { ShippingMethod } from "@/types/checkout";
 
@@ -44,7 +44,9 @@ export function ShippingMethodPicker({ value, onChange }: Props) {
                 <div
                   className={clsx(
                     "flex size-10 shrink-0 items-center justify-center rounded-lg",
-                    selected ? "bg-primary text-on-primary" : "bg-background-secondary text-primary",
+                    selected
+                      ? "bg-primary text-on-primary"
+                      : "bg-background-secondary text-primary",
                   )}
                 >
                   <Icon size={20} strokeWidth={2} />

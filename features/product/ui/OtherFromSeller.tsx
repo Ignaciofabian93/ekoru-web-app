@@ -3,9 +3,9 @@ import Link from "next/link";
 import { useTranslation } from "@/i18n/context";
 import { useSellerProducts } from "../hooks/useSellerProducts";
 import { NAMESPACE } from "../i18n";
-import { Title } from "@/components/Title/Title";
+import { Title } from "@/components/Primitives/Title";
 import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
-import { CardScroller } from "@/components/Card/CardScroller/CardScroller";
+import { CardScroller } from "@/components/Cards/CardScroller";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface Props {
@@ -95,6 +95,7 @@ export function OtherFromSeller({ lang, sellerId, excludeProductId }: Props) {
       </div>
       <CardScroller
         handleScroll={handleScroll}
+        scrollRef={scrollRef}
         canScrollLeft={canScrollLeft}
         canScrollRight={canScrollRight}
         scrollNextAriaLabel={t("otherProducts.scrollNext")}

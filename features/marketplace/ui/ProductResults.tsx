@@ -1,6 +1,6 @@
 "use client";
-import { Pagination } from "@/components/Pagination/Pagination";
-import { Text } from "@/components/Text/Text";
+import { Pagination } from "@/components/Patterns/Pagination";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { PAGE_SIZE_OPTIONS, type MarketplaceProduct, type PageInfo } from "../types";

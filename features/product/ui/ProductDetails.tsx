@@ -3,8 +3,8 @@ import { useTranslation } from "@/i18n/context";
 import type { SupportedLanguage } from "@/constants/settings";
 import type { Product } from "@/types/product";
 import { NAMESPACE } from "../i18n";
-import { Title } from "@/components/Title/Title";
-import { Text } from "@/components/Text/Text";
+import { Title } from "@/components/Primitives/Title";
+import { Text } from "@/components/Primitives/Text";
 import clsx from "clsx";
 
 const LOCALE_MAP: Record<SupportedLanguage, string> = {

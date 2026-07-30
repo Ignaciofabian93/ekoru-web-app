@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
 import { type SupportedLanguage } from "@/constants/settings";
-import { Navigation } from "@/features/navigation/Navigation";
+import { PageLayout } from "@/components/Layout";
 import { DictionaryProvider } from "@/i18n/context";
 
 import { getCartDictionary, NAMESPACE } from "../i18n";
@@ -12,12 +12,11 @@ export async function Confirmation({ lang }: { lang: SupportedLanguage }) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <main className="flex flex-1 flex-col">
-        <Navigation lang={lang} />
+      <PageLayout contained={false}>
         <Suspense>
           <ConfirmationScreen lang={lang} />
         </Suspense>
-      </main>
+      </PageLayout>
     </DictionaryProvider>
   );
 }

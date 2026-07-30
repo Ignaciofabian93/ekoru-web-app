@@ -1,9 +1,9 @@
 "use client";
 import clsx from "clsx";
-import MainButton from "@/components/Button/MainButton";
-import Input from "@/components/Input/Input";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Button } from "@/components/Primitives/Button";
+import { Input } from "@/components/Primitives/Inputs";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 import { type BusinessType, type SellerType } from "@/types/enums";
 import { isMinLength, isValidEmail } from "@/utils/inputValidations";
@@ -338,7 +338,7 @@ export function RegisterForm() {
         {/* Navigation */}
         <div className="flex items-center gap-3">
           {step > 0 && (
-            <MainButton
+            <Button
               text={t("actions.back")}
               variant="outline"
               leftIcon={ArrowLeft}
@@ -349,7 +349,7 @@ export function RegisterForm() {
           )}
           <div className="flex-1">
             {step < TOTAL_STEPS - 1 ? (
-              <MainButton
+              <Button
                 text={t("actions.continue")}
                 rightIcon={ArrowRight}
                 type="submit"
@@ -357,7 +357,7 @@ export function RegisterForm() {
                 size="md"
               />
             ) : (
-              <MainButton
+              <Button
                 text={t("actions.register")}
                 rightIcon={ArrowRight}
                 type="submit"

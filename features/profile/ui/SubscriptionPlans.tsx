@@ -1,7 +1,7 @@
 "use client";
-import MainButton from "@/components/Button/MainButton";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Button } from "@/components/Primitives/Button";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 import { useParams } from "next/navigation";
 import {
@@ -72,8 +72,8 @@ export function SubscriptionPlans() {
   const isBusiness = sellerType !== null && sellerType !== "PERSON";
   const plans = isBusiness ? BUSINESS_PLANS : PERSON_PLANS;
   const currentPlan: PlanKey | null = isBusiness
-    ? businessProfile?.businessSubscriptionPlan ?? null
-    : personProfile?.personSubscriptionPlan ?? null;
+    ? (businessProfile?.businessSubscriptionPlan ?? null)
+    : (personProfile?.personSubscriptionPlan ?? null);
 
   const groupKey = isBusiness ? "business" : "person";
   const currentConfig = plans.find((p) => p.key === currentPlan);
@@ -95,7 +95,9 @@ export function SubscriptionPlans() {
           currentConfig ? (
             <div className="hidden sm:block">
               <Text variant="span" size="sm" color="tertiary">
-                {currentConfig.price === 0 ? "" : `${formatPrice(currentConfig.price, currentConfig.currency, lang)} / ${t("subscription.plans.month")}`}
+                {currentConfig.price === 0
+                  ? ""
+                  : `${formatPrice(currentConfig.price, currentConfig.currency, lang)} / ${t("subscription.plans.month")}`}
               </Text>
             </div>
           ) : null
@@ -111,8 +113,16 @@ export function SubscriptionPlans() {
           </div>
           {currentConfig && currentConfig.price > 0 && (
             <div className="flex flex-wrap gap-2">
-              <MainButton text={t("subscription.current.manage")} variant="outline" size="sm" />
-              <MainButton text={t("subscription.current.cancel")} variant="ghost" size="sm" />
+              <Button
+                text={t("subscription.current.manage")}
+                variant="outline"
+                size="sm"
+              />
+              <Button
+                text={t("subscription.current.cancel")}
+                variant="ghost"
+                size="sm"
+              />
             </div>
           )}
         </div>
@@ -182,7 +192,12 @@ export function SubscriptionPlans() {
               </div>
 
               <div className="flex items-baseline gap-1.5">
-                <Title level="h2" size="h3" weight="bold" color={isActive ? "primary" : "default"}>
+                <Title
+                  level="h2"
+                  size="h3"
+                  weight="bold"
+                  color={isActive ? "primary" : "default"}
+                >
                   {formatPrice(plan.price, plan.currency, lang)}
                 </Title>
                 {plan.price > 0 && (
@@ -209,25 +224,20 @@ export function SubscriptionPlans() {
                 // FREEMIUM (price 0) isn't a payment; only paid plans that
                 // resolved to a real membership id are subscribable.
                 const isPaid = plan.price > 0;
-                const canSubscribe =
-                  !isActive && isPaid && isSubscribable(plan.key);
+                const canSubscribe = !isActive && isPaid && isSubscribable(plan.key);
                 const isPending = pendingKey === plan.key;
                 return (
-                  <MainButton
+                  <Button
                     text={
                       isActive
                         ? t("subscription.plans.active")
                         : t("subscription.plans.select")
                     }
-                    variant={
-                      isActive ? "outline" : isHighlight ? "secondary" : "primary"
-                    }
+                    variant={isActive ? "outline" : isHighlight ? "secondary" : "primary"}
                     size="md"
                     fullWidth
                     disabled={isActive || !canSubscribe || isPending}
-                    onClick={
-                      canSubscribe ? () => void subscribe(plan.key) : undefined
-                    }
+                    onClick={canSubscribe ? () => void subscribe(plan.key) : undefined}
                   />
                 );
               })()}

@@ -3,12 +3,11 @@ import {
   getMarketplaceDictionary,
   NAMESPACE as MARKETPLACE_NAMESPACE,
 } from "@/features/marketplace/i18n";
-import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 
 import { getSellerDictionary, NAMESPACE } from "../i18n";
 import { SellerContent } from "../ui/SellerContent";
-import { ScreenShell } from "@/components/Layout/ScreenShell";
+import { PageLayout } from "@/components/Layout";
 import {
   getStoresDictionary,
   NAMESPACE as STORE_NAMESPACE,
@@ -37,9 +36,9 @@ export async function Seller({ id, lang }: Props) {
         [STORE_NAMESPACE]: storeDict,
       }}
     >
-      <ScreenShell nav={<Navigation lang={lang} />} lang={lang}>
+      <PageLayout contained={false}>
         <SellerContent id={id} lang={lang} />
-      </ScreenShell>
+      </PageLayout>
     </DictionaryProvider>
   );
 }

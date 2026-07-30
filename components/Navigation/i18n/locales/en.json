@@ -1,0 +1,47 @@
+{
+  "brand": "EKORU",
+  "sections": {
+    "marketplace": "Marketplace",
+    "stores": "Stores",
+    "services": "Services",
+    "community": "Community",
+    "blog": "Blog"
+  },
+  "search": {
+    "placeholder": "Search in EKORU"
+  },
+  "localeSwitcher": {
+    "country": "Country",
+    "language": "Language",
+    "singleLanguage": "Only one language is available for this country."
+  },
+  "dropdown": {
+    "myProfile": "My Profile",
+    "recycle": "Recycle",
+    "publish": "Publish",
+    "notifications": "Notifications",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out"
+  },
+  "a11y": {
+    "headerLabel": "Site header",
+    "skipToContent": "Skip to main content",
+    "primaryNav": "Main navigation",
+    "sectionsNav": "Site sections",
+    "homeLink": "EKORU, go to the home page",
+    "searchLabel": "Search in EKORU",
+    "searchSubmit": "Search",
+    "cart": "Shopping cart, empty",
+    "cartWithOneItem": "Shopping cart, 1 item",
+    "cartWithItems": "Shopping cart, {{count}} items",
+    "openMenu": "Open menu",
+    "accountMenu": "Account menu",
+    "openAccountMenu": "Open account menu",
+    "closeAccountMenu": "Close account menu",
+    "localeTrigger": "Change country and language",
+    "localePanel": "Country and language",
+    "countrySelect": "Select your country",
+    "languageSelect": "Select your language"
+  }
+}

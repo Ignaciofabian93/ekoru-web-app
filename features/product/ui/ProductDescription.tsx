@@ -1,8 +1,8 @@
 "use client";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
-import { Title } from "@/components/Title/Title";
-import { Text } from "@/components/Text/Text";
+import { Title } from "@/components/Primitives/Title";
+import { Text } from "@/components/Primitives/Text";
 
 export function ProductDescription({ description }: { description?: string | null }) {
   const { t } = useTranslation(NAMESPACE);

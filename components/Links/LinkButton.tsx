@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { Text } from "../Text/Text";
+import { Text } from "@/components/Primitives/Text";
 
 interface LinkButtonProps {
   href: string;

@@ -15,6 +15,19 @@ import { useMutation } from "@apollo/client/react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
+/**
+ * Read at submit time rather than via `useSearchParams`, which would opt the
+ * statically prerendered register page out of SSG for a value only needed once
+ * the form is sent. Same-origin relative paths only, to avoid an open redirect.
+ */
+function readSafeRedirect(): string | null {
+  if (typeof window === "undefined") return null;
+  const requested = new URLSearchParams(window.location.search).get("redirectTo");
+  return requested && requested.startsWith("/") && !requested.startsWith("//")
+    ? requested
+    : null;
+}
+
 export function useRegister() {
   const { replace } = useNavigation();
   const params = useParams<{ lang?: SupportedLanguage }>();
@@ -80,7 +93,14 @@ export function useRegister() {
 
       toast.success(t("feedback.registerSuccess"));
       const lang = storedLanguage ?? DEFAULT_LANGUAGE;
-      replace({ route: `/${lang}/login` });
+      // Registering doesn't sign the seller in, so carry any `redirectTo`
+      // across to login — that's what finally honors it.
+      const safeRedirect = readSafeRedirect();
+      replace({
+        route: safeRedirect
+          ? `/${lang}/login?redirectTo=${encodeURIComponent(safeRedirect)}`
+          : `/${lang}/login`,
+      });
       return true;
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Unexpected error");

@@ -1,7 +1,7 @@
 "use client";
-import MainButton from "@/components/Button/MainButton";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Button } from "@/components/Primitives/Button";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 import clsx from "clsx";
 import { AlertCircle, ArrowLeft, ArrowRight } from "lucide-react";
@@ -121,7 +121,7 @@ export function PublishWizard({
         {/* Navigation */}
         <div className="flex items-center gap-3">
           {index > 0 && (
-            <MainButton
+            <Button
               text={t("actions.back")}
               variant="outline"
               leftIcon={ArrowLeft}
@@ -132,7 +132,7 @@ export function PublishWizard({
           )}
           <div className="flex-1">
             {index < totalSteps - 1 ? (
-              <MainButton
+              <Button
                 text={t("actions.continue")}
                 rightIcon={ArrowRight}
                 type="submit"
@@ -140,7 +140,7 @@ export function PublishWizard({
                 size="md"
               />
             ) : (
-              <MainButton
+              <Button
                 text={t("actions.publish")}
                 rightIcon={ArrowRight}
                 type="submit"

@@ -1,6 +1,9 @@
 "use client";
-import { Title } from "@/components/Title/Title";
-import { UnderlineTabs, type UnderlineTab } from "@/components/UnderlineTabs/UnderlineTabs";
+import { Title } from "@/components/Primitives/Title";
+import {
+  Tabs,
+  type Tab,
+} from "@/components/Patterns/Tabs";
 import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
@@ -44,7 +47,7 @@ export function StoreCategoryList({
     );
   }
 
-  const tabs: UnderlineTab[] = [
+  const tabs: Tab[] = [
     ...(showAll
       ? [{ key: ALL_KEY, label: t("sections.allCategories"), href: `/${lang}/stores` }]
       : []),
@@ -60,7 +63,7 @@ export function StoreCategoryList({
       <Title level="h2" size="h5">
         {t("sections.categories")}
       </Title>
-      <UnderlineTabs
+      <Tabs
         tabs={tabs}
         activeKey={activeSlug ?? ALL_KEY}
         ariaLabel={t("sections.categories")}

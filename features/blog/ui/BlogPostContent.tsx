@@ -1,8 +1,8 @@
 "use client";
-import Breadcrumb, { type Crumb } from "@/components/BreadCrumbs/Breadcrumb";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
-import { Layout } from "@/components/Layout/Layout";
+import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
+import { Container, Section } from "@/components/Layout";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
@@ -29,8 +29,8 @@ export function BlogPostContent({ lang, language, categorySlug, slug }: Props) {
 
   if (loading && !post) {
     return (
-      <Layout.Container size="narrow">
-        <Layout.Section>
+      <Container width="narrow">
+        <Section>
           <div className="flex flex-col gap-4">
             <div className="h-8 w-3/4 animate-pulse rounded-lg bg-background-secondary" />
             <div className="aspect-video w-full animate-pulse rounded-2xl bg-background-secondary" />
@@ -38,23 +38,23 @@ export function BlogPostContent({ lang, language, categorySlug, slug }: Props) {
             <div className="h-4 w-5/6 animate-pulse rounded bg-background-secondary" />
             <div className="h-4 w-11/12 animate-pulse rounded bg-background-secondary" />
           </div>
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     );
   }
 
   if (!post || !translation) {
     return (
-      <Layout.Container size="narrow">
-        <Layout.Section>
+      <Container width="narrow">
+        <Section>
           <div className="flex flex-col items-center gap-1 rounded-2xl border border-dashed border-border-light bg-surface px-4 py-16 text-center">
             <Text weight="semibold">{t("detail.postNotFound")}</Text>
             <Text size="sm" color="secondary">
               {t("detail.postNotFoundHint")}
             </Text>
           </div>
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     );
   }
 
@@ -107,8 +107,8 @@ export function BlogPostContent({ lang, language, categorySlug, slug }: Props) {
         </div>
       </header>
 
-      <Layout.Container size="narrow">
-        <Layout.Section className="px-2">
+      <Container width="narrow">
+        <Section className="px-2">
           {translation.excerpt && (
             <Text size="lg" color="secondary" className="leading-relaxed wrap-break-word">
               {translation.excerpt}
@@ -119,8 +119,8 @@ export function BlogPostContent({ lang, language, categorySlug, slug }: Props) {
               {translation.content}
             </div>
           )}
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     </article>
   );
 }

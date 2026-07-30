@@ -1,6 +1,6 @@
 "use client";
-import Input from "@/components/Input/Input";
-import { Text } from "@/components/Text/Text";
+import { Input } from "@/components/Primitives/Inputs";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 
 /** Optional low-stock alert threshold. The stores subgraph flags the product as

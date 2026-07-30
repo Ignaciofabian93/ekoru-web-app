@@ -1,0 +1,1 @@
+export { EkoruLogo } from "./EkoruLogo";

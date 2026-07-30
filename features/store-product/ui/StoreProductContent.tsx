@@ -13,12 +13,12 @@ import { StoreProductTrust } from "./StoreProductTrust";
 import { useStoreProduct } from "../hooks/useStoreProduct";
 import { StoreProductActions } from "./StoreProductActions";
 import { OtherFromBusiness } from "./OtherFromBusiness";
-import { Layout } from "@/components/Layout/Layout";
-import Breadcrumb, { type Crumb } from "@/components/BreadCrumbs/Breadcrumb";
+import { Section } from "@/components/Layout";
+import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
 import { useTranslation } from "@/i18n/context";
 import { useNavigation } from "@/hooks/useNavigation";
 import { NAMESPACE } from "../i18n";
-import { ProductGallery } from "@/components/ProductGallery/ProductGallery";
+import { ProductGallery } from "@/components/Patterns/ProductGallery";
 import { SellerCard } from "@/components/Card/SellerCard/SellerCard";
 
 interface Props {
@@ -63,17 +63,23 @@ export function StoreProductContent({ id, lang }: Props) {
         crumbColor="default"
         chevronColor="default"
       />
-      <Layout.Section>
+      <Section>
         <div className="grid gap-6 md:grid-cols-2 md:gap-10">
           <ProductGallery
-            productName={product.name}
             images={product.images ?? []}
-            galleryImageAlt={t("gallery.imageAlt")}
-            galleryNoImage={t("gallery.noImage")}
-            galleryNext={t("gallery.next")}
-            galleryPrevious={t("gallery.previous")}
-            galleryGoToImage={t("gallery.goToImage")}
-            galleryThumbnailAlt={t("gallery.thumbnailAlt")}
+            labels={{
+              imageAlt: (index, total) =>
+                t("gallery.imageAlt", {
+                  name: product.name,
+                  index: String(index),
+                  total: String(total),
+                }),
+              noImage: t("gallery.noImage"),
+              previous: t("gallery.previous"),
+              next: t("gallery.next"),
+              thumbnailAlt: (index) => t("gallery.thumbnailAlt", { index: String(index) }),
+              goToImage: (index) => t("gallery.goToImage", { index: String(index) }),
+            }}
           />
 
           <div className="flex flex-col gap-5">
@@ -110,7 +116,7 @@ export function StoreProductContent({ id, lang }: Props) {
             excludeProductId={product.id}
           />
         )}
-      </Layout.Section>
+      </Section>
     </div>
   );
 }

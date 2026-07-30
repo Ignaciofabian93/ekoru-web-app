@@ -8,11 +8,11 @@ import type { CatalogDepartmentCategory } from "../types";
 import { CategoryList } from "./CategoryList";
 import { MarketplaceFilters } from "./MarketplaceFilters";
 import { ProductResults } from "./ProductResults";
-import { InnerHero } from "./InnerHero";
-import { type UnderlineTab } from "@/components/UnderlineTabs/UnderlineTabs";
+import { BreadcrumbHero } from "@/components/Patterns/BreadcrumbHero";
+import { type Tab } from "@/components/Patterns/Tabs";
 import { humanizeSlug } from "@/utils/formatters";
-import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
-import { Layout } from "@/components/Layout/Layout";
+import type { Crumb } from "@/components/Patterns/Breadcrumb";
+import { Container, Section } from "@/components/Layout";
 
 interface Props {
   lang: SupportedLanguage;
@@ -63,7 +63,7 @@ export function DepartmentContent({ lang, slug }: Props) {
 
   const ALL_KEY = "__all__";
 
-  const tabs: UnderlineTab[] = [
+  const tabs: Tab[] = [
     {
       key: ALL_KEY,
       label: t("sections.allCategories"),
@@ -78,14 +78,14 @@ export function DepartmentContent({ lang, slug }: Props) {
 
   return (
     <Fragment>
-      <InnerHero
-        categoryTitle={t("page.departmentTitle", { name: departmentName })}
-        categorySubtitle={t("page.departmentSubtitle", { name: departmentName })}
+      <BreadcrumbHero
+        title={t("page.departmentTitle", { name: departmentName })}
+        subtitle={t("page.departmentSubtitle", { name: departmentName })}
         breadCrumbs={breadCrumbs}
       />
 
-      <Layout.Container size="default">
-        <Layout.Section>
+      <Container width="default">
+        <Section>
           <CategoryList
             tabs={tabs}
             activeKey={ALL_KEY}
@@ -111,8 +111,8 @@ export function DepartmentContent({ lang, slug }: Props) {
             onPageChange={handlePageChange}
             onPageSizeChange={handlePageSizeChange}
           />
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     </Fragment>
   );
 }

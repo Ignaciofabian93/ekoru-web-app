@@ -1,15 +1,15 @@
 "use client";
-import { Title } from "@/components/Title/Title";
+import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 
 import { useServices } from "../hooks/useServices";
 import { useServicesCatalog } from "../hooks/useServicesCatalog";
 import { NAMESPACE } from "../i18n";
 import type { Language } from "../types";
-import { DetailEmptyState } from "./DetailEmptyState";
+import { EmptyState } from "@/components/Feedback/EmptyState";
 import { ServiceCategoryScroll } from "./ServiceCategoryScroll";
 import { ServiceList } from "./ServiceList";
-import { Layout } from "@/components/Layout/Layout";
+import { Section } from "@/components/Layout";
 
 interface Props {
   lang: string;
@@ -22,7 +22,7 @@ export function ServicesContent({ lang, language }: Props) {
   const { services, loading: servicesLoading } = useServices();
 
   return (
-    <Layout.Section>
+    <Section>
       <ServiceCategoryScroll
         lang={lang}
         categories={categories}
@@ -44,14 +44,15 @@ export function ServicesContent({ lang, language }: Props) {
             ))}
           </div>
         ) : services.length === 0 ? (
-          <DetailEmptyState
+          <EmptyState
+            variant="compact"
             title={t("detail.noServices")}
-            hint={t("detail.noServicesHint")}
+            description={t("detail.noServicesHint")}
           />
         ) : (
           <ServiceList services={services} />
         )}
       </section>
-    </Layout.Section>
+    </Section>
   );
 }

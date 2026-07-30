@@ -1,5 +1,5 @@
 "use client";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import { useSeller } from "@/store/useAuthStore";
 import { Flag, Globe, MapPin, Phone, Pin, PinIcon } from "lucide-react";

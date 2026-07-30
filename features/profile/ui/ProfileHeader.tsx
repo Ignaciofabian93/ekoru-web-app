@@ -1,5 +1,9 @@
 "use client";
-import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
+import { BadgeCheck, Coins } from "lucide-react";
+import { Badge } from "@/components/Primitives/Badge";
+import { Avatar } from "@/components/Primitives/Avatar";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 import {
   useCoverImage,
@@ -9,21 +13,14 @@ import {
   useSellerPoints,
   useSellerType,
 } from "@/store/useAuthStore";
-import { useParams } from "next/navigation";
+import type { SellerType } from "@/types/enums";
 import { NAMESPACE } from "../i18n";
-import { type SellerType } from "@/types/enums";
 import { useProfileImageUpload } from "../hooks/useProfileImageUpload";
-import { Avatar } from "@/components/Identity/Avatar";
-import { Cover } from "@/components/Identity/Cover";
-
-// Sellers without a custom cover get the profile wallpaper so the header
-// still reads as a finished hero (never the brand logo stretched as cover).
-const DEFAULT_COVER = "/wallpapers/wallpaper-2.jpg";
+import { Cover } from "./Cover";
+import { ImageUploadButton } from "./ImageUploadButton";
 
 export function ProfileHeader() {
   const { t } = useTranslation(NAMESPACE);
-  const params = useParams<{ lang?: SupportedLanguage }>();
-  const lang = params.lang ?? DEFAULT_LANGUAGE;
 
   const coverImage = useCoverImage();
   const profileImage = useProfileImage();
@@ -34,42 +31,64 @@ export function ProfileHeader() {
 
   const { uploadingKind, uploadAvatar, uploadCover } = useProfileImageUpload();
 
-  const userImage = profileImage ?? "/brand/icon.webp";
-
-  const SELLER_TYPE_LABEL: Record<string, string> = {
+  const SELLER_TYPE_LABEL: Record<SellerType, string> = {
     PERSON: t("header.sellerType.person"),
     STARTUP: t("header.sellerType.startup"),
     COMPANY: t("header.sellerType.company"),
   };
 
-  const isUploadingCover = uploadingKind === "cover";
-  const isUploadingAvatar = uploadingKind === "avatar";
-
   return (
     <section className="mx-auto w-full">
       <Cover
-        coverImage={coverImage ?? DEFAULT_COVER}
-        isUploadingCover={isUploadingCover}
-        uploadCover={uploadCover}
-        coverAltText=""
+        image={coverImage}
+        altText=""
+        uploading={uploadingKind === "cover"}
+        onUpload={uploadCover}
         changeCoverAriaLabel={t("header.upload.changeCover")}
-        defaultCoverImage={DEFAULT_COVER}
-        enableCoverUpload={true}
       />
 
       {/* Identity — avatar overlaps the cover, details sit on the surface */}
-      <Avatar
-        name={name}
-        email={email}
-        sellerTypeLabel={SELLER_TYPE_LABEL[sellerType as SellerType]}
-        userImage={userImage}
-        isUploadingAvatar={isUploadingAvatar}
-        enableAvatarUpload={true}
-        uploadAvatar={uploadAvatar}
-        changeAvatarAriaLabel={t("header.upload.changeAvatar")}
-        pointsLabel={t("header.points", { count: points.toLocaleString(lang) })}
-        avatarAltText=""
-      />
+      <div className="mx-auto max-w-6xl px-4">
+        <div className="-mt-14 flex flex-col items-center gap-3 sm:-mt-12 sm:flex-row sm:items-end sm:gap-5">
+          <div className="relative shrink-0">
+            <Avatar image={profileImage} alt="" size="xl" frame="raised" />
+            <ImageUploadButton
+              variant="badge"
+              className="right-1 bottom-1"
+              uploading={uploadingKind === "avatar"}
+              onSelect={uploadAvatar}
+              ariaLabel={t("header.upload.changeAvatar")}
+            />
+          </div>
+
+          <div className="flex flex-1 flex-col items-center gap-1.5 text-center sm:items-start sm:pb-1 sm:text-left">
+            <Title level="h1" size="h3" weight="semibold">
+              {name}
+            </Title>
+            {email && (
+              <Text variant="p" size="sm" color="secondary">
+                {email}
+              </Text>
+            )}
+            <div className="mt-1 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+              {sellerType && (
+                <Badge
+                  variant="primary"
+                  label={SELLER_TYPE_LABEL[sellerType]}
+                  size="medium"
+                  icon={BadgeCheck}
+                />
+              )}
+              <Badge
+                variant="secondary"
+                label={t("header.points", { count: String(points) })}
+                size="medium"
+                icon={Coins}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

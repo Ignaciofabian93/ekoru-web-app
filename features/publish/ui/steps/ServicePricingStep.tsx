@@ -41,10 +41,7 @@ export function ServicePricingStep({ form, setField, invalid }: ServicePricingSt
           value={form.priceRange}
           onChange={(v) => setField("priceRange", v)}
         />
-        <DurationField
-          value={form.duration}
-          onChange={(v) => setField("duration", v)}
-        />
+        <DurationField value={form.duration} onChange={(v) => setField("duration", v)} />
       </div>
     </div>
   );

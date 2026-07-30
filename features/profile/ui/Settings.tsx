@@ -1,7 +1,7 @@
 "use client";
-import MainButton from "@/components/Button/MainButton";
-import Select from "@/components/Select/Select";
-import { Text } from "@/components/Text/Text";
+import { Button } from "@/components/Primitives/Button";
+import { Select } from "@/components/Primitives/Select";
+import { Text } from "@/components/Primitives/Text";
 import {
   CURRENCIES_SUPPORTED,
   CURRENCY_COOKIE,
@@ -201,13 +201,17 @@ export function Settings() {
           icon={EyeOff}
           label={t("settings.deactivateAccount")}
           description={t("settings.deactivateAccountDescription")}
-          right={<MainButton text={t("settings.deactivate")} variant="outline" size="sm" />}
+          right={
+            <Button text={t("settings.deactivate")} variant="outline" size="sm" />
+          }
         />
         <SettingRow
           icon={Trash2}
           label={t("settings.deleteAccount")}
           description={t("settings.deleteAccountDescription")}
-          right={<MainButton text={t("settings.deleteAccount")} variant="error" size="sm" />}
+          right={
+            <Button text={t("settings.deleteAccount")} variant="error" size="sm" />
+          }
         />
       </SectionCard>
     </div>

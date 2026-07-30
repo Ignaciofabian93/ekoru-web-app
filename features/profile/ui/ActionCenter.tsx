@@ -1,5 +1,5 @@
 "use client";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import clsx from "clsx";
 import {
@@ -50,7 +50,7 @@ const ACTIONS: ActionDef[] = [
     key: "exchangeProposals",
     icon: Repeat2,
     tone: "bg-success/10 text-success",
-    href: () => "#",
+    href: (lang) => `/${lang}/profile/exchanges`,
   },
 ];
 
@@ -90,7 +90,12 @@ export function ActionCenter() {
                   i < items.length - 1 && "border-b border-border-light",
                 )}
               >
-                <div className={clsx("flex h-9 w-9 shrink-0 items-center justify-center rounded-lg", item.tone)}>
+                <div
+                  className={clsx(
+                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg",
+                    item.tone,
+                  )}
+                >
                   <Icon size={16} color="currentColor" strokeWidth={2} />
                 </div>
                 <div className="flex flex-1 flex-col">

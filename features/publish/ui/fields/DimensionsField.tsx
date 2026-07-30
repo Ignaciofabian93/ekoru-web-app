@@ -1,7 +1,7 @@
 "use client";
-import Input from "@/components/Input/Input";
-import { Select } from "@/components/Select/Select";
-import { Text } from "@/components/Text/Text";
+import { Input } from "@/components/Primitives/Inputs";
+import { Select } from "@/components/Primitives/Select";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import type { DimensionUnit } from "@/types/enums";
 

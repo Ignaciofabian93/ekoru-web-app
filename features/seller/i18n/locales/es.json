@@ -4,7 +4,11 @@
     "notFound": "Vendedor no encontrado",
     "notFoundHint": "Este perfil de vendedor no está disponible por el momento.",
     "error": "No se pudo cargar este vendedor",
-    "errorHint": "Revisa tu conexión e inténtalo nuevamente."
+    "errorHint": "Revisa tu conexión e inténtalo nuevamente.",
+    "authRequired": "Inicia sesión para ver este vendedor",
+    "authRequiredHint": "Los perfiles de vendedores solo están visibles para miembros. Inicia sesión o crea una cuenta gratis para ver sus publicaciones.",
+    "signIn": "Iniciar sesión",
+    "createAccount": "Crear cuenta"
   },
   "breadcrumbs": {
     "marketplace": "Marketplace",

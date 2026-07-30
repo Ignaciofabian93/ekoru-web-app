@@ -3,10 +3,10 @@ import { BadgeCheck, Store, User, UserRound } from "lucide-react";
 import Image from "next/image";
 import type { Seller } from "@/types/user";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import { Title } from "@/components/Title/Title";
-import { Badge } from "@/components/Badge/Badge";
-import { Text } from "@/components/Text/Text";
-import { LinkButton } from "@/components/Links/LinkButton";
+import { Title } from "@/components/Primitives/Title";
+import { Badge } from "@/components/Primitives/Badge";
+import { Text } from "@/components/Primitives/Text";
+import { LinkButton } from "@/components/Primitives/LinkButton";
 
 interface Props {
   lang: string;

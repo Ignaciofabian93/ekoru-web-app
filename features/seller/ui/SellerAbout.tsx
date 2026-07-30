@@ -5,8 +5,8 @@ import type { Seller } from "@/types/user";
 
 import { NAMESPACE } from "../i18n";
 import { getSellerBio } from "../sellerDisplay";
-import { Title } from "@/components/Title/Title";
-import { Text } from "@/components/Text/Text";
+import { Title } from "@/components/Primitives/Title";
+import { Text } from "@/components/Primitives/Text";
 
 export function SellerAbout({ seller }: { seller: Seller }) {
   const { t } = useTranslation(NAMESPACE);

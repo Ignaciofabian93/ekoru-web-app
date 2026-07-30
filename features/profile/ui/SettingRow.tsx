@@ -1,8 +1,8 @@
 "use client";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
-import { Toggle } from "./Toggle";
+import { Toggle } from "@/components/Primitives/Toggle";
 
 interface BaseRowProps {
   icon?: LucideIcon;

@@ -1,82 +1,87 @@
-import { fontFamily } from "@/design/tokens";
+"use client";
+
 import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
 import React from "react";
+import type { ButtonProps, ButtonSize, ButtonVariant } from "./Button.types";
 
-export interface ButtonProps {
-  label: string;
-  onClick: () => void;
-  variant?: "primary" | "secondary";
-  loading?: boolean;
-  loadingText?: string;
-  disabled?: boolean;
-  size?: "sm" | "md" | "lg";
-  leftIcon?: LucideIcon | React.ReactElement;
-  rightIcon?: LucideIcon | React.ReactElement;
-  fullWidth?: boolean;
-  style?: React.CSSProperties;
-  type?: "button" | "submit" | "reset";
-  className?: string;
-}
-
-export interface IconButtonProps extends ButtonProps {
-  icon: LucideIcon | React.ReactElement;
-  iconSize: number;
-}
-
-const VARIANT_MAPPING = {
-  primary: "bg-primary text-white",
-  secondary: "",
+const SIZE_CLASS: Record<ButtonSize, { box: string; gap: string; text: string; icon: number }> = {
+  sm: { box: "min-h-8 rounded-sm px-3.5 py-2", gap: "gap-1", text: "text-sm", icon: 16 },
+  md: { box: "min-h-10 rounded-md px-5 py-3", gap: "gap-2", text: "text-base", icon: 18 },
+  lg: { box: "min-h-12 rounded-md px-6 py-4", gap: "gap-2", text: "text-base", icon: 20 },
 };
 
-const SIZE_MAPPING = {
-  sm: "text-sm h-6 px-3",
-  md: "text-base py-2 px-4",
-  lg: "text-lg h-12 px-5",
+const VARIANT_CLASS: Record<ButtonVariant, string> = {
+  primary: "bg-primary border-primary text-on-primary",
+  filled: "bg-primary border-primary text-on-primary",
+  secondary: "bg-secondary border-secondary text-on-primary",
+  secondary_outline: "bg-surface border-secondary text-secondary",
+  outline: "bg-surface border-primary text-primary",
+  ghost: "bg-transparent border-transparent text-primary",
+  success: "bg-success border-success text-on-primary",
+  warning: "bg-warning border-warning text-on-primary",
+  error: "bg-danger border-danger text-on-primary",
 };
 
-function renderIcon(
-  icon: LucideIcon | React.ReactElement,
-  size?: number,
-  color?: string,
-): React.ReactNode {
+function renderIcon(icon: LucideIcon | React.ReactElement, size: number): React.ReactNode {
   if (React.isValidElement(icon)) return icon;
   const Icon = icon as LucideIcon;
-  return <Icon size={size} color={color} strokeWidth={2} />;
+  return <Icon size={size} color="currentColor" strokeWidth={2} />;
 }
 
 export function Button({
-  label,
+  text,
+  onPress,
   onClick,
   variant = "primary",
   size = "md",
+  loading = false,
+  loadingText,
+  disabled = false,
+  leftIcon,
+  rightIcon,
+  fullWidth = false,
+  style,
+  type = "button",
+  className,
+  ref,
 }: ButtonProps) {
+  const s = SIZE_CLASS[size];
+  const isDisabled = disabled || loading;
+  const label = loading && loadingText ? loadingText : text;
+  const hasBorder =
+    variant === "outline" || variant === "secondary_outline" || variant === "ghost";
+
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    onClick?.(e);
+    onPress?.();
+  };
+
   return (
     <button
-      onClick={onClick}
-      style={{ fontFamily: fontFamily.sans }}
+      ref={ref}
+      type={type}
+      onClick={handleClick}
+      disabled={isDisabled}
+      style={style}
       className={clsx(
-        "w-full",
-        VARIANT_MAPPING[variant],
-        SIZE_MAPPING[size],
-        "rounded-sm",
-        "cursor-pointer",
+        "relative box-border inline-flex flex-row items-center justify-center min-w-35 cursor-pointer select-none border-solid outline-none transition-transform duration-100 active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-50",
+        s.box,
+        VARIANT_CLASS[variant],
+        hasBorder ? "border-2" : "border-0",
+        fullWidth && "w-full",
+        className,
       )}
     >
-      {label}
-    </button>
-  );
-}
+      <span className={clsx("flex flex-row items-center", s.gap, loading && "opacity-0")}>
+        {leftIcon && renderIcon(leftIcon, s.icon)}
+        <span className={clsx("text-center font-sans font-bold", s.text)}>{label}</span>
+        {rightIcon && renderIcon(rightIcon, s.icon)}
+      </span>
 
-export function IconButton({
-  icon,
-  variant = "primary",
-  iconSize = 14,
-}: Omit<IconButtonProps, "label">) {
-  if (!icon) return null;
-  return (
-    <button className={clsx("p-2 rounded-sm", VARIANT_MAPPING[variant])}>
-      {renderIcon(icon, iconSize)}
+      {loading && (
+        <span className="absolute size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+      )}
     </button>
   );
 }

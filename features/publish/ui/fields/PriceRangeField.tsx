@@ -1,6 +1,6 @@
 "use client";
-import Input from "@/components/Input/Input";
-import { Text } from "@/components/Text/Text";
+import { Input } from "@/components/Primitives/Inputs";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 
 /** Optional free-text price range — useful for quotation and package pricing

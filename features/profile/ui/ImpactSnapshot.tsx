@@ -1,6 +1,5 @@
 "use client";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { StatTile } from "@/components/Patterns/StatTile";
 import { useTranslation } from "@/i18n/context";
 import { ArrowRight, Droplets, Leaf, PackageCheck } from "lucide-react";
 import Link from "next/link";
@@ -8,7 +7,7 @@ import { useParams } from "next/navigation";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
-import { LinkButton } from "@/components/Links/LinkButton";
+import { LinkButton } from "@/components/Primitives/LinkButton";
 
 // Lightweight preview — the full Environmental Impact screen owns the
 // detailed numbers. Wire to an aggregated impact endpoint when ready.
@@ -32,21 +31,21 @@ export function ImpactSnapshot() {
       key: "co2",
       icon: Leaf,
       value: `${formatKg(MOCK_IMPACT.totalCo2SavingsKG, lang)} kg`,
-      tone: "from-success/15 to-success/5 text-success",
+      tone: "success",
     },
     {
       key: "water",
       icon: Droplets,
       value: `${MOCK_IMPACT.totalWaterSavingsLT.toLocaleString(lang)} L`,
-      tone: "from-info/15 to-info/5 text-info",
+      tone: "info",
     },
     {
       key: "products",
       icon: PackageCheck,
       value: String(MOCK_IMPACT.productsReused),
-      tone: "from-primary/15 to-primary-light/10 text-primary",
+      tone: "primary",
     },
-  ];
+  ] as const;
 
   return (
     <SectionCard
@@ -75,27 +74,16 @@ export function ImpactSnapshot() {
       }
     >
       <div className="flex flex-col items-center justify-evenly gap-3">
-        {stats.map((s) => {
-          const Icon = s.icon;
-          return (
-            <div
-              key={s.key}
-              className={`flex items-center w-full gap-4 rounded-xl bg-linear-to-br p-3.5 ${s.tone}`}
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white/70 text-current">
-                <Icon size={22} color="currentColor" strokeWidth={2} />
-              </div>
-              <div className="flex flex-col">
-                <Title level="h3" size="h6" weight="bold" color="default">
-                  {s.value}
-                </Title>
-                <Text variant="span" size="xs" color="secondary">
-                  {t(`dashboard.impact.${s.key}`)}
-                </Text>
-              </div>
-            </div>
-          );
-        })}
+        {stats.map((s) => (
+          <StatTile
+            key={s.key}
+            icon={s.icon}
+            value={s.value}
+            label={t(`dashboard.impact.${s.key}`)}
+            orientation="horizontal"
+            tone={s.tone}
+          />
+        ))}
       </div>
       <Link
         href={`/${lang}/profile/environmental-impact`}

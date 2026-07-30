@@ -1,5 +1,4 @@
 import { type SupportedLanguage } from "@/constants/settings";
-import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
 import { getProductDictionary, NAMESPACE } from "../i18n";
 import {
@@ -7,7 +6,7 @@ import {
   NAMESPACE as MARKETPLACE_NAMESPACE,
 } from "@/features/marketplace/i18n";
 import { ProductContent } from "../ui/ProductContent";
-import { Layout } from "@/components/Layout/Layout";
+import { PageLayout } from "@/components/Layout";
 
 interface Props {
   id: string;
@@ -30,12 +29,9 @@ export async function Product({ id, lang }: Props) {
         [MARKETPLACE_NAMESPACE]: marketplaceDict,
       }}
     >
-      <Layout.Screen>
-        <Navigation lang={lang} />
-        <Layout.Container size="default">
-          <ProductContent id={id} lang={lang} />
-        </Layout.Container>
-      </Layout.Screen>
+      <PageLayout width="default">
+        <ProductContent id={id} lang={lang} />
+      </PageLayout>
     </DictionaryProvider>
   );
 }

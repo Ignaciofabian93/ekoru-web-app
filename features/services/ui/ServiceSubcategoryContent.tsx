@@ -1,18 +1,18 @@
 "use client";
-import { Pagination } from "@/components/Pagination/Pagination";
-import { Title } from "@/components/Title/Title";
+import { Pagination } from "@/components/Patterns/Pagination";
+import { Title } from "@/components/Primitives/Title";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import { Fragment } from "react";
 
 import { useServicesBySubcategory } from "../hooks/useServicesBySubcategory";
 import { NAMESPACE } from "../i18n";
-import { DetailEmptyState } from "./DetailEmptyState";
-import { ServiceInnerHero } from "./ServiceInnerHero";
+import { EmptyState } from "@/components/Feedback/EmptyState";
+import { BreadcrumbHero } from "@/components/Patterns/BreadcrumbHero";
 import { ServiceList } from "./ServiceList";
 import { humanizeSlug } from "@/utils/formatters";
-import type { Crumb } from "@/components/BreadCrumbs/Breadcrumb";
-import { Layout } from "@/components/Layout/Layout";
+import type { Crumb } from "@/components/Patterns/Breadcrumb";
+import { Container, Section } from "@/components/Layout";
 
 interface Props {
   lang: SupportedLanguage;
@@ -43,25 +43,24 @@ export function ServiceSubcategoryContent({ lang, categorySlug, slug }: Props) {
 
   return (
     <Fragment>
-      <ServiceInnerHero
-        categoryTitle={t("page.categoryTitle", { name })}
-        categorySubtitle={
-          translation?.metaDescription || t("page.categorySubtitle", { name })
-        }
+      <BreadcrumbHero
+        title={t("page.categoryTitle", { name })}
+        subtitle={translation?.metaDescription || t("page.categorySubtitle", { name })}
         breadCrumbs={breadCrumbs}
       />
 
-      <Layout.Container size="default">
-        <Layout.Section>
+      <Container width="default">
+        <Section>
           {loading && !serviceSubCategory ? (
             <div className="flex flex-col gap-3">
               <div className="h-8 w-2/3 animate-pulse rounded-lg bg-background-secondary" />
               <div className="h-4 w-full animate-pulse rounded bg-background-secondary" />
             </div>
           ) : !serviceSubCategory ? (
-            <DetailEmptyState
+            <EmptyState
+              variant="compact"
               title={t("detail.notFound")}
-              hint={t("detail.notFoundHint")}
+              description={t("detail.notFoundHint")}
             />
           ) : (
             <section className="flex flex-col gap-4">
@@ -79,9 +78,10 @@ export function ServiceSubcategoryContent({ lang, categorySlug, slug }: Props) {
                   ))}
                 </div>
               ) : services.length === 0 ? (
-                <DetailEmptyState
+                <EmptyState
+                  variant="compact"
                   title={t("detail.noServices")}
-                  hint={t("detail.noServicesHint")}
+                  description={t("detail.noServicesHint")}
                 />
               ) : (
                 <Fragment>
@@ -97,8 +97,8 @@ export function ServiceSubcategoryContent({ lang, categorySlug, slug }: Props) {
               )}
             </section>
           )}
-        </Layout.Section>
-      </Layout.Container>
+        </Section>
+      </Container>
     </Fragment>
   );
 }

@@ -16,7 +16,12 @@ import { SellerCatalog } from "./SellerCatalog";
 import { SellerDetails } from "./SellerDetails";
 import { SellerHero } from "./SellerHero";
 import { SellerStats } from "./SellerStats";
-import { SellerErrorState, SellerLoading, SellerNotFound } from "./SellerStatus";
+import {
+  SellerAuthRequired,
+  SellerErrorState,
+  SellerLoading,
+  SellerNotFound,
+} from "./SellerStatus";
 
 interface Props {
   id: string;
@@ -32,7 +37,12 @@ export function SellerContent({ id, lang }: Props) {
 
   // 1) Identity — independent of the catalog, so a seller with no products still
   //    resolves rather than 404'ing.
-  const { seller, loading: profileLoading, error: profileError } = useSellerProfile({
+  const {
+    seller,
+    loading: profileLoading,
+    error: profileError,
+    requiresAuth,
+  } = useSellerProfile({
     sellerId: id,
     lang,
   });
@@ -56,6 +66,16 @@ export function SellerContent({ id, lang }: Props) {
     return (
       <Container>
         <SellerLoading />
+      </Container>
+    );
+  }
+
+  // Checked before the generic error: signing in is the one action that
+  // resolves this, so it gets its own screen.
+  if (requiresAuth) {
+    return (
+      <Container>
+        <SellerAuthRequired lang={lang} />
       </Container>
     );
   }

@@ -127,6 +127,7 @@
     "editProfile": "Editar Perfil",
     "changePassword": "Cambiar Contraseña",
     "orderHistory": "Historial de Pedidos",
+    "exchanges": "Intercambios",
     "favorites": "Favoritos",
     "environmentalImpact": "Impacto Ambiental",
     "subscription": "Suscripción",
@@ -455,6 +456,33 @@
     "deactivate": "Desactivar",
     "deleteAccount": "Eliminar Cuenta",
     "deleteAccountDescription": "Elimina permanentemente tu cuenta y todos los datos asociados. Esta acción no se puede deshacer."
+  },
+  "exchanges": {
+    "title": "Propuestas de intercambio",
+    "subtitle": "Ofertas para intercambiar artículos con otros miembros.",
+    "tabs": { "received": "Recibidas", "sent": "Enviadas" },
+    "empty": {
+      "received": "Aún no tienes propuestas recibidas.",
+      "sent": "Aún no has enviado propuestas."
+    },
+    "youGive": "Tú entregas",
+    "youGet": "Tú recibes",
+    "from": "De {{name}}",
+    "to": "Para {{name}}",
+    "even": "Intercambio parejo",
+    "youAdd": "Agregas {{amount}}",
+    "theyAdd": "Agregan {{amount}}",
+    "accept": "Aceptar",
+    "decline": "Rechazar",
+    "notesLabel": "Nota",
+    "status": {
+      "PENDING": "Pendiente",
+      "ACCEPTED": "Aceptada",
+      "DECLINED": "Rechazada",
+      "COMPLETED": "Completada",
+      "CANCELLED": "Cancelada"
+    },
+    "stubNotice": "Las propuestas de intercambio aún no están activas — estos son datos de ejemplo."
   },
   "logout": "Cerrar Sesión",
   "back": "Volver"

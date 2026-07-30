@@ -1,6 +1,6 @@
 "use client";
-import MainButton from "@/components/Button/MainButton";
-import Input from "@/components/Input/Input";
+import { Button } from "@/components/Primitives/Button";
+import { Input } from "@/components/Primitives/Inputs";
 import { useTranslation } from "@/i18n/context";
 import { ArrowRight, Lock, Mail } from "lucide-react";
 import { useLogin } from "../hooks/useLogin";
@@ -38,7 +38,7 @@ export function LoginForm() {
         errorMessage={t("feedback.passwordError")}
         isInvalid={password.length > 0 && !isMinLength(password, 8)}
       />
-      <MainButton
+      <Button
         text={t("actions.login")}
         type="submit"
         loading={loading}

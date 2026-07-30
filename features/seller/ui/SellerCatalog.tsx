@@ -3,7 +3,7 @@
 import { Package } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
 
-import { Pagination } from "@/components/Pagination/Pagination";
+import { Pagination } from "@/components/Patterns/Pagination";
 
 const PAGE_SIZE = 12;
 

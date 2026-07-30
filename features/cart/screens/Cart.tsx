@@ -1,6 +1,6 @@
 import { type SupportedLanguage } from "@/constants/settings";
-import { Navigation } from "@/features/navigation/Navigation";
 import { DictionaryProvider } from "@/i18n/context";
+import { PageLayout } from "@/components/Layout";
 
 import { getCartDictionary, NAMESPACE } from "../i18n";
 import { CartScreen } from "../ui/CartScreen";
@@ -10,10 +10,10 @@ export async function Cart({ lang }: { lang: SupportedLanguage }) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <main className="flex flex-1 flex-col">
-        <Navigation lang={lang} />
+      {/* CartScreen centers itself at max-w-2xl, so the shell stays uncontained. */}
+      <PageLayout contained={false}>
         <CartScreen lang={lang} />
-      </main>
+      </PageLayout>
     </DictionaryProvider>
   );
 }

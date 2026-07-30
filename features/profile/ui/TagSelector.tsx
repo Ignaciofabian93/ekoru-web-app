@@ -27,10 +27,7 @@ export function TagSelector({
     return (
       <div className="flex flex-wrap gap-2">
         {Array.from({ length: 8 }).map((_, i) => (
-          <span
-            key={i}
-            className="h-8 w-24 animate-pulse rounded-full bg-border-light"
-          />
+          <span key={i} className="h-8 w-24 animate-pulse rounded-full bg-border-light" />
         ))}
       </div>
     );

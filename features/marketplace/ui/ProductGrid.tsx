@@ -1,10 +1,10 @@
 "use client";
-import { useTranslation } from "@/i18n/context";
 import { ShoppingCart } from "lucide-react";
+import { MarketplaceCard } from "@/components/Cards/MarketplaceCard";
+import { ResultsGrid } from "@/components/Patterns/ResultsGrid";
+import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import type { MarketplaceProduct } from "../types";
-import { ProductGridListLayout } from "@/components/Layout/ProductListGrid";
-import { MarketplaceCard } from "@/components/Cards/MarketplaceCard";
 
 interface Props {
   products: MarketplaceProduct[];
@@ -15,39 +15,16 @@ interface Props {
 export function ProductGrid({ products, lang, loading }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
-  if (loading && products.length === 0) {
-    return (
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div
-            key={i}
-            className="bg-background-secondary aspect-3/4 animate-pulse rounded-xl"
-          />
-        ))}
-      </div>
-    );
-  }
-
-  if (products.length === 0) {
-    return (
-      <div className="text-foreground-secondary py-16 text-center">
-        <ShoppingCart size={48} className="mx-auto mb-4 opacity-30" strokeWidth={1.5} />
-        <p className="font-semibold">{t("results.empty")}</p>
-        <p className="mt-1 text-sm">{t("results.emptyHint")}</p>
-      </div>
-    );
-  }
-
   return (
-    <ProductGridListLayout>
-      {products.map((product, i) => (
-        <MarketplaceCard
-          key={product.id}
-          product={product}
-          lang={lang}
-          priority={i < 2}
-        />
-      ))}
-    </ProductGridListLayout>
+    <ResultsGrid
+      items={products}
+      loading={loading}
+      emptyIcon={ShoppingCart}
+      emptyTitle={t("results.empty")}
+      emptyHint={t("results.emptyHint")}
+      renderItem={(product, i) => (
+        <MarketplaceCard key={product.id} product={product} lang={lang} priority={i < 2} />
+      )}
+    />
   );
 }

@@ -9,9 +9,9 @@ import { useTranslation } from "@/i18n/context";
 import { resolveImageUrl } from "@/utils/resolveImage";
 import type { StoreProductCardProduct } from "./types";
 import { AddToCartButton } from "../MarketplaceCard/CTA";
-import { Badge } from "@/components/Badge/Badge";
+import { Badge } from "@/components/Primitives/Badge";
 import { cleanText } from "@/utils/formatters";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 
 interface Props {
   product: StoreProductCardProduct;

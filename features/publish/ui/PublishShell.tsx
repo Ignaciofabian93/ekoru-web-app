@@ -1,28 +1,23 @@
 "use client";
-import { Title } from "@/components/Title/Title";
+import { PageLayout } from "@/components/Layout";
+import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 
-export function PublishShell({
-  nav,
-  children,
-}: {
-  nav: React.ReactNode;
-  children: React.ReactNode;
-}) {
+/**
+ * Publish keeps a feature shell only for its page title; the surrounding
+ * chrome, width and rhythm now come from the shared `PageLayout`.
+ */
+export function PublishShell({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation("publish");
 
   return (
-    <main className="flex-1">
-      {nav}
-      <section
-        aria-label={t("a11y.section")}
-        className="mx-auto w-full max-w-3xl px-6 py-8 lg:py-12"
-      >
-        <Title level="h1" size="h3" weight="semibold" color="primary" className="mb-6">
+    <PageLayout width="narrow">
+      <section aria-label={t("a11y.section")} className="flex w-full flex-col gap-6">
+        <Title level="h1" size="h3" weight="semibold" color="primary">
           {t("page.title")}
         </Title>
         {children}
       </section>
-    </main>
+    </PageLayout>
   );
 }

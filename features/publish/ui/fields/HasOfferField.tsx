@@ -1,5 +1,5 @@
 "use client";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import clsx from "clsx";
 import { Check } from "lucide-react";
@@ -22,17 +22,13 @@ export function HasOfferField({
       aria-pressed={value}
       className={clsx(
         "flex items-center gap-3 rounded-xl border-2 p-4 text-left transition-all duration-200",
-        value
-          ? "border-primary bg-primary-light-bg"
-          : "border-input-border bg-surface",
+        value ? "border-primary bg-primary-light-bg" : "border-input-border bg-surface",
       )}
     >
       <span
         className={clsx(
           "flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-colors duration-200",
-          value
-            ? "border-primary bg-primary"
-            : "border-border-strong bg-transparent",
+          value ? "border-primary bg-primary" : "border-border-strong bg-transparent",
         )}
       >
         {value && <Check size={12} color="#ffffff" strokeWidth={3} />}

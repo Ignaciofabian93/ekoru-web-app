@@ -1,6 +1,6 @@
 "use client";
 import { Book, Leaf, Map, Store, UsersRound, Wrench } from "lucide-react";
-import HeroCarousel, { type HeroSlide } from "@/components/HeroCarousel/HeroCarousel";
+import HeroCarousel, { type HeroSlide } from "@/features/home/ui/HeroCarousel";
 import { gradients } from "@/design/tokens";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";

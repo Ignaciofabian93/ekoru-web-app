@@ -56,10 +56,12 @@ export const hasCurrency = (value: string): value is Currency =>
 export const CURRENCY_BY_COUNTRY: Record<SupportedCountry, Currency> = {
   CL: "CLP",
   CA: "CAD",
+  AR: "ARS",
+  US: "USD",
 };
 
 /** Countries the marketplace serves (ISO 3166-1 alpha-2). Extend as markets open. */
-export const SUPPORTED_COUNTRIES = ["CL", "CA"] as const;
+export const SUPPORTED_COUNTRIES = ["CL", "CA", "AR", "US"] as const;
 export type SupportedCountry = (typeof SUPPORTED_COUNTRIES)[number];
 
 export const DEFAULT_COUNTRY: SupportedCountry = "CL";

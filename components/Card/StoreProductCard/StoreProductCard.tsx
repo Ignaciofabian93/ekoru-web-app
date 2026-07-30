@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 
-import EnvironmentalImpactModal from "@/components/EnvironmentalImpactModal/EnvironmentalImpactModal";
+import ImpactModal from "@/components/Cards/ImpactModal";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import BackSide from "./BackSide";
 import FrontSide from "./FrontSide";
@@ -75,7 +75,7 @@ export default function StoreProductCard({ product, lang, href, className }: Pro
       </div>
 
       {product.environmentalImpact && (
-        <EnvironmentalImpactModal
+        <ImpactModal
           isOpen={impactOpen}
           onClose={() => setImpactOpen(false)}
           environmentalImpact={product.environmentalImpact}

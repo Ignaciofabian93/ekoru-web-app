@@ -1,22 +1,19 @@
 import { ApolloClient, CombinedGraphQLErrors, HttpLink, InMemoryCache } from "@apollo/client";
 import { ErrorLink } from "@apollo/client/link/error";
 import { from, switchMap } from "rxjs";
+import { UnauthorizedError, isUnauthorizedResponse } from "./errors";
 
 const httpLink = new HttpLink({ uri: "/api/graphql", credentials: "same-origin" });
 
 const errorLink = new ErrorLink(({ error, operation, forward }) => {
   if (CombinedGraphQLErrors.is(error)) {
-    const isUnauthorized = error.errors.some(
-      (e) =>
-        e.message === "No autorizado" ||
-        e.extensions?.code === "UNAUTHENTICATED" ||
-        (e.extensions?.code as number) === 401,
-    );
-
-    if (isUnauthorized && !operation.getContext().refreshAttempted) {
+    if (isUnauthorizedResponse(error) && !operation.getContext().refreshAttempted) {
       return from(
         fetch("/api/auth/refresh", { method: "POST", credentials: "include" }).then((res) => {
-          if (!res.ok) throw new Error("Refresh failed");
+          // A failed refresh means there is no session to recover — surface it
+          // as an auth error so screens can invite a sign-in rather than
+          // reporting a generic failure.
+          if (!res.ok) throw new UnauthorizedError();
         }),
       ).pipe(
         switchMap(() => {

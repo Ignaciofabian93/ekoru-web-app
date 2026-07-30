@@ -2,9 +2,9 @@
 import Link from "next/link";
 import { CheckCircle2, Clock, XCircle, Loader2 } from "lucide-react";
 
-import MainButton from "@/components/Button/MainButton";
-import { Text } from "@/components/Text/Text";
-import { Title } from "@/components/Title/Title";
+import { Button } from "@/components/Primitives/Button";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
 import { type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import type { PaymentStatusResponse } from "@/types/checkout";
@@ -37,7 +37,7 @@ export function ConfirmationStatus({ lang, payment, loading }: Props) {
         subtitle={t("confirmation.missingPayment")}
         actions={
           <Link href={`/${lang}/cart`}>
-            <MainButton text={t("confirmation.failed.backToCart")} variant="outline" />
+            <Button text={t("confirmation.failed.backToCart")} variant="outline" />
           </Link>
         }
       />
@@ -56,10 +56,10 @@ export function ConfirmationStatus({ lang, payment, loading }: Props) {
         actions={
           <div className="flex flex-col gap-2 sm:flex-row">
             <Link href={`/${lang}/profile/orders`}>
-              <MainButton text={t("confirmation.success.viewOrder")} fullWidth />
+              <Button text={t("confirmation.success.viewOrder")} fullWidth />
             </Link>
             <Link href={`/${lang}/marketplace`}>
-              <MainButton
+              <Button
                 text={t("confirmation.success.continueShopping")}
                 variant="outline"
                 fullWidth
@@ -79,7 +79,7 @@ export function ConfirmationStatus({ lang, payment, loading }: Props) {
         subtitle={t("confirmation.pending.subtitle", { provider: providerLabel })}
         actions={
           <Link href={`/${lang}/profile/orders`}>
-            <MainButton text={t("confirmation.pending.viewOrder")} variant="outline" />
+            <Button text={t("confirmation.pending.viewOrder")} variant="outline" />
           </Link>
         }
       />
@@ -94,10 +94,10 @@ export function ConfirmationStatus({ lang, payment, loading }: Props) {
       actions={
         <div className="flex flex-col gap-2 sm:flex-row">
           <Link href={`/${lang}/cart/checkout`}>
-            <MainButton text={t("confirmation.failed.retry")} fullWidth />
+            <Button text={t("confirmation.failed.retry")} fullWidth />
           </Link>
           <Link href={`/${lang}/cart`}>
-            <MainButton
+            <Button
               text={t("confirmation.failed.backToCart")}
               variant="outline"
               fullWidth

@@ -2,9 +2,9 @@
 import { useQuery } from "@apollo/client/react";
 import { useEffect, useMemo } from "react";
 
-import Input from "@/components/Input/Input";
-import { Select, type Option } from "@/components/Select/Select";
-import { Title } from "@/components/Title/Title";
+import { Input } from "@/components/Primitives/Inputs";
+import { Select, type Option } from "@/components/Primitives/Select";
+import { Title } from "@/components/Primitives/Title";
 import {
   GET_CITIES_BY_REGION,
   GET_COUNTIES_BY_CITY,
@@ -34,10 +34,13 @@ export function ShippingAddressForm({ value, onChange }: Props) {
       skip: !value.countryId,
     },
   );
-  const { data: citiesData } = useQuery<{ citiesByRegionId: City[] }>(GET_CITIES_BY_REGION, {
-    variables: { regionId: value.regionId },
-    skip: !value.regionId,
-  });
+  const { data: citiesData } = useQuery<{ citiesByRegionId: City[] }>(
+    GET_CITIES_BY_REGION,
+    {
+      variables: { regionId: value.regionId },
+      skip: !value.regionId,
+    },
+  );
   const { data: countiesData } = useQuery<{ countiesByCityId: County[] }>(
     GET_COUNTIES_BY_CITY,
     {
@@ -54,10 +57,7 @@ export function ShippingAddressForm({ value, onChange }: Props) {
     () => regionsData?.regionsByCountryId ?? [],
     [regionsData],
   );
-  const cities = useMemo<City[]>(
-    () => citiesData?.citiesByRegionId ?? [],
-    [citiesData],
-  );
+  const cities = useMemo<City[]>(() => citiesData?.citiesByRegionId ?? [], [citiesData]);
   const counties = useMemo<County[]>(
     () => countiesData?.countiesByCityId ?? [],
     [countiesData],
@@ -66,7 +66,8 @@ export function ShippingAddressForm({ value, onChange }: Props) {
   // Default to Chile when we can identify it (single country, or named match).
   useEffect(() => {
     if (value.countryId || countries.length === 0) return;
-    const chile = countries.find((c) => c.country.toLowerCase() === "chile") ?? countries[0];
+    const chile =
+      countries.find((c) => c.country.toLowerCase() === "chile") ?? countries[0];
     if (chile) onChange("countryId", chile.id);
   }, [countries, value.countryId, onChange]);
 
@@ -88,10 +89,7 @@ export function ShippingAddressForm({ value, onChange }: Props) {
   );
 
   return (
-    <section
-      aria-label={t("a11y.checkoutForm")}
-      className="flex flex-col gap-3"
-    >
+    <section aria-label={t("a11y.checkoutForm")} className="flex flex-col gap-3">
       <Title level="h3" size="h5" weight="semibold">
         {t("checkout.shipping.addressTitle")}
       </Title>

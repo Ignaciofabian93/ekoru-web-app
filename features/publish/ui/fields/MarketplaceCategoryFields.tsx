@@ -1,5 +1,5 @@
 "use client";
-import { Select } from "@/components/Select/Select";
+import { Select } from "@/components/Primitives/Select";
 import { useTranslation } from "@/i18n/context";
 
 import type { MarketplaceCategoriesState } from "../../hooks/useMarketplaceCategories";
@@ -18,9 +18,7 @@ export function MarketplaceCategoryFields({
       <Select
         label={t("form.department")}
         placeholder={
-          categories.loading
-            ? t("form.categoryLoading")
-            : t("form.departmentPlaceholder")
+          categories.loading ? t("form.categoryLoading") : t("form.departmentPlaceholder")
         }
         options={categories.departments}
         value={categories.departmentId ?? undefined}

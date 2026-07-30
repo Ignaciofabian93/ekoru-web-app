@@ -20,6 +20,9 @@
   "environmentalImpact": "Environmental Impact",
   "logOut": "Log Out",
   "logIn": "Log In",
+  "a11y": {
+    "close": "Close menu"
+  },
   "sellerType": {
     "PERSON": "Personal Account",
     "STARTUP": "Startup",

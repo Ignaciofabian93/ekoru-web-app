@@ -1,5 +1,5 @@
 "use client";
-import { Text } from "@/components/Text/Text";
+import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 
 import {
@@ -46,21 +46,23 @@ export function ReviewStep({
       ? { label: t("review.price"), value: form.price ? `$${form.price}` : "" }
       : null,
     isStore && form.hasOffer
-      ? { label: t("review.offerPrice"), value: form.offerPrice ? `$${form.offerPrice}` : "" }
+      ? {
+          label: t("review.offerPrice"),
+          value: form.offerPrice ? `$${form.offerPrice}` : "",
+        }
       : null,
     isService && form.priceRange
       ? { label: t("review.priceRange"), value: form.priceRange }
       : null,
     isService && form.duration
-      ? { label: t("review.duration"), value: t("review.durationValue", { minutes: form.duration }) }
+      ? {
+          label: t("review.duration"),
+          value: t("review.durationValue", { minutes: form.duration }),
+        }
       : null,
     isStore ? { label: t("review.stock"), value: form.stock } : null,
-    isStore && form.color
-      ? { label: t("review.color"), value: form.color }
-      : null,
-    isStore && form.barcode
-      ? { label: t("review.barcode"), value: form.barcode }
-      : null,
+    isStore && form.color ? { label: t("review.color"), value: form.color } : null,
+    isStore && form.barcode ? { label: t("review.barcode"), value: form.barcode } : null,
     isStore && materialsLabel
       ? { label: t("review.materials"), value: materialsLabel }
       : null,
@@ -68,9 +70,7 @@ export function ReviewStep({
       ? { label: t("review.recycledContent"), value: `${form.recycledContent}%` }
       : null,
     isStore && weight ? { label: t("review.weight"), value: weight } : null,
-    isStore && dimensions
-      ? { label: t("review.dimensions"), value: dimensions }
-      : null,
+    isStore && dimensions ? { label: t("review.dimensions"), value: dimensions } : null,
     isStore && form.warranty !== null
       ? {
           label: t("review.warranty"),
@@ -83,7 +83,10 @@ export function ReviewStep({
       : null,
     target !== "MARKETPLACE"
       ? null
-      : { label: t("review.condition"), value: selectedCondition ? t(selectedCondition.labelKey) : "" },
+      : {
+          label: t("review.condition"),
+          value: selectedCondition ? t(selectedCondition.labelKey) : "",
+        },
     { label: t("review.category"), value: categoryLabel },
     isStore && form.features.length
       ? { label: t("review.features"), value: form.features.join(", ") }
