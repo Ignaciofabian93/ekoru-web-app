@@ -19,7 +19,7 @@ import { useTranslation } from "@/i18n/context";
 import { useNavigation } from "@/hooks/useNavigation";
 import { NAMESPACE } from "../i18n";
 import { ProductGallery } from "@/components/Patterns/ProductGallery";
-import { SellerCard } from "@/components/Card/SellerCard/SellerCard";
+import { SellerCard } from "@/components/Patterns/SellerCard";
 
 interface Props {
   id: string;

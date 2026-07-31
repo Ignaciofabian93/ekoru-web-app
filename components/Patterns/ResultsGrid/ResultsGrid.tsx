@@ -1,5 +1,4 @@
 "use client";
-
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { Grid } from "@/components/Layout";
@@ -65,7 +64,7 @@ export function ResultsGrid<T>({
   }
 
   return (
-    <Grid cols={2} sm={3} md={4} lg={5} gap={4} className="place-items-center">
+    <Grid cols={2} sm={3} md={4} lg={5} gap={2} className="place-items-center">
       {items.map(renderItem)}
     </Grid>
   );

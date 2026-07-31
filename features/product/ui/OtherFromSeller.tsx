@@ -4,9 +4,9 @@ import { useTranslation } from "@/i18n/context";
 import { useSellerProducts } from "../hooks/useSellerProducts";
 import { NAMESPACE } from "../i18n";
 import { Title } from "@/components/Primitives/Title";
-import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
 import { CardScroller } from "@/components/Cards/CardScroller";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { MarketplaceCard } from "@/components/Cards";
 
 interface Props {
   lang: string;
@@ -101,8 +101,13 @@ export function OtherFromSeller({ lang, sellerId, excludeProductId }: Props) {
         scrollNextAriaLabel={t("otherProducts.scrollNext")}
         scrollPreviousAriaLabel={t("otherProducts.scrollPrevious")}
       >
-        {products.map((product) => (
-          <MarketplaceCard key={product.id} product={product} lang={lang} />
+        {products.map((product, i) => (
+          <MarketplaceCard
+            priority={i < 4}
+            key={product.id}
+            product={product}
+            lang={lang}
+          />
         ))}
       </CardScroller>
     </section>

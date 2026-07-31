@@ -85,7 +85,7 @@ export function ServiceSubcategoryContent({ lang, categorySlug, slug }: Props) {
                 />
               ) : (
                 <Fragment>
-                  <ServiceList services={services} />
+                  <ServiceList services={services} lang={lang} />
                   {pageInfo && pageInfo.totalPages > 1 && (
                     <Pagination
                       currentPage={pageInfo.currentPage}

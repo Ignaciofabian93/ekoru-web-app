@@ -50,7 +50,7 @@ export function ServicesContent({ lang, language }: Props) {
             description={t("detail.noServicesHint")}
           />
         ) : (
-          <ServiceList services={services} />
+          <ServiceList services={services} lang={lang} />
         )}
       </section>
     </Section>

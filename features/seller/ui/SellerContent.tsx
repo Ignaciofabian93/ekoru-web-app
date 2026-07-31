@@ -1,10 +1,6 @@
 "use client";
-
-import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
 import type { SupportedLanguage } from "@/constants/settings";
-import { StoreProductCard } from "@/features/stores/ui/StoreProductCard";
 import { useTranslation } from "@/i18n/context";
-
 import { useMarketplaceCatalog } from "../hooks/useMarketplaceCatalog";
 import { useSellerProfile } from "../hooks/useSellerProfile";
 import { useStoreCatalog } from "../hooks/useStoreCatalog";
@@ -22,6 +18,7 @@ import {
   SellerLoading,
   SellerNotFound,
 } from "./SellerStatus";
+import { MarketplaceCard, StoreProductCard } from "@/components/Cards";
 
 interface Props {
   id: string;

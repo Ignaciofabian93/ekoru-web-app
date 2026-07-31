@@ -1,47 +1,40 @@
 "use client";
-import ServiceCard from "@/components/Card/ServiceCard/ServiceCard";
-import type { ServiceCardData } from "@/components/Card/ServiceCard/types";
-import { useTranslation } from "@/i18n/context";
+import { ServiceCard, type ServiceCardService } from "@/components/Cards";
 
-import { NAMESPACE } from "../i18n";
 import type { ServiceNode } from "../types";
 
-function toCardData(service: ServiceNode): ServiceCardData {
+function toCardService(service: ServiceNode): ServiceCardService {
   return {
     id: service.id,
     name: service.name,
-    description: service.description ?? undefined,
+    description: service.description,
     image: service.images?.[0],
-    providerName: service.seller?.profile?.businessName ?? undefined,
-    providerLogo: service.seller?.profile?.logo ?? undefined,
     category: service.serviceCategory?.subCategory,
-    priceFrom: service.basePrice ?? undefined,
-    durationMinutes: service.duration ?? undefined,
-    rating: service.averageRating ?? undefined,
-    reviewsCount: service.reviewCount ?? undefined,
-    isVerified: service.seller?.isVerified,
+    price: service.basePrice,
+    duration: service.duration,
+    averageRating: service.averageRating,
+    reviewsNumber: service.reviewCount,
     isLiked: service.isLiked,
+    providerName: service.seller?.profile?.businessName,
+    providerLogo: service.seller?.profile?.logo,
   };
 }
 
 interface Props {
   services: ServiceNode[];
+  lang: string;
 }
 
-export function ServiceList({ services }: Props) {
-  const { t } = useTranslation(NAMESPACE);
-
-  const labels = {
-    bookNow: t("card.bookNow"),
-    verified: t("card.verified"),
-    priceFromPrefix: t("card.priceFrom"),
-    reviews: t("card.reviews"),
-  };
-
+export function ServiceList({ services, lang }: Props) {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-      {services.map((service) => (
-        <ServiceCard key={service.id} service={toCardData(service)} labels={labels} />
+      {services.map((service, i) => (
+        <ServiceCard
+          key={service.id}
+          service={toCardService(service)}
+          lang={lang}
+          priority={i < 4}
+        />
       ))}
     </div>
   );

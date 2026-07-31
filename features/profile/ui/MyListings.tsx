@@ -3,18 +3,12 @@ import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import type { SellerStorefrontProduct } from "@/features/seller/types";
 import type { StoreListProduct } from "@/features/stores/types";
 import type { ServiceNode } from "@/features/services/types";
-import type { ServiceCardData } from "@/components/Card/ServiceCard/types";
 import { useTranslation } from "@/i18n/context";
 import { FileText, Layers, Package, Plus, Wrench } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-
-import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
-import ServiceCard from "@/components/Card/ServiceCard/ServiceCard";
-import { StoreProductCard } from "@/features/stores/ui/StoreProductCard";
 import { LinkButton } from "@/components/Primitives/LinkButton";
 import { useBusinessProfile, useSellerType } from "@/store/useAuthStore";
-
 import { useMyListings, type ListingStatus } from "../hooks/useMyListings";
 import { useMyStoreListings } from "../hooks/useMyStoreListings";
 import { useMyServiceListings } from "../hooks/useMyServiceListings";
@@ -38,6 +32,12 @@ import {
 } from "./ProductActionsMenu";
 import { SectionCard } from "./SectionCard";
 import { Tabs } from "@/components/Patterns/Tabs";
+import {
+  MarketplaceCard,
+  ServiceCard,
+  StoreProductCard,
+  type ServiceCardService,
+} from "@/components/Cards";
 
 /** Which catalog a listing row belongs to. A seller sees one or more of these
  *  depending on their account: PERSON → marketplace; business → store and/or
@@ -51,21 +51,20 @@ type EditTarget =
 
 type DeleteTarget = { kind: ListingKind; id: string | number; name: string };
 
-function serviceToCardData(service: ServiceNode): ServiceCardData {
+function serviceToCardService(service: ServiceNode): ServiceCardService {
   return {
     id: service.id,
     name: service.name,
-    description: service.description ?? undefined,
+    description: service.description,
     image: service.images?.[0],
-    providerName: service.seller?.profile?.businessName ?? undefined,
-    providerLogo: service.seller?.profile?.logo ?? undefined,
     category: service.serviceCategory?.subCategory,
-    priceFrom: service.basePrice ?? undefined,
-    durationMinutes: service.duration ?? undefined,
-    rating: service.averageRating ?? undefined,
-    reviewsCount: service.reviewCount ?? undefined,
-    isVerified: service.seller?.isVerified,
+    price: service.basePrice,
+    duration: service.duration,
+    averageRating: service.averageRating,
+    reviewsNumber: service.reviewCount,
     isLiked: service.isLiked,
+    providerName: service.seller?.profile?.businessName,
+    providerLogo: service.seller?.profile?.logo,
   };
 }
 
@@ -274,23 +273,7 @@ export function MyListings() {
                       : t("dashboard.listings.soldVia.sale")}
                   </span>
                 )}
-                <MarketplaceCard
-                  product={p}
-                  lang={lang}
-                  actions={
-                    <ProductActionsMenu
-                      ariaLabel={menuLabel}
-                      actions={buildActions({
-                        isActive: Boolean(p.isActive),
-                        onView: () => router.push(`/${lang}/product/${p.id}`),
-                        onEdit: () => setEditTarget({ kind: "marketplace", item: p }),
-                        onToggle: () => productActions.toggleActive(p.id, !p.isActive),
-                        onDelete: () =>
-                          setDeleteTarget({ kind: "marketplace", id: p.id, name: p.name }),
-                      })}
-                    />
-                  }
-                />
+                <MarketplaceCard product={p} lang={lang} priority />
               </div>
             )}
             emptyActive={{
@@ -367,11 +350,8 @@ export function MyListings() {
               return (
                 <ServiceCard
                   key={s.id}
-                  service={serviceToCardData(s)}
-                  labels={{
-                    verified: t("favorites.serviceCard.verified"),
-                    priceFromPrefix: t("favorites.serviceCard.priceFrom"),
-                  }}
+                  service={serviceToCardService(s)}
+                  lang={lang}
                   actions={
                     <ProductActionsMenu
                       ariaLabel={menuLabel}

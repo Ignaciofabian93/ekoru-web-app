@@ -4,6 +4,7 @@ import clsx from "clsx";
 import {
   BadgeCheck,
   ChevronRight,
+  Clock,
   Droplets,
   Heart,
   ImageOff,
@@ -50,6 +51,8 @@ import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "./i18n";
 import ImpactModal from "./ImpactModal";
 import { useNavigation } from "@/hooks/useNavigation";
+import { getInitials } from "./utils/initials";
+import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 
 function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
   const { t } = useTranslation(NAMESPACE);
@@ -168,10 +171,15 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
   );
 }
 
-function Description() {
+// The non-product back face: a blurb rather than an impact panel. Services use
+// it, since there is no material composition to compute savings from.
+function Description({ description }: { description?: string | null }) {
+  const { t } = useTranslation(NAMESPACE);
   return (
-    <div>
-      <p>Description</p>
+    <div className="flex-1 overflow-y-auto px-3 py-2">
+      <Text variant="p" size="sm" color="secondary" numberOfLines={6}>
+        {description?.trim() || t("meta.noDescription")}
+      </Text>
     </div>
   );
 }
@@ -244,7 +252,9 @@ function FlipButton({ label, className }: CardFlipButtonProps) {
       aria-label={label}
       onClick={() => flip()}
       className={clsx(
-        "bg-primary text-on-primary hover:bg-primary-active flex size-8 cursor-pointer items-center justify-center rounded-full shadow-sm transition-colors",
+        "bg-primary text-on-primary hover:bg-primary-active",
+        "flex size-8 cursor-pointer items-center justify-center",
+        "rounded-full shadow-sm transition-colors",
         className,
       )}
     >
@@ -270,7 +280,7 @@ function BackHeader({ itemName }: CardBackHeaderProps) {
         weight="bold"
         size="base"
         color="default"
-        className="line-clamp-1 truncate"
+        className="line-clamp-1"
       >
         {itemName}
       </Text>
@@ -281,48 +291,62 @@ function BackHeader({ itemName }: CardBackHeaderProps) {
   );
 }
 
-function BackBody({ itemType, impact }: CardBackBodyProps) {
+function BackBody({ itemType, impact, description }: CardBackBodyProps) {
   if (itemType === "MARKETPLACE" || itemType === "STORE") {
     return <ImpactInformation impact={impact ?? null} />;
   }
-  return <Description />;
+  return <Description description={description} />;
 }
 
-function BackFooter({ seller }: CardBackFooterProps) {
-  const displayName = useDisplayName(seller);
+function BackFooter({ seller, name, imageUrl, subtitle }: CardBackFooterProps) {
+  // The hooks run unconditionally and the explicit props win afterwards, so a
+  // caller holding only a provider name still gets a rendered footer.
+  const sellerName = useDisplayName(seller);
   const sellerRegion = useSellerRegion(seller);
-  const profileImage = useProfileImage(seller);
-  const initials = useInitials(seller);
+  const sellerImage = useProfileImage(seller);
+  const sellerInitials = useInitials(seller);
+
+  const displayName = name ?? sellerName;
+  const image = imageUrl ? resolveImageUrl(imageUrl) : sellerImage;
+  const secondLine = subtitle ?? sellerRegion;
+  const initials = name ? getInitials(name) : sellerInitials;
+
+  // Nothing identifies the provider — drop the row rather than leave an empty
+  // bar under the back face.
+  if (!displayName && !secondLine) return null;
+
   return (
     <div className="w-full flex px-2 py-2 items-center justify-center sm:justify-start gap-1 border-t border-slate-200">
-      <div className="rounded-full h-10 w-10 overflow-hidden hidden sm:flex">
-        {profileImage ? (
+      <div className="bg-background-secondary rounded-full h-10 w-10 shrink-0 items-center justify-center overflow-hidden hidden sm:flex">
+        {image ? (
           <Image
-            src={profileImage}
+            src={image}
             alt=""
             width={100}
             height={100}
-            className="w-full h-full"
+            className="w-full h-full object-cover"
           />
         ) : (
-          initials
+          <span className="text-foreground-secondary text-xs font-bold">{initials}</span>
         )}
       </div>
-      <div className="flex flex-col">
-        {seller && (
+      <div className="flex flex-col w-full sm:w-fit min-w-0">
+        {displayName && (
           <Text variant="span" weight="semibold" size="sm" className="line-clamp-1">
             {displayName}
           </Text>
         )}
-        <Text
-          variant="small"
-          weight="bold"
-          size="xs"
-          align="left"
-          className="line-clamp-1"
-        >
-          {sellerRegion}
-        </Text>
+        {secondLine && (
+          <Text
+            variant="small"
+            weight="bold"
+            size="xs"
+            align="left"
+            className="line-clamp-1"
+          >
+            {secondLine}
+          </Text>
+        )}
       </div>
     </div>
   );
@@ -393,8 +417,14 @@ function BrandPanel({
       )}
     >
       {/* Soft depth, not content — kept out of the a11y tree. */}
-      <div aria-hidden className="absolute -top-6 -left-8 size-24 rounded-full bg-white/10" />
-      <div aria-hidden className="absolute -right-6 bottom-2 size-16 rounded-full bg-white/10" />
+      <div
+        aria-hidden
+        className="absolute -top-6 -left-8 size-24 rounded-full bg-white/10"
+      />
+      <div
+        aria-hidden
+        className="absolute -right-6 bottom-2 size-16 rounded-full bg-white/10"
+      />
 
       <div className="relative z-10 flex w-full flex-1 items-center justify-center px-4 pt-4 pb-8">
         <div className="flex size-20 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-black/5">
@@ -444,16 +474,24 @@ function Header({
   isSoldOut = false,
   isLikeEnabled = true,
   isLiked = false,
+  itemId,
+  favoriteSource = "marketplace",
+  flipTarget = "impact",
   flipLabel,
   isProduct = true,
   isVerified = false,
   initials,
   accent = "secondary",
 }: CardHeaderProps) {
-  const { orientation, hasBackSide } = useCard();
+  const { orientation, hasBackSide, isManaged } = useCard();
   const { t } = useTranslation(NAMESPACE);
+  const { toggleFavorite } = useToggleFavorite();
   const cover = resolveImageUrl(coverImageString);
   const [imageError, setImageError] = useState<boolean>(false);
+
+  // The heart needs an id to toggle against, and an owner manages a listing
+  // rather than favoriting it — in either case, don't render a dead control.
+  const showLike = isLikeEnabled && !isManaged && typeof itemId === "number";
 
   // Seller cards show a brand panel instead of a photo, and carry none of the
   // product chrome (condition, offer, favorite, flip).
@@ -544,14 +582,12 @@ function Header({
       {/* Controls sit above the stretched link (z-20 > z-10) so they take their
           own clicks instead of navigating. */}
       <div className="absolute top-2 right-2 z-20 flex flex-col-reverse items-center gap-1.5">
-        {isLikeEnabled && (
+        {showLike && (
           <button
             type="button"
             aria-label={isLiked ? t("actions.unlike") : t("actions.like")}
             aria-pressed={isLiked}
-            onClick={() => {
-              // toggleFavorite(product.id, liked);
-            }}
+            onClick={() => toggleFavorite(itemId, isLiked, favoriteSource)}
             className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-white/85 shadow-sm transition-colors hover:bg-white"
           >
             <Heart
@@ -563,10 +599,18 @@ function Header({
             />
           </button>
         )}
-        {/* `flipLabel` lets a card override the default per type (services flip
-            to a description, not an impact panel); otherwise the dictionary
-            default is used. */}
-        {hasBackSide && <FlipButton label={flipLabel ?? t("actions.showImpact")} />}
+        {/* The name follows what the back face actually shows: an impact panel
+            on products, a description on services. `flipLabel` overrides it. */}
+        {hasBackSide && (
+          <FlipButton
+            label={
+              flipLabel ??
+              (flipTarget === "details"
+                ? t("actions.showDetails")
+                : t("actions.showImpact"))
+            }
+          />
+        )}
       </div>
     </div>
   );
@@ -685,6 +729,8 @@ function Body({
   exchangeRedirectUrl,
   averageRating,
   reviewsNumber,
+  duration,
+  isPriceFrom = false,
   stock,
   isLowStock = false,
   quantity,
@@ -702,10 +748,12 @@ function Body({
   // An "offer" only counts when it actually undercuts the list price —
   // otherwise the struck-through original would read as nonsense.
   const onOffer =
-    hasOffer && typeof offerPrice === "number" && typeof price === "number" && offerPrice < price;
+    hasOffer &&
+    typeof offerPrice === "number" &&
+    typeof price === "number" &&
+    offerPrice < price;
   const hasRating = typeof averageRating === "number" && averageRating > 0;
   const isSoldOut = typeof stock === "number" && stock <= 0;
-
 
   // Seller cards describe a business, not a listing: no brand, price or
   // exchange row, but a location and a blurb instead.
@@ -772,33 +820,59 @@ function Body({
         </Text>
       </div>
 
-      {hasRating && (
-        <div className="flex items-center gap-1">
-          <Star
-            size={12}
-            strokeWidth={1.5}
-            aria-hidden
-            className="shrink-0 fill-amber-400 text-amber-400"
-          />
-          <Text
-            variant="span"
-            size="xs"
-            weight="bold"
-            color="default"
-            aria-label={t("rating.label", { value: averageRating.toFixed(1) })}
-          >
-            {averageRating.toFixed(1)}
-          </Text>
-          {typeof reviewsNumber === "number" && reviewsNumber > 0 && (
-            <Text variant="span" size="xs" color="tertiary">
-              {t("rating.reviews", { value: String(reviewsNumber) })}
-            </Text>
+      {/* Rating and duration share a row: both are short, and a line each would
+          push the price below the fold on a narrow card. */}
+      {(hasRating || duration) && (
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+          {hasRating && (
+            <span className="flex items-center gap-1">
+              <Star
+                size={12}
+                strokeWidth={1.5}
+                aria-hidden
+                className="shrink-0 fill-amber-400 text-amber-400"
+              />
+              <Text
+                variant="span"
+                size="xs"
+                weight="bold"
+                color="default"
+                aria-label={t("rating.label", { value: averageRating.toFixed(1) })}
+              >
+                {averageRating.toFixed(1)}
+              </Text>
+              {typeof reviewsNumber === "number" && reviewsNumber > 0 && (
+                <Text variant="span" size="xs" color="tertiary">
+                  {t("rating.reviews", { value: String(reviewsNumber) })}
+                </Text>
+              )}
+            </span>
+          )}
+          {/* Free text from the backend ("45 min", "2 h") — rendered verbatim,
+              so no unit is appended here. */}
+          {duration && (
+            <span className="flex items-center gap-1">
+              <Clock
+                size={11}
+                strokeWidth={2}
+                aria-hidden
+                className="text-foreground-secondary shrink-0"
+              />
+              <Text variant="span" size="xs" color="secondary" numberOfLines={1}>
+                {duration}
+              </Text>
+            </span>
           )}
         </div>
       )}
 
       {(isSoldOut || isLowStock) && (
-        <Text variant="span" size="xs" weight="bold" color={isSoldOut ? "error" : "warning"}>
+        <Text
+          variant="span"
+          size="xs"
+          weight="bold"
+          color={isSoldOut ? "error" : "warning"}
+        >
           {isSoldOut
             ? t("stock.outOfStock")
             : t("stock.lowStock", { value: String(stock ?? 0) })}
@@ -817,9 +891,18 @@ function Body({
           </div>
         ) : (
           price && (
-            <Text variant="span" size="lg" color="primary" weight="bold">
-              {formatPrice(price)}
-            </Text>
+            <div className="flex items-baseline gap-1">
+              {/* Services quote a starting price, so the amount reads
+                  "From $X" rather than as a fixed price. */}
+              {isPriceFrom && (
+                <Text variant="span" size="xs" color="tertiary" weight="bold">
+                  {t("price.from")}
+                </Text>
+              )}
+              <Text variant="span" size="lg" color="primary" weight="bold">
+                {formatPrice(price)}
+              </Text>
+            </div>
           )
         )}
         {isExchangeable && exchangeRedirectUrl && (
@@ -860,6 +943,11 @@ function Footer({
 }: CardFooterProps) {
   const { t } = useTranslation(NAMESPACE);
   const { navigateTo } = useNavigation();
+  const { isManaged } = useCard();
+
+  // An owner manages the listing from the actions menu — "Add to cart" on your
+  // own product is meaningless, so the CTA row goes away entirely.
+  if (isManaged) return null;
 
   // The CTA label is chosen by item type — t(`cta.MARKETPLACE`) / `cta.STORE` /
   // etc. — unless a state overrides it.
@@ -953,7 +1041,13 @@ const WRAPPER_SIZE: Record<Orientation, string> = {
 // Reads flip state from context and renders the two stacked layers. Split out
 // from Card so it lives *inside* the provider — it needs `isFlipped`, which the
 // provider owns.
-function CardScene({ children }: { children: React.ReactNode }) {
+function CardScene({
+  children,
+  actions,
+}: {
+  children: React.ReactNode;
+  actions?: React.ReactNode;
+}) {
   const { orientation, isFlipped } = useCard();
 
   // Stationary layer owns size + the perspective that gives the flip its depth
@@ -983,6 +1077,11 @@ function CardScene({ children }: { children: React.ReactNode }) {
       >
         {children}
       </div>
+
+      {/* Owner controls live outside the rotating layer on purpose: inside it
+          they would inherit `transform-3d` / `backface-hidden`, and an open
+          dropdown would be clipped by the faces' `overflow-hidden`. */}
+      {actions && <div className="absolute top-2 right-2 z-30">{actions}</div>}
     </div>
   );
 }
@@ -993,15 +1092,21 @@ export function Card({
   hasBackSide = true,
   href,
   ariaLabel,
+  actions,
 }: CardProps) {
+  const isManaged = Boolean(actions);
   return (
     <CardProvider
       orientation={orientation}
-      hasBackSide={hasBackSide}
+      // Management mode puts the actions menu where the flip control sits, so
+      // the back face is switched off rather than left unreachable. Every flip
+      // control already keys off `hasBackSide`.
+      hasBackSide={hasBackSide && !isManaged}
       href={href}
       ariaLabel={ariaLabel}
+      isManaged={isManaged}
     >
-      <CardScene>{children}</CardScene>
+      <CardScene actions={actions}>{children}</CardScene>
     </CardProvider>
   );
 }

@@ -1,17 +1,15 @@
 "use client";
 import { PackageSearch } from "lucide-react";
-import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
-import ServiceCard from "@/components/Card/ServiceCard/ServiceCard";
-import StoreProductCard from "@/components/Card/StoreProductCard/StoreProductCard";
 import { ResultsGrid } from "@/components/Patterns/ResultsGrid";
 import { useTranslation } from "@/i18n/context";
 import {
   toMarketplaceCardProduct,
-  toServiceCardData,
+  toServiceCardService,
   toStoreProductCardProduct,
 } from "../adapters";
 import { NAMESPACE } from "../i18n";
 import type { SearchResultItem } from "../types";
+import { MarketplaceCard, ServiceCard, StoreProductCard } from "@/components/Cards";
 
 interface Props {
   items: SearchResultItem[];
@@ -31,11 +29,15 @@ const renderItemCard = (item: SearchResultItem, lang: string) => {
       );
     case "STORE_PRODUCT":
       return (
-        <StoreProductCard key={key} product={toStoreProductCardProduct(item)} lang={lang} />
+        <StoreProductCard
+          key={key}
+          product={toStoreProductCardProduct(item)}
+          lang={lang}
+        />
       );
     case "SERVICE":
       return (
-        <ServiceCard key={key} service={toServiceCardData(item)} href={`/${lang}/services`} />
+        <ServiceCard key={key} service={toServiceCardService(item)} lang={lang} />
       );
     default: {
       // Exhaustive: a new SearchResultType fails to compile until handled.

@@ -3,19 +3,19 @@ import clsx from "clsx";
 import { Heart, Store as StoreIcon, Wrench } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
-
-import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
-import ServiceCard from "@/components/Card/ServiceCard/ServiceCard";
-import type { ServiceCardData } from "@/components/Card/ServiceCard/types";
 import { Pagination } from "@/components/Patterns/Pagination";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import type { ServiceNode } from "@/features/services/types";
-import { StoreProductCard } from "@/features/stores/ui/StoreProductCard";
 import { useTranslation } from "@/i18n/context";
-
 import { useFavorites, type FavoritesTab } from "../hooks/useFavorites";
 import { NAMESPACE } from "../i18n";
 import { EmptyState } from "@/components/Feedback/EmptyState";
+import {
+  MarketplaceCard,
+  ServiceCard,
+  StoreProductCard,
+  type ServiceCardService,
+} from "@/components/Cards";
 
 const PAGE_SIZE = 12;
 
@@ -25,23 +25,20 @@ const TABS: { key: FavoritesTab; icon: typeof Heart }[] = [
   { key: "services", icon: Wrench },
 ];
 
-// Services have no dedicated detail page yet, so favorite service cards keep
-// the in-card flip/contact interactions without navigating.
-function toServiceCardData(service: ServiceNode): ServiceCardData {
+function toServiceCardService(service: ServiceNode): ServiceCardService {
   return {
     id: service.id,
     name: service.name,
-    description: service.description ?? undefined,
+    description: service.description,
     image: service.images?.[0],
-    providerName: service.seller?.profile?.businessName ?? undefined,
-    providerLogo: service.seller?.profile?.logo ?? undefined,
     category: service.serviceCategory?.subCategory,
-    priceFrom: service.basePrice ?? undefined,
-    durationMinutes: service.duration ?? undefined,
-    rating: service.averageRating ?? undefined,
-    reviewsCount: service.reviewCount ?? undefined,
-    isVerified: service.seller?.isVerified,
+    price: service.basePrice,
+    duration: service.duration,
+    averageRating: service.averageRating,
+    reviewsNumber: service.reviewCount,
     isLiked: service.isLiked,
+    providerName: service.seller?.profile?.businessName,
+    providerLogo: service.seller?.profile?.logo,
   };
 }
 
@@ -58,13 +55,6 @@ export function FavoritesGrid() {
     page,
     PAGE_SIZE,
   );
-
-  const serviceLabels = {
-    bookNow: t("favorites.serviceCard.bookNow"),
-    verified: t("favorites.serviceCard.verified"),
-    priceFromPrefix: t("favorites.serviceCard.priceFrom"),
-    reviews: t("favorites.serviceCard.reviews"),
-  };
 
   function selectTab(next: FavoritesTab) {
     setTab(next);
@@ -136,8 +126,8 @@ export function FavoritesGrid() {
               services.map((service) => (
                 <ServiceCard
                   key={service.id}
-                  service={toServiceCardData(service)}
-                  labels={serviceLabels}
+                  service={toServiceCardService(service)}
+                  lang={lang}
                 />
               ))}
           </div>

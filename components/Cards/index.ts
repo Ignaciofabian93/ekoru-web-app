@@ -1,6 +1,7 @@
 export { Card } from "./Card";
 export { CardScroller } from "./CardScroller";
 export { MarketplaceCard } from "./MarketplaceCard";
+export { ServiceCard } from "./ServiceCard";
 export { ServiceProviderCard } from "./ServiceProviderCard";
 export { StoresCard } from "./StoreCard";
 export { StoreProductCard } from "./StoreProductCard";
@@ -17,5 +18,8 @@ export type {
   CardHeaderProps,
   CardProps,
   ItemType,
+  MarketplaceCardProduct,
   Orientation,
+  ServiceCardService,
+  StoreProductCardProduct,
 } from "./types/Card.types";

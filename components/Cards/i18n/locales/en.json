@@ -18,7 +18,11 @@
   "meta": {
     "noBrand": "No brand",
     "noBusinessName": "Unnamed store",
-    "noBusinessType": "Store"
+    "noBusinessType": "Store",
+    "noDescription": "This listing has no description yet."
+  },
+  "price": {
+    "from": "From"
   },
   "businessType": {
     "RETAIL": "Retail",

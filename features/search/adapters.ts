@@ -1,6 +1,8 @@
-import type { MarketplaceCardProduct } from "@/components/Card/MarketplaceCard/types";
-import type { ServiceCardData } from "@/components/Card/ServiceCard/types";
-import type { StoreProductCardProduct } from "@/components/Card/StoreProductCard/types";
+import type {
+  MarketplaceCardProduct,
+  ServiceCardService,
+  StoreProductCardProduct,
+} from "@/components/Cards";
 import type { Seller } from "@/types/user";
 
 import type {
@@ -58,13 +60,11 @@ export function toMarketplaceCardProduct(
     name: item.name,
     price: item.price ?? 0,
     sellerId: item.sellerId ?? "",
-    description: item.description ?? undefined,
     images: item.images ?? [],
     brand: entity?.brand,
-    badges: entity?.badges ?? null,
     condition: entity?.condition,
-    conditionDescription: entity?.conditionDescription ?? null,
     isExchangeable: entity?.isExchangeable ?? false,
+    interests: entity?.interests ?? null,
     isLiked: entity?.isLiked ?? false,
     environmentalImpact: entity?.environmentalImpact ?? null,
     seller: entity?.seller ?? null,
@@ -80,26 +80,21 @@ export function toStoreProductCardProduct(
     name: item.name,
     price: item.price ?? 0,
     sellerId: item.sellerId ?? undefined,
-    description: item.description ?? undefined,
     images: item.images ?? [],
     hasOffer: item.hasOffer,
     offerPrice: item.offerPrice ?? undefined,
     averageRating: item.rating ?? undefined,
     reviewsNumber: item.reviewCount ?? undefined,
-    tags: item.tags ?? undefined,
     brand: entity?.brand,
-    badges: entity?.badges,
     stock: entity?.stock,
     isLowStock: entity?.isLowStock,
-    warranty: entity?.warranty,
-    warrantyDuration: entity?.warrantyDuration,
     isLiked: entity?.isLiked ?? false,
     environmentalImpact: entity?.environmentalImpact,
     seller: entity?.seller ?? null,
   };
 }
 
-export function toServiceCardData(item: ServiceSearchResult): ServiceCardData {
+export function toServiceCardService(item: ServiceSearchResult): ServiceCardService {
   const entity = item.service;
   const seller = entity?.seller;
   return {
@@ -108,14 +103,13 @@ export function toServiceCardData(item: ServiceSearchResult): ServiceCardData {
     description: item.description ?? undefined,
     image: item.images?.[0],
     category: item.category ?? undefined,
-    priceFrom: item.price ?? undefined,
-    rating: item.rating ?? undefined,
-    reviewsCount: item.reviewCount ?? undefined,
-    durationMinutes: entity?.duration ?? undefined,
+    price: item.price ?? undefined,
+    averageRating: item.rating ?? undefined,
+    reviewsNumber: item.reviewCount ?? undefined,
+    duration: entity?.duration ?? undefined,
     isLiked: entity?.isLiked ?? false,
     providerName: sellerDisplayName(seller),
     providerLogo: sellerDisplayImage(seller),
-    isVerified: seller?.isVerified ?? undefined,
-    city: seller?.county?.county ?? undefined,
+    providerLocation: seller?.county?.county ?? undefined,
   };
 }

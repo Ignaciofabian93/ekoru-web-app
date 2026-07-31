@@ -30,6 +30,12 @@ export type CardsDictionary = {
     noBrand: string;
     noBusinessName: string;
     noBusinessType: string;
+    /** Back-face fallback when a service carries no blurb. */
+    noDescription: string;
+  };
+  price: {
+    /** Prefix on a "from" price, e.g. services quoted from a base rate. */
+    from: string;
   };
   /** Keyed by BusinessType so a new enum member fails to compile until translated. */
   businessType: Record<BusinessType, string>;

@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import MarketplaceCard from "@/components/Card/MarketplaceCard/MarketplaceCard";
 import { type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import { useExchangeableProducts } from "../hooks/useExchangeableProducts";
@@ -9,6 +8,7 @@ import { NAMESPACE } from "../i18n";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
 import { CardScroller } from "@/components/Cards/CardScroller";
+import { MarketplaceCard } from "@/components/Cards";
 
 export function ExchangeHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
@@ -78,9 +78,9 @@ export function ExchangeHighlight({ lang }: { lang: SupportedLanguage }) {
                 className="aspect-3/4 w-44 shrink-0 snap-start animate-pulse rounded-lg bg-background-secondary"
               />
             ))
-          : products.map((product) => (
+          : products.map((product, i) => (
               <div key={product.id} className="snap-start">
-                <MarketplaceCard product={product} lang={lang} />
+                <MarketplaceCard priority={i < 4} product={product} lang={lang} />
               </div>
             ))}
       </CardScroller>

@@ -16,6 +16,13 @@ interface CardContextValue {
   hasBackSide: boolean;
   href: string;
   ariaLabel?: string;
+  /**
+   * The viewer owns this listing and is managing it (owner actions were passed
+   * to <Card>), so the shopper controls — favorite and the buy/book CTA — are
+   * suppressed. The flip control is handled separately, by forcing
+   * `hasBackSide` off in management mode.
+   */
+  isManaged: boolean;
 }
 
 // `null` sentinel rather than a stand-in default object, so that reading the
@@ -32,6 +39,7 @@ export interface CardProviderProps {
   hasBackSide: boolean;
   href: string;
   ariaLabel?: string;
+  isManaged: boolean;
   children: ReactNode;
 }
 
@@ -40,6 +48,7 @@ export function CardProvider({
   hasBackSide,
   href,
   ariaLabel,
+  isManaged,
   children,
 }: CardProviderProps) {
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
@@ -49,8 +58,8 @@ export function CardProvider({
   // Memoized so consumers re-render only when a value actually changes, not on
   // every render of the tree hosting the provider.
   const value = useMemo<CardContextValue>(
-    () => ({ orientation, isFlipped, flip, hasBackSide, href, ariaLabel }),
-    [orientation, isFlipped, flip, hasBackSide, href, ariaLabel],
+    () => ({ orientation, isFlipped, flip, hasBackSide, href, ariaLabel, isManaged }),
+    [orientation, isFlipped, flip, hasBackSide, href, ariaLabel, isManaged],
   );
 
   return <CardContext.Provider value={value}>{children}</CardContext.Provider>;

@@ -18,7 +18,11 @@
   "meta": {
     "noBrand": "Sin marca",
     "noBusinessName": "Tienda sin nombre",
-    "noBusinessType": "Tienda"
+    "noBusinessType": "Tienda",
+    "noDescription": "Esta publicación aún no tiene descripción."
+  },
+  "price": {
+    "from": "Desde"
   },
   "businessType": {
     "RETAIL": "Ventas",

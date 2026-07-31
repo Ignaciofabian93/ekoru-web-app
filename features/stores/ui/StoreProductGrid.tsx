@@ -1,10 +1,10 @@
 "use client";
 import { Store } from "lucide-react";
-import StoreProductCard from "@/components/Card/StoreProductCard/StoreProductCard";
 import { ResultsGrid } from "@/components/Patterns/ResultsGrid";
 import { useTranslation } from "@/i18n/context";
 import type { StoreProduct } from "@/types/product";
 import { NAMESPACE } from "../i18n";
+import { StoreProductCard } from "@/components/Cards";
 
 interface Props {
   products: StoreProduct[];

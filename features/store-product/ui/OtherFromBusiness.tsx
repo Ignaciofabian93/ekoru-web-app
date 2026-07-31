@@ -5,8 +5,7 @@ import { useTranslation } from "@/i18n/context";
 import { useSellerProducts } from "../hooks/useSellerProducts";
 import { NAMESPACE } from "../i18n";
 import { Title } from "@/components/Primitives/Title";
-import StoreProductCard from "@/components/Card/StoreProductCard/StoreProductCard";
-import { CardScroller } from "@/components/Cards/CardScroller";
+import { CardScroller, StoreProductCard } from "@/components/Cards";
 
 interface Props {
   lang: string;
