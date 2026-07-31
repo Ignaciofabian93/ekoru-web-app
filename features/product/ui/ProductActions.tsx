@@ -1,11 +1,11 @@
 "use client";
-import { Check, Heart, PackageCheck, Share2, ShoppingCart } from "lucide-react";
+import { Check, HandCoins, Heart, PackageCheck, Share2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
+import { useDealActions } from "@/features/deals/hooks/useDealActions";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
-import { useIsInCart } from "@/store/useCartStore";
+import { useIsAuthenticated } from "@/store/useAuthStore";
 import { useTranslation } from "@/i18n/context";
 import type { Product } from "@/types/product";
 import { NAMESPACE } from "../i18n";
@@ -18,26 +18,23 @@ interface Props {
 
 export function ProductActions({ lang, product }: Props) {
   const { t } = useTranslation(NAMESPACE);
-  const { addMarketplaceProduct } = useAddToCart();
   const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
-  // Marketplace items are unique: once in the cart the add button stays
-  // disabled until the user removes the line.
-  const inCart = useIsInCart("marketplace", product.id);
+  const isAuthed = useIsAuthenticated();
+  // Marketplace is cash + in person, so the primary action starts a P2P deal
+  // (a purchase request), not an online cart checkout.
+  const { proposeSaleDeal, busyId } = useDealActions();
+  const requesting = busyId === product.id;
+  const [requested, setRequested] = useState(false);
   const liked = Boolean(product.isLiked);
-  const [popped, setPopped] = useState(false);
   const { share, copied } = useShareProduct({
     title: product.name,
     text: product.description,
   });
 
-  function handleAddToCart(): boolean {
-    const result = addMarketplaceProduct(product);
-    if (result === "added") {
-      setPopped(true);
-      setTimeout(() => setPopped(false), 400);
-    }
-    return result === "added" || result === "exists";
+  async function handleRequestToBuy() {
+    const deal = await proposeSaleDeal(product.id);
+    if (deal) setRequested(true);
   }
 
   return (
@@ -52,31 +49,38 @@ export function ProductActions({ lang, product }: Props) {
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={handleAddToCart}
-              disabled={inCart}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3.5 text-base font-semibold transition-colors ${
-                popped ? "animate-cart-pop" : ""
-              } ${
-                inCart
-                  ? "cursor-not-allowed bg-success/15 text-success"
-                  : "bg-primary text-white hover:opacity-90"
+              onClick={handleRequestToBuy}
+              disabled={requesting || requested || !isAuthed}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3.5 text-base font-semibold transition-colors disabled:cursor-not-allowed ${
+                requested
+                  ? "bg-success/15 text-success"
+                  : "bg-primary text-white hover:opacity-90 disabled:opacity-50"
               }`}
             >
-              {inCart ? (
+              {requested ? (
                 <Check size={20} strokeWidth={2.2} />
               ) : (
-                <ShoppingCart size={20} strokeWidth={2} />
+                <HandCoins size={20} strokeWidth={2} />
               )}
-              {inCart ? t("actions.added") : t("actions.addToCart")}
+              {requested
+                ? t("actions.requested")
+                : requesting
+                  ? t("actions.requesting")
+                  : isAuthed
+                    ? t("actions.requestToBuy")
+                    : t("actions.loginToBuy")}
             </button>
             <Link
-              href={`/${lang}/cart`}
-              aria-label={t("actions.viewCart")}
+              href={`/${lang}/deals`}
+              aria-label={t("actions.viewDeals")}
               className="flex w-14 items-center justify-center rounded-xl border-2 border-primary text-primary transition-colors hover:bg-primary-light-bg"
             >
-              <ShoppingCart size={20} strokeWidth={2} />
+              <PackageCheck size={20} strokeWidth={2} />
             </Link>
           </div>
+          <p className="text-center text-xs text-foreground-tertiary">
+            {t("actions.cashHint")}
+          </p>
         </>
       )}
 

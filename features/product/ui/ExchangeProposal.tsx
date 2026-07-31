@@ -1,10 +1,9 @@
 "use client";
 import clsx from "clsx";
-import { ArrowLeftRight, Check, Info, Repeat } from "lucide-react";
+import { ArrowLeftRight, Check, Repeat } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
 import type { SupportedLanguage } from "@/constants/settings";
@@ -150,7 +149,7 @@ export function ExchangeProposal({ product, lang }: Props) {
             {[0, 1].map((i) => (
               <div
                 key={i}
-                className="bg-background-secondary h-[74px] animate-pulse rounded-xl"
+                className="bg-background-secondary h-18.5 animate-pulse rounded-xl"
               />
             ))}
           </div>
@@ -237,14 +236,6 @@ export function ExchangeProposal({ product, lang }: Props) {
           placeholder={t("exchange.notesPlaceholder")}
           className="border-input-border bg-input-bg text-input-text focus:border-input-border-focus w-full resize-none rounded-xl border p-3 text-sm outline-none"
         />
-      </div>
-
-      {/* Preview-only notice — the proposal isn't persisted yet. */}
-      <div className="bg-primary/5 flex items-start gap-2 rounded-xl p-3">
-        <Info size={14} strokeWidth={2} className="text-primary mt-0.5 shrink-0" />
-        <Text size="xs" color="secondary">
-          {t("exchange.stubNotice")}
-        </Text>
       </div>
 
       <button

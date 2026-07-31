@@ -29,7 +29,13 @@
     "contactSeller": "Contactar al vendedor",
     "viewSeller": "Ver vendedor",
     "viewAll": "Ver todos",
-    "ownListing": "Esta es tu publicación — no puedes comprar tus propios productos."
+    "ownListing": "Esta es tu publicación — no puedes comprar tus propios productos.",
+    "requestToBuy": "Solicitar compra",
+    "requesting": "Enviando…",
+    "requested": "Solicitud enviada",
+    "loginToBuy": "Inicia sesión para comprar",
+    "viewDeals": "Ver mis tratos",
+    "cashHint": "Pago en efectivo, en persona. Coordinas la entrega y confirman ambos."
   },
   "summary": {
     "by": "por",

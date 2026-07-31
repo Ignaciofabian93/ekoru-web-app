@@ -29,7 +29,13 @@
     "contactSeller": "Contact seller",
     "viewSeller": "View seller",
     "viewAll": "View all",
-    "ownListing": "This is your listing — you can't buy your own products."
+    "ownListing": "This is your listing — you can't buy your own products.",
+    "requestToBuy": "Request to buy",
+    "requesting": "Sending…",
+    "requested": "Request sent",
+    "loginToBuy": "Log in to buy",
+    "viewDeals": "View my deals",
+    "cashHint": "Cash, in person. You coordinate the handover and both confirm."
   },
   "summary": {
     "by": "by",
