@@ -43,6 +43,11 @@ export type Product = {
   interests: string[] | null;
   isActive: boolean;
   isExchangeable: boolean;
+  /** Set when a completed P2P deal marked it sold/exchanged; kept in the profile
+   *  ~a week then soft-deleted. */
+  soldAt?: string | null;
+  /** "SALE" | "EXCHANGE" — for the profile "sold/exchanged" label. */
+  soldVia?: string | null;
   condition: ProductCondition;
   conditionDescription: string | null;
   isLiked: boolean;

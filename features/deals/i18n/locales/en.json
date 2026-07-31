@@ -1,0 +1,44 @@
+{
+  "title": "My deals",
+  "subtitle": "Cash purchases and sales, in person. Confirm the handover with a photo.",
+  "blocked": "Your account is temporarily blocked from new deals until {date} due to no-shows ({count}).",
+  "tabs": {
+    "seller": "Requests on my items",
+    "buyer": "My purchases"
+  },
+  "empty": "You don't have any deals here yet.",
+  "loading": "Loading…",
+  "party": {
+    "buyer": "Buyer",
+    "seller": "Seller",
+    "unknown": "User"
+  },
+  "compensation": "Cash compensation: {amount}",
+  "youPay": "(you pay)",
+  "theyPay": "(the other party pays)",
+  "deadline": "Confirm before {date}",
+  "acceptedBanner": "Request accepted!",
+  "acceptedHint": "Coordinate the handover in chat and confirm once it's done.",
+  "timeLeft": "{time} left",
+  "overdue": "Deadline passed",
+  "photoLabel": "Photo of the item received (required)",
+  "awaitingOther": "You confirmed — waiting for the other party.",
+  "disputePrompt": "Reason for the dispute:",
+  "actions": {
+    "accept": "Accept",
+    "decline": "Decline",
+    "cancel": "Cancel",
+    "confirmReceipt": "Confirm receipt",
+    "confirmHandover": "Confirm handover & payment",
+    "dispute": "Dispute"
+  },
+  "status": {
+    "PROPOSED": "Pending",
+    "ACCEPTED": "Accepted",
+    "COMPLETED": "Completed",
+    "DISPUTED": "Disputed",
+    "EXPIRED": "Expired",
+    "CANCELLED": "Cancelled",
+    "DECLINED": "Declined"
+  }
+}

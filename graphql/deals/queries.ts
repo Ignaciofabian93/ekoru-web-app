@@ -1,11 +1,44 @@
 import { gql } from "@apollo/client";
 
 /**
+ * The counterparty on a deal (buyer or seller), resolved via federation against
+ * the users subgraph. Enough to show who they are + where they're from, matching
+ * what the useSellerData hooks read (profile name/avatar, county, verified).
+ */
+export const DEAL_PARTY_FIELDS = gql`
+  fragment DealPartyFields on Seller {
+    id
+    email
+    sellerType
+    isVerified
+    profile {
+      ... on PersonProfile {
+        id
+        displayName
+        firstName
+        lastName
+        profileImage
+      }
+      ... on BusinessProfile {
+        id
+        businessName
+        logo
+      }
+    }
+    county {
+      id
+      county
+    }
+  }
+`;
+
+/**
  * Peer-to-peer marketplace deals (cash sales + exchanges) from the transactions
- * subgraph. `product` / `requestedProduct` / `offeredProduct` are federation
- * refs into ekoru-marketplace, so we can pull name/images/price inline.
+ * subgraph. `product` / `requestedProduct` / `offeredProduct` and `buyer` /
+ * `seller` are federation refs (marketplace / users) pulled inline.
  */
 export const DEAL_FIELDS = gql`
+  ${DEAL_PARTY_FIELDS}
   fragment DealFields on P2PDeal {
     id
     type
@@ -22,6 +55,12 @@ export const DEAL_FIELDS = gql`
     disputeReason
     completedAt
     createdAt
+    buyer {
+      ...DealPartyFields
+    }
+    seller {
+      ...DealPartyFields
+    }
     product {
       id
       name

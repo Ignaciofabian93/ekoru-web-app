@@ -1,12 +1,28 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { ArrowLeftRight, Clock, ImageOff, ShieldAlert } from "lucide-react";
+import {
+  ArrowLeftRight,
+  BadgeCheck,
+  Clock,
+  ImageOff,
+  MapPin,
+  ShieldAlert,
+  UserRound,
+} from "lucide-react";
 
 import { useFormatPrice } from "@/hooks/useFormatPrice";
+import {
+  useDisplayName,
+  useInitials,
+  useProfileImage,
+  useSellerLocation,
+} from "@/hooks/useSellerData";
 import { resolveImageUrl } from "@/utils/resolveImage";
 import { useCurrentSellerId } from "@/store/useAuthStore";
+import { useTranslation } from "@/i18n/context";
 
+import { NAMESPACE } from "../i18n";
 import type { Deal, DealPerspective, DealProduct } from "../types";
 import { useDealActions } from "../hooks/useDealActions";
 
@@ -42,6 +58,7 @@ export function DealCard({
   deal: Deal;
   perspective: DealPerspective;
 }) {
+  const { t } = useTranslation(NAMESPACE);
   const formatPrice = useFormatPrice();
   const myId = useCurrentSellerId();
   const a = useDealActions();
@@ -55,8 +72,51 @@ export function DealCard({
   // The buyer always receives an item; the seller only in an exchange.
   const iReceiveItem = perspective === "buyer" || isExchange;
 
+  // Countdown to the 72h confirmation deadline (turns urgent under 12h).
+  const msLeft = deal.confirmationDeadline
+    ? new Date(deal.confirmationDeadline).getTime() - Date.now()
+    : null;
+  const urgent = msLeft !== null && msLeft < 12 * 3600_000;
+
+  // The other party: on my seller tab it's the buyer; on my buyer tab, the seller.
+  const counterparty = perspective === "seller" ? deal.buyer : deal.seller;
+  const partyName = useDisplayName(counterparty);
+  const partyImage = useProfileImage(counterparty);
+  const partyInitials = useInitials(counterparty);
+  const partyLocation = useSellerLocation(counterparty);
+
   return (
     <div className="flex flex-col gap-3 rounded-xl border border-border-light bg-surface p-4">
+      {/* Who's on the other side + where they're from */}
+      <div className="flex items-center gap-2.5 border-b border-border-light pb-2.5">
+        <div className="relative size-9 shrink-0 overflow-hidden rounded-full bg-primary-light-bg">
+          {partyImage ? (
+            <Image src={partyImage} alt="" fill className="object-cover" sizes="36px" />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-xs font-bold text-primary">
+              {partyInitials || <UserRound size={16} />}
+            </div>
+          )}
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="flex items-center gap-1 truncate text-sm font-semibold text-foreground">
+            {partyName || t("party.unknown")}
+            {counterparty?.isVerified && (
+              <BadgeCheck size={14} className="shrink-0 text-primary" />
+            )}
+          </p>
+          {partyLocation && (
+            <p className="flex items-center gap-1 truncate text-xs text-foreground-tertiary">
+              <MapPin size={11} className="shrink-0" />
+              {partyLocation}
+            </p>
+          )}
+        </div>
+        <span className="shrink-0 rounded-md bg-background-secondary px-2 py-0.5 text-[10px] font-medium tracking-wide text-foreground-secondary uppercase">
+          {perspective === "seller" ? t("party.buyer") : t("party.seller")}
+        </span>
+      </div>
+
       <div className="flex items-start gap-3">
         <Thumb product={item} />
         {isExchange && <Thumb product={deal.offeredProduct} />}
@@ -72,23 +132,35 @@ export function DealCard({
           )}
           {isExchange && deal.compensationAmount > 0 && (
             <p className="mt-0.5 text-xs text-foreground-tertiary">
-              Compensación en efectivo: {formatPrice(deal.compensationAmount)}
-              {deal.compensationPayerId === myId ? " (pagas tú)" : " (paga la otra parte)"}
+              {t("compensation", { amount: formatPrice(deal.compensationAmount) })}{" "}
+              {deal.compensationPayerId === myId ? t("youPay") : t("theyPay")}
             </p>
           )}
         </div>
         <span
           className={`shrink-0 rounded-md px-2 py-0.5 text-[11px] font-medium ${STATUS_STYLE[deal.status] ?? "bg-border"}`}
         >
-          {deal.status}
+          {t(`status.${deal.status}`)}
         </span>
       </div>
 
-      {deal.status === "ACCEPTED" && deal.confirmationDeadline && (
-        <p className="flex items-center gap-1.5 text-xs text-foreground-tertiary">
-          <Clock size={13} />
-          Confirmar antes de {new Date(deal.confirmationDeadline).toLocaleString()}
-        </p>
+      {deal.status === "ACCEPTED" && (
+        <div className="flex flex-col gap-1.5 rounded-lg bg-primary/5 p-2.5">
+          <p className="text-xs font-semibold text-primary">{t("acceptedBanner")}</p>
+          <p className="text-xs text-foreground-secondary">{t("acceptedHint")}</p>
+          {msLeft !== null && (
+            <p
+              className={`flex items-center gap-1.5 text-xs font-medium ${
+                urgent ? "text-red-600" : "text-foreground-tertiary"
+              }`}
+            >
+              <Clock size={13} />
+              {msLeft > 0
+                ? t("timeLeft", { time: formatRemaining(msLeft) })
+                : t("overdue")}
+            </p>
+          )}
+        </div>
       )}
       {deal.status === "DISPUTED" && deal.disputeReason && (
         <p className="flex items-center gap-1.5 text-xs text-red-600">
@@ -101,23 +173,23 @@ export function DealCard({
         {perspective === "seller" && deal.status === "PROPOSED" && (
           <>
             <Btn onClick={() => a.acceptDeal(deal.id)} disabled={busy} primary>
-              Aceptar
+              {t("actions.accept")}
             </Btn>
             <Btn onClick={() => a.declineDeal(deal.id)} disabled={busy}>
-              Rechazar
+              {t("actions.decline")}
             </Btn>
           </>
         )}
         {perspective === "buyer" && deal.status === "PROPOSED" && (
           <Btn onClick={() => a.cancelDeal(deal.id)} disabled={busy}>
-            Cancelar
+            {t("actions.cancel")}
           </Btn>
         )}
         {deal.status === "ACCEPTED" && !iConfirmed && (
           <div className="flex w-full flex-col gap-2">
             {iReceiveItem && (
               <label className="text-xs text-foreground-secondary">
-                Foto del producto recibido (obligatoria)
+                {t("photoLabel")}
                 <input
                   type="file"
                   accept="image/*"
@@ -132,31 +204,44 @@ export function DealCard({
                 disabled={busy || (iReceiveItem && !photo)}
                 primary
               >
-                Confirmar recepción
+                {iReceiveItem
+                  ? t("actions.confirmReceipt")
+                  : t("actions.confirmHandover")}
               </Btn>
               <Btn
                 onClick={() => {
-                  const reason = window.prompt("Motivo de la disputa:");
+                  const reason = window.prompt(t("disputePrompt"));
                   if (reason) a.disputeDeal(deal.id, reason);
                 }}
                 disabled={busy}
               >
-                Disputar
+                {t("actions.dispute")}
               </Btn>
               <Btn onClick={() => a.cancelDeal(deal.id)} disabled={busy}>
-                Cancelar
+                {t("actions.cancel")}
               </Btn>
             </div>
           </div>
         )}
         {deal.status === "ACCEPTED" && iConfirmed && (
           <p className="text-xs text-foreground-tertiary">
-            Confirmaste — esperando a la otra parte.
+            {t("awaitingOther")}
           </p>
         )}
       </div>
     </div>
   );
+}
+
+/** Compact "2d 5h" / "5h" / "45m" remaining, from milliseconds. */
+function formatRemaining(ms: number): string {
+  const totalMin = Math.floor(ms / 60000);
+  const days = Math.floor(totalMin / 1440);
+  const hours = Math.floor((totalMin % 1440) / 60);
+  const mins = totalMin % 60;
+  if (days > 0) return `${days}d ${hours}h`;
+  if (hours > 0) return `${hours}h`;
+  return `${mins}m`;
 }
 
 function Btn({

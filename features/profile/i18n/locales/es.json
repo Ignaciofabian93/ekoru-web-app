@@ -66,6 +66,10 @@
         "sold": "Vendidas",
         "drafts": "Borradores"
       },
+      "soldVia": {
+        "sale": "Vendido",
+        "exchange": "Intercambiado"
+      },
       "empty": {
         "title": "Aún no hay nada aquí",
         "description": "Empieza a publicar para ver todos tus productos aquí."

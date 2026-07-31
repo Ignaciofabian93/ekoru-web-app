@@ -15,6 +15,8 @@ export interface DropdownItemProps {
   tone?: DropdownItemTone;
   /** Render the icon inside a filled square badge (the account menu style). */
   iconBadge?: boolean;
+  /** Trailing count pill (e.g. pending deals). Hidden when 0/undefined. */
+  badgeCount?: number;
   hasBorder?: boolean;
   ref?: React.Ref<HTMLButtonElement>;
 }
@@ -26,6 +28,7 @@ export function DropdownItem({
   onKeyDown,
   tone = "default",
   iconBadge = false,
+  badgeCount,
   hasBorder = false,
   ref,
 }: DropdownItemProps) {
@@ -71,6 +74,11 @@ export function DropdownItem({
       <Text variant="span" size={iconBadge ? "base" : "sm"} weight="medium">
         {label}
       </Text>
+      {typeof badgeCount === "number" && badgeCount > 0 && (
+        <span className="ml-auto flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-bold text-white">
+          {badgeCount > 99 ? "99+" : badgeCount}
+        </span>
+      )}
     </button>
   );
 }

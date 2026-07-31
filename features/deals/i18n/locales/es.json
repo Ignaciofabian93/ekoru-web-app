@@ -1,0 +1,44 @@
+{
+  "title": "Mis tratos",
+  "subtitle": "Compras y ventas en efectivo, en persona. Confirma la entrega con una foto.",
+  "blocked": "Tu cuenta está temporalmente bloqueada para nuevos tratos hasta {date} por incumplimientos ({count}).",
+  "tabs": {
+    "seller": "Solicitudes a mis productos",
+    "buyer": "Mis compras"
+  },
+  "empty": "Aún no tienes tratos aquí.",
+  "loading": "Cargando…",
+  "party": {
+    "buyer": "Comprador",
+    "seller": "Vendedor",
+    "unknown": "Usuario"
+  },
+  "compensation": "Compensación en efectivo: {amount}",
+  "youPay": "(pagas tú)",
+  "theyPay": "(paga la otra parte)",
+  "deadline": "Confirmar antes de {date}",
+  "acceptedBanner": "¡Solicitud aceptada!",
+  "acceptedHint": "Coordina la entrega por chat y confirma cuando se concrete.",
+  "timeLeft": "Quedan {time}",
+  "overdue": "Plazo vencido",
+  "photoLabel": "Foto del producto recibido (obligatoria)",
+  "awaitingOther": "Confirmaste — esperando a la otra parte.",
+  "disputePrompt": "Motivo de la disputa:",
+  "actions": {
+    "accept": "Aceptar",
+    "decline": "Rechazar",
+    "cancel": "Cancelar",
+    "confirmReceipt": "Confirmar recepción",
+    "confirmHandover": "Confirmar entrega y pago",
+    "dispute": "Disputar"
+  },
+  "status": {
+    "PROPOSED": "Pendiente",
+    "ACCEPTED": "Aceptado",
+    "COMPLETED": "Completado",
+    "DISPUTED": "En disputa",
+    "EXPIRED": "Expirado",
+    "CANCELLED": "Cancelado",
+    "DECLINED": "Rechazado"
+  }
+}

@@ -39,21 +39,23 @@ export function useMyListings({ status, pageSize = 100, enabled = true }: Params
     [data],
   );
 
-  // The schema only exposes `isActive`. We treat:
-  //   active = isActive,
-  //   drafts = !isActive,
-  //   sold   = (TODO) needs a backend-side filter; empty for now.
+  // A completed P2P deal stamps `soldAt` (SALE/EXCHANGE) — it stays in the
+  // profile ~a week then is soft-deleted. So:
+  //   sold   = soldAt set,
+  //   active = live listing (isActive, not sold),
+  //   drafts = deactivated, not sold.
   const products = useMemo(() => {
-    if (status === "active") return allProducts.filter((p) => p.isActive);
-    if (status === "drafts") return allProducts.filter((p) => !p.isActive);
-    return [];
+    if (status === "sold") return allProducts.filter((p) => p.soldAt);
+    if (status === "active")
+      return allProducts.filter((p) => p.isActive && !p.soldAt);
+    return allProducts.filter((p) => !p.isActive && !p.soldAt);
   }, [allProducts, status]);
 
   const counts = useMemo(
     () => ({
-      active: allProducts.filter((p) => p.isActive).length,
-      drafts: allProducts.filter((p) => !p.isActive).length,
-      sold: 0,
+      active: allProducts.filter((p) => p.isActive && !p.soldAt).length,
+      drafts: allProducts.filter((p) => !p.isActive && !p.soldAt).length,
+      sold: allProducts.filter((p) => p.soldAt).length,
     }),
     [allProducts],
   );

@@ -266,24 +266,32 @@ export function MyListings() {
             loading={marketplace.loading}
             remeasureKey={lang}
             renderItem={(p) => (
-              <MarketplaceCard
-                key={p.id}
-                product={p}
-                lang={lang}
-                actions={
-                  <ProductActionsMenu
-                    ariaLabel={menuLabel}
-                    actions={buildActions({
-                      isActive: Boolean(p.isActive),
-                      onView: () => router.push(`/${lang}/product/${p.id}`),
-                      onEdit: () => setEditTarget({ kind: "marketplace", item: p }),
-                      onToggle: () => productActions.toggleActive(p.id, !p.isActive),
-                      onDelete: () =>
-                        setDeleteTarget({ kind: "marketplace", id: p.id, name: p.name }),
-                    })}
-                  />
-                }
-              />
+              <div key={p.id} className="relative">
+                {p.soldAt && (
+                  <span className="absolute top-2 left-2 z-10 rounded-md bg-foreground/80 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase">
+                    {p.soldVia === "EXCHANGE"
+                      ? t("dashboard.listings.soldVia.exchange")
+                      : t("dashboard.listings.soldVia.sale")}
+                  </span>
+                )}
+                <MarketplaceCard
+                  product={p}
+                  lang={lang}
+                  actions={
+                    <ProductActionsMenu
+                      ariaLabel={menuLabel}
+                      actions={buildActions({
+                        isActive: Boolean(p.isActive),
+                        onView: () => router.push(`/${lang}/product/${p.id}`),
+                        onEdit: () => setEditTarget({ kind: "marketplace", item: p }),
+                        onToggle: () => productActions.toggleActive(p.id, !p.isActive),
+                        onDelete: () =>
+                          setDeleteTarget({ kind: "marketplace", id: p.id, name: p.name }),
+                      })}
+                    />
+                  }
+                />
+              </div>
             )}
             emptyActive={{
               icon: Package,

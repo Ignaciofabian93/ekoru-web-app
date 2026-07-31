@@ -66,6 +66,10 @@
         "sold": "Vendues",
         "drafts": "Brouillons"
       },
+      "soldVia": {
+        "sale": "Vendu",
+        "exchange": "Échangé"
+      },
       "empty": {
         "title": "Rien pour l'instant",
         "description": "Commencez à publier pour voir tous vos produits ici."

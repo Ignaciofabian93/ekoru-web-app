@@ -66,6 +66,10 @@
         "sold": "Sold",
         "drafts": "Drafts"
       },
+      "soldVia": {
+        "sale": "Sold",
+        "exchange": "Exchanged"
+      },
       "empty": {
         "title": "Nothing here yet",
         "description": "Start publishing to see all your products here."

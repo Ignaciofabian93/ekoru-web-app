@@ -364,6 +364,8 @@ export const GET_SELLER_STOREFRONT = gql`
         conditionDescription
         isActive
         isExchangeable
+        soldAt
+        soldVia
         sellerId
         viewCount
         isLiked

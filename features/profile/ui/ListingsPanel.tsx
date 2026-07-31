@@ -6,7 +6,7 @@ import type { ListingStatus } from "../hooks/useMyListings";
 import { EmptyState } from "@/components/Feedback/EmptyState";
 import { Tabs } from "@/components/Patterns/Tabs";
 
-const STATUSES: ListingStatus[] = ["active", "drafts"];
+const STATUSES: ListingStatus[] = ["active", "drafts", "sold"];
 const PAGE_SIZE = 12;
 
 export interface EmptyCopy {

@@ -3,6 +3,7 @@ import { useId } from "react";
 import { useRouter } from "next/navigation";
 import {
   Bell,
+  Handshake,
   LogIn,
   PackagePlus,
   Recycle,
@@ -23,6 +24,7 @@ import {
 } from "@/store/useAuthStore";
 import { NAMESPACE } from "./i18n";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import { useDealsBadge } from "@/features/deals/hooks/useDealsBadge";
 import { Avatar } from "../Primitives/Avatar";
 import { Text } from "@/components/Primitives/Text";
 import {
@@ -35,6 +37,7 @@ import type { ProfileMenuItem } from "./types";
 
 const AUTH_MENU_ITEMS: ProfileMenuItem[] = [
   { labelKey: "dropdown.myProfile", path: "/profile", icon: UserRound },
+  { labelKey: "dropdown.deals", path: "/deals", icon: Handshake },
   { labelKey: "dropdown.recycle", path: "/recycle", icon: Recycle },
   { labelKey: "dropdown.publish", path: "/publish", icon: PackagePlus },
   { labelKey: "dropdown.notifications", path: "/notifications", icon: Bell },
@@ -53,6 +56,7 @@ export default function ProfileDropdown() {
   const { handleLogout } = useLogout();
 
   const isAuthenticated = useIsAuthenticated();
+  const dealsCount = useDealsBadge();
   const profileImage = useProfileImage();
   const displayName = useDisplayName();
   const email = useSellerEmail();
@@ -109,6 +113,7 @@ export default function ProfileDropdown() {
               icon={item.icon}
               label={t(item.labelKey)}
               iconBadge
+              badgeCount={item.path === "/deals" ? dealsCount : undefined}
               hasBorder={index !== menuItems.length - 1}
               onSelect={() => handleNavigate(item.path)}
               onKeyDown={(e) => handleKeyDown(e, index)}

@@ -1,3 +1,5 @@
+import type { Seller } from "@/types/user";
+
 export type P2PDealType = "SALE" | "EXCHANGE";
 
 export type P2PStatus =
@@ -36,6 +38,10 @@ export interface Deal {
   product?: DealProduct | null;
   requestedProduct?: DealProduct | null;
   offeredProduct?: DealProduct | null;
+  /** The two parties, resolved via federation. Only a subset of fields is
+   *  selected (see DEAL_PARTY_FIELDS) — enough for name/avatar/location. */
+  buyer?: Seller | null;
+  seller?: Seller | null;
 }
 
 export interface P2PReputation {

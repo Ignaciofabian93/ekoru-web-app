@@ -1,0 +1,44 @@
+{
+  "title": "Mes échanges",
+  "subtitle": "Achats et ventes en espèces, en personne. Confirmez la remise avec une photo.",
+  "blocked": "Votre compte est temporairement bloqué pour de nouveaux échanges jusqu'au {date} en raison d'absences ({count}).",
+  "tabs": {
+    "seller": "Demandes sur mes articles",
+    "buyer": "Mes achats"
+  },
+  "empty": "Vous n'avez pas encore d'échanges ici.",
+  "loading": "Chargement…",
+  "party": {
+    "buyer": "Acheteur",
+    "seller": "Vendeur",
+    "unknown": "Utilisateur"
+  },
+  "compensation": "Compensation en espèces : {amount}",
+  "youPay": "(vous payez)",
+  "theyPay": "(l'autre partie paie)",
+  "deadline": "Confirmer avant le {date}",
+  "acceptedBanner": "Demande acceptée !",
+  "acceptedHint": "Coordonnez la remise via le chat et confirmez une fois faite.",
+  "timeLeft": "{time} restant",
+  "overdue": "Délai dépassé",
+  "photoLabel": "Photo de l'article reçu (obligatoire)",
+  "awaitingOther": "Vous avez confirmé — en attente de l'autre partie.",
+  "disputePrompt": "Motif du litige :",
+  "actions": {
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "cancel": "Annuler",
+    "confirmReceipt": "Confirmer la réception",
+    "confirmHandover": "Confirmer la remise et le paiement",
+    "dispute": "Contester"
+  },
+  "status": {
+    "PROPOSED": "En attente",
+    "ACCEPTED": "Accepté",
+    "COMPLETED": "Terminé",
+    "DISPUTED": "En litige",
+    "EXPIRED": "Expiré",
+    "CANCELLED": "Annulé",
+    "DECLINED": "Refusé"
+  }
+}
