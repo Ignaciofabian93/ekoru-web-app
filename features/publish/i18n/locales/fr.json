@@ -123,7 +123,11 @@
     "durationPlaceholder": "Ex : 60",
     "priceRange": "Fourchette de prix",
     "priceRangePlaceholder": "Ex : 50.000–150.000 CLP",
-    "priceRangeHint": "Facultatif — utile pour les devis et forfaits"
+    "priceRangeHint": "Facultatif — utile pour les devis et forfaits",
+    "interests": "Intérêts d'échange",
+    "interestsPlaceholder": "Ajoutez un article et appuyez sur Entrée",
+    "interestsHint": "Ce contre quoi vous l'échangeriez. Laissez vide pour accepter toute offre.",
+    "removeInterest": "Retirer l'intérêt"
   },
   "conditions": {
     "new": "Neuf",
@@ -185,7 +189,10 @@
     "warrantyWithDuration": "Oui · {{months}} mois",
     "features": "Caractéristiques",
     "tags": "Mots-clés",
-    "empty": "Non défini"
+    "empty": "Non défini",
+    "conditionDescription": "Détails de l'état",
+    "interests": "Intérêts d'échange",
+    "interestsAny": "Ouvert à toute offre"
   },
   "actions": {
     "continue": "Continuer",

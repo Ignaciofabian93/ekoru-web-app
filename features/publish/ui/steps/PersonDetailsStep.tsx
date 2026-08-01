@@ -3,6 +3,8 @@ import type { MarketplaceCategoriesState } from "../../hooks/useMarketplaceCateg
 import type { PublishForm } from "../../hooks/usePublishForm";
 
 import { BrandField } from "../fields/BrandField";
+import { ColorField } from "../fields/ColorField";
+import { ConditionDescriptionField } from "../fields/ConditionDescriptionField";
 import { ConditionField } from "../fields/ConditionField";
 import { DescriptionField } from "../fields/DescriptionField";
 import { ImagesField } from "../fields/ImagesField";
@@ -55,6 +57,16 @@ export function PersonDetailsStep({
           invalid={invalid.condition}
         />
         <BrandField value={form.brand} onChange={(v) => setField("brand", v)} />
+      </div>
+
+      {/* Wear notes sit right under the condition they qualify. */}
+      <ConditionDescriptionField
+        value={form.conditionDescription}
+        onChange={(v) => setField("conditionDescription", v)}
+      />
+
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <ColorField value={form.color} onChange={(v) => setField("color", v)} />
       </div>
 
       <DescriptionField

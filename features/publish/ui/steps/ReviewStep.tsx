@@ -30,6 +30,7 @@ export function ReviewStep({
   );
   const isService = target === "SERVICE";
   const isStore = target === "STORE";
+  const isMarketplace = target === "MARKETPLACE";
 
   const dimensions = [form.length, form.width, form.height].every(Boolean)
     ? `${form.length} × ${form.width} × ${form.height} ${form.dimensionUnit}`.trim()
@@ -87,6 +88,19 @@ export function ReviewStep({
           label: t("review.condition"),
           value: selectedCondition ? t(selectedCondition.labelKey) : "",
         },
+    isMarketplace && form.conditionDescription
+      ? { label: t("review.conditionDescription"), value: form.conditionDescription }
+      : null,
+    isMarketplace && form.color
+      ? { label: t("review.color"), value: form.color }
+      : null,
+    // Only when the listing actually accepts swaps — matching what gets sent.
+    isMarketplace && form.isExchangeable
+      ? {
+          label: t("review.interests"),
+          value: form.interests.join(", ") || t("review.interestsAny"),
+        }
+      : null,
     { label: t("review.category"), value: categoryLabel },
     isStore && form.features.length
       ? { label: t("review.features"), value: form.features.join(", ") }

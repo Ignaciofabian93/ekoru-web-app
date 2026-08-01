@@ -7,11 +7,14 @@ export default function MenuRow({
   label,
   onPress,
   hasBorder,
+  badgeCount,
 }: {
   icon: LucideIcon;
   label: string;
   onPress: () => void;
   hasBorder: boolean;
+  /** Trailing count pill (e.g. pending deals). Hidden at 0/undefined. */
+  badgeCount?: number;
 }) {
   return (
     <button
@@ -26,6 +29,11 @@ export default function MenuRow({
         <Icon size={18} strokeWidth={1.5} color="currentColor" />
       </div>
       <span className="font-sans text-sm font-medium text-foreground">{label}</span>
+      {typeof badgeCount === "number" && badgeCount > 0 && (
+        <span className="ml-auto flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-bold text-white">
+          {badgeCount > 99 ? "99+" : badgeCount}
+        </span>
+      )}
     </button>
   );
 }

@@ -4,6 +4,10 @@ import {
   getMarketplaceDictionary,
   NAMESPACE as MARKETPLACE_NAMESPACE,
 } from "@/features/marketplace/i18n";
+import {
+  getPublishDictionary,
+  NAMESPACE as PUBLISH_NAMESPACE,
+} from "@/features/publish/i18n";
 import { getProfileDictionary, NAMESPACE } from "../i18n";
 import { ProfileHeader } from "../ui/ProfileHeader";
 import { Details } from "../ui/Details";
@@ -17,15 +21,22 @@ import { Grid, PageLayout, Stack } from "@/components/Layout";
 
 export async function ProfileScreen({ lang }: { lang: SupportedLanguage }) {
   // MyListings reuses MarketplaceCard, which translates from the marketplace
-  // namespace — load both dictionaries so its badges and labels resolve.
-  const [dict, marketplaceDict] = await Promise.all([
+  // namespace, and its edit dialog reuses the publish wizard's field components
+  // (category cascade, condition, exchange interests), which translate from the
+  // publish namespace — load all three so every label resolves.
+  const [dict, marketplaceDict, publishDict] = await Promise.all([
     getProfileDictionary(lang),
     getMarketplaceDictionary(lang),
+    getPublishDictionary(lang),
   ]);
 
   return (
     <DictionaryProvider
-      dictionary={{ [NAMESPACE]: dict, [MARKETPLACE_NAMESPACE]: marketplaceDict }}
+      dictionary={{
+        [NAMESPACE]: dict,
+        [MARKETPLACE_NAMESPACE]: marketplaceDict,
+        [PUBLISH_NAMESPACE]: publishDict,
+      }}
     >
       <PageLayout hero={<ProfileHeader />} width="default">
         {/* <ActionCenter /> */}

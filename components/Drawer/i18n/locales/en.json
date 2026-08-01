@@ -3,7 +3,8 @@
   "sections": {
     "account": "Account",
     "explore": "Explore",
-    "support": "Support"
+    "support": "Support",
+    "empty": "Nothing available yet"
   },
   "home": "Home",
   "marketplace": "Marketplace",
@@ -27,5 +28,6 @@
     "PERSON": "Personal Account",
     "STARTUP": "Startup",
     "COMPANY": "Company"
-  }
+  },
+  "deals": "My deals"
 }

@@ -96,7 +96,7 @@
       },
       "edit": {
         "title": "Modifier le produit",
-        "subtitle": "Mettez à jour les champs les plus courants. Utilisez le flux de publication pour le reste.",
+        "subtitle": "Mettez à jour tous les détails de votre annonce, photos comprises.",
         "name": "Nom",
         "brand": "Marque",
         "price": "Prix",
@@ -107,7 +107,18 @@
         "saving": "Enregistrement",
         "cancel": "Annuler",
         "success": "Produit mis à jour",
-        "error": "Impossible de mettre à jour le produit"
+        "error": "Impossible de mettre à jour le produit",
+        "color": "Couleur",
+        "conditionDescription": "Détails de l'état",
+        "required": "Ce champ est obligatoire",
+        "descriptionMin": "Au moins {{min}} caractères",
+        "images": "Photos",
+        "imagesHint": "La première photo est la couverture affichée sur la carte.",
+        "addPhoto": "Ajouter une photo",
+        "removePhoto": "Retirer la photo",
+        "cover": "Couverture",
+        "makeCover": "Monter",
+        "imagesRequired": "Ajoutez au moins une photo"
       },
       "delete": {
         "title": "Supprimer ce produit ?",
@@ -464,7 +475,10 @@
   "exchanges": {
     "title": "Propositions d'échange",
     "subtitle": "Offres pour échanger des articles avec d'autres membres.",
-    "tabs": { "received": "Reçues", "sent": "Envoyées" },
+    "tabs": {
+      "received": "Reçues",
+      "sent": "Envoyées"
+    },
     "empty": {
       "received": "Aucune proposition reçue pour le moment.",
       "sent": "Vous n'avez pas encore envoyé de propositions."

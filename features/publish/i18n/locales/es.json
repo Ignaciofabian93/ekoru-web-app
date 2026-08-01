@@ -123,7 +123,11 @@
     "durationPlaceholder": "Ej: 60",
     "priceRange": "Rango de precio",
     "priceRangePlaceholder": "Ej: 50.000–150.000 CLP",
-    "priceRangeHint": "Opcional — útil para cotizaciones y paquetes"
+    "priceRangeHint": "Opcional — útil para cotizaciones y paquetes",
+    "interests": "Intereses de intercambio",
+    "interestsPlaceholder": "Agrega un artículo y presiona Enter",
+    "interestsHint": "Por qué lo cambiarías. Déjalo vacío para aceptar cualquier oferta.",
+    "removeInterest": "Quitar interés"
   },
   "conditions": {
     "new": "Nuevo",
@@ -185,7 +189,10 @@
     "warrantyWithDuration": "Sí · {{months}} meses",
     "features": "Características",
     "tags": "Etiquetas",
-    "empty": "Sin definir"
+    "empty": "Sin definir",
+    "conditionDescription": "Detalles del estado",
+    "interests": "Intereses de intercambio",
+    "interestsAny": "Abierto a cualquier oferta"
   },
   "actions": {
     "continue": "Continuar",

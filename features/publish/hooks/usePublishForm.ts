@@ -45,6 +45,8 @@ export interface PublishForm {
   materials: { materialTypeId: string; percentage: string }[];
   servicePricing: ServicePricing | "";
   isExchangeable: boolean;
+  /** Marketplace only — what the seller will swap for. Empty = any offer. */
+  interests: string[];
   images: File[];
   // Service-only fields (persisted by the services subgraph today).
   tags: string[];
@@ -82,6 +84,7 @@ const INITIAL_FORM: PublishForm = {
   materials: [{ materialTypeId: "", percentage: "" }],
   servicePricing: "",
   isExchangeable: false,
+  interests: [],
   images: [],
   tags: [],
   duration: "",

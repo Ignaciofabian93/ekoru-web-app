@@ -96,7 +96,7 @@
       },
       "edit": {
         "title": "Edit product",
-        "subtitle": "Update the most common fields. Use the publish flow for everything else.",
+        "subtitle": "Update every detail of your listing, including photos.",
         "name": "Name",
         "brand": "Brand",
         "price": "Price",
@@ -107,7 +107,18 @@
         "saving": "Saving",
         "cancel": "Cancel",
         "success": "Product updated",
-        "error": "Could not update product"
+        "error": "Could not update product",
+        "color": "Color",
+        "conditionDescription": "Condition details",
+        "required": "This field is required",
+        "descriptionMin": "At least {{min}} characters",
+        "images": "Photos",
+        "imagesHint": "The first photo is the cover shown on the card.",
+        "addPhoto": "Add photo",
+        "removePhoto": "Remove photo",
+        "cover": "Cover",
+        "makeCover": "Move up",
+        "imagesRequired": "Add at least one photo"
       },
       "delete": {
         "title": "Delete this product?",
@@ -464,7 +475,10 @@
   "exchanges": {
     "title": "Exchange proposals",
     "subtitle": "Offers to swap items with other members.",
-    "tabs": { "received": "Received", "sent": "Sent" },
+    "tabs": {
+      "received": "Received",
+      "sent": "Sent"
+    },
     "empty": {
       "received": "No incoming proposals yet.",
       "sent": "You haven't sent any proposals yet."

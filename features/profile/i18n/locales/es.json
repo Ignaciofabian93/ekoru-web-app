@@ -96,7 +96,7 @@
       },
       "edit": {
         "title": "Editar producto",
-        "subtitle": "Actualiza los campos más comunes. Usa el flujo de publicación para el resto.",
+        "subtitle": "Actualiza todos los detalles de tu publicación, incluidas las fotos.",
         "name": "Nombre",
         "brand": "Marca",
         "price": "Precio",
@@ -107,7 +107,18 @@
         "saving": "Guardando",
         "cancel": "Cancelar",
         "success": "Producto actualizado",
-        "error": "No se pudo actualizar el producto"
+        "error": "No se pudo actualizar el producto",
+        "color": "Color",
+        "conditionDescription": "Detalles del estado",
+        "required": "Este campo es obligatorio",
+        "descriptionMin": "Al menos {{min}} caracteres",
+        "images": "Fotos",
+        "imagesHint": "La primera foto es la portada que se muestra en la tarjeta.",
+        "addPhoto": "Agregar foto",
+        "removePhoto": "Quitar foto",
+        "cover": "Portada",
+        "makeCover": "Subir",
+        "imagesRequired": "Agrega al menos una foto"
       },
       "delete": {
         "title": "¿Eliminar este producto?",
@@ -464,7 +475,10 @@
   "exchanges": {
     "title": "Propuestas de intercambio",
     "subtitle": "Ofertas para intercambiar artículos con otros miembros.",
-    "tabs": { "received": "Recibidas", "sent": "Enviadas" },
+    "tabs": {
+      "received": "Recibidas",
+      "sent": "Enviadas"
+    },
     "empty": {
       "received": "Aún no tienes propuestas recibidas.",
       "sent": "Aún no has enviado propuestas."

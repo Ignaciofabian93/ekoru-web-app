@@ -2,6 +2,7 @@
 import type { PublishForm } from "../../hooks/usePublishForm";
 
 import { ExchangeableField } from "../fields/ExchangeableField";
+import { InterestsField } from "../fields/InterestsField";
 import { PriceField } from "../fields/PriceField";
 
 interface PersonPricingStepProps {
@@ -28,6 +29,16 @@ export function PersonPricingStep({ form, setField, invalid }: PersonPricingStep
         value={form.isExchangeable}
         onChange={(v) => setField("isExchangeable", v)}
       />
+
+      {/* Only meaningful once the listing accepts swaps. The list stays in
+          state when toggled off, so an accidental toggle doesn't discard what
+          was typed — the publish payload drops it instead. */}
+      {form.isExchangeable && (
+        <InterestsField
+          value={form.interests}
+          onChange={(v) => setField("interests", v)}
+        />
+      )}
     </div>
   );
 }

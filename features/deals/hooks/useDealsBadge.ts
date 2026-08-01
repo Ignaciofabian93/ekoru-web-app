@@ -18,14 +18,18 @@ interface BadgeDeal {
  *
  * Counts: incoming requests to accept (seller PROPOSED) + accepted deals still
  * awaiting my confirmation (either side).
+ *
+ * `enabled` exists for always-mounted consumers: the Drawer sits in the layout
+ * tree on every page, so it defers until first opened rather than starting a
+ * second 30s poll alongside the avatar dropdown's on every page load.
  */
-export function useDealsBadge(): number {
+export function useDealsBadge(enabled: boolean = true): number {
   const isAuthed = useIsAuthenticated();
   const { data } = useQuery<{
     myDealsAsSeller: BadgeDeal[];
     myDealsAsBuyer: BadgeDeal[];
   }>(DEALS_BADGE, {
-    skip: !isAuthed,
+    skip: !isAuthed || !enabled,
     fetchPolicy: "cache-and-network",
     pollInterval: 30000,
   });

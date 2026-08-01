@@ -123,7 +123,11 @@
     "durationPlaceholder": "e.g. 60",
     "priceRange": "Price range",
     "priceRangePlaceholder": "e.g. 50.000–150.000 CLP",
-    "priceRangeHint": "Optional — handy for quotes and packages"
+    "priceRangeHint": "Optional — handy for quotes and packages",
+    "interests": "Exchange interests",
+    "interestsPlaceholder": "Add an item and press Enter",
+    "interestsHint": "What you would swap this for. Leave empty to stay open to any offer.",
+    "removeInterest": "Remove interest"
   },
   "conditions": {
     "new": "New",
@@ -185,7 +189,10 @@
     "warrantyWithDuration": "Yes · {{months}} months",
     "features": "Features",
     "tags": "Tags",
-    "empty": "Not set"
+    "empty": "Not set",
+    "conditionDescription": "Condition details",
+    "interests": "Exchange interests",
+    "interestsAny": "Open to any offer"
   },
   "actions": {
     "continue": "Continue",

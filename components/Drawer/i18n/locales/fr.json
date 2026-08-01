@@ -3,7 +3,8 @@
   "sections": {
     "account": "Compte",
     "explore": "Explorer",
-    "support": "Support"
+    "support": "Support",
+    "empty": "Rien de disponible pour le moment"
   },
   "home": "Accueil",
   "marketplace": "Marché",
@@ -27,5 +28,6 @@
     "PERSON": "Compte Personnel",
     "STARTUP": "Startup",
     "COMPANY": "Entreprise"
-  }
+  },
+  "deals": "Mes échanges"
 }

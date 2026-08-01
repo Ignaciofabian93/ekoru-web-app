@@ -2,6 +2,7 @@
 
 import {
   BookOpen,
+  Handshake,
   House,
   Leaf,
   Mail,
@@ -39,10 +40,15 @@ import { useDrawerBlogs } from "./hooks/useDrawerBlogs";
 import { useDrawerCommunity } from "./hooks/useDrawerCommunity";
 import { useDrawerServices } from "./hooks/useDrawerServices";
 import { useDrawerStores } from "./hooks/useDrawerStores";
+import { useDealsBadge } from "@/features/deals/hooks/useDealsBadge";
 import Image from "next/image";
 
+// Every one of these needs a signed-in seller, so the whole section is gated on
+// auth rather than each row. Order mirrors the avatar dropdown, where Deals also
+// sits directly under the profile entry.
 const profileMenuItems = [
   { route: "/profile", tKey: "profile", icon: User },
+  { route: "/deals", tKey: "deals", icon: Handshake },
   { route: "/profile/settings", tKey: "settings", icon: Settings },
   { route: "/profile/orders", tKey: "orders", icon: Package },
   { route: "/profile/environmental-impact", tKey: "environmentalImpact", icon: Leaf },
@@ -82,62 +88,55 @@ export default function Drawer() {
   const { items: serviceItems } = useDrawerServices(hasOpened);
   const { items: communityItems } = useDrawerCommunity(hasOpened);
   const { items: blogItems } = useDrawerBlogs(hasOpened);
+  // Same deferral: this one polls, so starting it before the drawer is ever
+  // opened would double the avatar dropdown's background traffic on every page.
+  const dealsCount = useDealsBadge(hasOpened);
 
-  const accordionSections = useMemo(
-    (): AccordionSectionDef[] => [
+  const accordionSections = useMemo((): AccordionSectionDef[] => {
+    // Empty rows carry no route, so handleNavigate ignores them. The copy comes
+    // from the dictionary — it was hardcoded English, which showed through
+    // untranslated in ES and FR whenever a catalog came back empty.
+    const orEmpty = (items: AccordionSectionDef["items"]) =>
+      items.length > 0 ? items : [{ label: t("sections.empty"), route: "" }];
+
+    return [
       {
         key: "marketplace",
         label: t("marketplace"),
         icon: Package,
         baseRoute: "/marketplace",
-        items:
-          marketplaceItems.length > 0
-            ? marketplaceItems
-            : [{ label: "No marketplace categories available", route: "" }],
+        items: orEmpty(marketplaceItems),
       },
       {
         key: "stores",
         label: t("stores"),
         icon: Store,
         baseRoute: "/stores",
-        items:
-          storeItems.length > 0
-            ? storeItems
-            : [{ label: "No store categories available", route: "" }],
+        items: orEmpty(storeItems),
       },
       {
         key: "services",
         label: t("services"),
         icon: ScanBarcode,
         baseRoute: "/services",
-        items:
-          serviceItems.length > 0
-            ? serviceItems
-            : [{ label: "No service categories available", route: "" }],
+        items: orEmpty(serviceItems),
       },
       {
         key: "community",
         label: t("community"),
         icon: MessageSquare,
         baseRoute: "/community",
-        items:
-          communityItems.length > 0
-            ? communityItems
-            : [{ label: "No community sections available", route: "" }],
+        items: orEmpty(communityItems),
       },
       {
         key: "blog",
         label: t("blog"),
         icon: BookOpen,
         baseRoute: "/blog",
-        items:
-          blogItems.length > 0
-            ? blogItems
-            : [{ label: "No blog sections available", route: "" }],
+        items: orEmpty(blogItems),
       },
-    ],
-    [marketplaceItems, storeItems, serviceItems, communityItems, blogItems, t],
-  );
+    ];
+  }, [marketplaceItems, storeItems, serviceItems, communityItems, blogItems, t]);
 
   const handleNavigate = (route: string) => {
     // Fallback "no items available" rows carry an empty route — ignore them.
@@ -218,13 +217,16 @@ export default function Drawer() {
           {/* User identity */}
           {seller && (
             <div className="flex flex-col items-center gap-3 bg-secondary/10 p-3.5">
+              {/* Both branches fill the same 52px slot — the photo used to
+                  render at 130px from a 100px source, so it was both upscaled
+                  and 2.5× the size of the initials fallback beside it. */}
               {profileImage ? (
                 <Image
                   src={profileImage}
                   alt=""
-                  width={100}
-                  height={100}
-                  className="size-32.5 shrink-0 rounded-full object-cover"
+                  width={104}
+                  height={104}
+                  className="size-13 shrink-0 rounded-full object-cover"
                 />
               ) : (
                 <div className="flex size-13 shrink-0 items-center justify-center rounded-full bg-primary">
@@ -249,24 +251,29 @@ export default function Drawer() {
             </div>
           )}
 
-          {/* Account section */}
-          <div className="mb-1 flex flex-col gap-1.5 px-4">
-            <SectionLabel label={t("sections.account")} />
-            <div className="overflow-hidden rounded-lg bg-surface">
-              {profileMenuItems.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <MenuRow
-                    key={item.route}
-                    icon={Icon}
-                    label={t(item.tKey)}
-                    onPress={() => handleNavigate(item.route)}
-                    hasBorder={index < profileMenuItems.length - 1}
-                  />
-                );
-              })}
+          {/* Account section — signed-in only. Every row behind it (profile,
+              deals, orders, settings, impact) requires a session, so showing
+              them to a guest just walks them into an auth wall. */}
+          {seller && (
+            <div className="mb-1 flex flex-col gap-1.5 px-4">
+              <SectionLabel label={t("sections.account")} />
+              <div className="overflow-hidden rounded-lg bg-surface">
+                {profileMenuItems.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <MenuRow
+                      key={item.route}
+                      icon={Icon}
+                      label={t(item.tKey)}
+                      onPress={() => handleNavigate(item.route)}
+                      hasBorder={index < profileMenuItems.length - 1}
+                      badgeCount={item.route === "/deals" ? dealsCount : undefined}
+                    />
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Explore section */}
           <div className="mb-1 flex flex-col gap-1.5 px-4">

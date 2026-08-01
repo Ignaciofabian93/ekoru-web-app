@@ -52,13 +52,21 @@ export function usePersonPublish() {
             brand: sanitizeOnSubmit(form.brand),
             price: Number(form.price),
             productCategoryId: Number(form.productCategoryId),
+            color: sanitizeOnSubmit(form.color) || undefined,
             condition: form.condition || undefined,
             conditionDescription:
               sanitizeOnSubmit(form.conditionDescription) || undefined,
             isExchangeable: form.isExchangeable,
+            // Swap preferences only mean anything on an exchangeable listing;
+            // sending them otherwise would surface an exchange panel on a card
+            // that can't be exchanged.
+            interests: form.isExchangeable
+              ? form.interests.map(sanitizeOnSubmit).filter(Boolean)
+              : [],
             images: imageKeys,
+            // Badges are awarded by the platform (POPULAR, BEST_SELLER, …), not
+            // chosen by the seller, so nothing is sent here.
             badges: [],
-            interests: [],
           },
         },
       });

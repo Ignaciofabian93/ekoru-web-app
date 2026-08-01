@@ -10,13 +10,30 @@ import { GET_SELLER_STOREFRONT } from "@/graphql/marketplace/queries";
 import { useToast } from "@/hooks/useToast";
 import { useTranslation } from "@/i18n/context";
 import { useSeller } from "@/store/useAuthStore";
+import type { ProductCondition } from "@/types/enums";
 import { NAMESPACE } from "../i18n";
 
+/**
+ * The full editable surface of a marketplace listing, mirroring
+ * `UpdateProductInput`. Every field is sent on save, so clearing an optional
+ * one actually clears it — a partial patch would leave stale values behind.
+ *
+ * `badges` is deliberately absent: those are awarded by the platform, not the
+ * seller.
+ */
 export interface UpdateProductPatch {
   name: string;
   brand: string;
   price: number;
   description: string;
+  color: string;
+  condition: ProductCondition | "";
+  conditionDescription: string;
+  isExchangeable: boolean;
+  interests: string[];
+  productCategoryId: number | null;
+  /** Final ordered image keys — the first is the card cover. */
+  images: string[];
 }
 
 export function useProductActions() {
@@ -80,11 +97,24 @@ export function useProductActions() {
         await updateMutation({
           variables: {
             input: {
-              id: String(id),
+              // UpdateProductInput.id is Int! — a stringified id fails schema
+              // validation before it ever reaches the resolver.
+              id: Number(id),
               name: patch.name,
               brand: patch.brand || undefined,
               price: patch.price,
               description: patch.description,
+              color: patch.color || undefined,
+              condition: patch.condition || undefined,
+              conditionDescription: patch.conditionDescription || undefined,
+              isExchangeable: patch.isExchangeable,
+              // Swap preferences only apply to an exchangeable listing; turning
+              // the toggle off clears them rather than leaving them orphaned.
+              interests: patch.isExchangeable ? patch.interests : [],
+              ...(patch.productCategoryId !== null
+                ? { productCategoryId: patch.productCategoryId }
+                : {}),
+              images: patch.images,
             },
           },
         });
