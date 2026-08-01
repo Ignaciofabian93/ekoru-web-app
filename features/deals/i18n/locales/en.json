@@ -23,6 +23,12 @@
   "overdue": "Deadline passed",
   "photoLabel": "Photo of the item received (required)",
   "photoRequiredHint": "Attach a photo to enable confirming receipt.",
+  "uploadPhoto": "Upload product photo",
+  "changePhoto": "Change photo",
+  "evidence": {
+    "buyer": "Buyer's photo",
+    "seller": "Seller's photo"
+  },
   "awaitingOther": "You confirmed — waiting for the other party.",
   "rejectPrompt": "Why are you rejecting the delivery? (e.g. the item isn't as shown)",
   "actions": {

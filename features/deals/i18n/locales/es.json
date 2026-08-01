@@ -23,6 +23,12 @@
   "overdue": "Plazo vencido",
   "photoLabel": "Foto del producto recibido (obligatoria)",
   "photoRequiredHint": "Adjunta una foto para poder confirmar la recepción.",
+  "uploadPhoto": "Subir foto del producto",
+  "changePhoto": "Cambiar foto",
+  "evidence": {
+    "buyer": "Foto del comprador",
+    "seller": "Foto del vendedor"
+  },
   "awaitingOther": "Confirmaste — esperando a la otra parte.",
   "rejectPrompt": "¿Por qué rechazas la entrega? (ej.: el producto no está como se mostró)",
   "actions": {

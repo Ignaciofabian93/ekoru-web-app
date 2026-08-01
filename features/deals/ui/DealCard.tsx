@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import {
   ArrowLeftRight,
   BadgeCheck,
   Clock,
   ImageOff,
+  ImagePlus,
   MapPin,
   Phone,
   ShieldAlert,
@@ -78,6 +79,18 @@ export function DealCard({
     ? new Date(deal.confirmationDeadline).getTime() - Date.now()
     : null;
   const urgent = msLeft !== null && msLeft < 12 * 3600_000;
+
+  // Local preview of the not-yet-uploaded evidence photo.
+  const previewUrl = useMemo(
+    () => (photo ? URL.createObjectURL(photo) : null),
+    [photo],
+  );
+  useEffect(
+    () => () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    },
+    [previewUrl],
+  );
 
   // The other party: on my seller tab it's the buyer; on my buyer tab, the seller.
   const counterparty = perspective === "seller" ? deal.buyer : deal.seller;
@@ -182,6 +195,18 @@ export function DealCard({
         </p>
       )}
 
+      {/* Uploaded evidence photos, viewable by both parties. */}
+      {(deal.buyerEvidenceUrl || deal.sellerEvidenceUrl) && (
+        <div className="flex flex-wrap gap-3">
+          {deal.buyerEvidenceUrl && (
+            <Evidence url={deal.buyerEvidenceUrl} label={t("evidence.buyer")} />
+          )}
+          {deal.sellerEvidenceUrl && (
+            <Evidence url={deal.sellerEvidenceUrl} label={t("evidence.seller")} />
+          )}
+        </div>
+      )}
+
       {/* Actions */}
       <div className="flex flex-wrap gap-2">
         {perspective === "seller" && deal.status === "PROPOSED" && (
@@ -202,20 +227,46 @@ export function DealCard({
         {deal.status === "ACCEPTED" && !iConfirmed && (
           <div className="flex w-full flex-col gap-2">
             {iReceiveItem && (
-              <label className="text-xs font-medium text-foreground-secondary">
-                {t("photoLabel")}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
-                  className="mt-1 block w-full text-xs"
-                />
-                {!photo && (
-                  <span className="mt-1 block text-[11px] text-foreground-tertiary">
-                    {t("photoRequiredHint")}
-                  </span>
+              <div className="flex flex-col gap-1.5">
+                <p className="text-xs font-medium text-foreground-secondary">
+                  {t("photoLabel")}
+                </p>
+                {previewUrl ? (
+                  <div className="flex items-center gap-3">
+                    <div className="size-16 shrink-0 overflow-hidden rounded-lg border border-border-light">
+                      {/* Local object URL — a plain img; next/image can't optimize blob URLs. */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={previewUrl}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <label className="cursor-pointer text-xs font-medium text-primary hover:underline">
+                      {t("changePhoto")}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        className="sr-only"
+                        onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
+                      />
+                    </label>
+                  </div>
+                ) : (
+                  <label className="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed border-border py-4 text-sm font-medium text-foreground-secondary transition-colors hover:border-primary/50 hover:text-primary">
+                    <ImagePlus size={20} strokeWidth={2} />
+                    {t("uploadPhoto")}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      className="sr-only"
+                      onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
+                    />
+                  </label>
                 )}
-              </label>
+              </div>
             )}
             <div className="flex gap-2">
               <Btn
@@ -254,6 +305,25 @@ export function DealCard({
         )}
       </div>
     </div>
+  );
+}
+
+/** A stored evidence photo — thumbnail that opens the full image in a new tab. */
+function Evidence({ url, label }: { url: string; label: string }) {
+  const src = resolveImageUrl(url);
+  if (!src) return null;
+  return (
+    <a
+      href={src}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex flex-col items-center gap-1"
+    >
+      <div className="relative size-16 overflow-hidden rounded-lg border border-border-light">
+        <Image src={src} alt={label} fill className="object-cover" sizes="64px" />
+      </div>
+      <span className="text-[10px] text-foreground-tertiary">{label}</span>
+    </a>
   );
 }
 

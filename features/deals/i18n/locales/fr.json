@@ -23,6 +23,12 @@
   "overdue": "Délai dépassé",
   "photoLabel": "Photo de l'article reçu (obligatoire)",
   "photoRequiredHint": "Ajoutez une photo pour pouvoir confirmer la réception.",
+  "uploadPhoto": "Envoyer une photo du produit",
+  "changePhoto": "Changer la photo",
+  "evidence": {
+    "buyer": "Photo de l'acheteur",
+    "seller": "Photo du vendeur"
+  },
   "awaitingOther": "Vous avez confirmé — en attente de l'autre partie.",
   "rejectPrompt": "Pourquoi refusez-vous la remise ? (ex. : l'article n'est pas conforme)",
   "actions": {
