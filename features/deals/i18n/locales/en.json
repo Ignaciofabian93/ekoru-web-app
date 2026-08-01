@@ -1,7 +1,7 @@
 {
   "title": "My deals",
   "subtitle": "Cash purchases and sales, in person. Confirm the handover with a photo.",
-  "blocked": "Your account is temporarily blocked from new deals until {date} due to no-shows ({count}).",
+  "blocked": "Your account is temporarily blocked from new deals until {{date}} due to no-shows ({{count}}).",
   "tabs": {
     "seller": "Requests on my items",
     "buyer": "My purchases"
@@ -13,24 +13,25 @@
     "seller": "Seller",
     "unknown": "User"
   },
-  "compensation": "Cash compensation: {amount}",
+  "compensation": "Cash compensation: {{amount}}",
   "youPay": "(you pay)",
   "theyPay": "(the other party pays)",
-  "deadline": "Confirm before {date}",
   "acceptedBanner": "Request accepted!",
-  "acceptedHint": "Coordinate the handover in chat and confirm once it's done.",
-  "timeLeft": "{time} left",
+  "acceptedHint": "Arrange the handover with the other person and confirm once you receive the item.",
+  "contact": "Call {{phone}}",
+  "timeLeft": "{{time}} left",
   "overdue": "Deadline passed",
   "photoLabel": "Photo of the item received (required)",
+  "photoRequiredHint": "Attach a photo to enable confirming receipt.",
   "awaitingOther": "You confirmed — waiting for the other party.",
-  "disputePrompt": "Reason for the dispute:",
+  "rejectPrompt": "Why are you rejecting the delivery? (e.g. the item isn't as shown)",
   "actions": {
     "accept": "Accept",
     "decline": "Decline",
     "cancel": "Cancel",
     "confirmReceipt": "Confirm receipt",
     "confirmHandover": "Confirm handover & payment",
-    "dispute": "Dispute"
+    "reject": "Reject delivery"
   },
   "status": {
     "PROPOSED": "Pending",

@@ -61,8 +61,8 @@ export const DISPUTE_DEAL = gql`
 
 export const CANCEL_DEAL = gql`
   ${DEAL_FIELDS}
-  mutation CancelDeal($id: Int!) {
-    cancelDeal(id: $id) {
+  mutation CancelDeal($id: Int!, $reason: String) {
+    cancelDeal(id: $id, reason: $reason) {
       ...DealFields
     }
   }

@@ -87,8 +87,10 @@ export function useDealActions() {
       run(id, () => decline({ variables: { id, reason } })),
     disputeDeal: (id: number, reason: string) =>
       run(id, () => dispute({ variables: { id, reason } })),
-    cancelDeal: (id: number) =>
-      run(id, () => cancel({ variables: { id } })),
+    // A plain call-off (no reason) or the receiver's "reject at delivery"
+    // feedback (item not as described) — both end the deal + free the item.
+    cancelDeal: (id: number, reason?: string) =>
+      run(id, () => cancel({ variables: { id, reason } })),
 
     /** Uploads the evidence photo (if any) then confirms the deal. */
     confirmDeal: (id: number, photo?: File) =>

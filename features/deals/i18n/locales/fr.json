@@ -1,7 +1,7 @@
 {
   "title": "Mes échanges",
   "subtitle": "Achats et ventes en espèces, en personne. Confirmez la remise avec une photo.",
-  "blocked": "Votre compte est temporairement bloqué pour de nouveaux échanges jusqu'au {date} en raison d'absences ({count}).",
+  "blocked": "Votre compte est temporairement bloqué pour de nouveaux échanges jusqu'au {{date}} en raison d'absences ({{count}}).",
   "tabs": {
     "seller": "Demandes sur mes articles",
     "buyer": "Mes achats"
@@ -13,24 +13,25 @@
     "seller": "Vendeur",
     "unknown": "Utilisateur"
   },
-  "compensation": "Compensation en espèces : {amount}",
+  "compensation": "Compensation en espèces : {{amount}}",
   "youPay": "(vous payez)",
   "theyPay": "(l'autre partie paie)",
-  "deadline": "Confirmer avant le {date}",
   "acceptedBanner": "Demande acceptée !",
-  "acceptedHint": "Coordonnez la remise via le chat et confirmez une fois faite.",
-  "timeLeft": "{time} restant",
+  "acceptedHint": "Convenez de la remise avec l'autre personne et confirmez une fois l'article reçu.",
+  "contact": "Appeler le {{phone}}",
+  "timeLeft": "{{time}} restant",
   "overdue": "Délai dépassé",
   "photoLabel": "Photo de l'article reçu (obligatoire)",
+  "photoRequiredHint": "Ajoutez une photo pour pouvoir confirmer la réception.",
   "awaitingOther": "Vous avez confirmé — en attente de l'autre partie.",
-  "disputePrompt": "Motif du litige :",
+  "rejectPrompt": "Pourquoi refusez-vous la remise ? (ex. : l'article n'est pas conforme)",
   "actions": {
     "accept": "Accepter",
     "decline": "Refuser",
     "cancel": "Annuler",
     "confirmReceipt": "Confirmer la réception",
     "confirmHandover": "Confirmer la remise et le paiement",
-    "dispute": "Contester"
+    "reject": "Refuser la remise"
   },
   "status": {
     "PROPOSED": "En attente",

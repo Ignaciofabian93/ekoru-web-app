@@ -33,6 +33,7 @@ export interface Deal {
   buyerEvidenceUrl?: string | null;
   sellerEvidenceUrl?: string | null;
   disputeReason?: string | null;
+  cancelReason?: string | null;
   completedAt?: string | null;
   createdAt: string;
   product?: DealProduct | null;

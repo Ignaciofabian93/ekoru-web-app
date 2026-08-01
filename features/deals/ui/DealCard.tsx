@@ -7,6 +7,7 @@ import {
   Clock,
   ImageOff,
   MapPin,
+  Phone,
   ShieldAlert,
   UserRound,
 } from "lucide-react";
@@ -148,6 +149,14 @@ export function DealCard({
         <div className="flex flex-col gap-1.5 rounded-lg bg-primary/5 p-2.5">
           <p className="text-xs font-semibold text-primary">{t("acceptedBanner")}</p>
           <p className="text-xs text-foreground-secondary">{t("acceptedHint")}</p>
+          {counterparty?.phone && (
+            <a
+              href={`tel:${counterparty.phone}`}
+              className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+            >
+              <Phone size={13} /> {t("contact", { phone: counterparty.phone })}
+            </a>
+          )}
           {msLeft !== null && (
             <p
               className={`flex items-center gap-1.5 text-xs font-medium ${
@@ -165,6 +174,11 @@ export function DealCard({
       {deal.status === "DISPUTED" && deal.disputeReason && (
         <p className="flex items-center gap-1.5 text-xs text-red-600">
           <ShieldAlert size={13} /> {deal.disputeReason}
+        </p>
+      )}
+      {deal.status === "CANCELLED" && deal.cancelReason && (
+        <p className="flex items-center gap-1.5 text-xs text-foreground-tertiary">
+          <ShieldAlert size={13} /> {deal.cancelReason}
         </p>
       )}
 
@@ -188,7 +202,7 @@ export function DealCard({
         {deal.status === "ACCEPTED" && !iConfirmed && (
           <div className="flex w-full flex-col gap-2">
             {iReceiveItem && (
-              <label className="text-xs text-foreground-secondary">
+              <label className="text-xs font-medium text-foreground-secondary">
                 {t("photoLabel")}
                 <input
                   type="file"
@@ -196,6 +210,11 @@ export function DealCard({
                   onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
                   className="mt-1 block w-full text-xs"
                 />
+                {!photo && (
+                  <span className="mt-1 block text-[11px] text-foreground-tertiary">
+                    {t("photoRequiredHint")}
+                  </span>
+                )}
               </label>
             )}
             <div className="flex gap-2">
@@ -208,18 +227,23 @@ export function DealCard({
                   ? t("actions.confirmReceipt")
                   : t("actions.confirmHandover")}
               </Btn>
-              <Btn
-                onClick={() => {
-                  const reason = window.prompt(t("disputePrompt"));
-                  if (reason) a.disputeDeal(deal.id, reason);
-                }}
-                disabled={busy}
-              >
-                {t("actions.dispute")}
-              </Btn>
-              <Btn onClick={() => a.cancelDeal(deal.id)} disabled={busy}>
-                {t("actions.cancel")}
-              </Btn>
+              {/* The receiver can decline at delivery with a reason (item not as
+                  described); the seller of a sale just calls it off. */}
+              {iReceiveItem ? (
+                <Btn
+                  onClick={() => {
+                    const reason = window.prompt(t("rejectPrompt"));
+                    if (reason) a.cancelDeal(deal.id, reason);
+                  }}
+                  disabled={busy}
+                >
+                  {t("actions.reject")}
+                </Btn>
+              ) : (
+                <Btn onClick={() => a.cancelDeal(deal.id)} disabled={busy}>
+                  {t("actions.cancel")}
+                </Btn>
+              )}
             </div>
           </div>
         )}

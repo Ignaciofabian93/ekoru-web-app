@@ -1,7 +1,7 @@
 {
   "title": "Mis tratos",
   "subtitle": "Compras y ventas en efectivo, en persona. Confirma la entrega con una foto.",
-  "blocked": "Tu cuenta está temporalmente bloqueada para nuevos tratos hasta {date} por incumplimientos ({count}).",
+  "blocked": "Tu cuenta está temporalmente bloqueada para nuevos tratos hasta {{date}} por incumplimientos ({{count}}).",
   "tabs": {
     "seller": "Solicitudes a mis productos",
     "buyer": "Mis compras"
@@ -13,24 +13,25 @@
     "seller": "Vendedor",
     "unknown": "Usuario"
   },
-  "compensation": "Compensación en efectivo: {amount}",
+  "compensation": "Compensación en efectivo: {{amount}}",
   "youPay": "(pagas tú)",
   "theyPay": "(paga la otra parte)",
-  "deadline": "Confirmar antes de {date}",
   "acceptedBanner": "¡Solicitud aceptada!",
-  "acceptedHint": "Coordina la entrega por chat y confirma cuando se concrete.",
-  "timeLeft": "Quedan {time}",
+  "acceptedHint": "Ponte de acuerdo con la otra persona para la entrega y confirma cuando recibas el producto.",
+  "contact": "Llamar al {{phone}}",
+  "timeLeft": "Quedan {{time}}",
   "overdue": "Plazo vencido",
   "photoLabel": "Foto del producto recibido (obligatoria)",
+  "photoRequiredHint": "Adjunta una foto para poder confirmar la recepción.",
   "awaitingOther": "Confirmaste — esperando a la otra parte.",
-  "disputePrompt": "Motivo de la disputa:",
+  "rejectPrompt": "¿Por qué rechazas la entrega? (ej.: el producto no está como se mostró)",
   "actions": {
     "accept": "Aceptar",
     "decline": "Rechazar",
     "cancel": "Cancelar",
     "confirmReceipt": "Confirmar recepción",
     "confirmHandover": "Confirmar entrega y pago",
-    "dispute": "Disputar"
+    "reject": "Rechazar entrega"
   },
   "status": {
     "PROPOSED": "Pendiente",

@@ -9,6 +9,7 @@ export const DEAL_PARTY_FIELDS = gql`
   fragment DealPartyFields on Seller {
     id
     email
+    phone
     sellerType
     isVerified
     profile {
@@ -53,6 +54,7 @@ export const DEAL_FIELDS = gql`
     buyerEvidenceUrl
     sellerEvidenceUrl
     disputeReason
+    cancelReason
     completedAt
     createdAt
     buyer {
