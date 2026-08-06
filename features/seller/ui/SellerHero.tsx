@@ -15,9 +15,11 @@ import {
   useProfileImage,
   useInitials,
   useSellerLocation,
+  useIsBusinessProfile,
 } from "@/hooks/useSellerData";
 import { Title } from "@/components/Primitives/Title";
 import { Badge } from "@/components/Primitives/Badge";
+import { Text } from "@/components/Primitives";
 
 const LOCALE_MAP: Record<SupportedLanguage, string> = {
   es: "es-CL",
@@ -50,6 +52,7 @@ export function SellerHero({ seller, lang }: Props) {
   const cover = useCoverImage(seller);
   const location = useSellerLocation(seller);
   const userInitials = useInitials(seller);
+  const isBusiness = useIsBusinessProfile(seller);
 
   const { share, copied } = useShareSeller({ title: name });
 
@@ -129,16 +132,18 @@ export function SellerHero({ seller, lang }: Props) {
             </div>
 
             <div className="text-foreground-secondary flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-sm sm:justify-start">
-              <span className="inline-flex items-center gap-1.5">
-                <MapPin size={14} strokeWidth={1.8} className="shrink-0" />
-                {location || t("hero.noLocation")}
-              </span>
+              {isBusiness && (
+                <span className="inline-flex items-center gap-1.5">
+                  <MapPin size={14} strokeWidth={1.8} className="shrink-0" />
+                  {location || t("hero.noLocation")}
+                </span>
+              )}
               {seller.createdAt && (
-                <span>
+                <Text variant="span" weight="normal" size="sm" color="secondary">
                   {t("hero.memberSince", {
                     date: formatJoinDate(seller.createdAt, lang),
                   })}
-                </span>
+                </Text>
               )}
             </div>
           </div>

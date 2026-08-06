@@ -7,6 +7,7 @@ import { useTranslation } from "@/i18n/context";
 import { Building2, Globe2, MapPin, Phone, Save, Tags, UserRound } from "lucide-react";
 import { useEditProfile } from "../hooks/useEditProfile";
 import { NAMESPACE } from "../i18n";
+import { BusinessLocations } from "./BusinessLocations";
 import { SectionCard } from "./SectionCard";
 import { TagSelector } from "./TagSelector";
 
@@ -209,6 +210,10 @@ export function EditProfileForm() {
           />
         </div>
       </SectionCard>
+
+      {/* Business locations — additional branches/warehouses (business only).
+          The single address above stays the primary contact address. */}
+      {isBusiness && <BusinessLocations />}
 
       <div className="w-full max-w-6xl mt-12 mx-auto">
         <Button

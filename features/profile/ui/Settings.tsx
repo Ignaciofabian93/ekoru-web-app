@@ -1,219 +1,143 @@
 "use client";
 import { Button } from "@/components/Primitives/Button";
-import { Select } from "@/components/Primitives/Select";
-import { Text } from "@/components/Primitives/Text";
-import {
-  CURRENCIES_SUPPORTED,
-  CURRENCY_COOKIE,
-  DEFAULT_CURRENCY,
-  hasCurrency,
-  LANGUAGES_AVAILABLE,
-} from "@/constants/settings";
-import { useCookieState } from "@/hooks/useCookieState";
-import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "@/i18n/context";
-import {
-  Bell,
-  BellRing,
-  CalendarClock,
-  DollarSign,
-  EyeOff,
-  Globe,
-  KeyRound,
-  Mail,
-  Repeat2,
-  Search,
-  Shield,
-  ShieldCheck,
-  Trash2,
-  UserCircle,
-} from "lucide-react";
-import { useState } from "react";
+import { Save } from "lucide-react";
+import { useLogout } from "@/features/auth/hooks/useLogout";
+import { SETTINGS_SECTIONS } from "../constants/menuItems";
+import { useSellerPreferences } from "../hooks/useSellerPreferences";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
 import { SettingRow } from "./SettingRow";
 
+function ComingSoonChip({ label }: { label: string }) {
+  return (
+    <span className="rounded-full border border-border-light bg-background px-2 py-0.5 text-xs font-medium text-foreground-tertiary">
+      {label}
+    </span>
+  );
+}
+
 export function Settings() {
   const { t } = useTranslation(NAMESPACE);
-  const [language, changeLanguage] = useLanguage();
-  const [currency, setCurrency] = useCookieState(
-    CURRENCY_COOKIE,
-    DEFAULT_CURRENCY,
-    hasCurrency,
-  );
+  const {
+    state,
+    toggle,
+    dirty,
+    save,
+    saving,
+    deactivateAccount,
+    deactivating,
+    deleteAccount,
+    deleting,
+  } = useSellerPreferences();
+  const { handleLogout } = useLogout();
+  const busy = deactivating || deleting;
 
-  // Local-only toggles — wire to user-preferences mutation later.
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [pushNotifications, setPushNotifications] = useState(true);
-  const [marketingEmails, setMarketingEmails] = useState(false);
-  const [weeklySummary, setWeeklySummary] = useState(true);
-  const [publicProfile, setPublicProfile] = useState(true);
-  const [showInSearch, setShowInSearch] = useState(true);
-  const [allowExchanges, setAllowExchanges] = useState(true);
-  const [twoFactor, setTwoFactor] = useState(false);
-  const [loginAlerts, setLoginAlerts] = useState(true);
+  const handleAction = async (action: "deactivate" | "delete") => {
+    if (action === "deactivate") {
+      if (window.confirm(t("settings.deactivateConfirm"))) {
+        await deactivateAccount();
+      }
+      return;
+    }
+    // Delete is irreversible: hard confirm, then sign out + redirect on success
+    // (the account is anonymised and locked server-side).
+    if (window.confirm(t("settings.deleteConfirm"))) {
+      const ok = await deleteAccount();
+      if (ok) await handleLogout();
+    }
+  };
+
+  const toggleSections = SETTINGS_SECTIONS.filter((s) => s.key !== "danger");
+  const dangerSection = SETTINGS_SECTIONS.find((s) => s.key === "danger");
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Preferences */}
-      <SectionCard
-        icon={Globe}
-        title={t("settings.preferences")}
-        subtitle={t("settings.preferencesSubtitle")}
-      >
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div className="flex flex-col gap-1.5">
-            <Text variant="span" weight="semibold" size="sm">
-              {t("settings.language")}
-            </Text>
-            <Select
-              options={LANGUAGES_AVAILABLE.map((lang) => ({
-                label: lang.name,
-                value: lang.code,
-              }))}
-              value={language}
-              onChange={(v) => changeLanguage(String(v))}
-              leftIcon={Globe}
-              size="md"
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Text variant="span" weight="semibold" size="sm">
-              {t("settings.currency")}
-            </Text>
-            <Select
-              options={CURRENCIES_SUPPORTED.map((c) => ({ label: c, value: c }))}
-              value={currency}
-              onChange={(v) => setCurrency(String(v))}
-              leftIcon={DollarSign}
-              size="md"
-            />
-          </div>
-        </div>
-      </SectionCard>
+      {toggleSections.map((section) => (
+        <SectionCard
+          key={section.key}
+          icon={section.icon}
+          tone={section.tone}
+          title={t(section.label)}
+          subtitle={t(section.subtitle)}
+        >
+          {section.items.map((item) =>
+            item.kind === "toggle" ? (
+              <SettingRow
+                key={item.field}
+                kind="toggle"
+                icon={item.icon}
+                label={t(item.label)}
+                description={t(item.description)}
+                checked={state[item.field]}
+                onChange={(v) => toggle(item.field, v)}
+                disabled={!item.available}
+                badge={
+                  item.available ? undefined : (
+                    <ComingSoonChip label={t("settings.comingSoon")} />
+                  )
+                }
+              />
+            ) : null,
+          )}
+        </SectionCard>
+      ))}
 
-      {/* Notifications */}
-      <SectionCard
-        icon={Bell}
-        title={t("settings.notifications")}
-        subtitle={t("settings.notificationsSubtitle")}
-      >
-        <SettingRow
-          kind="toggle"
-          icon={Mail}
-          label={t("settings.emailNotifications")}
-          description={t("settings.emailNotificationsDescription")}
-          checked={emailNotifications}
-          onChange={setEmailNotifications}
-        />
-        <SettingRow
-          kind="toggle"
-          icon={BellRing}
-          label={t("settings.pushNotifications")}
-          description={t("settings.pushNotificationsDescription")}
-          checked={pushNotifications}
-          onChange={setPushNotifications}
-        />
-        <SettingRow
-          kind="toggle"
-          icon={Mail}
-          label={t("settings.marketingEmails")}
-          description={t("settings.marketingEmailsDescription")}
-          checked={marketingEmails}
-          onChange={setMarketingEmails}
-        />
-        <SettingRow
-          kind="toggle"
-          icon={CalendarClock}
-          label={t("settings.weeklySummary")}
-          description={t("settings.weeklySummaryDescription")}
-          checked={weeklySummary}
-          onChange={setWeeklySummary}
-        />
-      </SectionCard>
+      {/* Save preferences */}
+      <Button
+        text={saving ? t("settings.saving") : t("settings.save")}
+        leftIcon={Save}
+        loading={saving}
+        disabled={!dirty || saving}
+        onClick={() => void save()}
+        size="md"
+        fullWidth
+      />
 
-      {/* Privacy */}
-      <SectionCard
-        icon={Shield}
-        title={t("settings.privacy")}
-        subtitle={t("settings.privacySubtitle")}
-      >
-        <SettingRow
-          kind="toggle"
-          icon={UserCircle}
-          label={t("settings.publicProfile")}
-          description={t("settings.publicProfileDescription")}
-          checked={publicProfile}
-          onChange={setPublicProfile}
-        />
-        <SettingRow
-          kind="toggle"
-          icon={Search}
-          label={t("settings.showInSearch")}
-          description={t("settings.showInSearchDescription")}
-          checked={showInSearch}
-          onChange={setShowInSearch}
-        />
-        <SettingRow
-          kind="toggle"
-          icon={Repeat2}
-          label={t("settings.allowExchanges")}
-          description={t("settings.allowExchangesDescription")}
-          checked={allowExchanges}
-          onChange={setAllowExchanges}
-        />
-      </SectionCard>
-
-      {/* Security */}
-      <SectionCard
-        icon={ShieldCheck}
-        tone="success"
-        title={t("settings.security")}
-        subtitle={t("settings.securitySubtitle")}
-      >
-        <SettingRow
-          kind="toggle"
-          icon={KeyRound}
-          label={t("settings.twoFactor")}
-          description={t("settings.twoFactorDescription")}
-          checked={twoFactor}
-          onChange={setTwoFactor}
-        />
-        <SettingRow
-          kind="toggle"
-          icon={BellRing}
-          label={t("settings.loginAlerts")}
-          description={t("settings.loginAlertsDescription")}
-          checked={loginAlerts}
-          onChange={setLoginAlerts}
-        />
-      </SectionCard>
-
-      {/* Danger zone */}
-      <SectionCard
-        icon={Trash2}
-        tone="danger"
-        title={t("settings.dangerZone")}
-        subtitle={t("settings.dangerZoneSubtitle")}
-        className="border-danger/20"
-      >
-        <SettingRow
-          icon={EyeOff}
-          label={t("settings.deactivateAccount")}
-          description={t("settings.deactivateAccountDescription")}
-          right={
-            <Button text={t("settings.deactivate")} variant="outline" size="sm" />
-          }
-        />
-        <SettingRow
-          icon={Trash2}
-          label={t("settings.deleteAccount")}
-          description={t("settings.deleteAccountDescription")}
-          right={
-            <Button text={t("settings.deleteAccount")} variant="error" size="sm" />
-          }
-        />
-      </SectionCard>
+      {/* Danger zone (account actions, not toggles) */}
+      {dangerSection && (
+        <SectionCard
+          icon={dangerSection.icon}
+          tone="danger"
+          title={t(dangerSection.label)}
+          subtitle={t(dangerSection.subtitle)}
+          className="border-danger/20"
+        >
+          {dangerSection.items.map((item) =>
+            item.kind === "action" ? (
+              <SettingRow
+                key={item.action}
+                icon={item.icon}
+                label={t(item.label)}
+                description={t(item.description)}
+                badge={
+                  item.available ? undefined : (
+                    <ComingSoonChip label={t("settings.comingSoon")} />
+                  )
+                }
+                right={
+                  <Button
+                    text={
+                      item.action === "deactivate"
+                        ? t("settings.deactivate")
+                        : deleting
+                          ? t("settings.deleting")
+                          : t("settings.deleteAccount")
+                    }
+                    variant={item.danger ? "error" : "outline"}
+                    size="sm"
+                    loading={
+                      item.action === "deactivate" ? deactivating : deleting
+                    }
+                    disabled={!item.available || busy}
+                    onClick={() => void handleAction(item.action)}
+                  />
+                }
+              />
+            ) : null,
+          )}
+        </SectionCard>
+      )}
     </div>
   );
 }

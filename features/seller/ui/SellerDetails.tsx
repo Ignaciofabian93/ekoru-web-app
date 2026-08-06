@@ -5,13 +5,18 @@ import type { Seller } from "@/types/user";
 
 import { NAMESPACE } from "../i18n";
 import { Title } from "@/components/Primitives/Title";
-import { useBusinessType, useSellerLocation } from "@/hooks/useSellerData";
+import {
+  useBusinessType,
+  useIsBusinessProfile,
+  useSellerLocation,
+} from "@/hooks/useSellerData";
 
 export function SellerDetails({ seller }: { seller: Seller }) {
   const { t } = useTranslation(NAMESPACE);
 
   const businessType = useBusinessType(seller);
   const location = useSellerLocation(seller);
+  const isBusiness = useIsBusinessProfile(seller);
 
   const rows = [
     {
@@ -22,9 +27,8 @@ export function SellerDetails({ seller }: { seller: Seller }) {
       label: t("details.businessType"),
       value: t(`businessTypes.${businessType}`),
     },
-    location && { label: t("details.location"), value: location },
-    seller.phone && { label: t("details.phone"), value: seller.phone },
-    seller.email && { label: t("details.email"), value: seller.email },
+    isBusiness && location && { label: t("details.location"), value: location },
+    isBusiness && seller.email && { label: t("details.email"), value: seller.email },
   ].filter(Boolean) as Array<{ label: string; value: string }>;
 
   if (rows.length === 0) return null;

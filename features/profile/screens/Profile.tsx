@@ -12,8 +12,6 @@ import { getProfileDictionary, NAMESPACE } from "../i18n";
 import { ProfileHeader } from "../ui/ProfileHeader";
 import { Details } from "../ui/Details";
 import { Account } from "../ui/Account";
-// import { ActionCenter } from "../ui/ActionCenter";
-// import { ActivitySnapshot } from "../ui/ActivitySnapshot";
 import { ImpactSnapshot } from "../ui/ImpactSnapshot";
 import { MyListings } from "../ui/MyListings";
 import { Logout } from "../ui/Logout";
@@ -39,10 +37,8 @@ export async function ProfileScreen({ lang }: { lang: SupportedLanguage }) {
       }}
     >
       <PageLayout hero={<ProfileHeader />} width="default">
-        {/* <ActionCenter /> */}
         <Grid cols={1} lg={4} gap={5}>
           <Stack gap={5} className="lg:col-span-2">
-            {/* <ActivitySnapshot /> */}
             <Details />
             <Account />
             <ImpactSnapshot />

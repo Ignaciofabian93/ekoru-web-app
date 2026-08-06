@@ -9,6 +9,8 @@ interface BaseRowProps {
   label: string;
   description?: string;
   className?: string;
+  /** Rendered just before the control — e.g. a "Proximamente" chip. */
+  badge?: React.ReactNode;
 }
 
 interface ToggleRowProps extends BaseRowProps {
@@ -26,12 +28,12 @@ interface StaticRowProps extends BaseRowProps {
 type SettingRowProps = ToggleRowProps | StaticRowProps;
 
 export function SettingRow(props: SettingRowProps) {
-  const { icon: Icon, label, description, className } = props;
+  const { icon: Icon, label, description, className, badge } = props;
 
   return (
     <div
       className={clsx(
-        "flex items-start gap-3 py-3.5",
+        "flex flex-wrap items-start gap-3 py-3.5",
         "border-b border-border-light last:border-b-0",
         className,
       )}
@@ -51,7 +53,8 @@ export function SettingRow(props: SettingRowProps) {
           </Text>
         )}
       </div>
-      <div className="ml-3 flex shrink-0 items-center">
+      <div className="ml-3 flex shrink-0 items-center gap-2">
+        {badge}
         {props.kind === "toggle" ? (
           <Toggle
             checked={props.checked}

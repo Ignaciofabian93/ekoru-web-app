@@ -44,6 +44,19 @@ export const UPDATE_SELLER_PREFERENCES = gql`
   }
 `;
 
+/** The current seller's preference toggles (read via `me`). */
+export const GET_MY_PREFERENCES = gql`
+  ${SELLER_PREFERENCES_FIELDS_FRAGMENT}
+  query GetMyPreferences {
+    me {
+      id
+      preferences {
+        ...SellerPreferencesFields
+      }
+    }
+  }
+`;
+
 export const UPDATE_PASSWORD = gql`
   mutation UpdatePassword($currentPassword: String!, $newPassword: String!) {
     updatePassword(
@@ -77,6 +90,13 @@ export const REACTIVATE_ACCOUNT = gql`
       id
       isActive
     }
+  }
+`;
+
+/** Permanently delete (anonymise + lock) the current account. Returns Boolean. */
+export const DELETE_ACCOUNT = gql`
+  mutation DeleteAccount {
+    deleteAccount
   }
 `;
 

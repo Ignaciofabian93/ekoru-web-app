@@ -117,6 +117,24 @@ export type PersonProfile = {
   personSubscriptionPlan?: PersonSubscriptionPlan;
 };
 
+export type BusinessAddress = {
+  __typename?: "BusinessAddress";
+  id: number;
+  businessProfileId: string;
+  label?: string | null;
+  address: string;
+  reference?: string | null;
+  zipCode?: string | null;
+  phone?: string | null;
+  isPrimary: boolean;
+  createdAt: string;
+  updatedAt: string;
+  country?: Country | null;
+  region?: Region | null;
+  city?: City | null;
+  county?: County | null;
+};
+
 export type BusinessProfile = {
   __typename: "BusinessProfile";
   id: string;
@@ -128,6 +146,9 @@ export type BusinessProfile = {
   // Eco descriptors chosen by the business (max 3). Sourced from the users
   // subgraph; currently client-side only until the field lands server-side.
   tags?: string[] | null;
+  // Additional business locations (HQ, branches). Managed via the business-address
+  // mutations; the seller's single `address` stays the primary contact address.
+  addresses?: BusinessAddress[] | null;
   logo?: string | null;
   coverImage?: string | null;
   businessType?: BusinessType;
@@ -168,15 +189,12 @@ export type SellerCategory = {
 export type SellerPreferences = {
   id: number;
   sellerId: string;
-  preferredLanguage?: string;
-  currency?: string;
-  emailNotifications: boolean;
-  pushNotifications: boolean;
-  orderUpdates: boolean;
-  communityUpdates: boolean;
-  securityAlerts: boolean;
-  weeklySummary: boolean;
-  twoFactorAuth: boolean;
+  enableEmailNotifications: boolean;
+  enablePushNotifications: boolean;
+  showMySocials: boolean;
+  showMyAddress: boolean;
+  enableTwoFactorAuth: boolean;
+  enableLoginAlerts: boolean;
 };
 
 export type SellerLevel = {

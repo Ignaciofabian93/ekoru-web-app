@@ -11,7 +11,7 @@ export function Details() {
   const seller = useSeller();
 
   const ITEMS = [
-    { key: "phone", label: t("details.phone"), icon: Phone, value: seller?.phone },
+    { key: "phone", label: t("details.phone"), icon: Phone, value: `+${seller?.phone}` },
     { key: "address", label: t("details.address"), icon: MapPin, value: seller?.address },
     {
       key: "county",
