@@ -85,23 +85,25 @@ export function ProductActions({ lang, product }: Props) {
       )}
 
       <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => toggleFavorite(product.id, liked)}
-          aria-pressed={liked}
-          className={`flex flex-1 items-center justify-center gap-2 rounded-xl border py-2.5 text-sm font-medium transition-colors ${
-            liked
-              ? "border-red-200 bg-red-50 text-red-600"
-              : "border-border bg-surface text-foreground-secondary hover:bg-background-secondary"
-          }`}
-        >
-          <Heart
-            size={16}
-            strokeWidth={2}
-            className={liked ? "fill-red-500 text-red-500" : ""}
-          />
-          {liked ? t("actions.saved") : t("actions.save")}
-        </button>
+        {!isOwnProduct && (
+          <button
+            type="button"
+            onClick={() => toggleFavorite(product.id, liked)}
+            aria-pressed={liked}
+            className={`flex flex-1 items-center justify-center gap-2 rounded-xl border py-2.5 text-sm font-medium transition-colors ${
+              liked
+                ? "border-red-200 bg-red-50 text-red-600"
+                : "border-border bg-surface text-foreground-secondary hover:bg-background-secondary"
+            }`}
+          >
+            <Heart
+              size={16}
+              strokeWidth={2}
+              className={liked ? "fill-red-500 text-red-500" : ""}
+            />
+            {liked ? t("actions.saved") : t("actions.save")}
+          </button>
+        )}
         <button
           type="button"
           onClick={share}

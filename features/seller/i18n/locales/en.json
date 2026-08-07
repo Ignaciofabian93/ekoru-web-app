@@ -46,8 +46,11 @@
     "sellerType": "Account type",
     "businessType": "Business type",
     "location": "Location",
+    "address": "Address",
     "phone": "Phone",
-    "email": "Email"
+    "email": "Email",
+    "website": "Website",
+    "socials": "Find them on"
   },
   "sellerTypes": {
     "PERSON": "Person",

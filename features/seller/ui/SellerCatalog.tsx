@@ -1,9 +1,10 @@
 "use client";
-
 import { Package } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
-
+import { RHYTHM, Section } from "@/components/Layout";
 import { Pagination } from "@/components/Patterns/Pagination";
+import { ResultsGrid } from "@/components/Patterns/ResultsGrid";
+import { SectionHeader } from "@/components/Patterns/SectionHeader";
 
 const PAGE_SIZE = 12;
 
@@ -21,6 +22,10 @@ interface Props<T> {
 /**
  * Seller storefront catalog: a single paginated product grid. Generic over the
  * product type so it serves both the marketplace and store catalogs.
+ *
+ * The grid itself is `ResultsGrid` — the same one behind the marketplace, store
+ * and search results — so a storefront's cards sit at the column count and size
+ * as everywhere else instead of the wider grid this used to roll by hand.
  */
 export function SellerCatalog<T>({
   title,
@@ -42,47 +47,28 @@ export function SellerCatalog<T>({
   );
 
   return (
-    <section className="flex min-w-0 flex-col gap-5">
-      <div className="min-w-0">
-        <h2 className="text-foreground text-lg font-semibold sm:text-xl">{title}</h2>
-        <p className="text-foreground-secondary text-sm">{subtitle}</p>
-      </div>
+    <Section gap={RHYTHM.CONTENT} ariaLabel={title}>
+      <SectionHeader align="start" title={title} subtitle={subtitle} />
 
-      {loading && products.length === 0 ? (
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-5">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-background-secondary aspect-3/4 animate-pulse rounded-xl"
-            />
-          ))}
-        </div>
-      ) : products.length === 0 ? (
-        <div className="text-foreground-secondary flex flex-col items-center gap-2 py-16 text-center">
-          <Package size={44} className="opacity-30" strokeWidth={1.4} />
-          <p className="font-semibold">{emptyTitle}</p>
-          <p className="text-sm">{emptyHint}</p>
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-5">
-            {pageItems.map((product) => (
-              <div key={getKey(product)} className="min-w-0">
-                {renderProduct(product)}
-              </div>
-            ))}
+      <ResultsGrid
+        items={pageItems}
+        loading={loading}
+        emptyIcon={Package}
+        emptyTitle={emptyTitle}
+        emptyHint={emptyHint}
+        renderItem={(product) => (
+          <div key={getKey(product)} className="w-full min-w-0">
+            {renderProduct(product)}
           </div>
+        )}
+      />
 
-          {totalPages > 1 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setPage}
-              showItemsPerPage={false}
-            />
-          )}
-        </>
-      )}
-    </section>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        showItemsPerPage={false}
+      />
+    </Section>
   );
 }

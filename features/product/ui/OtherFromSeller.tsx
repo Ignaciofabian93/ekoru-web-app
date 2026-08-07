@@ -1,12 +1,15 @@
 "use client";
 import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/i18n/context";
 import { useSellerProducts } from "../hooks/useSellerProducts";
 import { NAMESPACE } from "../i18n";
-import { Title } from "@/components/Primitives/Title";
+import { Section } from "@/components/Layout";
+import { SectionHeader } from "@/components/Patterns/SectionHeader";
+import { EmptyState } from "@/components/Feedback/EmptyState";
 import { CardScroller } from "@/components/Cards/CardScroller";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { MarketplaceCard } from "@/components/Cards";
+import { PackageSearch } from "lucide-react";
 
 interface Props {
   lang: string;
@@ -49,67 +52,56 @@ export function OtherFromSeller({ lang, sellerId, excludeProductId }: Props) {
     scrollRef.current?.scrollBy({ left: delta, behavior: "smooth" });
   };
 
-  if (loading) {
-    return (
-      <section>
-        <h2 className="mb-3 text-lg font-semibold text-foreground">
-          {t("otherProducts.title")}
-        </h2>
-        <div className="flex gap-3 overflow-x-auto pb-2">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-background-secondary h-60 w-44 shrink-0 animate-pulse rounded-xl"
-            />
-          ))}
-        </div>
-      </section>
-    );
-  }
-
-  if (products.length === 0) {
-    return (
-      <section>
-        <h2 className="mb-3 text-lg font-semibold text-foreground">
-          {t("otherProducts.title")}
-        </h2>
-        <p className="text-sm text-foreground-secondary italic">
-          {t("otherProducts.empty")}
-        </p>
-      </section>
-    );
-  }
+  const isEmpty = !loading && products.length === 0;
 
   return (
-    <section>
-      <div className="mb-3 flex items-center justify-between px-2">
-        <Title level="h5" size="h5" weight="semibold">
-          {t("otherProducts.title")}
-        </Title>
-        <Link
-          href={`/${lang}/seller/${sellerId}`}
-          className="text-sm font-semibold text-primary underline"
+    <Section ariaLabel={t("otherProducts.title")}>
+      <SectionHeader
+        align="start"
+        title={t("otherProducts.title")}
+        // Nothing to browse means nothing to link to, so the seller link is
+        // dropped rather than left pointing at an empty storefront.
+        action={
+          isEmpty ? undefined : (
+            <Link
+              href={`/${lang}/seller/${sellerId}`}
+              className="shrink-0 rounded-sm text-sm font-semibold text-primary underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              {t("actions.viewAll")}
+            </Link>
+          )
+        }
+      />
+
+      {isEmpty ? (
+        <EmptyState
+          variant="compact"
+          icon={PackageSearch}
+          title={t("otherProducts.empty")}
+        />
+      ) : (
+        <CardScroller
+          handleScroll={handleScroll}
+          scrollRef={scrollRef}
+          canScrollLeft={canScrollLeft}
+          canScrollRight={canScrollRight}
+          scrollPreviousAriaLabel={t("otherProducts.scrollPrevious")}
+          scrollNextAriaLabel={t("otherProducts.scrollNext")}
         >
-          {t("actions.viewAll")}
-        </Link>
-      </div>
-      <CardScroller
-        handleScroll={handleScroll}
-        scrollRef={scrollRef}
-        canScrollLeft={canScrollLeft}
-        canScrollRight={canScrollRight}
-        scrollNextAriaLabel={t("otherProducts.scrollNext")}
-        scrollPreviousAriaLabel={t("otherProducts.scrollPrevious")}
-      >
-        {products.map((product, i) => (
-          <MarketplaceCard
-            priority={i < 4}
-            key={product.id}
-            product={product}
-            lang={lang}
-          />
-        ))}
-      </CardScroller>
-    </section>
+          {loading && products.length === 0
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="aspect-3/4 w-44 shrink-0 snap-start animate-pulse rounded-lg bg-background-secondary"
+                />
+              ))
+            : products.map((product, i) => (
+                <div key={product.id} className="snap-start">
+                  <MarketplaceCard priority={i < 4} product={product} lang={lang} />
+                </div>
+              ))}
+        </CardScroller>
+      )}
+    </Section>
   );
 }

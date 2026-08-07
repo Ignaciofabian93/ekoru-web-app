@@ -5,7 +5,8 @@ import { LayoutGrid, Package, Sparkles } from "lucide-react";
 import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
-import { Text } from "@/components/Primitives/Text";
+import { Grid } from "@/components/Layout";
+import { StatTile, type StatTileTone } from "@/components/Patterns/StatTile";
 
 interface Props {
   productsCount: number;
@@ -38,32 +39,44 @@ function memberDuration(t: ReturnType<typeof useTranslation>["t"], since?: strin
 export function SellerStats({ productsCount, categoriesCount, memberSince }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
-  const items = [
-    { icon: Package, label: t("stats.products"), value: String(productsCount) },
-    { icon: LayoutGrid, label: t("stats.categories"), value: String(categoriesCount) },
+  const items: Array<{
+    icon: typeof Package;
+    label: string;
+    value: string;
+    tone: StatTileTone;
+  }> = [
+    {
+      icon: Package,
+      label: t("stats.products"),
+      value: String(productsCount),
+      tone: "primary",
+    },
+    {
+      icon: LayoutGrid,
+      label: t("stats.categories"),
+      value: String(categoriesCount),
+      tone: "info",
+    },
     {
       icon: Sparkles,
       label: t("stats.memberFor"),
       value: memberDuration(t, memberSince),
+      tone: "success",
     },
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-2 sm:gap-3">
-      {items.map(({ icon: Icon, label, value }) => (
-        <div
+    <Grid cols={1} sm={3} gap={3}>
+      {items.map(({ icon, label, value, tone }) => (
+        <StatTile
           key={label}
-          className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 rounded-md border border-border-light px-3 py-3 text-center"
-        >
-          <Icon size={18} strokeWidth={1.8} className="text-primary" />
-          <Text variant="span" size="sm">
-            {label}
-          </Text>
-          <Text variant="span" weight="bold">
-            {value}
-          </Text>
-        </div>
+          icon={icon}
+          label={label}
+          value={value}
+          tone={tone}
+          orientation="horizontal"
+        />
       ))}
-    </div>
+    </Grid>
   );
 }

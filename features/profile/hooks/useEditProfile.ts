@@ -31,7 +31,7 @@ import {
   socialsToLinks,
   SOCIAL_LINKS,
   type SocialPlatform,
-} from "../constants/socialLinks";
+} from "@/constants/socialLinks";
 import { useBusinessTags } from "./useBusinessTags";
 import { NAMESPACE } from "../i18n";
 

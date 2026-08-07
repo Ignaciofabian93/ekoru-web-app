@@ -14,6 +14,9 @@ const TiktokIcon = FaTiktok as unknown as LucideIcon;
  * Seller. Config-driven like the settings screen: one entry here plus its label
  * in the three locales is all a new platform needs.
  *
+ * Shared rather than feature-local because both ends need the same schema: the
+ * profile's edit form writes the map, and the public seller page reads it.
+ *
  * Keys are the lowercase platform name — this is the map's schema, so changing
  * one orphans whatever is already stored under the old key.
  */

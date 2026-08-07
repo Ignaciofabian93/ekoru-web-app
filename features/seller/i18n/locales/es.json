@@ -46,8 +46,11 @@
     "sellerType": "Tipo de cuenta",
     "businessType": "Tipo de negocio",
     "location": "Ubicación",
+    "address": "Dirección",
     "phone": "Teléfono",
-    "email": "Correo"
+    "email": "Correo",
+    "website": "Sitio web",
+    "socials": "Encuéntralo en"
   },
   "sellerTypes": {
     "PERSON": "Persona",

@@ -4,6 +4,7 @@ import { Badge } from "@/components/Primitives/Badge";
 import { Avatar } from "@/components/Primitives/Avatar";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
+import { Container } from "@/components/Layout";
 import { useTranslation } from "@/i18n/context";
 import {
   useCoverImage,
@@ -38,7 +39,10 @@ export function ProfileHeader() {
   };
 
   return (
-    <section className="mx-auto w-full">
+    // Pinned to the same width as the profile body below (`default`), so the
+    // banner reads as this account's header rather than a full-bleed page hero.
+    // Mirrors the seller hero's proportions.
+    <Container as="section" width="default" gap={0} paddingY={2}>
       <Cover
         image={coverImage}
         altText=""
@@ -47,48 +51,48 @@ export function ProfileHeader() {
         changeCoverAriaLabel={t("header.upload.changeCover")}
       />
 
-      {/* Identity — avatar overlaps the cover, details sit on the surface */}
-      <div className="mx-auto max-w-6xl px-4">
-        <div className="-mt-14 flex flex-col items-center gap-3 sm:-mt-12 sm:flex-row sm:items-end sm:gap-5">
-          <div className="relative shrink-0">
-            <Avatar image={profileImage} alt="" size="xl" frame="raised" />
-            <ImageUploadButton
-              variant="badge"
-              className="right-1 bottom-1"
-              uploading={uploadingKind === "avatar"}
-              onSelect={uploadAvatar}
-              ariaLabel={t("header.upload.changeAvatar")}
-            />
-          </div>
+      {/* Identity bar — avatar overlaps the cover, details sit on the surface */}
+      <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-5 sm:text-left">
+        {/* The negative margin is half the avatar's size, so it always
+            straddles the cover's bottom edge. */}
+        <div className="relative z-10 -mt-11 shrink-0 sm:-mt-14">
+          <Avatar image={profileImage} alt="" size="xl" frame="raised" />
+          <ImageUploadButton
+            variant="badge"
+            className="right-1 bottom-1"
+            uploading={uploadingKind === "avatar"}
+            onSelect={uploadAvatar}
+            ariaLabel={t("header.upload.changeAvatar")}
+          />
+        </div>
 
-          <div className="flex flex-1 flex-col items-center gap-1.5 text-center sm:items-start sm:pb-1 sm:text-left">
-            <Title level="h1" size="h3" weight="semibold">
-              {name}
-            </Title>
-            {email && (
-              <Text variant="p" size="sm" color="secondary">
-                {email}
-              </Text>
-            )}
-            <div className="mt-1 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-              {sellerType && (
-                <Badge
-                  variant="primary"
-                  label={SELLER_TYPE_LABEL[sellerType]}
-                  size="medium"
-                  icon={BadgeCheck}
-                />
-              )}
+        <div className="flex min-w-0 flex-1 flex-col gap-1.5 wrap-anywhere">
+          <Title level="h1" size="h4" weight="semibold">
+            {name}
+          </Title>
+          {email && (
+            <Text variant="p" size="sm" color="secondary">
+              {email}
+            </Text>
+          )}
+          <div className="mt-1 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+            {sellerType && (
               <Badge
-                variant="secondary"
-                label={t("header.points", { count: String(points) })}
-                size="medium"
-                icon={Coins}
+                variant="primary"
+                label={SELLER_TYPE_LABEL[sellerType]}
+                size="small"
+                icon={BadgeCheck}
               />
-            </div>
+            )}
+            <Badge
+              variant="secondary"
+              label={t("header.points", { count: String(points) })}
+              size="small"
+              icon={Coins}
+            />
           </div>
         </div>
       </div>
-    </section>
+    </Container>
   );
 }

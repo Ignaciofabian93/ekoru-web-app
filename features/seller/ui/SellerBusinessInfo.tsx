@@ -37,9 +37,22 @@ function formatHours(value: unknown): { closed: boolean; text: string } {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between gap-4 py-3">
-      <dt className="shrink-0 text-sm font-medium text-foreground">{label}</dt>
-      <dd className="min-w-0 truncate text-right text-sm font-medium text-foreground-secondary">
-        {value}
+      <dt className="shrink-0">
+        <Text variant="span" size="sm" weight="medium">
+          {label}
+        </Text>
+      </dt>
+      <dd className="min-w-0">
+        <Text
+          variant="span"
+          size="sm"
+          weight="medium"
+          color="secondary"
+          align="right"
+          numberOfLines={1}
+        >
+          {value}
+        </Text>
       </dd>
     </div>
   );
@@ -80,22 +93,30 @@ export function SellerBusinessInfo({ seller }: { seller: Seller }) {
           </Title>
           <dl className="flex flex-col gap-3">
             {profile.shippingPolicy && (
-              <div>
-                <dt className="text-sm font-medium text-foreground">
-                  {t("businessInfo.shipping")}
+              <div className="flex flex-col gap-0.5">
+                <dt>
+                  <Text variant="span" size="sm" weight="medium">
+                    {t("businessInfo.shipping")}
+                  </Text>
                 </dt>
-                <dd className="mt-0.5 text-sm text-foreground-secondary">
-                  {profile.shippingPolicy}
+                <dd>
+                  <Text variant="p" size="sm" color="secondary">
+                    {profile.shippingPolicy}
+                  </Text>
                 </dd>
               </div>
             )}
             {profile.returnPolicy && (
-              <div>
-                <dt className="text-sm font-medium text-foreground">
-                  {t("businessInfo.returns")}
+              <div className="flex flex-col gap-0.5">
+                <dt>
+                  <Text variant="span" size="sm" weight="medium">
+                    {t("businessInfo.returns")}
+                  </Text>
                 </dt>
-                <dd className="mt-0.5 text-sm text-foreground-secondary">
-                  {profile.returnPolicy}
+                <dd>
+                  <Text variant="p" size="sm" color="secondary">
+                    {profile.returnPolicy}
+                  </Text>
                 </dd>
               </div>
             )}
@@ -131,9 +152,9 @@ export function SellerBusinessInfo({ seller }: { seller: Seller }) {
           </dl>
           {profile.certifications && profile.certifications.length > 0 && (
             <div className="mt-3">
-              <p className="mb-2 text-sm font-medium text-foreground">
+              <Text variant="p" size="sm" weight="medium" className="mb-2">
                 {t("businessInfo.certifications")}
-              </p>
+              </Text>
               <div className="flex flex-wrap gap-1.5">
                 {profile.certifications.map((c) => (
                   <span
@@ -159,7 +180,11 @@ export function SellerBusinessInfo({ seller }: { seller: Seller }) {
               const { closed, text } = formatHours(value);
               return (
                 <div key={day} className="flex items-center justify-between gap-4 py-2">
-                  <dt className="text-sm text-foreground">{titleCase(day)}</dt>
+                  <dt>
+                    <Text variant="span" size="sm">
+                      {titleCase(day)}
+                    </Text>
+                  </dt>
                   <Text variant="span" size="sm" weight="medium">
                     {closed || !text ? t("businessInfo.closed") : text}
                   </Text>

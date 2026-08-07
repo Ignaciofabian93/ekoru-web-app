@@ -100,6 +100,13 @@ export type Seller = {
   sellerLevel?: SellerLevel | null;
   sellerCategoryId?: number;
   sellerCategory?: SellerCategory | null;
+
+  /**
+   * Privacy and notification toggles. Selected by `SellerFields`, so it is
+   * present on most reads — but optional, since the subgraph may withhold it
+   * from a viewer who isn't the owner.
+   */
+  preferences?: SellerPreferences | null;
 };
 
 export type PersonProfile = {

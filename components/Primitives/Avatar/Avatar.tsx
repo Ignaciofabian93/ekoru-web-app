@@ -10,7 +10,9 @@ const SIZE: Record<AvatarSize, { box: string; px: number }> = {
   sm: { box: "size-10", px: 40 },
   md: { box: "size-14", px: 56 },
   lg: { box: "size-16", px: 64 },
-  xl: { box: "size-36", px: 144 },
+  // Sized to match the seller hero's avatar; `px` is 2× the box so it stays
+  // sharp on retina, since this is the one size rendered large enough to notice.
+  xl: { box: "size-28", px: 224 },
 };
 
 const FRAME: Record<AvatarFrame, string> = {

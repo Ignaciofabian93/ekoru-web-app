@@ -46,8 +46,11 @@
     "sellerType": "Type de compte",
     "businessType": "Type d'activité",
     "location": "Localisation",
+    "address": "Adresse",
     "phone": "Téléphone",
-    "email": "Email"
+    "email": "Email",
+    "website": "Site web",
+    "socials": "Retrouvez-le sur"
   },
   "sellerTypes": {
     "PERSON": "Particulier",

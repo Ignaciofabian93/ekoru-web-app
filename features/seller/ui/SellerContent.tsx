@@ -19,14 +19,11 @@ import {
   SellerNotFound,
 } from "./SellerStatus";
 import { MarketplaceCard, StoreProductCard } from "@/components/Cards";
+import { Container, RHYTHM, Section, Stack } from "@/components/Layout";
 
 interface Props {
   id: string;
   lang: SupportedLanguage;
-}
-
-function Container({ children }: { children: React.ReactNode }) {
-  return <div className="mx-auto w-full max-w-7xl px-4 py-6 md:py-8">{children}</div>;
 }
 
 export function SellerContent({ id, lang }: Props) {
@@ -61,7 +58,7 @@ export function SellerContent({ id, lang }: Props) {
 
   if (profileLoading && !seller) {
     return (
-      <Container>
+      <Container width="default">
         <SellerLoading />
       </Container>
     );
@@ -71,7 +68,7 @@ export function SellerContent({ id, lang }: Props) {
   // resolves this, so it gets its own screen.
   if (requiresAuth) {
     return (
-      <Container>
+      <Container width="default">
         <SellerAuthRequired lang={lang} />
       </Container>
     );
@@ -79,7 +76,7 @@ export function SellerContent({ id, lang }: Props) {
 
   if (profileError) {
     return (
-      <Container>
+      <Container width="default">
         <SellerErrorState lang={lang} />
       </Container>
     );
@@ -87,7 +84,7 @@ export function SellerContent({ id, lang }: Props) {
 
   if (!seller) {
     return (
-      <Container>
+      <Container width="default">
         <SellerNotFound lang={lang} />
       </Container>
     );
@@ -96,48 +93,53 @@ export function SellerContent({ id, lang }: Props) {
   return (
     <>
       <SellerHero seller={seller} lang={lang} />
-      <div className="mx-auto w-full max-w-7xl px-4 py-6 md:py-8">
-        <div className="flex flex-col gap-8">
-          {/* Seller info — full width on top */}
-          <div className="flex flex-col gap-6">
-            <SellerStats
-              productsCount={catalog.totalCount}
-              categoriesCount={catalog.categories.length}
-              memberSince={seller.createdAt}
-            />
-            <div className="grid gap-6 md:grid-cols-2">
+      <Container width="default" gap={RHYTHM.SECTION}>
+        {/* Who this seller is: the figures, then the two prose panels. */}
+        <Section gap={RHYTHM.CONTENT} ariaLabel={t("about.title")}>
+          <SellerStats
+            productsCount={catalog.totalCount}
+            categoriesCount={catalog.categories.length}
+            memberSince={seller.createdAt}
+          />
+          {/* Details is the shorter column, so it takes the narrower track and
+              the bio gets the room it needs instead of both being half-width. */}
+          <div className="grid gap-6 md:grid-cols-5 md:gap-8">
+            <Stack className="md:col-span-3">
               <SellerAbout seller={seller} />
+            </Stack>
+            <Stack className="md:col-span-2">
               <SellerDetails seller={seller} />
-            </div>
-            {isBusiness && <SellerBusinessInfo seller={seller} />}
+            </Stack>
           </div>
+        </Section>
 
-          {/* Catalog — full-width grid below */}
-          {isBusiness ? (
-            <SellerCatalog
-              title={t("storeCatalog.title")}
-              subtitle={t("storeCatalog.subtitle")}
-              emptyTitle={t("storeCatalog.empty")}
-              emptyHint={t("storeCatalog.emptyHint")}
-              products={store.products}
-              loading={store.loading}
-              getKey={(p) => p.id}
-              renderProduct={(p) => <StoreProductCard product={p} lang={lang} />}
-            />
-          ) : (
-            <SellerCatalog
-              title={t("catalog.title")}
-              subtitle={t("catalog.subtitle")}
-              emptyTitle={t("catalog.empty")}
-              emptyHint={t("catalog.emptyHint")}
-              products={marketplace.products}
-              loading={marketplace.loading}
-              getKey={(p) => p.id}
-              renderProduct={(p) => <MarketplaceCard product={p} lang={lang} />}
-            />
-          )}
-        </div>
-      </div>
+        {isBusiness && <SellerBusinessInfo seller={seller} />}
+
+        {/* Catalog — full-width grid below */}
+        {isBusiness ? (
+          <SellerCatalog
+            title={t("storeCatalog.title")}
+            subtitle={t("storeCatalog.subtitle")}
+            emptyTitle={t("storeCatalog.empty")}
+            emptyHint={t("storeCatalog.emptyHint")}
+            products={store.products}
+            loading={store.loading}
+            getKey={(p) => p.id}
+            renderProduct={(p) => <StoreProductCard product={p} lang={lang} />}
+          />
+        ) : (
+          <SellerCatalog
+            title={t("catalog.title")}
+            subtitle={t("catalog.subtitle")}
+            emptyTitle={t("catalog.empty")}
+            emptyHint={t("catalog.emptyHint")}
+            products={marketplace.products}
+            loading={marketplace.loading}
+            getKey={(p) => p.id}
+            renderProduct={(p) => <MarketplaceCard product={p} lang={lang} />}
+          />
+        )}
+      </Container>
     </>
   );
 }

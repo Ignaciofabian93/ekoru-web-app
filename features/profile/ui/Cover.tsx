@@ -6,6 +6,10 @@ import { ImageUploadButton } from "./ImageUploadButton";
 // reads as a finished hero (never the brand logo stretched as a cover).
 const DEFAULT_COVER = "/wallpapers/wallpaper-2.jpg";
 
+// The band is capped by the profile's content column (`default` width), not the
+// viewport, so a plain `100vw` hint would have Next serve an oversized file.
+const COVER_SIZES = "(max-width: 1152px) 100vw, 1152px";
+
 interface CoverProps {
   /** The seller's own cover. Omit to fall back to the default wallpaper. */
   image?: string;
@@ -23,7 +27,9 @@ export function Cover({
   changeCoverAriaLabel,
 }: CoverProps) {
   return (
-    <div className="relative h-[40vh] min-h-60 w-full overflow-hidden sm:h-56">
+    // Fixed height and rounded, matching the seller hero's banner — it is pinned
+    // to the content column rather than bleeding to the viewport edges.
+    <div className="relative h-50 w-full overflow-hidden rounded-2xl">
       {image ? (
         <>
           {/* A user cover is any aspect ratio, so it's shown whole over a
@@ -31,7 +37,7 @@ export function Cover({
           <Image
             src={image}
             fill
-            sizes="100vw"
+            sizes={COVER_SIZES}
             alt=""
             aria-hidden
             className="scale-110 object-cover blur-2xl"
@@ -40,7 +46,7 @@ export function Cover({
           <Image
             src={image}
             fill
-            sizes="100vw"
+            sizes={COVER_SIZES}
             alt={altText}
             className="object-contain"
             priority
@@ -53,13 +59,14 @@ export function Cover({
           alt=""
           fill
           priority
-          sizes="100vw"
+          sizes={COVER_SIZES}
           className="object-cover"
         />
       )}
 
-      {/* Bottom fade grounds the avatar and adds depth */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-black/25 to-transparent" />
+      {/* Bottom fade grounds the avatar and adds depth. Shallow on purpose —
+          a deeper one would wash out most of a 200px band. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-linear-to-t from-black/25 to-transparent" />
 
       <ImageUploadButton
         variant="scrim"
