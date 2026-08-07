@@ -16,7 +16,7 @@ export function ToastProvider({ label = "Notifications" }: { label?: string }) {
     <ToastContainer
       position="top-center"
       theme="colored"
-      autoClose={4000}
+      autoClose={2600}
       hideProgressBar={false}
       newestOnTop
       closeOnClick

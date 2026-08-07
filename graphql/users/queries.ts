@@ -106,15 +106,12 @@ export const GET_SELLERS = gql`
         preferences @include(if: $enablePreferences) {
           id
           sellerId
-          preferredLanguage
-          currency
-          emailNotifications
-          pushNotifications
-          orderUpdates
-          communityUpdates
-          securityAlerts
-          weeklySummary
-          twoFactorAuth
+          enableEmailNotifications
+          enablePushNotifications
+          showMySocials
+          showMyAddress
+          enableTwoFactorAuth
+          enableLoginAlerts
         }
         sellerLevel @include(if: $enableSellerLevel) {
           id

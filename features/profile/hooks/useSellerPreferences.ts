@@ -16,14 +16,19 @@ import { NAMESPACE } from "../i18n";
 
 type PrefsState = Record<PreferenceField, boolean>;
 
+const DEFAULT_PREFS: PrefsState = PREFERENCE_FIELDS.reduce((acc, field) => {
+  acc[field] = false;
+  return acc;
+}, {} as PrefsState);
+
 export function useSellerPreferences() {
   const { t } = useTranslation(NAMESPACE);
   const toast = useToast();
 
-  const { data } = useQuery<{
+  const { data, refetch } = useQuery<{
     me: { preferences?: SellerPreferences | null } | null;
   }>(GET_MY_PREFERENCES, { fetchPolicy: "cache-and-network" });
-  const prefs = data?.me?.preferences ?? null;
+  const prefs = data?.me?.preferences ?? DEFAULT_PREFS;
 
   // Unsaved toggle overrides layered on top of the persisted preferences.
   // Deriving the effective value (rather than syncing query data into state via
@@ -44,24 +49,20 @@ export function useSellerPreferences() {
 
   // Save is enabled only when an override actually differs from what's persisted.
   const dirty = useMemo(() => {
-    if (!prefs) return false;
-    return PREFERENCE_FIELDS.some(
-      (f) => f in overrides && overrides[f] !== prefs[f],
-    );
+    return PREFERENCE_FIELDS.some((f) => f in overrides && overrides[f] !== prefs[f]);
   }, [overrides, prefs]);
 
-  const [updatePrefs, { loading: saving }] = useMutation(
-    UPDATE_SELLER_PREFERENCES,
-  );
+  const [updatePrefs, { loading: saving }] = useMutation(UPDATE_SELLER_PREFERENCES);
   const save = useCallback(async () => {
     try {
       await updatePrefs({ variables: { input: state } });
-      setOverrides({});
       toast.success(t("settings.savedSuccess"));
+      refetch(); // refresh the query so the cache is up to date
+      setOverrides({}); // clear the overrides since they're now persisted
     } catch (err) {
       toast.error(err instanceof Error ? err.message : t("settings.saveError"));
     }
-  }, [updatePrefs, state, toast, t]);
+  }, [updatePrefs, state, toast, refetch, t]);
 
   const [deactivate, { loading: deactivating }] = useMutation(DEACTIVATE_ACCOUNT);
   const deactivateAccount = useCallback(async () => {
