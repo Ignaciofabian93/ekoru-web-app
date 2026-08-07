@@ -336,6 +336,7 @@ export const GET_PRODUCTS_BY_SELLER = gql`
 `;
 
 export const GET_SELLER_STOREFRONT = gql`
+  ${ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT}
   query GetSellerStorefront(
     $sellerId: ID!
     $page: Int = 1
@@ -371,6 +372,9 @@ export const GET_SELLER_STOREFRONT = gql`
         isLiked
         createdAt
         updatedAt
+        environmentalImpact {
+          ...EnvironmentalImpactFields
+        }
         productCategory {
           id
           translation {

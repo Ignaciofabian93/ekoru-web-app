@@ -51,7 +51,8 @@
       "co2": "CO₂ économisé",
       "water": "Eau économisée",
       "products": "Produits réutilisés",
-      "viewFull": "Voir l'impact complet"
+      "viewFull": "Voir l'impact complet",
+      "comingSoon": "Bientôt disponible"
     },
     "listings": {
       "title": "Mes annonces",
@@ -118,7 +119,10 @@
         "removePhoto": "Retirer la photo",
         "cover": "Couverture",
         "makeCover": "Monter",
-        "imagesRequired": "Ajoutez au moins une photo"
+        "imagesRequired": "Ajoutez au moins une photo",
+        "hasOffer": "En promotion",
+        "offerPrice": "Prix promotionnel",
+        "offerPriceInvalid": "La promotion doit être inférieure au prix"
       },
       "delete": {
         "title": "Supprimer ce produit ?",
@@ -146,18 +150,19 @@
     "favorites": "Favoris",
     "environmentalImpact": "Impact Environnemental",
     "subscription": "Abonnement",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "comingSoon": "Bientôt disponible"
   },
   "editProfile": {
     "screenTitle": "Modifier le Profil",
     "screenSubtitle": "Gardez vos informations à jour",
     "personal": {
       "title": "Informations Personnelles",
-      "subtitle": "Comment vous apparaissez sur la marketplace",
-      "firstName": "Prénom",
-      "firstNamePlaceholder": "Votre prénom",
-      "lastName": "Nom",
-      "lastNamePlaceholder": "Votre nom",
+      "subtitle": "Comment vous apparaissez sur la plateforme",
+      "firstName": "Prénom(s)",
+      "firstNamePlaceholder": "Vos prénoms",
+      "lastName": "Nom(s)",
+      "lastNamePlaceholder": "Vos noms de famille",
       "displayName": "Nom Affiché",
       "displayNamePlaceholder": "Comment vous voulez apparaître",
       "businessName": "Nom de l'Entreprise",
@@ -194,7 +199,19 @@
       "phonePlaceholder": "9 1234 5678",
       "areaCode": "Indicatif",
       "website": "Site web",
-      "websitePlaceholder": "https://"
+      "websitePlaceholder": "https://",
+      "socials": {
+        "title": "Réseaux sociaux",
+        "hint": "Collez le lien complet ou simplement votre nom d'utilisateur.",
+        "facebook": "Facebook",
+        "facebookPlaceholder": "votre-page ou lien complet",
+        "instagram": "Instagram",
+        "instagramPlaceholder": "@utilisateur ou lien complet",
+        "tiktok": "TikTok",
+        "tiktokPlaceholder": "@utilisateur ou lien complet",
+        "linkedin": "LinkedIn",
+        "linkedinPlaceholder": "votre-profil ou lien complet"
+      }
     },
     "locations": {
       "title": "Emplacements de l'entreprise",

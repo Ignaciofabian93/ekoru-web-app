@@ -94,14 +94,21 @@ export interface CardProps {
   /** Accessible name for the card's navigation link (usually the item name). */
   ariaLabel?: string;
   /**
-   * Owner controls (normally a `<ProductActionsMenu>`), rendered top-right
-   * above both faces so an open dropdown isn't clipped by the 3D transform.
+   * Owner controls (normally a `<ProductActionsMenu>`), rendered top-right over
+   * the front face so an open dropdown isn't clipped by the 3D transform.
    *
    * Passing this switches the card into **management mode**: the shopper
-   * controls — favorite, flip and the buy/book CTA — are hidden, because the
-   * viewer owns the listing and manages it rather than buying it.
+   * controls — favorite and the buy/book CTA — are hidden, because the viewer
+   * owns the listing and manages it rather than buying it. The back face stays
+   * available; its flip control moves to the bottom-right corner.
    */
   actions?: React.ReactNode;
+  /**
+   * Management mode's primary action: replaces the buy/book CTA with an "Edit"
+   * button. Also switches the card into management mode on its own, for a card
+   * that needs the edit affordance without an overflow menu.
+   */
+  onEdit?: () => void;
 }
 
 export interface CardBackHeaderProps {

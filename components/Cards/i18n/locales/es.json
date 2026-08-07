@@ -55,7 +55,8 @@
     "STORE": "Añadir al carrito",
     "SERVICE": "Reservar ahora",
     "BUSINESS": "Ver tienda",
-    "PROVIDER": "Ver proveedor"
+    "PROVIDER": "Ver proveedor",
+    "EDIT": "Editar publicación"
   },
   "impact": {
     "title": "Impacto ambiental",

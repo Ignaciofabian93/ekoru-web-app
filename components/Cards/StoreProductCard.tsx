@@ -17,6 +17,8 @@ interface StoreProductCardProps {
   onAddToCart?: (quantity: number) => void;
   /** Owner controls — see `CardProps.actions`. Switches to management mode. */
   actions?: ReactNode;
+  /** Owner's primary action — see `CardProps.onEdit`. */
+  onEdit?: () => void;
 }
 
 /** How long the CTA holds its "Added" confirmation before reverting. */
@@ -28,6 +30,7 @@ export function StoreProductCard({
   priority = false,
   onAddToCart,
   actions,
+  onEdit,
 }: StoreProductCardProps) {
   const href = `/${lang}/store-product/${product.id}`;
   const stock = product.stock ?? 0;
@@ -53,9 +56,10 @@ export function StoreProductCard({
   const isSoldOut = stock <= 0;
 
   // A seller browses their own listing but never buys it, and in management
-  // mode the actions menu replaces the CTA — either way the buy affordances
+  // mode the owner's controls replace the CTA — either way the buy affordances
   // (stepper included) come off the card.
-  const canBuy = !isOwnProduct && !actions;
+  const isManaged = Boolean(actions || onEdit);
+  const canBuy = !isOwnProduct && !isManaged;
 
   function handleAddToCart(picked: number) {
     if (onAddToCart) {
@@ -89,6 +93,7 @@ export function StoreProductCard({
       href={href}
       ariaLabel={product.name}
       actions={actions}
+      onEdit={onEdit}
     >
       <Card.FrontSide>
         <Card.Header
@@ -118,7 +123,9 @@ export function StoreProductCard({
           onQuantityChange={canBuy ? setQuantity : undefined}
           maxQuantity={canBuy ? stock : undefined}
         />
-        {canBuy && (
+        {/* Managed cards still render the footer — it resolves to the owner's
+            Edit CTA rather than the add-to-cart button. */}
+        {(canBuy || isManaged) && (
           <Card.Footer
             itemType="STORE"
             url={href}

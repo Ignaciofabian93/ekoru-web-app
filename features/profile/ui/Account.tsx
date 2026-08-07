@@ -1,81 +1,20 @@
 "use client";
-import { useTranslation } from "@/i18n/context";
-import { NAMESPACE } from "../i18n";
-import {
-  ChevronRight,
-  Gem,
-  Heart,
-  KeyRound,
-  Leaf,
-  PackagePlus,
-  Repeat2,
-  Settings,
-  UserRoundPen,
-  type LucideIcon,
-} from "lucide-react";
+import { ComingSoonChip } from "@/components/Primitives";
 import { Text } from "@/components/Primitives/Text";
+import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
+import { useTranslation } from "@/i18n/context";
+import clsx from "clsx";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
+import {
+  PROFILE_MENU_SECTIONS,
+  type ProfileMenuItem,
+} from "../constants/menuItems";
+import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
 
-interface AccountItem {
-  key: string;
-  route: string;
-  icon: LucideIcon;
-  labelKey: string;
-}
-
-const ITEMS: AccountItem[] = [
-  {
-    key: "editProfile",
-    route: "/profile/edit-profile",
-    icon: UserRoundPen,
-    labelKey: "account.editProfile",
-  },
-  {
-    key: "changePassword",
-    route: "/profile/change-password",
-    icon: KeyRound,
-    labelKey: "account.changePassword",
-  },
-  {
-    key: "orderHistory",
-    route: "/profile/orders",
-    icon: PackagePlus,
-    labelKey: "account.orderHistory",
-  },
-  {
-    key: "exchanges",
-    route: "/profile/exchanges",
-    icon: Repeat2,
-    labelKey: "account.exchanges",
-  },
-  {
-    key: "favorites",
-    route: "/profile/favorites",
-    icon: Heart,
-    labelKey: "account.favorites",
-  },
-  {
-    key: "environmentalImpact",
-    route: "/profile/environmental-impact",
-    icon: Leaf,
-    labelKey: "account.environmentalImpact",
-  },
-  {
-    key: "subscription",
-    route: "/profile/subscription",
-    icon: Gem,
-    labelKey: "account.subscription",
-  },
-  {
-    key: "settings",
-    route: "/profile/settings",
-    icon: Settings,
-    labelKey: "account.settings",
-  },
-];
+const ROW_CLASS = "flex items-center gap-3 rounded-lg p-2.5";
 
 export function Account() {
   const { t } = useTranslation(NAMESPACE);
@@ -83,34 +22,81 @@ export function Account() {
   const lang = params.lang ?? DEFAULT_LANGUAGE;
 
   return (
-    <SectionCard title={t("account.title")} subtitle={t("account.subtitle")}>
-      {/* Single column inside the desktop sidebar, two columns when the card
-          spans the full width on tablets. */}
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
-        {ITEMS.map((item) => {
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.key}
-              href={`/${lang}${item.route}`}
-              className="flex items-center gap-3 rounded-lg p-2.5 transition-colors hover:bg-background-secondary"
-            >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-light/20 text-primary">
-                <Icon size={16} color="currentColor" strokeWidth={2} />
-              </div>
-              <Text variant="span" weight="medium" size="base" className="flex-1">
-                {t(item.labelKey)}
-              </Text>
-              <ChevronRight
-                size={16}
-                color="currentColor"
-                strokeWidth={2}
-                className="text-foreground-tertiary"
+    <>
+      {PROFILE_MENU_SECTIONS.map((section) => (
+        <SectionCard
+          key={section.key}
+          title={t(section.label)}
+          subtitle={t(section.description)}
+        >
+          {/* Single column inside the desktop sidebar, two columns when the card
+              spans the full width on tablets. */}
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
+            {section.items.map((item) => (
+              <AccountRow
+                key={item.route}
+                item={item}
+                label={t(item.label)}
+                href={`/${lang}${item.route}`}
+                comingSoonLabel={t("account.comingSoon")}
               />
-            </Link>
-          );
-        })}
+            ))}
+          </div>
+        </SectionCard>
+      ))}
+    </>
+  );
+}
+
+/**
+ * One link. Rows for pages that haven't shipped (`available: false`) still
+ * show, but as plain text with a coming-soon chip rather than a link that
+ * would walk the user into a 404.
+ */
+function AccountRow({
+  item,
+  label,
+  href,
+  comingSoonLabel,
+}: {
+  item: ProfileMenuItem;
+  label: string;
+  href: string;
+  comingSoonLabel: string;
+}) {
+  const Icon = item.icon;
+
+  const content = (
+    <>
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-light/20 text-primary">
+        <Icon size={16} color="currentColor" strokeWidth={2} />
       </div>
-    </SectionCard>
+      <Text variant="span" weight="medium" size="base" className="flex-1">
+        {label}
+      </Text>
+      {item.available ? (
+        <ChevronRight
+          size={16}
+          color="currentColor"
+          strokeWidth={2}
+          className="text-foreground-tertiary"
+        />
+      ) : (
+        <ComingSoonChip label={comingSoonLabel} />
+      )}
+    </>
+  );
+
+  if (!item.available) {
+    return <div className={clsx(ROW_CLASS, "opacity-60")}>{content}</div>;
+  }
+
+  return (
+    <Link
+      href={href}
+      className={clsx(ROW_CLASS, "transition-colors hover:bg-background-secondary")}
+    >
+      {content}
+    </Link>
   );
 }

@@ -12,12 +12,21 @@ import { useTranslation } from "@/i18n/context";
 import { useSeller } from "@/store/useAuthStore";
 import { NAMESPACE } from "../i18n";
 
+/**
+ * The editable surface of a store listing, mirroring `UpdateStoreProductInput`.
+ * Every field is sent on save, so clearing one actually clears it.
+ */
 export interface UpdateStoreProductPatch {
   name: string;
   brand: string;
   price: number;
   stock: number;
   description: string;
+  /** Final ordered image keys — the first is the card cover. */
+  images: string[];
+  hasOffer: boolean;
+  /** Only meaningful while `hasOffer`; ignored otherwise. */
+  offerPrice: number | null;
 }
 
 /** Edit / delete / activate actions for the seller's own store products.
@@ -80,12 +89,19 @@ export function useStoreProductActions() {
         await updateMutation({
           variables: {
             input: {
-              id: String(id),
+              // UpdateStoreProductInput.id is Int! — a stringified id fails
+              // schema validation before it ever reaches the resolver.
+              id: Number(id),
               name: patch.name,
               brand: patch.brand || undefined,
               price: patch.price,
               stock: patch.stock,
               description: patch.description,
+              images: patch.images,
+              hasOffer: patch.hasOffer,
+              // Sending the price only while the offer is on: leaving a stale
+              // one behind would resurface the moment the toggle flips back.
+              offerPrice: patch.hasOffer ? (patch.offerPrice ?? undefined) : undefined,
             },
           },
         });

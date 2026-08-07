@@ -18,11 +18,16 @@ interface CardContextValue {
   ariaLabel?: string;
   /**
    * The viewer owns this listing and is managing it (owner actions were passed
-   * to <Card>), so the shopper controls — favorite and the buy/book CTA — are
-   * suppressed. The flip control is handled separately, by forcing
-   * `hasBackSide` off in management mode.
+   * to <Card>), so the shopper controls — favorite and the buy/book CTA — give
+   * way to the owner's. The back face stays available: an owner still wants to
+   * see their listing's impact.
    */
   isManaged: boolean;
+  /**
+   * Management mode's primary action, rendered as the footer CTA in place of
+   * the shopper's buy/book button. Without it the footer is omitted.
+   */
+  onEdit?: () => void;
 }
 
 // `null` sentinel rather than a stand-in default object, so that reading the
@@ -40,6 +45,7 @@ export interface CardProviderProps {
   href: string;
   ariaLabel?: string;
   isManaged: boolean;
+  onEdit?: () => void;
   children: ReactNode;
 }
 
@@ -49,6 +55,7 @@ export function CardProvider({
   href,
   ariaLabel,
   isManaged,
+  onEdit,
   children,
 }: CardProviderProps) {
   const [isFlipped, setIsFlipped] = useState<boolean>(false);
@@ -58,8 +65,17 @@ export function CardProvider({
   // Memoized so consumers re-render only when a value actually changes, not on
   // every render of the tree hosting the provider.
   const value = useMemo<CardContextValue>(
-    () => ({ orientation, isFlipped, flip, hasBackSide, href, ariaLabel, isManaged }),
-    [orientation, isFlipped, flip, hasBackSide, href, ariaLabel, isManaged],
+    () => ({
+      orientation,
+      isFlipped,
+      flip,
+      hasBackSide,
+      href,
+      ariaLabel,
+      isManaged,
+      onEdit,
+    }),
+    [orientation, isFlipped, flip, hasBackSide, href, ariaLabel, isManaged, onEdit],
   );
 
   return <CardContext.Provider value={value}>{children}</CardContext.Provider>;

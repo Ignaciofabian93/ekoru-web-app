@@ -14,6 +14,11 @@ export interface StatTileProps {
   /** `vertical` stacks icon over value; `horizontal` sits the icon beside it. */
   orientation?: StatTileOrientation;
   tone?: StatTileTone;
+  /**
+   * Greys the tile out — for a figure that isn't live yet, so a placeholder
+   * zero doesn't read as a real measurement.
+   */
+  disabled?: boolean;
   className?: string;
 }
 
@@ -35,6 +40,7 @@ export function StatTile({
   label,
   orientation = "vertical",
   tone = "neutral",
+  disabled = false,
   className,
 }: StatTileProps) {
   const isHorizontal = orientation === "horizontal";
@@ -44,14 +50,19 @@ export function StatTile({
       className={clsx(
         "flex rounded-xl p-3.5",
         isHorizontal ? "w-full items-center gap-4" : "flex-col gap-1.5",
-        TONE_SURFACE[tone],
+        // The tone tints both surface and icon, so a disabled tile drops it for
+        // a flat grey rather than a washed-out version of the live color.
+        disabled
+          ? "bg-background-secondary/60 text-foreground-muted opacity-60"
+          : TONE_SURFACE[tone],
         className,
       )}
     >
       <div
         className={clsx(
           "flex shrink-0 items-center justify-center rounded-md text-current",
-          isHorizontal ? "size-10 bg-white/70" : "size-8 bg-surface",
+          isHorizontal ? "size-10" : "size-8",
+          disabled ? "bg-surface/60" : isHorizontal ? "bg-white/70" : "bg-surface",
         )}
       >
         <Icon
@@ -62,11 +73,20 @@ export function StatTile({
         />
       </div>
 
-      <div className={clsx("flex flex-col", isHorizontal && "min-w-0")}>
-        <Title level="h3" size={isHorizontal ? "h6" : "h5"} weight="bold" color="default">
+      <div className={clsx("flex flex-col", isHorizontal && "min-w-0 gap-1")}>
+        <Title
+          level="h3"
+          size={isHorizontal ? "h6" : "h5"}
+          weight="bold"
+          color={disabled ? "tertiary" : "default"}
+        >
           {value}
         </Title>
-        <Text variant="span" size="xs" color={isHorizontal ? "secondary" : "tertiary"}>
+        <Text
+          variant="span"
+          size="xs"
+          color={disabled ? "muted" : isHorizontal ? "secondary" : "tertiary"}
+        >
           {label}
         </Text>
       </div>

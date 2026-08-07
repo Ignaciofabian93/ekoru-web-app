@@ -86,7 +86,34 @@ export const CATALOG_ITEM_FIELDS_FRAGMENT = gql`
   }
 `;
 
+// Environmental impact projection used by the product card back side + the
+// detailed impact modal. Mirrors `EnvironmentalImpact` in `types/product.ts`.
+// Declared before ProductFields because that fragment composes it.
+export const ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT = gql`
+  fragment EnvironmentalImpactFields on EnvironmentalImpact {
+    totalCo2SavingsKG
+    totalWaterSavingsLT
+    materialBreakdown {
+      materialType
+      materialTypeLabel
+      quantity
+      unit
+      co2SavingsKG
+      waterSavingsLT
+    }
+  }
+`;
+
+/**
+ * The product projection every card renders from.
+ *
+ * `environmentalImpact` is part of it because the card's back face is impact —
+ * without it the panel still renders, silently reading 0 kg / 0 L, which is
+ * indistinguishable from a product that genuinely saves nothing. It is resolved
+ * server-side from the product's category, so it costs no extra client input.
+ */
 export const PRODUCT_FIELDS_FRAGMENT = gql`
+  ${ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT}
   fragment ProductFields on Product {
     id
     name
@@ -106,22 +133,8 @@ export const PRODUCT_FIELDS_FRAGMENT = gql`
     isLiked
     createdAt
     updatedAt
-  }
-`;
-
-// Environmental impact projection used by the product card back side + the
-// detailed impact modal. Mirrors `EnvironmentalImpact` in `types/product.ts`.
-export const ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT = gql`
-  fragment EnvironmentalImpactFields on EnvironmentalImpact {
-    totalCo2SavingsKG
-    totalWaterSavingsLT
-    materialBreakdown {
-      materialType
-      materialTypeLabel
-      quantity
-      unit
-      co2SavingsKG
-      waterSavingsLT
+    environmentalImpact {
+      ...EnvironmentalImpactFields
     }
   }
 `;

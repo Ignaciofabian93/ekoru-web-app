@@ -55,7 +55,8 @@
     "STORE": "Ajouter au panier",
     "SERVICE": "Réserver",
     "BUSINESS": "Voir la boutique",
-    "PROVIDER": "Voir le prestataire"
+    "PROVIDER": "Voir le prestataire",
+    "EDIT": "Modifier l'annonce"
   },
   "impact": {
     "title": "Impact environnemental",

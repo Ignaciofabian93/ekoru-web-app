@@ -12,6 +12,7 @@ import {
   Leaf,
   MapPin,
   Minus,
+  Pencil,
   Plus,
   Repeat,
   RotateCw,
@@ -580,7 +581,9 @@ function Header({
       )}
 
       {/* Controls sit above the stretched link (z-20 > z-10) so they take their
-          own clicks instead of navigating. */}
+          own clicks instead of navigating. The flip control keeps the top-right
+          corner in every mode; management moves the owner's actions menu to the
+          bottom-right instead. */}
       <div className="absolute top-2 right-2 z-20 flex flex-col-reverse items-center gap-1.5">
         {showLike && (
           <button
@@ -744,6 +747,7 @@ function Body({
   const { t } = useTranslation(NAMESPACE);
   const formatPrice = useFormatPrice();
   const { navigateTo } = useNavigation();
+  const { isManaged } = useCard();
 
   // An "offer" only counts when it actually undercuts the list price —
   // otherwise the struck-through original would read as nonsense.
@@ -807,7 +811,7 @@ function Body({
           color="secondary"
           className="uppercase"
         >
-          {brand ?? t("meta.noBrand")}
+          {brand ? brand : t("meta.noBrand")}
         </Text>
         <Text
           variant="span"
@@ -905,7 +909,9 @@ function Body({
             </div>
           )
         )}
-        {isExchangeable && exchangeRedirectUrl && (
+        {/* Proposing a swap for your own listing is meaningless, so the
+            exchange affordance comes off alongside the other shopper controls. */}
+        {isExchangeable && exchangeRedirectUrl && !isManaged && (
           <ExchangeButton
             interests={interests}
             onPropose={() => navigateTo({ route: exchangeRedirectUrl })}
@@ -943,11 +949,26 @@ function Footer({
 }: CardFooterProps) {
   const { t } = useTranslation(NAMESPACE);
   const { navigateTo } = useNavigation();
-  const { isManaged } = useCard();
+  const { isManaged, onEdit } = useCard();
 
-  // An owner manages the listing from the actions menu — "Add to cart" on your
-  // own product is meaningless, so the CTA row goes away entirely.
-  if (isManaged) return null;
+  // An owner edits their listing rather than buying it — "Add to cart" on your
+  // own product is meaningless, so the CTA becomes Edit. With no handler there
+  // is nothing to offer, so the row goes away entirely.
+  if (isManaged) {
+    if (!onEdit) return null;
+    return (
+      <div className="relative z-20 mt-auto flex items-center gap-2 px-2 pb-2">
+        <Button
+          variant="outline"
+          text={t("cta.EDIT")}
+          leftIcon={Pencil}
+          fullWidth
+          size="sm"
+          onPress={onEdit}
+        />
+      </div>
+    );
+  }
 
   // The CTA label is chosen by item type — t(`cta.MARKETPLACE`) / `cta.STORE` /
   // etc. — unless a state overrides it.
@@ -1080,8 +1101,25 @@ function CardScene({
 
       {/* Owner controls live outside the rotating layer on purpose: inside it
           they would inherit `transform-3d` / `backface-hidden`, and an open
-          dropdown would be clipped by the faces' `overflow-hidden`. */}
-      {actions && <div className="absolute top-2 right-2 z-30">{actions}</div>}
+          dropdown would be clipped by the faces' `overflow-hidden`. Being
+          outside also means they float over whichever face is showing, so they
+          are hidden while flipped — the back face owns its own header controls.
+
+          They sit at the bottom-right of the *image*, below the flip control in
+          the opposite corner. Since the wrapper spans the whole card, that
+          position is reached by an overlay box matching the header's aspect
+          ratio rather than by `bottom-2`, which would land on the footer. The
+          overlay is click-through; only the controls themselves take clicks. */}
+      {actions && !isFlipped && (
+        <div
+          className={clsx(
+            "pointer-events-none absolute z-30",
+            orientation === "vertical" ? "inset-x-0 top-0 aspect-4/3" : "inset-0",
+          )}
+        >
+          <div className="pointer-events-auto absolute right-2 bottom-2">{actions}</div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1093,18 +1131,17 @@ export function Card({
   href,
   ariaLabel,
   actions,
+  onEdit,
 }: CardProps) {
-  const isManaged = Boolean(actions);
+  const isManaged = Boolean(actions || onEdit);
   return (
     <CardProvider
       orientation={orientation}
-      // Management mode puts the actions menu where the flip control sits, so
-      // the back face is switched off rather than left unreachable. Every flip
-      // control already keys off `hasBackSide`.
-      hasBackSide={hasBackSide && !isManaged}
+      hasBackSide={hasBackSide}
       href={href}
       ariaLabel={ariaLabel}
       isManaged={isManaged}
+      onEdit={onEdit}
     >
       <CardScene actions={actions}>{children}</CardScene>
     </CardProvider>

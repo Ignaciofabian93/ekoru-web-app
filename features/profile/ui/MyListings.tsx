@@ -134,11 +134,17 @@ export function MyListings() {
 
   const menuLabel = t("dashboard.listings.actions.menu");
 
+  /**
+   * The owner menu for one listing. `onView`, `onEdit` and `onToggle` are
+   * optional: an entry is dropped rather than disabled when its action doesn't
+   * apply (services have no public page; a sold listing can't be edited or
+   * re-published). Delete always applies.
+   */
   function buildActions(opts: {
     isActive: boolean;
     onView?: () => void;
-    onEdit: () => void;
-    onToggle: () => void;
+    onEdit?: () => void;
+    onToggle?: () => void;
     onDelete: () => void;
   }): ProductMenuAction[] {
     const { isActive, onView, onEdit, onToggle, onDelete } = opts;
@@ -153,20 +159,28 @@ export function MyListings() {
             },
           ]
         : []),
-      {
-        key: "edit",
-        label: t("dashboard.listings.actions.edit"),
-        icon: Pencil,
-        onSelect: onEdit,
-      },
-      {
-        key: "toggle",
-        label: isActive
-          ? t("dashboard.listings.actions.deactivate")
-          : t("dashboard.listings.actions.activate"),
-        icon: isActive ? PowerOff : Power,
-        onSelect: onToggle,
-      },
+      ...(onEdit
+        ? [
+            {
+              key: "edit",
+              label: t("dashboard.listings.actions.edit"),
+              icon: Pencil,
+              onSelect: onEdit,
+            },
+          ]
+        : []),
+      ...(onToggle
+        ? [
+            {
+              key: "toggle",
+              label: isActive
+                ? t("dashboard.listings.actions.deactivate")
+                : t("dashboard.listings.actions.activate"),
+              icon: isActive ? PowerOff : Power,
+              onSelect: onToggle,
+            },
+          ]
+        : []),
       {
         key: "delete",
         label: t("dashboard.listings.actions.delete"),
@@ -264,18 +278,54 @@ export function MyListings() {
             items={marketplace.products}
             loading={marketplace.loading}
             remeasureKey={lang}
-            renderItem={(p) => (
-              <div key={p.id} className="relative">
-                {p.soldAt && (
-                  <span className="absolute top-2 left-2 z-10 rounded-md bg-foreground/80 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase">
-                    {p.soldVia === "EXCHANGE"
-                      ? t("dashboard.listings.soldVia.exchange")
-                      : t("dashboard.listings.soldVia.sale")}
-                  </span>
-                )}
-                <MarketplaceCard product={p} lang={lang} priority />
-              </div>
-            )}
+            renderItem={(p) => {
+              const isActive = p.isActive !== false;
+              // A sold listing is history: it can still be viewed and removed,
+              // but editing or re-publishing it would rewrite a closed deal.
+              const isSold = Boolean(p.soldAt);
+              return (
+                <div key={p.id} className="relative">
+                  {p.soldAt && (
+                    <span className="absolute top-2 left-2 z-10 rounded-md bg-foreground/80 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase">
+                      {p.soldVia === "EXCHANGE"
+                        ? t("dashboard.listings.soldVia.exchange")
+                        : t("dashboard.listings.soldVia.sale")}
+                    </span>
+                  )}
+                  <MarketplaceCard
+                    product={p}
+                    lang={lang}
+                    priority
+                    onEdit={
+                      isSold
+                        ? undefined
+                        : () => setEditTarget({ kind: "marketplace", item: p })
+                    }
+                    actions={
+                      <ProductActionsMenu
+                        ariaLabel={menuLabel}
+                        actions={buildActions({
+                          isActive,
+                          onView: () => router.push(`/${lang}/product/${p.id}`),
+                          onEdit: isSold
+                            ? undefined
+                            : () => setEditTarget({ kind: "marketplace", item: p }),
+                          onToggle: isSold
+                            ? undefined
+                            : () => productActions.toggleActive(p.id, !isActive),
+                          onDelete: () =>
+                            setDeleteTarget({
+                              kind: "marketplace",
+                              id: p.id,
+                              name: p.name,
+                            }),
+                        })}
+                      />
+                    }
+                  />
+                </div>
+              );
+            }}
             emptyActive={{
               icon: Package,
               title: t("dashboard.listings.empty.title"),
@@ -306,6 +356,7 @@ export function MyListings() {
                   key={p.id}
                   product={p}
                   lang={lang}
+                  onEdit={() => setEditTarget({ kind: "store", item: p })}
                   actions={
                     <ProductActionsMenu
                       ariaLabel={menuLabel}
@@ -352,6 +403,7 @@ export function MyListings() {
                   key={s.id}
                   service={serviceToCardService(s)}
                   lang={lang}
+                  onEdit={() => setEditTarget({ kind: "service", item: s })}
                   actions={
                     <ProductActionsMenu
                       ariaLabel={menuLabel}

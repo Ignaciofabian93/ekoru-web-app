@@ -55,7 +55,8 @@
     "STORE": "Add to cart",
     "SERVICE": "Book now",
     "BUSINESS": "See store",
-    "PROVIDER": "See provider"
+    "PROVIDER": "See provider",
+    "EDIT": "Edit listing"
   },
   "impact": {
     "title": "Environmental impact",

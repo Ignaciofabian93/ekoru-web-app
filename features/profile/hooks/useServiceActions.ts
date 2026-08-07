@@ -17,6 +17,8 @@ export interface UpdateServicePatch {
   description: string;
   basePrice: number;
   duration: number;
+  /** Final ordered image keys — the first is the card cover. */
+  images: string[];
 }
 
 /** Edit / delete / activate actions for the seller's own services.
@@ -84,6 +86,7 @@ export function useServiceActions() {
               description: patch.description || undefined,
               basePrice: patch.basePrice,
               duration: patch.duration || undefined,
+              images: patch.images,
             },
           },
         });

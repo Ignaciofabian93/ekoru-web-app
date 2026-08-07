@@ -2,7 +2,7 @@
 import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
 import { useSeller } from "@/store/useAuthStore";
-import { Flag, Globe, MapPin, Phone, Pin, PinIcon } from "lucide-react";
+import { PROFILE_DETAIL_SECTIONS } from "../constants/menuItems";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
 
@@ -10,49 +10,36 @@ export function Details() {
   const { t } = useTranslation(NAMESPACE);
   const seller = useSeller();
 
-  const ITEMS = [
-    { key: "phone", label: t("details.phone"), icon: Phone, value: `+${seller?.phone}` },
-    { key: "address", label: t("details.address"), icon: MapPin, value: seller?.address },
-    {
-      key: "county",
-      label: t("details.county"),
-      icon: Pin,
-      value: seller?.county?.county,
-    },
-    { key: "city", label: t("details.city"), icon: PinIcon, value: seller?.city?.city },
-    {
-      key: "region",
-      label: t("details.region"),
-      icon: Flag,
-      value: seller?.region?.region,
-    },
-    {
-      key: "country",
-      label: t("details.country"),
-      icon: Globe,
-      value: seller?.country?.country,
-    },
-  ];
-
   return (
-    <SectionCard title={t("details.title")} subtitle={t("details.subtitle")}>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
-        {ITEMS.map((item) => (
-          <div key={item.key} className="flex items-center">
-            <div className="bg-primary-light/20 p-3 rounded-lg text-primary">
-              <item.icon size={18} />
-            </div>
-            <div className="flex flex-col ml-4 min-w-0">
-              <Text variant="span" weight="semibold" size="sm" color="tertiary">
-                {item.label}
-              </Text>
-              <Text variant="span" weight="normal" size="base" numberOfLines={1}>
-                {item.value ?? "—"}
-              </Text>
-            </div>
+    <>
+      {PROFILE_DETAIL_SECTIONS.map((section) => (
+        <SectionCard
+          key={section.key}
+          title={t(section.label)}
+          subtitle={t(section.description)}
+        >
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
+            {section.items.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div key={item.field} className="flex items-center">
+                  <div className="rounded-lg bg-primary-light/20 p-3 text-primary">
+                    <Icon size={18} color="currentColor" strokeWidth={2} />
+                  </div>
+                  <div className="ml-4 flex min-w-0 flex-col">
+                    <Text variant="span" weight="semibold" size="sm" color="tertiary">
+                      {t(item.label)}
+                    </Text>
+                    <Text variant="span" weight="normal" size="base" numberOfLines={1}>
+                      {item.value(seller) || "—"}
+                    </Text>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        ))}
-      </div>
-    </SectionCard>
+        </SectionCard>
+      ))}
+    </>
   );
 }

@@ -51,7 +51,8 @@
       "co2": "CO₂ ahorrado",
       "water": "Agua ahorrada",
       "products": "Productos reusados",
-      "viewFull": "Ver impacto completo"
+      "viewFull": "Ver impacto completo",
+      "comingSoon": "Próximamente"
     },
     "listings": {
       "title": "Mis publicaciones",
@@ -118,7 +119,10 @@
         "removePhoto": "Quitar foto",
         "cover": "Portada",
         "makeCover": "Subir",
-        "imagesRequired": "Agrega al menos una foto"
+        "imagesRequired": "Agrega al menos una foto",
+        "hasOffer": "En oferta",
+        "offerPrice": "Precio de oferta",
+        "offerPriceInvalid": "La oferta debe ser menor que el precio"
       },
       "delete": {
         "title": "¿Eliminar este producto?",
@@ -146,18 +150,19 @@
     "favorites": "Favoritos",
     "environmentalImpact": "Impacto Ambiental",
     "subscription": "Suscripción",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "comingSoon": "Próximamente"
   },
   "editProfile": {
     "screenTitle": "Editar Perfil",
     "screenSubtitle": "Mantén tu información actualizada",
     "personal": {
       "title": "Información Personal",
-      "subtitle": "Cómo te ven en el marketplace",
-      "firstName": "Nombre",
-      "firstNamePlaceholder": "Tu nombre",
-      "lastName": "Apellido",
-      "lastNamePlaceholder": "Tu apellido",
+      "subtitle": "Cómo te ven en la plataforma",
+      "firstName": "Nombre(s)",
+      "firstNamePlaceholder": "Tu(s) nombre(s)",
+      "lastName": "Apellido(s)",
+      "lastNamePlaceholder": "Tu(s) apellido(s)",
       "displayName": "Nombre Público",
       "displayNamePlaceholder": "Cómo quieres mostrarte",
       "businessName": "Nombre del Negocio",
@@ -194,7 +199,19 @@
       "phonePlaceholder": "9 1234 5678",
       "areaCode": "Código de área",
       "website": "Sitio web",
-      "websitePlaceholder": "https://"
+      "websitePlaceholder": "https://",
+      "socials": {
+        "title": "Redes sociales",
+        "hint": "Pega el enlace completo o solo tu nombre de usuario.",
+        "facebook": "Facebook",
+        "facebookPlaceholder": "tu-pagina o enlace completo",
+        "instagram": "Instagram",
+        "instagramPlaceholder": "@usuario o enlace completo",
+        "tiktok": "TikTok",
+        "tiktokPlaceholder": "@usuario o enlace completo",
+        "linkedin": "LinkedIn",
+        "linkedinPlaceholder": "tu-perfil o enlace completo"
+      }
     },
     "locations": {
       "title": "Ubicaciones del negocio",

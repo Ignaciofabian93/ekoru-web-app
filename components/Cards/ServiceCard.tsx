@@ -14,6 +14,8 @@ interface ServiceCardProps {
   href?: string;
   /** Owner controls — see `CardProps.actions`. Switches to management mode. */
   actions?: ReactNode;
+  /** Owner's primary action — see `CardProps.onEdit`. */
+  onEdit?: () => void;
 }
 
 /**
@@ -27,6 +29,7 @@ export function ServiceCard({
   priority = false,
   href,
   actions,
+  onEdit,
 }: ServiceCardProps) {
   const target = href ?? `/${lang}/services`;
 
@@ -37,6 +40,7 @@ export function ServiceCard({
       href={target}
       ariaLabel={service.name}
       actions={actions}
+      onEdit={onEdit}
     >
       <Card.FrontSide>
         <Card.Header

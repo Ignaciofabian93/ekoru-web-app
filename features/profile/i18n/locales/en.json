@@ -51,7 +51,8 @@
       "co2": "CO₂ saved",
       "water": "Water saved",
       "products": "Products reused",
-      "viewFull": "See full impact"
+      "viewFull": "See full impact",
+      "comingSoon": "Coming soon"
     },
     "listings": {
       "title": "My listings",
@@ -118,7 +119,10 @@
         "removePhoto": "Remove photo",
         "cover": "Cover",
         "makeCover": "Move up",
-        "imagesRequired": "Add at least one photo"
+        "imagesRequired": "Add at least one photo",
+        "hasOffer": "On offer",
+        "offerPrice": "Offer price",
+        "offerPriceInvalid": "The offer must be lower than the price"
       },
       "delete": {
         "title": "Delete this product?",
@@ -146,18 +150,19 @@
     "favorites": "Favorites",
     "environmentalImpact": "Environmental Impact",
     "subscription": "Subscription",
-    "settings": "Settings"
+    "settings": "Settings",
+    "comingSoon": "Coming soon"
   },
   "editProfile": {
     "screenTitle": "Edit Profile",
     "screenSubtitle": "Keep your information up to date",
     "personal": {
       "title": "Personal Information",
-      "subtitle": "How you appear across the marketplace",
-      "firstName": "First Name",
-      "firstNamePlaceholder": "Your first name",
-      "lastName": "Last Name",
-      "lastNamePlaceholder": "Your last name",
+      "subtitle": "How you appear across the platform",
+      "firstName": "First Name(s)",
+      "firstNamePlaceholder": "Your first name(s)",
+      "lastName": "Last Name(s)",
+      "lastNamePlaceholder": "Your last name(s)",
       "displayName": "Display Name",
       "displayNamePlaceholder": "How you want to be shown",
       "businessName": "Business Name",
@@ -194,7 +199,19 @@
       "phonePlaceholder": "9 1234 5678",
       "areaCode": "Area code",
       "website": "Website",
-      "websitePlaceholder": "https://"
+      "websitePlaceholder": "https://",
+      "socials": {
+        "title": "Social profiles",
+        "hint": "Paste the full link or just your username.",
+        "facebook": "Facebook",
+        "facebookPlaceholder": "your-page or full link",
+        "instagram": "Instagram",
+        "instagramPlaceholder": "@username or full link",
+        "tiktok": "TikTok",
+        "tiktokPlaceholder": "@username or full link",
+        "linkedin": "LinkedIn",
+        "linkedinPlaceholder": "your-profile or full link"
+      }
     },
     "locations": {
       "title": "Business locations",

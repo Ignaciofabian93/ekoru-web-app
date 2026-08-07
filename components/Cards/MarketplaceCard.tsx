@@ -12,6 +12,8 @@ interface MarketplaceCardProps {
   priority?: boolean;
   /** Owner controls — see `CardProps.actions`. Switches to management mode. */
   actions?: ReactNode;
+  /** Owner's primary action — see `CardProps.onEdit`. */
+  onEdit?: () => void;
 }
 
 export function MarketplaceCard({
@@ -19,6 +21,7 @@ export function MarketplaceCard({
   lang,
   priority = false,
   actions,
+  onEdit,
 }: MarketplaceCardProps) {
   const href = `/${lang}/product/${product.id}`;
 
@@ -29,6 +32,7 @@ export function MarketplaceCard({
       href={href}
       ariaLabel={product.name}
       actions={actions}
+      onEdit={onEdit}
     >
       <Card.FrontSide>
         <Card.Header
@@ -51,6 +55,7 @@ export function MarketplaceCard({
           interests={product.interests ?? undefined}
           exchangeRedirectUrl={`${href}?mode=exchange`}
         />
+        {/* In management mode the footer resolves to the Edit CTA itself. */}
         <Card.Footer itemType="MARKETPLACE" url={href} />
       </Card.FrontSide>
       <Card.BackSide>

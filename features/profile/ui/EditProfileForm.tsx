@@ -17,6 +17,8 @@ export function EditProfileForm() {
     isBusiness,
     form,
     setField,
+    setSocial,
+    socialFields,
     businessTags,
     tagsLoading,
     toggleTag,
@@ -81,12 +83,6 @@ export function EditProfileForm() {
                   onChangeText={(v) => setField("lastName", v)}
                 />
               </div>
-              <Input
-                label={t("editProfile.personal.displayName")}
-                placeholder={t("editProfile.personal.displayNamePlaceholder")}
-                value={form.displayName}
-                onChangeText={(v) => setField("displayName", v)}
-              />
               <TextArea
                 label={t("editProfile.personal.bio")}
                 placeholder={t("editProfile.personal.bioPlaceholder")}
@@ -158,6 +154,30 @@ export function EditProfileForm() {
             onChangeText={(v) => setField("website", v)}
             leftIcon={Globe2}
           />
+
+          {/* Social profiles. Each accepts a full URL or just a handle — the
+              handle is expanded to the platform's profile URL on save. */}
+          <div className="flex flex-col gap-2">
+            <span className="font-sans text-sm font-medium text-foreground">
+              {t("editProfile.contact.socials.title")}
+            </span>
+            <span className="font-sans text-xs text-foreground-tertiary">
+              {t("editProfile.contact.socials.hint")}
+            </span>
+            <div className="mt-1 grid grid-cols-1 gap-5 sm:grid-cols-2">
+              {socialFields.map((field) => (
+                <Input
+                  key={field.key}
+                  label={t(`editProfile.contact.socials.${field.key}`)}
+                  placeholder={t(`editProfile.contact.socials.${field.key}Placeholder`)}
+                  value={form.socials[field.key]}
+                  onChangeText={(v) => setSocial(field.key, v)}
+                  leftIcon={field.icon}
+                  maxLength={200}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </SectionCard>
 

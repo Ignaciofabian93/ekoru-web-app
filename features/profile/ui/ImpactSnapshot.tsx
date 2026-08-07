@@ -2,7 +2,6 @@
 import { StatTile } from "@/components/Patterns/StatTile";
 import { useTranslation } from "@/i18n/context";
 import { ArrowRight, Droplets, Leaf, PackageCheck } from "lucide-react";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
@@ -12,10 +11,19 @@ import { LinkButton } from "@/components/Primitives/LinkButton";
 // Lightweight preview — the full Environmental Impact screen owns the
 // detailed numbers. Wire to an aggregated impact endpoint when ready.
 const MOCK_IMPACT = {
-  totalCo2SavingsKG: 42.6,
-  totalWaterSavingsLT: 1280,
-  productsReused: 12,
+  totalCo2SavingsKG: 0,
+  totalWaterSavingsLT: 0,
+  productsReused: 0,
 };
+
+/**
+ * No aggregated impact endpoint exists yet, so every figure below is a
+ * placeholder zero. The whole section is presented as disabled rather than
+ * live: three real-looking zeros read as "you have saved nothing", which is a
+ * worse lie than showing the feature isn't ready. Flip this off — and drop
+ * MOCK_IMPACT — when the endpoint lands.
+ */
+const IMPACT_READY = false;
 
 function formatKg(n: number, locale: string) {
   return n.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -62,15 +70,10 @@ export function ImpactSnapshot() {
             label={t("dashboard.impact.viewFull")}
             iconPosition="right"
             size="sm"
+            disabled={!IMPACT_READY}
+            message={IMPACT_READY ? undefined : t("dashboard.impact.comingSoon")}
           />
         </div>
-        // <Link
-        //   href={`/${lang}/profile/environmental-impact`}
-        //   className="hidden sm:inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold text-primary hover:bg-primary/5"
-        // >
-        //   {t("dashboard.impact.viewFull")}
-        //   <ArrowRight size={14} color="currentColor" strokeWidth={2} />
-        // </Link>
       }
     >
       <div className="flex flex-col items-center justify-evenly gap-3">
@@ -82,16 +85,23 @@ export function ImpactSnapshot() {
             label={t(`dashboard.impact.${s.key}`)}
             orientation="horizontal"
             tone={s.tone}
+            disabled={!IMPACT_READY}
           />
         ))}
       </div>
-      <Link
-        href={`/${lang}/profile/environmental-impact`}
-        className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary sm:hidden"
-      >
-        {t("dashboard.impact.viewFull")}
-        <ArrowRight size={14} color="currentColor" strokeWidth={2} />
-      </Link>
+      {/* Same control as the header's, shown only where that one is hidden. */}
+      <div className="mt-3 inline-flex sm:hidden">
+        <LinkButton
+          href={`/${lang}/profile/environmental-impact`}
+          icon={ArrowRight}
+          variant="ghost"
+          label={t("dashboard.impact.viewFull")}
+          iconPosition="right"
+          size="sm"
+          disabled={!IMPACT_READY}
+          message={IMPACT_READY ? undefined : t("dashboard.impact.comingSoon")}
+        />
+      </div>
     </SectionCard>
   );
 }

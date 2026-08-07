@@ -26,6 +26,12 @@ import {
   splitPhone,
 } from "../constants/phoneCodes";
 import { MAX_BUSINESS_TAGS } from "../constants/businessTags";
+import {
+  socialsFromLinks,
+  socialsToLinks,
+  SOCIAL_LINKS,
+  type SocialPlatform,
+} from "../constants/socialLinks";
 import { useBusinessTags } from "./useBusinessTags";
 import { NAMESPACE } from "../i18n";
 
@@ -43,6 +49,7 @@ export interface EditProfileForm {
   phoneDial: string;
   phoneLocal: string;
   website: string;
+  socials: Record<SocialPlatform, string>;
   // Location
   countryId: number | null;
   regionId: number | null;
@@ -73,6 +80,7 @@ export function useEditProfile() {
       phoneDial: dial || findPhoneCodeByCountryName(seller?.country?.country)?.dial || "",
       phoneLocal: local,
       website: seller?.website ?? "",
+      socials: socialsFromLinks(seller?.socialMediaLinks),
       countryId: seller?.countryId ?? null,
       regionId: seller?.regionId ?? null,
       cityId: seller?.cityId ?? null,
@@ -87,6 +95,13 @@ export function useEditProfile() {
     },
     [],
   );
+
+  const setSocial = useCallback((platform: SocialPlatform, value: string) => {
+    setForm((prev) => ({
+      ...prev,
+      socials: { ...prev.socials, [platform]: value },
+    }));
+  }, []);
 
   // ── Business tags ────────────────────────────────────────────────
   // Selectable eco descriptors (business only). Loaded from the users subgraph
@@ -189,12 +204,21 @@ export function useEditProfile() {
       ? `+${form.phoneDial}${form.phoneLocal.replace(/\D/g, "")}`
       : "";
 
+    // `updateSeller` writes the JSON column wholesale, so this always carries
+    // the full map — including keys the form doesn't manage.
+    const socialMediaLinks = socialsToLinks(
+      form.socials,
+      seller.socialMediaLinks,
+      isBusiness,
+    );
+
     // None of the update inputs accept an `id` — the users subgraph resolves
     // the target seller/profile from the auth token (@CurrentSeller).
     try {
       const sellerInput = {
         phone: phone || undefined,
         website: form.website || undefined,
+        socialMediaLinks,
         address: form.address || undefined,
         countryId: form.countryId ?? undefined,
         regionId: form.regionId ?? undefined,
@@ -234,6 +258,7 @@ export function useEditProfile() {
           ...seller,
           phone,
           website: form.website,
+          socialMediaLinks,
           address: form.address,
           countryId: form.countryId ?? undefined,
           regionId: form.regionId ?? undefined,
@@ -252,6 +277,7 @@ export function useEditProfile() {
           ...seller,
           phone,
           website: form.website,
+          socialMediaLinks,
           address: form.address,
           countryId: form.countryId ?? undefined,
           regionId: form.regionId ?? undefined,
@@ -265,6 +291,10 @@ export function useEditProfile() {
           },
         });
       }
+
+      // Show what was actually stored: a bare handle went in, a full profile
+      // URL came out, and the fields would otherwise keep showing the handle.
+      setForm((prev) => ({ ...prev, socials: socialsFromLinks(socialMediaLinks) }));
 
       toast.success(t("editProfile.feedback.success"));
     } catch (err) {
@@ -290,6 +320,8 @@ export function useEditProfile() {
     isBusiness,
     form,
     setField,
+    setSocial,
+    socialFields: SOCIAL_LINKS,
     businessTags,
     tagsLoading,
     toggleTag,
