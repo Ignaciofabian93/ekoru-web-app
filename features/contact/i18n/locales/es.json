@@ -1,22 +1,30 @@
 {
   "page": {
-    "heroLabel": "Soporte",
-    "heroTitle": "Ponte en contacto"
+    "title": "Hablemos como comunidad",
+    "subtitle": "Para ideas que suman, preguntas que inspiran o mensajes que quieren ser escuchados. Completa tus datos y prometemos responderte con atención, cariño y circularidad."
+  },
+  "info": {
+    "response": "Respondemos en 24-48 horas",
+    "privacy": "Tu información está segura con nosotros",
+    "community": "Únete a la comunidad circular"
   },
   "form": {
-    "name": "Nombre",
+    "name": "¿Cuál es tu nombre?",
     "namePlaceholder": "Ingresa tu nombre",
-    "email": "Correo electrónico",
-    "emailPlaceholder": "Ingresa tu correo electrónico",
+    "email": "¿Dónde podemos contestarte?",
+    "emailPlaceholder": "ejemplo@correo.com",
     "subject": "Asunto",
     "subjectPlaceholder": "Selecciona un asunto",
-    "message": "Mensaje",
+    "message": "Cuéntanos, lo que escribas lo leemos con ganas",
     "messagePlaceholder": "¿En qué podemos ayudarte?",
-    "submit": "Enviar mensaje"
+    "submit": "Enviar mensaje",
+    "sending": "Enviando...",
+    "sendAnother": "Enviar otro mensaje",
+    "footer": "Gracias por compartir. Esto también es circular."
   },
   "subjects": {
-    "platformIssues": "Problemas de la plataforma",
-    "accountProblems": "Problemas de cuenta",
+    "platformIssues": "Problemas con la plataforma",
+    "accountProblems": "Problemas con la cuenta",
     "paymentBilling": "Pagos y facturación",
     "productInquiry": "Consulta sobre un producto",
     "feedback": "Comentarios y sugerencias",
@@ -29,7 +37,15 @@
     "messageError": "Tu mensaje debe tener al menos 10 caracteres",
     "fieldsRequired": "Por favor completa todos los campos requeridos",
     "success": "Tu mensaje ha sido enviado. Te responderemos pronto.",
+    "successTitle": "¡Mensaje enviado!",
+    "successDescription": "Gracias por contactarnos. Te responderemos pronto.",
     "error": "Algo salió mal. Por favor intenta de nuevo."
+  },
+  "a11y": {
+    "formLabel": "Formulario de contacto",
+    "infoListLabel": "Por qué contactarnos",
+    "successAnnouncement": "Mensaje enviado con éxito. Nos pondremos en contacto pronto.",
+    "validationError": "Por favor corrige los errores en el formulario antes de enviar."
   },
   "noResults": "No se encontraron resultados"
 }

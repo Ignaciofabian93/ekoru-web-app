@@ -1,35 +1,51 @@
 {
   "page": {
-    "heroLabel": "Assistance",
-    "heroTitle": "Contactez-nous"
+    "title": "Parlons en tant que communauté",
+    "subtitle": "Pour des idées qui s'additionnent, des questions qui inspirent ou des messages qui veulent être entendus. Remplissez vos coordonnées et nous promettons de répondre avec attention, soin et circularité."
+  },
+  "info": {
+    "response": "Nous répondons dans les 24-48 heures",
+    "privacy": "Vos informations sont en sécurité avec nous",
+    "community": "Rejoignez la communauté circulaire"
   },
   "form": {
-    "name": "Nom",
-    "namePlaceholder": "Saisissez votre nom",
-    "email": "E-mail",
-    "emailPlaceholder": "Saisissez votre e-mail",
+    "name": "Quel est votre nom ?",
+    "namePlaceholder": "Entrez votre nom",
+    "email": "Où pouvons-nous vous répondre ?",
+    "emailPlaceholder": "exemple@courriel.com",
     "subject": "Sujet",
     "subjectPlaceholder": "Sélectionnez un sujet",
-    "message": "Message",
+    "message": "Dites-nous, nous lisons ce que vous écrivez avec enthousiasme",
     "messagePlaceholder": "Comment pouvons-nous vous aider ?",
-    "submit": "Envoyer le message"
+    "submit": "Envoyer le message",
+    "sending": "Envoi en cours...",
+    "sendAnother": "Envoyer un autre message",
+    "footer": "Merci de partager. Ceci est aussi circulaire."
   },
   "subjects": {
     "platformIssues": "Problèmes de plateforme",
     "accountProblems": "Problèmes de compte",
-    "paymentBilling": "Paiement et facturation",
+    "paymentBilling": "Paiements et facturation",
     "productInquiry": "Question sur un produit",
     "feedback": "Commentaires et suggestions",
     "other": "Autre"
   },
   "feedback": {
-    "nameError": "Veuillez saisir votre nom",
-    "emailError": "Veuillez saisir une adresse e-mail valide",
+    "nameError": "Veuillez entrer votre nom",
+    "emailError": "Veuillez entrer une adresse e-mail valide",
     "subjectError": "Veuillez sélectionner un sujet",
     "messageError": "Votre message doit contenir au moins 10 caractères",
     "fieldsRequired": "Veuillez remplir tous les champs requis",
     "success": "Votre message a été envoyé. Nous vous répondrons bientôt.",
+    "successTitle": "Message envoyé !",
+    "successDescription": "Merci de nous avoir contactés. Nous répondrons bientôt.",
     "error": "Une erreur s'est produite. Veuillez réessayer."
+  },
+  "a11y": {
+    "formLabel": "Formulaire de contact",
+    "infoListLabel": "Pourquoi nous contacter",
+    "successAnnouncement": "Message envoyé avec succès. Nous vous répondrons bientôt.",
+    "validationError": "Veuillez corriger les erreurs dans le formulaire avant d'envoyer."
   },
   "noResults": "Aucun résultat trouvé"
 }

@@ -102,8 +102,21 @@ function cacheKey(lat: number, lng: number, radiusMeters: number) {
 }
 
 /**
- * `fetchRecyclePoints` with a sessionStorage cache in front. Falls back to a
- * plain fetch when storage is unavailable (SSR, privacy mode, quota).
+ * Requests currently on the wire, keyed the same way as the cache.
+ *
+ * The public mirrors allow very few concurrent slots per IP and answer extra
+ * ones with 429/504, so firing the same query twice at once tends to fail both.
+ * That is easy to do without meaning to: React's StrictMode runs effects twice
+ * on mount in development, and any remount repeats the request while the first
+ * is still in flight. Sharing the promise makes those callers wait on one
+ * request instead of competing with each other.
+ */
+const inFlight = new Map<string, Promise<RecyclePoint[]>>();
+
+/**
+ * `fetchRecyclePoints` with a sessionStorage cache and in-flight de-duplication
+ * in front. Falls back to a plain fetch when storage is unavailable (SSR,
+ * privacy mode, quota).
  */
 export async function fetchRecyclePointsCached(
   lat: number,
@@ -122,13 +135,24 @@ export async function fetchRecyclePointsCached(
     // Unreadable/corrupt entry — fall through to a network fetch.
   }
 
-  const points = await fetchRecyclePoints(lat, lng, radiusMeters);
+  const pending = inFlight.get(key);
+  if (pending) return pending;
 
-  try {
-    sessionStorage.setItem(key, JSON.stringify({ at: Date.now(), points }));
-  } catch {
-    // Storage full or blocked — caching is best-effort.
-  }
+  const request = fetchRecyclePoints(lat, lng, radiusMeters)
+    .then((points) => {
+      try {
+        sessionStorage.setItem(key, JSON.stringify({ at: Date.now(), points }));
+      } catch {
+        // Storage full or blocked — caching is best-effort.
+      }
+      return points;
+    })
+    .finally(() => {
+      // Cleared either way: a failure must not be remembered as pending, or the
+      // retry button would hand back the same rejected promise forever.
+      inFlight.delete(key);
+    });
 
-  return points;
+  inFlight.set(key, request);
+  return request;
 }

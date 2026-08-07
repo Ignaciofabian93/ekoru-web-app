@@ -49,7 +49,7 @@ const VARIANT_FOCUS_BORDER: Record<SelectVariant, string> = {
 export function Select({
   options = [],
   value,
-  name: _name,
+  name,
   label,
   placeholder = "Select...",
   onChange,
@@ -158,8 +158,10 @@ export function Select({
         </Text>
       )}
 
-      {/* Trigger */}
+      {/* Trigger. Carries `name` as its id so a form can focus this control the
+          same way it focuses an input — by field name. */}
       <button
+        id={name}
         type="button"
         onClick={handleToggle}
         disabled={disabled || readOnly}

@@ -1,18 +1,26 @@
 {
   "page": {
-    "heroLabel": "Support",
-    "heroTitle": "Get in touch"
+    "title": "Let's talk as a community",
+    "subtitle": "For ideas that add up, questions that inspire, or messages that want to be heard. Fill in your details and we promise to respond with attention, care, and circularity."
+  },
+  "info": {
+    "response": "We respond within 24-48 hours",
+    "privacy": "Your information is safe with us",
+    "community": "Join the circular community"
   },
   "form": {
-    "name": "Name",
+    "name": "What's your name?",
     "namePlaceholder": "Enter your name",
-    "email": "Email",
-    "emailPlaceholder": "Enter your email",
+    "email": "Where can we reply?",
+    "emailPlaceholder": "example@email.com",
     "subject": "Subject",
     "subjectPlaceholder": "Select a subject",
-    "message": "Message",
+    "message": "Tell us, we read what you write with enthusiasm",
     "messagePlaceholder": "How can we help you?",
-    "submit": "Send message"
+    "submit": "Send message",
+    "sending": "Sending...",
+    "sendAnother": "Send another message",
+    "footer": "Thank you for sharing. This is also circular."
   },
   "subjects": {
     "platformIssues": "Platform issues",
@@ -29,7 +37,15 @@
     "messageError": "Your message must be at least 10 characters",
     "fieldsRequired": "Please fill in all required fields",
     "success": "Your message has been sent. We'll get back to you soon.",
+    "successTitle": "Message sent!",
+    "successDescription": "Thank you for contacting us. We'll respond soon.",
     "error": "Something went wrong. Please try again."
+  },
+  "a11y": {
+    "formLabel": "Contact form",
+    "infoListLabel": "Why contact us",
+    "successAnnouncement": "Message sent successfully. We will be in touch soon.",
+    "validationError": "Please correct the errors in the form before submitting."
   },
   "noResults": "No results found"
 }
