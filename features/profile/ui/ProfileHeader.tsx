@@ -52,10 +52,10 @@ export function ProfileHeader() {
       />
 
       {/* Identity bar — avatar overlaps the cover, details sit on the surface */}
-      <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-5 sm:text-left">
+      <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-5 sm:text-left mt-3">
         {/* The negative margin is half the avatar's size, so it always
             straddles the cover's bottom edge. */}
-        <div className="relative z-10 -mt-11 shrink-0 sm:-mt-14">
+        <div className="relative z-10 -mt-11 shrink-0">
           <Avatar image={profileImage} alt="" size="xl" frame="raised" />
           <ImageUploadButton
             variant="badge"

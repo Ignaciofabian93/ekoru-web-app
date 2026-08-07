@@ -10,10 +10,3 @@ export interface SubHeaderLink {
   path: string;
   icon: LucideIcon;
 }
-
-/** An entry of the profile dropdown. `labelKey` is resolved in the `navigation` namespace. */
-export interface ProfileMenuItem {
-  labelKey: string;
-  path: string;
-  icon: LucideIcon;
-}

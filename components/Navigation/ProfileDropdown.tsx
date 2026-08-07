@@ -1,16 +1,7 @@
 "use client";
 import { useId } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Bell,
-  Handshake,
-  LogIn,
-  PackagePlus,
-  Recycle,
-  LogOutIcon,
-  UserRound,
-  UserRoundPlus,
-} from "lucide-react";
+import { LogOutIcon } from "lucide-react";
 import Image from "next/image";
 import clsx from "clsx";
 import { useTranslation } from "@/i18n/context";
@@ -33,20 +24,12 @@ import {
   useDropdown,
   useRovingFocus,
 } from "@/components/Overlays/Dropdown";
-import type { ProfileMenuItem } from "./types";
-
-const AUTH_MENU_ITEMS: ProfileMenuItem[] = [
-  { labelKey: "dropdown.myProfile", path: "/profile", icon: UserRound },
-  { labelKey: "dropdown.deals", path: "/deals", icon: Handshake },
-  { labelKey: "dropdown.recycle", path: "/recycle", icon: Recycle },
-  { labelKey: "dropdown.publish", path: "/publish", icon: PackagePlus },
-  { labelKey: "dropdown.notifications", path: "/notifications", icon: Bell },
-];
-
-const GUEST_MENU_ITEMS: ProfileMenuItem[] = [
-  { labelKey: "dropdown.signIn", path: "/login", icon: LogIn },
-  { labelKey: "dropdown.signUp", path: "/register", icon: UserRoundPlus },
-];
+import {
+  DROPDOWN_ACCOUNT_SECTION,
+  DROPDOWN_GUEST_SECTION,
+  DROPDOWN_SUPPORT_SECTION,
+  type DropdownMenuSection,
+} from "./constants/menuItems";
 
 export default function ProfileDropdown() {
   const menuId = useId();
@@ -62,8 +45,23 @@ export default function ProfileDropdown() {
   const email = useSellerEmail();
   const initials = useInitials();
 
-  const menuItems = isAuthenticated ? AUTH_MENU_ITEMS : GUEST_MENU_ITEMS;
-  const itemCount = menuItems.length + (isAuthenticated ? 1 : 0);
+  const sections: DropdownMenuSection[] = [
+    isAuthenticated ? DROPDOWN_ACCOUNT_SECTION : DROPDOWN_GUEST_SECTION,
+    DROPDOWN_SUPPORT_SECTION,
+  ];
+
+  // Roving focus indexes one flat list, so each section continues the previous
+  // one's numbering and sign-out sits last. `offsets[i]` is where section `i`
+  // starts.
+  const offsets = sections.reduce<number[]>(
+    (acc, section, i) => [
+      ...acc,
+      (acc[i - 1] ?? 0) + (sections[i - 1]?.items.length ?? 0),
+    ],
+    [],
+  );
+  const itemCount =
+    sections.reduce((n, s) => n + s.items.length, 0) + (isAuthenticated ? 1 : 0);
 
   const { isOpen, close, toggle, containerRef, triggerRef } =
     useDropdown<HTMLButtonElement>();
@@ -105,30 +103,50 @@ export default function ProfileDropdown() {
           email={email}
         />
 
-        <div role="menu" aria-label={t("a11y.accountMenu")} className="py-1.5">
-          {menuItems.map((item, index) => (
-            <DropdownItem
-              key={item.labelKey}
-              ref={itemRef(index)}
-              icon={item.icon}
-              label={t(item.labelKey)}
-              iconBadge
-              badgeCount={item.path === "/deals" ? dealsCount : undefined}
-              hasBorder={index !== menuItems.length - 1}
-              onSelect={() => handleNavigate(item.path)}
-              onKeyDown={(e) => handleKeyDown(e, index)}
-            />
+        <div role="menu" aria-label={t("a11y.accountMenu")} className="py-1.5 px-2">
+          {sections.map((section, sectionIndex) => (
+            // The heading is decorative — the group's `aria-label` already
+            // names this run of items, so announcing it twice would be noise.
+            <div key={section.key} role="group" aria-label={t(section.label)}>
+              <p
+                aria-hidden
+                className="px-3 pt-2.5 pb-1 font-sans text-xs font-semibold tracking-wide text-foreground-tertiary uppercase"
+              >
+                {t(section.label)}
+              </p>
+              {section.items.map((item, i) => {
+                const index = offsets[sectionIndex] + i;
+                return (
+                  <DropdownItem
+                    key={item.route}
+                    ref={itemRef(index)}
+                    icon={item.icon}
+                    label={t(item.label)}
+                    disabled={!item.available}
+                    description={item.available ? undefined : t("dropdown.comingSoon")}
+                    badgeCount={item.route === "/deals" ? dealsCount : undefined}
+                    hasBorder={i !== section.items.length - 1}
+                    onSelect={() => handleNavigate(item.route)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                  />
+                );
+              })}
+            </div>
           ))}
+
+          {/* The only item carrying a standing highlight: everything above it
+              navigates, this one ends the session, so it reads as its own block
+              rather than one more row in the list. */}
           {isAuthenticated && (
             <DropdownItem
-              ref={itemRef(menuItems.length)}
+              ref={itemRef(itemCount - 1)}
               icon={LogOutIcon}
               label={t("dropdown.signOut")}
-              iconBadge
               tone="danger"
-              hasBorder
+              highlighted
+              className="mt-2 rounded-lg"
               onSelect={handleLogout}
-              onKeyDown={(e) => handleKeyDown(e, menuItems.length)}
+              onKeyDown={(e) => handleKeyDown(e, itemCount - 1)}
             />
           )}
         </div>

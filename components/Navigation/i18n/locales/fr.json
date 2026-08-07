@@ -16,6 +16,8 @@
     "singleLanguage": "Une seule langue est disponible pour ce pays."
   },
   "dropdown": {
+    "account": "Compte",
+    "comingSoon": "Bientôt disponible",
     "myProfile": "Mon Profil",
     "deals": "Mes échanges",
     "recycle": "Recycler",
@@ -23,7 +25,11 @@
     "notifications": "Notifications",
     "signIn": "Se Connecter",
     "signUp": "S'inscrire",
-    "signOut": "Se Déconnecter"
+    "signOut": "Se Déconnecter",
+    "support": "Support",
+    "contact": "Contact",
+    "termsAndConditions": "Conditions Générales",
+    "aboutEkoru": "À propos d'EKORU"
   },
   "a11y": {
     "headerLabel": "En-tête du site",
