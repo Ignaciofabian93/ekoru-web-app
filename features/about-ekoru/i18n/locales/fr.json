@@ -1,0 +1,75 @@
+{
+  "page": {
+    "heroLabel": "À propos",
+    "heroTitle": "Qu'est-ce qu'EKORU"
+  },
+  "intro": {
+    "title": "Une plateforme pour faire durer les choses",
+    "body": "EKORU est une plateforme d'économie circulaire. Nous réunissons en un seul endroit ce qui est aujourd'hui dispersé : acheter et vendre d'occasion, échanger des objets, trouver des services de réparation, localiser des points de recyclage et découvrir des boutiques qui produisent de manière responsable.\n\nNous ne croyons pas qu'une chose doive être neuve pour avoir de la valeur. La plupart des objets jetés sont encore utiles : il leur manque simplement la bonne personne. C'est ce que nous faisons : relier celui qui n'a plus besoin de quelque chose à celui qui en a besoin, et mesurer l'impact de cette décision.\n\nEKORU opère au Chili, en Argentine, au Canada et aux États-Unis, en espagnol, anglais et français, avec des prix dans la monnaie de chaque marché."
+  },
+  "features": {
+    "title": "Ce que vous pouvez faire ici",
+    "subtitle": "Toutes les actions de l'économie circulaire, depuis un seul compte.",
+    "marketplace": {
+      "title": "Marché circulaire",
+      "description": "Achetez et vendez des produits d'occasion par catégorie, rayon et proximité."
+    },
+    "exchange": {
+      "title": "Échanges et accords",
+      "description": "Proposez un troc pour un objet qui vous intéresse et négociez directement avec la personne qui l'a publié."
+    },
+    "stores": {
+      "title": "Boutiques durables",
+      "description": "Découvrez des commerces locaux qui produisent de manière responsable et achetez directement chez eux."
+    },
+    "services": {
+      "title": "Services circulaires",
+      "description": "Trouvez réparation, entretien et remise à neuf plutôt que de remplacer ce qui est cassé."
+    },
+    "recycle": {
+      "title": "Points de recyclage",
+      "description": "Repérez sur la carte les points de collecte les plus proches selon ce que vous devez recycler."
+    },
+    "community": {
+      "title": "Communauté et contenu",
+      "description": "Apprenez, partagez et participez aux côtés de personnes qui consomment autrement."
+    }
+  },
+  "beliefs": {
+    "title": "Ce en quoi nous croyons",
+    "repair": "Nous croyons qu'il faut réparer avant de remplacer.",
+    "reuse": "Nous croyons qu'il faut réutiliser avant d'acheter.",
+    "share": "Nous croyons qu'il faut partager avant d'accumuler.",
+    "intention": "Et nous croyons aux personnes qui choisissent de consommer avec intention.",
+    "closing": "EKORU n'est pas qu'une application. C'est une autre façon de se lier aux choses."
+  },
+  "goals": {
+    "title": "Alignés sur les ODD",
+    "subtitle": "Nous contribuons à quatre Objectifs de Développement Durable de l'ONU.",
+    "sdg11": {
+      "title": "Villes et communautés durables",
+      "description": "Nous renforçons les réseaux d'échange locaux qui encouragent la collaboration entre voisins."
+    },
+    "sdg12": {
+      "title": "Consommation et production responsables",
+      "description": "Nous relions les produits inutilisés à ceux qui en ont besoin et prolongeons leur durée de vie."
+    },
+    "sdg13": {
+      "title": "Mesures relatives à la lutte contre les changements climatiques",
+      "description": "Chaque réutilisation évite les émissions liées à la fabrication d'un produit neuf."
+    },
+    "sdg17": {
+      "title": "Partenariats pour la réalisation des objectifs",
+      "description": "Nous collaborons avec des organisations et institutions qui partagent cette vision."
+    }
+  },
+  "impact": {
+    "title": "L'impact se mesure",
+    "body": "Chaque annonce, achat et échange compte. La plateforme calcule l'impact environnemental de vos actions, pour que vous puissiez le voir au lieu de l'estimer.",
+    "message": "Une communauté connectée génère plus d'impact que des milliers d'actions isolées."
+  },
+  "cta": {
+    "explore": "Explorer le marché",
+    "contact": "Nous écrire"
+  }
+}

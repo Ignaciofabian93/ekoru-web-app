@@ -10,7 +10,12 @@ export const NAMESPACE = "drawer";
 
 export type DrawerDictionary = {
   header: string;
-  sections: { account: string; explore: string; support: string };
+  sections: {
+    account: string;
+    explore: string;
+    support: string;
+    empty: string;
+  };
   home: string;
   marketplace: string;
   stores: string;
@@ -20,10 +25,15 @@ export type DrawerDictionary = {
   upload: string;
   help: string;
   contact: string;
+  termsAndConditions: string;
+  aboutEKORU: string;
   profile: string;
   settings: string;
   orders: string;
   environmentalImpact: string;
+  deals: string;
+  /** Chip on rows whose page hasn't shipped yet. */
+  comingSoon: string;
   logOut: string;
   logIn: string;
   a11y: { close: string };

@@ -8,14 +8,7 @@ import { useSellerPreferences } from "../hooks/useSellerPreferences";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
 import { SettingRow } from "./SettingRow";
-
-function ComingSoonChip({ label }: { label: string }) {
-  return (
-    <span className="rounded-full border border-border-light bg-background px-2 py-0.5 text-xs font-medium text-foreground-tertiary">
-      {label}
-    </span>
-  );
-}
+import { ComingSoonChip } from "@/components/Primitives";
 
 export function Settings() {
   const { t } = useTranslation(NAMESPACE);
@@ -126,9 +119,7 @@ export function Settings() {
                     }
                     variant={item.danger ? "error" : "outline"}
                     size="sm"
-                    loading={
-                      item.action === "deactivate" ? deactivating : deleting
-                    }
+                    loading={item.action === "deactivate" ? deactivating : deleting}
                     disabled={!item.available || busy}
                     onClick={() => void handleAction(item.action)}
                   />

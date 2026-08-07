@@ -53,7 +53,9 @@ export function Footer() {
     { key: "community" },
   ] as const;
 
-  const LEGAL_LINKS = [{ key: "termsAndPolicies", route: "/legal" }] as const;
+  const LEGAL_LINKS = [
+    { key: "termsAndPolicies", route: "/terms-and-conditions" },
+  ] as const;
 
   return (
     <footer

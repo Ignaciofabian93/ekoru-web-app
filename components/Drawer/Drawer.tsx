@@ -2,17 +2,12 @@
 
 import {
   BookOpen,
-  Handshake,
   House,
-  Leaf,
-  Mail,
   MessageSquare,
   Package,
   PackagePlus,
   ScanBarcode,
-  Settings,
   Store,
-  User,
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -30,6 +25,11 @@ import useAuthStore, {
 } from "@/store/useAuthStore";
 import { NAMESPACE } from "./i18n";
 import { DRAWER_PANEL_ID } from "./constants/data";
+import {
+  ACCOUNT_MENU_SECTIONS,
+  SUPPORT_MENU_SECTIONS,
+  type DrawerMenuSection,
+} from "./constants/menuItems";
 import { useDrawerMarketplace } from "./hooks/useDrawerMarketplace";
 
 import { Button } from "@/components/Primitives/Button";
@@ -42,25 +42,53 @@ import { useDrawerServices } from "./hooks/useDrawerServices";
 import { useDrawerStores } from "./hooks/useDrawerStores";
 import { useDealsBadge } from "@/features/deals/hooks/useDealsBadge";
 import Image from "next/image";
-
-// Every one of these needs a signed-in seller, so the whole section is gated on
-// auth rather than each row. Order mirrors the avatar dropdown, where Deals also
-// sits directly under the profile entry.
-const profileMenuItems = [
-  { route: "/profile", tKey: "profile", icon: User },
-  { route: "/deals", tKey: "deals", icon: Handshake },
-  { route: "/profile/settings", tKey: "settings", icon: Settings },
-  { route: "/profile/orders", tKey: "orders", icon: Package },
-  { route: "/profile/environmental-impact", tKey: "environmentalImpact", icon: Leaf },
-];
-
-const supportMenuItems = [{ route: "/contact", tKey: "contact", icon: Mail }];
+import { ComingSoonChip } from "../Primitives";
 
 function SectionLabel({ label }: { label: string }) {
   return (
     <Title level="h6" weight="semibold" className="mt-2 ml-1">
       {label}
     </Title>
+  );
+}
+
+/**
+ * One config-driven block of links. Items whose page hasn't shipped
+ * (`available: false`) stay visible but inert, marked with a coming-soon chip —
+ * same treatment as the unavailable rows on the settings screen.
+ */
+function MenuSection({
+  section,
+  onNavigate,
+  dealsCount,
+}: {
+  section: DrawerMenuSection;
+  onNavigate: (route: string) => void;
+  /** Pending-deals count, for the row that shows it. */
+  dealsCount?: number;
+}) {
+  const { t } = useTranslation(NAMESPACE);
+
+  return (
+    <div className="mb-1 flex flex-col gap-1.5 px-4">
+      <SectionLabel label={t(section.label)} />
+      <div className="overflow-hidden rounded-lg bg-surface">
+        {section.items.map((item, index) => (
+          <MenuRow
+            key={item.route}
+            icon={item.icon}
+            label={t(item.label)}
+            onPress={() => onNavigate(item.route)}
+            hasBorder={index < section.items.length - 1}
+            disabled={!item.available}
+            badge={
+              item.available ? undefined : <ComingSoonChip label={t("comingSoon")} />
+            }
+            badgeCount={item.label === "deals" ? dealsCount : undefined}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -254,26 +282,15 @@ export default function Drawer() {
           {/* Account section — signed-in only. Every row behind it (profile,
               deals, orders, settings, impact) requires a session, so showing
               them to a guest just walks them into an auth wall. */}
-          {seller && (
-            <div className="mb-1 flex flex-col gap-1.5 px-4">
-              <SectionLabel label={t("sections.account")} />
-              <div className="overflow-hidden rounded-lg bg-surface">
-                {profileMenuItems.map((item, index) => {
-                  const Icon = item.icon;
-                  return (
-                    <MenuRow
-                      key={item.route}
-                      icon={Icon}
-                      label={t(item.tKey)}
-                      onPress={() => handleNavigate(item.route)}
-                      hasBorder={index < profileMenuItems.length - 1}
-                      badgeCount={item.route === "/deals" ? dealsCount : undefined}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {seller &&
+            ACCOUNT_MENU_SECTIONS.map((section) => (
+              <MenuSection
+                key={section.key}
+                section={section}
+                onNavigate={handleNavigate}
+                dealsCount={dealsCount}
+              />
+            ))}
 
           {/* Explore section */}
           <div className="mb-1 flex flex-col gap-1.5 px-4">
@@ -302,23 +319,13 @@ export default function Drawer() {
           </div>
 
           {/* Support section */}
-          <div className="mb-1 flex flex-col gap-1.5 px-4">
-            <SectionLabel label={t("sections.support")} />
-            <div className="overflow-hidden rounded-lg bg-surface">
-              {supportMenuItems.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <MenuRow
-                    key={item.route}
-                    icon={Icon}
-                    label={t(item.tKey)}
-                    onPress={() => handleNavigate(item.route)}
-                    hasBorder={index < supportMenuItems.length - 1}
-                  />
-                );
-              })}
-            </div>
-          </div>
+          {SUPPORT_MENU_SECTIONS.map((section) => (
+            <MenuSection
+              key={section.key}
+              section={section}
+              onNavigate={handleNavigate}
+            />
+          ))}
 
           {/* Auth action */}
           <div className="w-full flex items-center mt-3">

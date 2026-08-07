@@ -1,0 +1,75 @@
+{
+  "page": {
+    "heroLabel": "About us",
+    "heroTitle": "What EKORU is"
+  },
+  "intro": {
+    "title": "A platform for making things last longer",
+    "body": "EKORU is a circular economy platform. We bring together in one place what is scattered everywhere else: buying and selling second-hand, exchanging objects, finding repair services, locating recycling points, and discovering stores that produce responsibly.\n\nWe don't believe something has to be new to have value. Most discarded objects are still useful — they just haven't found the right person yet. That's what we do: connect whoever no longer needs something with whoever does, and measure the impact that decision creates.\n\nEKORU operates in Chile, Argentina, Canada and the United States, in Spanish, English and French, with prices in each market's own currency."
+  },
+  "features": {
+    "title": "What you can do here",
+    "subtitle": "Every circular economy action, from a single account.",
+    "marketplace": {
+      "title": "Circular market",
+      "description": "Buy and sell second-hand products by category, department and proximity."
+    },
+    "exchange": {
+      "title": "Exchanges and deals",
+      "description": "Offer a swap for an item you want and negotiate directly with whoever listed it."
+    },
+    "stores": {
+      "title": "Sustainable stores",
+      "description": "Discover local businesses that produce responsibly and buy straight from them."
+    },
+    "services": {
+      "title": "Circular services",
+      "description": "Find repair, maintenance and refurbishment instead of replacing what broke."
+    },
+    "recycle": {
+      "title": "Recycling points",
+      "description": "Locate the nearest drop-off points on the map, filtered by what you need to recycle."
+    },
+    "community": {
+      "title": "Community and content",
+      "description": "Learn, share and take part alongside people who consume differently."
+    }
+  },
+  "beliefs": {
+    "title": "What we believe",
+    "repair": "We believe in repairing before replacing.",
+    "reuse": "We believe in reusing before buying.",
+    "share": "We believe in sharing before accumulating.",
+    "intention": "And we believe in people who choose to consume with intention.",
+    "closing": "EKORU is not just an app. It's a different way of relating to things."
+  },
+  "goals": {
+    "title": "Aligned with the SDGs",
+    "subtitle": "We contribute to four of the UN Sustainable Development Goals.",
+    "sdg11": {
+      "title": "Sustainable cities and communities",
+      "description": "We strengthen local exchange networks that encourage collaboration between neighbours."
+    },
+    "sdg12": {
+      "title": "Responsible consumption and production",
+      "description": "We connect unused products with the people who need them and extend their useful life."
+    },
+    "sdg13": {
+      "title": "Climate action",
+      "description": "Every reuse avoids the emissions that come with manufacturing something new."
+    },
+    "sdg17": {
+      "title": "Partnerships for the goals",
+      "description": "We work with organisations and institutions that share this vision."
+    }
+  },
+  "impact": {
+    "title": "Impact gets measured",
+    "body": "Every listing, purchase and exchange counts. The platform calculates the environmental impact of your actions, so you can see it instead of estimating it.",
+    "message": "A connected community generates more impact than thousands of isolated actions."
+  },
+  "cta": {
+    "explore": "Explore the market",
+    "contact": "Get in touch"
+  }
+}

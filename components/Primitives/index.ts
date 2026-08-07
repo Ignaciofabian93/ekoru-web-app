@@ -13,6 +13,7 @@ export { Text } from "./Text";
 export { TextArea } from "./TextArea";
 export { Title } from "./Title";
 export { Toggle } from "./Toggle";
+export { ComingSoonChip } from "./Chip";
 
 export type { AvatarProps } from "./Avatar/types";
 export type { BadgeProps, BadgeSize, BadgeVariant } from "./Badge";

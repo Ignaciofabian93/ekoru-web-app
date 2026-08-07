@@ -15,10 +15,13 @@
   "upload": "Publish",
   "help": "Help",
   "contact": "Contact",
+  "termsAndConditions": "Terms and Conditions",
+  "aboutEKORU": "About EKORU",
   "profile": "Profile",
   "settings": "Settings",
   "orders": "Orders",
   "environmentalImpact": "Environmental Impact",
+  "comingSoon": "Coming soon",
   "logOut": "Log Out",
   "logIn": "Log In",
   "a11y": {

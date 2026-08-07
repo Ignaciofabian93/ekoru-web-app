@@ -35,7 +35,8 @@ export const PUBLIC_PATHS = [
   "blog",
   "recycle",
   "contact",
-  "legal",
+  "about-ekoru",
+  "terms-and-conditions",
 ] as const;
 
 /** Path segments that must never be indexed (matched per-language in robots). */
