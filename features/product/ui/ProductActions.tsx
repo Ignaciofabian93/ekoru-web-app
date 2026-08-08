@@ -1,6 +1,5 @@
 "use client";
 import { Check, HandCoins, Heart, PackageCheck, Share2 } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
 import { useDealActions } from "@/features/deals/hooks/useDealActions";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
@@ -16,7 +15,7 @@ interface Props {
   product: Product;
 }
 
-export function ProductActions({ lang, product }: Props) {
+export function ProductActions({ product }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
@@ -70,13 +69,6 @@ export function ProductActions({ lang, product }: Props) {
                     ? t("actions.requestToBuy")
                     : t("actions.loginToBuy")}
             </button>
-            <Link
-              href={`/${lang}/deals`}
-              aria-label={t("actions.viewDeals")}
-              className="flex w-14 items-center justify-center rounded-xl border-2 border-primary text-primary transition-colors hover:bg-primary-light-bg"
-            >
-              <PackageCheck size={20} strokeWidth={2} />
-            </Link>
           </div>
           <p className="text-center text-xs text-foreground-tertiary">
             {t("actions.cashHint")}
