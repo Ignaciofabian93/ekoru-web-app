@@ -1,0 +1,96 @@
+{
+  "page": {
+    "loading": "Chargement du service…",
+    "notFound": "Service introuvable",
+    "notFoundHint": "Ce service a peut-être été supprimé ou n'est plus disponible.",
+    "error": "Impossible de charger ce service",
+    "errorHint": "Vérifiez votre connexion et réessayez."
+  },
+  "breadcrumbs": {
+    "services": "Services"
+  },
+  "gallery": {
+    "noImage": "Aucune image disponible",
+    "previous": "Image précédente",
+    "next": "Image suivante",
+    "goToImage": "Aller à l'image {{index}}",
+    "imageAlt": "{{name}} — image {{index}} sur {{total}}",
+    "thumbnailAlt": "Miniature {{index}}"
+  },
+  "actions": {
+    "contactProvider": "Contacter le prestataire",
+    "viewProvider": "Voir le prestataire",
+    "save": "Enregistrer",
+    "saved": "Enregistré",
+    "share": "Partager",
+    "viewAll": "Voir tout",
+    "ownListing": "C'est votre service — vous ne pouvez pas vous engager vous-même.",
+    "bookingSoon": "Bientôt disponible"
+  },
+  "summary": {
+    "noCategory": "Service",
+    "from": "À partir de",
+    "perHour": "par heure",
+    "onQuotation": "Sur devis",
+    "onQuotationHint": "Le prestataire vous envoie un devis selon les travaux",
+    "noPrice": "Prix sur demande",
+    "reviews": "{{count}} avis",
+    "noReviews": "Pas encore d'avis",
+    "available": "Disponible maintenant",
+    "unavailable": "Indisponible pour le moment"
+  },
+  "trust": {
+    "scheduling": "Planifiez avec le prestataire",
+    "schedulingHint": "Convenez de la date, du lieu et de l'étendue du service avant de commencer",
+    "quote": "Prix indicatif",
+    "quoteHint": "Le prix final peut varier selon les travaux dont vous avez besoin",
+    "reputation": "Vérifiez sa réputation",
+    "reputationHint": "Consultez le profil et les avis d'autres clients avant de réserver"
+  },
+  "description": {
+    "title": "À propos de ce service",
+    "empty": "Le prestataire n'a pas ajouté de description pour ce service."
+  },
+  "details": {
+    "title": "Détails du service",
+    "category": "Catégorie",
+    "pricingType": "Mode de tarification",
+    "priceRange": "Fourchette de prix",
+    "duration": "Durée estimée",
+    "durationValue": "{{minutes}} min",
+    "coverage": "Couverture",
+    "remote": "Service à distance",
+    "radius": "Rayon d'intervention",
+    "radiusValue": "{{km}} km",
+    "locations": "Zones desservies",
+    "advanceBooking": "Réservation à l'avance",
+    "advanceBookingValue": "{{days}} jours",
+    "publishedOn": "Publié le",
+    "yes": "Oui",
+    "no": "Non"
+  },
+  "pricingTypes": {
+    "FIXED": "Prix fixe",
+    "QUOTATION": "Sur devis",
+    "HOURLY": "À l'heure",
+    "PACKAGE": "Forfait"
+  },
+  "tags": {
+    "title": "Étiquettes"
+  },
+  "provider": {
+    "title": "À propos du prestataire",
+    "verified": "Vérifié",
+    "types": {
+      "PERSON": "Personne",
+      "STARTUP": "Jeune entreprise",
+      "COMPANY": "Entreprise"
+    }
+  },
+  "otherServices": {
+    "title": "Plus de services de ce prestataire",
+    "empty": "Ce prestataire n'a pas d'autres services publiés pour le moment.",
+    "scrollPrevious": "Voir les services précédents",
+    "scrollNext": "Voir plus de services"
+  }
+}

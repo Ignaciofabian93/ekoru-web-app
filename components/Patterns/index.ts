@@ -6,6 +6,7 @@ export { GradientHeader } from "./GradientHeader";
 export { PageHero } from "./PageHero";
 export { Pagination } from "./Pagination";
 export { ProductGallery } from "./ProductGallery";
+export { ProductTrust } from "./ProductTrust";
 export { ResultsGrid } from "./ResultsGrid";
 export { SectionHeader } from "./SectionHeader";
 export { SellerCard } from "./SellerCard";
@@ -20,6 +21,11 @@ export type { GradientHeaderProps } from "./GradientHeader";
 export type { PageHeroProps } from "./PageHero";
 export type { PaginationProps } from "./Pagination";
 export type { ProductGalleryLabels, ProductGalleryProps } from "./ProductGallery";
+export type {
+  ProductTrustItem,
+  ProductTrustProps,
+  ProductTrustTone,
+} from "./ProductTrust";
 export type { ResultsGridProps } from "./ResultsGrid";
 export type { SectionHeaderProps } from "./SectionHeader";
 export type { StatTileOrientation, StatTileProps, StatTileTone } from "./StatTile";

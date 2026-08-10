@@ -48,12 +48,12 @@
     "REFURBISHED": "Reacondicionado"
   },
   "trust": {
-    "secureCheckout": "Pago seguro",
-    "secureCheckoutHint": "Pagos encriptados, tus datos están protegidos",
-    "buyerProtection": "Protección al comprador",
-    "buyerProtectionHint": "Devolución si el producto no es como se describe",
-    "shipping": "Envío disponible",
-    "shippingHint": "Coordina la entrega con el vendedor"
+    "onlinePayment": "Pago en línea",
+    "onlinePaymentHint": "Paga con tarjeta o transferencia, tus datos viajan encriptados",
+    "delivery": "Despacho",
+    "deliveryHint": "Próximamente",
+    "storeBacked": "Respaldo de la tienda",
+    "storeBackedHint": "Recibes comprobante de compra y la tienda responde por tu pedido"
   },
   "description": {
     "title": "Descripción",

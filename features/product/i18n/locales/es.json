@@ -55,12 +55,12 @@
     "REFURBISHED": "Reacondicionado"
   },
   "trust": {
-    "secureCheckout": "Pago seguro",
-    "secureCheckoutHint": "Pagos encriptados, tus datos están protegidos",
-    "buyerProtection": "Protección al comprador",
-    "buyerProtectionHint": "Devolución si el producto no es como se describe",
-    "shipping": "Envío disponible",
-    "shippingHint": "Coordina la entrega con el vendedor"
+    "inPersonPayment": "Pago en persona",
+    "inPersonPaymentHint": "Acuerdas el monto y pagas directamente al vendedor en la entrega",
+    "meetup": "Entrega coordinada",
+    "meetupHint": "Definan juntos día, hora y un lugar público para encontrarse",
+    "inspect": "Revisa antes de pagar",
+    "inspectHint": "Comprueba el estado del producto antes de cerrar el trato"
   },
   "description": {
     "title": "Descripción",

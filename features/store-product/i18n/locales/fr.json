@@ -49,12 +49,12 @@
     "REFURBISHED": "Reconditionné"
   },
   "trust": {
-    "secureCheckout": "Paiement sécurisé",
-    "secureCheckoutHint": "Paiements chiffrés, vos données sont protégées",
-    "buyerProtection": "Protection acheteur",
-    "buyerProtectionHint": "Remboursement si l'article n'est pas conforme",
-    "shipping": "Livraison disponible",
-    "shippingHint": "Coordonnez la livraison avec le vendeur"
+    "onlinePayment": "Paiement en ligne",
+    "onlinePaymentHint": "Payez par carte ou virement, vos données sont chiffrées",
+    "delivery": "Livraison",
+    "deliveryHint": "Bientôt disponible",
+    "storeBacked": "Garanti par la boutique",
+    "storeBackedHint": "Vous recevez un justificatif d'achat et la boutique répond de votre commande"
   },
   "description": {
     "title": "Description",

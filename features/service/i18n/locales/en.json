@@ -1,0 +1,96 @@
+{
+  "page": {
+    "loading": "Loading service…",
+    "notFound": "Service not found",
+    "notFoundHint": "This service may have been removed or is no longer available.",
+    "error": "This service could not be loaded",
+    "errorHint": "Check your connection and try again."
+  },
+  "breadcrumbs": {
+    "services": "Services"
+  },
+  "gallery": {
+    "noImage": "No image available",
+    "previous": "Previous image",
+    "next": "Next image",
+    "goToImage": "Go to image {{index}}",
+    "imageAlt": "{{name}} — image {{index}} of {{total}}",
+    "thumbnailAlt": "Thumbnail {{index}}"
+  },
+  "actions": {
+    "contactProvider": "Contact the provider",
+    "viewProvider": "View provider",
+    "save": "Save",
+    "saved": "Saved",
+    "share": "Share",
+    "viewAll": "View all",
+    "ownListing": "This is your service — you cannot hire yourself.",
+    "bookingSoon": "Coming soon"
+  },
+  "summary": {
+    "noCategory": "Service",
+    "from": "From",
+    "perHour": "per hour",
+    "onQuotation": "By quotation",
+    "onQuotationHint": "The provider sends you a quote based on the job",
+    "noPrice": "Price on request",
+    "reviews": "{{count}} reviews",
+    "noReviews": "No reviews yet",
+    "available": "Available now",
+    "unavailable": "Not available right now"
+  },
+  "trust": {
+    "scheduling": "Book with the provider",
+    "schedulingHint": "Agree on the date, place and scope of the service before it starts",
+    "quote": "Reference price",
+    "quoteHint": "The final price may vary depending on the work you need",
+    "reputation": "Check their reputation",
+    "reputationHint": "Read the profile and other customers' reviews before hiring"
+  },
+  "description": {
+    "title": "About this service",
+    "empty": "The provider has not added a description for this service."
+  },
+  "details": {
+    "title": "Service details",
+    "category": "Category",
+    "pricingType": "Pricing model",
+    "priceRange": "Price range",
+    "duration": "Estimated duration",
+    "durationValue": "{{minutes}} min",
+    "coverage": "Coverage",
+    "remote": "Remote service",
+    "radius": "Service radius",
+    "radiusValue": "{{km}} km",
+    "locations": "Service areas",
+    "advanceBooking": "Advance booking",
+    "advanceBookingValue": "{{days}} days",
+    "publishedOn": "Published on",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "pricingTypes": {
+    "FIXED": "Fixed price",
+    "QUOTATION": "By quotation",
+    "HOURLY": "Hourly",
+    "PACKAGE": "Package"
+  },
+  "tags": {
+    "title": "Tags"
+  },
+  "provider": {
+    "title": "About the provider",
+    "verified": "Verified",
+    "types": {
+      "PERSON": "Person",
+      "STARTUP": "Startup",
+      "COMPANY": "Company"
+    }
+  },
+  "otherServices": {
+    "title": "More services from this provider",
+    "empty": "This provider has no other published services right now.",
+    "scrollPrevious": "See previous services",
+    "scrollNext": "See more services"
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "page": {
+    "loading": "Cargando servicio…",
+    "notFound": "Servicio no encontrado",
+    "notFoundHint": "Es posible que este servicio haya sido eliminado o ya no esté disponible.",
+    "error": "No se pudo cargar este servicio",
+    "errorHint": "Revisa tu conexión e inténtalo nuevamente."
+  },
+  "breadcrumbs": {
+    "services": "Servicios"
+  },
+  "gallery": {
+    "noImage": "Sin imagen disponible",
+    "previous": "Imagen anterior",
+    "next": "Imagen siguiente",
+    "goToImage": "Ir a la imagen {{index}}",
+    "imageAlt": "{{name}} — imagen {{index}} de {{total}}",
+    "thumbnailAlt": "Miniatura {{index}}"
+  },
+  "actions": {
+    "contactProvider": "Contactar al prestador",
+    "viewProvider": "Ver prestador",
+    "save": "Guardar",
+    "saved": "Guardado",
+    "share": "Compartir",
+    "viewAll": "Ver todos",
+    "ownListing": "Este es tu servicio — no puedes contratarte a ti mismo.",
+    "bookingSoon": "Próximamente"
+  },
+  "summary": {
+    "noCategory": "Servicio",
+    "from": "Desde",
+    "perHour": "por hora",
+    "onQuotation": "A convenir",
+    "onQuotationHint": "El prestador te entrega un presupuesto según el trabajo",
+    "noPrice": "Precio a consultar",
+    "reviews": "{{count}} reseñas",
+    "noReviews": "Sin reseñas aún",
+    "available": "Disponible ahora",
+    "unavailable": "No disponible por ahora"
+  },
+  "trust": {
+    "scheduling": "Agenda con el prestador",
+    "schedulingHint": "Coordinen fecha, lugar y alcance del servicio antes de comenzar",
+    "quote": "Precio referencial",
+    "quoteHint": "El valor final puede variar según el trabajo que necesites",
+    "reputation": "Revisa su reputación",
+    "reputationHint": "Mira el perfil y las valoraciones de otros clientes antes de contratar"
+  },
+  "description": {
+    "title": "Sobre este servicio",
+    "empty": "El prestador no ha agregado una descripción para este servicio."
+  },
+  "details": {
+    "title": "Detalles del servicio",
+    "category": "Categoría",
+    "pricingType": "Modalidad de cobro",
+    "priceRange": "Rango de precio",
+    "duration": "Duración estimada",
+    "durationValue": "{{minutes}} min",
+    "coverage": "Cobertura",
+    "remote": "Servicio a distancia",
+    "radius": "Radio de atención",
+    "radiusValue": "{{km}} km",
+    "locations": "Zonas de atención",
+    "advanceBooking": "Reserva con anticipación",
+    "advanceBookingValue": "{{days}} días",
+    "publishedOn": "Publicado el",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "pricingTypes": {
+    "FIXED": "Precio fijo",
+    "QUOTATION": "Por cotización",
+    "HOURLY": "Por hora",
+    "PACKAGE": "Por paquete"
+  },
+  "tags": {
+    "title": "Etiquetas"
+  },
+  "provider": {
+    "title": "Sobre el prestador",
+    "verified": "Verificado",
+    "types": {
+      "PERSON": "Persona",
+      "STARTUP": "Emprendimiento",
+      "COMPANY": "Empresa"
+    }
+  },
+  "otherServices": {
+    "title": "Más servicios de este prestador",
+    "empty": "Este prestador no tiene otros servicios publicados por ahora.",
+    "scrollPrevious": "Ver servicios anteriores",
+    "scrollNext": "Ver más servicios"
+  }
+}

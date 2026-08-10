@@ -9,7 +9,6 @@ import {
   StoreProductNotFound,
 } from "./StoreProductStatus";
 import { StoreProductSummary } from "./StoreProductSummary";
-import { StoreProductTrust } from "./StoreProductTrust";
 import { useStoreProduct } from "../hooks/useStoreProduct";
 import { StoreProductActions } from "./StoreProductActions";
 import { OtherFromBusiness } from "./OtherFromBusiness";
@@ -19,7 +18,9 @@ import { useTranslation } from "@/i18n/context";
 import { useNavigation } from "@/hooks/useNavigation";
 import { NAMESPACE } from "../i18n";
 import { ProductGallery } from "@/components/Patterns/ProductGallery";
+import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/ProductTrust";
 import { SellerCard } from "@/components/Patterns/SellerCard";
+import { ReceiptText, ShieldCheck, Truck } from "lucide-react";
 
 interface Props {
   id: string;
@@ -34,6 +35,27 @@ export function StoreProductContent({ id, lang }: Props) {
   if (loading && !product) return <StoreProductLoading />;
   if (error) return <StoreProductError lang={lang} />;
   if (!product) return <StoreProductNotFound lang={lang} />;
+
+  // Store orders are paid online through checkout. Delivery is still open — no
+  // provider picked, and it is undecided whether the store ships itself — so the
+  // row stays as a "coming soon" placeholder instead of promising a service.
+  const trustItems: ProductTrustItem[] = [
+    {
+      icon: ShieldCheck,
+      title: t("trust.onlinePayment"),
+      hint: t("trust.onlinePaymentHint"),
+    },
+    {
+      icon: Truck,
+      title: t("trust.delivery"),
+      hint: t("trust.deliveryHint"),
+    },
+    {
+      icon: ReceiptText,
+      title: t("trust.storeBacked"),
+      hint: t("trust.storeBackedHint"),
+    },
+  ];
 
   const subcategoryName = product.storeSubCategory?.translation.name;
   const subcategoryHref = product.storeSubCategory?.translation.href;
@@ -77,7 +99,8 @@ export function StoreProductContent({ id, lang }: Props) {
               noImage: t("gallery.noImage"),
               previous: t("gallery.previous"),
               next: t("gallery.next"),
-              thumbnailAlt: (index) => t("gallery.thumbnailAlt", { index: String(index) }),
+              thumbnailAlt: (index) =>
+                t("gallery.thumbnailAlt", { index: String(index) }),
               goToImage: (index) => t("gallery.goToImage", { index: String(index) }),
             }}
           />
@@ -85,7 +108,7 @@ export function StoreProductContent({ id, lang }: Props) {
           <div className="flex flex-col gap-5">
             <StoreProductSummary product={product} />
             <StoreProductActions lang={lang} product={product} />
-            <StoreProductTrust />
+            <ProductTrust items={trustItems} />
           </div>
         </div>
 

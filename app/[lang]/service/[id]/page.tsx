@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { hasLocale } from "@/constants/settings";
-import { Product } from "@/features/product/screens/Product";
+import { Service } from "@/features/service/screens/Service";
 
 export default async function ServicePage({
   params,
@@ -12,5 +12,5 @@ export default async function ServicePage({
   if (!hasLocale(lang)) notFound();
   if (!id) notFound();
 
-  return <Product id={id} lang={lang} />;
+  return <Service id={id} lang={lang} />;
 }

@@ -49,12 +49,12 @@
     "REFURBISHED": "Refurbished"
   },
   "trust": {
-    "secureCheckout": "Secure checkout",
-    "secureCheckoutHint": "Encrypted payments, your data is protected",
-    "buyerProtection": "Buyer protection",
-    "buyerProtectionHint": "Get a refund if your order is not as described",
-    "shipping": "Shipping available",
-    "shippingHint": "Coordinate delivery with the seller"
+    "onlinePayment": "Online payment",
+    "onlinePaymentHint": "Pay by card or transfer, your data travels encrypted",
+    "delivery": "Delivery",
+    "deliveryHint": "Coming soon",
+    "storeBacked": "Backed by the store",
+    "storeBackedHint": "You get a proof of purchase and the store stands behind your order"
   },
   "description": {
     "title": "Description",

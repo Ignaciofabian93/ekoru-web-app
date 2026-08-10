@@ -9,7 +9,7 @@ import { ProductGallery } from "@/components/Patterns/ProductGallery";
 import { ProductImpact } from "./ProductImpact";
 import { ProductError, ProductLoading, ProductNotFound } from "./ProductStatus";
 import { ProductSummary } from "./ProductSummary";
-import { ProductTrust } from "./ProductTrust";
+import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/ProductTrust";
 import { SellerCard } from "@/components/Patterns/SellerCard";
 import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
 import { useNavigation } from "@/hooks/useNavigation";
@@ -18,6 +18,7 @@ import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { useSearchParams } from "next/navigation";
 import { ExchangeProposal } from "./ExchangeProposal";
+import { Handshake, MapPin, PackageSearch } from "lucide-react";
 
 interface Props {
   id: string;
@@ -38,6 +39,26 @@ export function ProductContent({ id, lang }: Props) {
   // honored for products the seller actually marked exchangeable.
   const isExchangeMode =
     searchParams.get("mode") === "exchange" && product.isExchangeable;
+
+  // Marketplace listings are settled face to face: the buyer and the seller
+  // agree on a handover, cash changes hands there, and Ekoru ships nothing.
+  const trustItems: ProductTrustItem[] = [
+    {
+      icon: Handshake,
+      title: t("trust.inPersonPayment"),
+      hint: t("trust.inPersonPaymentHint"),
+    },
+    {
+      icon: MapPin,
+      title: t("trust.meetup"),
+      hint: t("trust.meetupHint"),
+    },
+    {
+      icon: PackageSearch,
+      title: t("trust.inspect"),
+      hint: t("trust.inspectHint"),
+    },
+  ];
 
   const { productCategory } = product;
 
@@ -89,7 +110,8 @@ export function ProductContent({ id, lang }: Props) {
               noImage: t("gallery.noImage"),
               previous: t("gallery.previous"),
               next: t("gallery.next"),
-              thumbnailAlt: (index) => t("gallery.thumbnailAlt", { index: String(index) }),
+              thumbnailAlt: (index) =>
+                t("gallery.thumbnailAlt", { index: String(index) }),
               goToImage: (index) => t("gallery.goToImage", { index: String(index) }),
             }}
           />
@@ -101,7 +123,7 @@ export function ProductContent({ id, lang }: Props) {
             ) : (
               <>
                 <ProductActions lang={lang} product={product} />
-                <ProductTrust />
+                <ProductTrust items={trustItems} />
               </>
             )}
           </div>

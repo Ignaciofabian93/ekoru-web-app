@@ -6,11 +6,7 @@ interface ServiceCardProps {
   service: ServiceCardService;
   lang: string;
   priority?: boolean;
-  /**
-   * Overrides the default link target. Services have no detail page of their
-   * own yet, so callers point at the catalog (or omit it, and the card falls
-   * back to the provider's page).
-   */
+  /** Overrides the default link target (`/[lang]/service/[id]`). */
   href?: string;
   /** Owner controls — see `CardProps.actions`. Switches to management mode. */
   actions?: ReactNode;
@@ -31,7 +27,7 @@ export function ServiceCard({
   actions,
   onEdit,
 }: ServiceCardProps) {
-  const target = href ?? `/${lang}/services`;
+  const target = href ?? `/${lang}/service/${service.id}`;
 
   return (
     <Card

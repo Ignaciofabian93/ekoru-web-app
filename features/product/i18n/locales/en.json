@@ -55,12 +55,12 @@
     "REFURBISHED": "Refurbished"
   },
   "trust": {
-    "secureCheckout": "Secure checkout",
-    "secureCheckoutHint": "Encrypted payments, your data is protected",
-    "buyerProtection": "Buyer protection",
-    "buyerProtectionHint": "Get a refund if your order is not as described",
-    "shipping": "Shipping available",
-    "shippingHint": "Coordinate delivery with the seller"
+    "inPersonPayment": "Pay in person",
+    "inPersonPaymentHint": "You agree on the amount and pay the seller directly at handover",
+    "meetup": "Arranged handover",
+    "meetupHint": "Agree on a day, a time and a public place to meet",
+    "inspect": "Check before you pay",
+    "inspectHint": "Inspect the item's condition before closing the deal"
   },
   "description": {
     "title": "Description",
