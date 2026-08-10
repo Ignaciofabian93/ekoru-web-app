@@ -9,6 +9,7 @@ import LocaleSwitcher from "./LocaleSwitcher";
 import { ShoppingCartButton } from "../Patterns/ShoppingCart";
 import { SearchBar } from "./SearchBar";
 import MenuButton from "./MenuButton";
+import { NotificationBell } from "@/features/notifications/ui/NotificationBell";
 import { NAMESPACE } from "./i18n";
 
 export function NavBar() {
@@ -41,6 +42,8 @@ export function NavBar() {
           <EkoruLogo label={t("a11y.homeLink")} />
           <div className="flex items-center justify-end gap-3">
             <LocaleSwitcher />
+            {/* Renders nothing for guests, so the row collapses cleanly. */}
+            <NotificationBell />
             <ShoppingCartButton
               label={t("a11y.cart")}
               labelWithOneItem={t("a11y.cartWithOneItem")}

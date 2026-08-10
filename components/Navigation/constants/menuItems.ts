@@ -69,12 +69,11 @@ export const DROPDOWN_ACCOUNT_SECTION: DropdownMenuSection = {
       icon: PackagePlus,
       available: true,
     },
-    // No notifications screen exists yet — `app/[lang]` has no such route.
     {
       route: "/notifications",
       label: "dropdown.notifications",
       icon: Bell,
-      available: false,
+      available: true,
     },
   ],
 };

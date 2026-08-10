@@ -29,6 +29,12 @@ import {
   getFooterDictionary,
   NAMESPACE as FOOTER_NAMESPACE,
 } from "@/components/Footer/i18n";
+// The bell lives in the navbar, so its copy has to be available on every page,
+// not just the notifications route.
+import {
+  getNotificationsDictionary,
+  NAMESPACE as NOTIFICATIONS_NAMESPACE,
+} from "@/features/notifications/i18n";
 
 const cabin = Cabin({
   variable: "--font-cabin",
@@ -137,12 +143,20 @@ export default async function RootLayout({
 
   if (!hasLocale(lang)) notFound();
 
-  const [dict, drawerDict, navigationDict, cardsDict, footerDict] = await Promise.all([
+  const [
+    dict,
+    drawerDict,
+    navigationDict,
+    cardsDict,
+    footerDict,
+    notificationsDict,
+  ] = await Promise.all([
     getDictionary(lang),
     getDrawerDictionary(lang),
     getNavigationDictionary(lang),
     getCardsDictionary(lang),
     getFooterDictionary(lang),
+    getNotificationsDictionary(lang),
   ]);
 
   return (
@@ -159,6 +173,7 @@ export default async function RootLayout({
                 [NAVIGATION_NAMESPACE]: navigationDict,
                 [CARD_NAMESPACE]: cardsDict,
                 [FOOTER_NAMESPACE]: footerDict,
+                [NOTIFICATIONS_NAMESPACE]: notificationsDict,
               }}
             >
               <DrawerProvider>

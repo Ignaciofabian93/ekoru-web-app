@@ -1,4 +1,5 @@
 import {
+  Bell,
   FileText,
   Handshake,
   Info,
@@ -21,6 +22,7 @@ import {
  */
 export type MenuField =
   | "profile"
+  | "notifications"
   | "deals"
   | "settings"
   | "orders"
@@ -30,6 +32,7 @@ export type SupportMenuField = "contact" | "termsAndConditions" | "aboutEKORU";
 
 export const MENU_FIELDS: MenuField[] = [
   "profile",
+  "notifications",
   "deals",
   "settings",
   "orders",
@@ -70,6 +73,12 @@ export const ACCOUNT_MENU_SECTIONS: DrawerMenuSection[] = [
     label: "sections.account",
     items: [
       { route: "/profile", label: "profile", icon: UserRound, available: true },
+      {
+        route: "/notifications",
+        label: "notifications",
+        icon: Bell,
+        available: true,
+      },
       { route: "/deals", label: "deals", icon: Handshake, available: true },
       {
         route: "/profile/settings",

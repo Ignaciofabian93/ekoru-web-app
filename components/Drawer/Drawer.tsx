@@ -41,6 +41,7 @@ import { useDrawerCommunity } from "./hooks/useDrawerCommunity";
 import { useDrawerServices } from "./hooks/useDrawerServices";
 import { useDrawerStores } from "./hooks/useDrawerStores";
 import { useDealsBadge } from "@/features/deals/hooks/useDealsBadge";
+import { useNotificationsBadge } from "@/features/notifications/hooks/useNotificationsBadge";
 import Image from "next/image";
 import { ComingSoonChip } from "../Primitives";
 
@@ -61,11 +62,14 @@ function MenuSection({
   section,
   onNavigate,
   dealsCount,
+  notificationCount,
 }: {
   section: DrawerMenuSection;
   onNavigate: (route: string) => void;
   /** Pending-deals count, for the row that shows it. */
   dealsCount?: number;
+  /** Unread notifications, for the row that shows it. */
+  notificationCount?: number;
 }) {
   const { t } = useTranslation(NAMESPACE);
 
@@ -84,7 +88,13 @@ function MenuSection({
             badge={
               item.available ? undefined : <ComingSoonChip label={t("comingSoon")} />
             }
-            badgeCount={item.label === "deals" ? dealsCount : undefined}
+            badgeCount={
+              item.label === "deals"
+                ? dealsCount
+                : item.label === "notifications"
+                  ? notificationCount
+                  : undefined
+            }
           />
         ))}
       </div>
@@ -119,6 +129,9 @@ export default function Drawer() {
   // Same deferral: this one polls, so starting it before the drawer is ever
   // opened would double the avatar dropdown's background traffic on every page.
   const dealsCount = useDealsBadge(hasOpened);
+  // Deferred until first open for the same reason as the deals count: the
+  // drawer is in the layout tree on every page.
+  const notificationCount = useNotificationsBadge(hasOpened);
 
   const accordionSections = useMemo((): AccordionSectionDef[] => {
     // Empty rows carry no route, so handleNavigate ignores them. The copy comes
@@ -289,6 +302,7 @@ export default function Drawer() {
                 section={section}
                 onNavigate={handleNavigate}
                 dealsCount={dealsCount}
+                notificationCount={notificationCount}
               />
             ))}
 

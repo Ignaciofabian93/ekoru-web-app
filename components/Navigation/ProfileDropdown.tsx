@@ -16,6 +16,7 @@ import {
 import { NAMESPACE } from "./i18n";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useDealsBadge } from "@/features/deals/hooks/useDealsBadge";
+import { useNotificationsBadge } from "@/features/notifications/hooks/useNotificationsBadge";
 import { Avatar } from "../Primitives/Avatar";
 import { Text } from "@/components/Primitives/Text";
 import {
@@ -31,6 +32,16 @@ import {
   type DropdownMenuSection,
 } from "./constants/menuItems";
 
+/** Which menu rows carry a count, so the JSX stays one expression per row. */
+function BADGE_BY_ROUTE(
+  route: string,
+  counts: { dealsCount: number; notificationCount: number },
+): number | undefined {
+  if (route === "/deals") return counts.dealsCount;
+  if (route === "/notifications") return counts.notificationCount;
+  return undefined;
+}
+
 export default function ProfileDropdown() {
   const menuId = useId();
   const router = useRouter();
@@ -40,6 +51,8 @@ export default function ProfileDropdown() {
 
   const isAuthenticated = useIsAuthenticated();
   const dealsCount = useDealsBadge();
+  // The navbar bell already polls this on desktop; Apollo dedupes the two.
+  const notificationCount = useNotificationsBadge();
   const profileImage = useProfileImage();
   const displayName = useDisplayName();
   const email = useSellerEmail();
@@ -124,7 +137,10 @@ export default function ProfileDropdown() {
                     label={t(item.label)}
                     disabled={!item.available}
                     description={item.available ? undefined : t("dropdown.comingSoon")}
-                    badgeCount={item.route === "/deals" ? dealsCount : undefined}
+                    badgeCount={BADGE_BY_ROUTE(item.route, {
+                      dealsCount,
+                      notificationCount,
+                    })}
                     hasBorder={i !== section.items.length - 1}
                     onSelect={() => handleNavigate(item.route)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
