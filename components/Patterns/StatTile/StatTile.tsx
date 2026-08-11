@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
 import { Text } from "@/components/Primitives/Text";
-import { Title } from "@/components/Primitives/Title";
 
 export type StatTileTone = "neutral" | "primary" | "success" | "info";
 export type StatTileOrientation = "vertical" | "horizontal";
@@ -22,11 +21,23 @@ export interface StatTileProps {
   className?: string;
 }
 
+/**
+ * Tinted glass, in the same recipe `TotalImpact` uses: a translucent
+ * top-to-bottom wash of the tone, a hairline border of the same hue, and the
+ * figure and its caption both carried in that color. No icon chip — the icon
+ * sits bare on the wash.
+ *
+ * `primary` is `TotalImpact`'s CO₂ card exactly. `success` and `info` have no
+ * `-light`/`-dark` steps in the palette, so their wash fades one hue from /10
+ * to near-transparent instead of between two.
+ */
 const TONE_SURFACE: Record<StatTileTone, string> = {
-  neutral: "bg-background-secondary/60 text-primary",
-  primary: "bg-linear-to-br from-primary/15 to-primary-light/10 text-primary",
-  success: "bg-linear-to-br from-success/15 to-success/5 text-success",
-  info: "bg-linear-to-br from-info/15 to-info/5 text-info",
+  neutral: "border-border-light text-foreground-secondary",
+  primary:
+    "border-primary/30 bg-linear-180 from-primary-light/5 to-primary-dark/5 text-primary",
+  success:
+    "border-success/30 bg-linear-180 from-success/10 to-success/[0.02] text-success",
+  info: "border-info/30 bg-linear-180 from-info/10 to-info/[0.02] text-info",
 };
 
 /**
@@ -48,45 +59,30 @@ export function StatTile({
   return (
     <div
       className={clsx(
-        "flex rounded-xl p-3.5",
-        isHorizontal ? "w-full items-center gap-4" : "flex-col gap-1.5",
-        // The tone tints both surface and icon, so a disabled tile drops it for
-        // a flat grey rather than a washed-out version of the live color.
+        "flex rounded-2xl border p-4 shadow-sm shadow-slate-800/10 backdrop-blur-xl",
+        isHorizontal ? "w-full items-center gap-4" : "flex-col items-center gap-1.5",
+        "hover:brightness-120 transition-all duration-300 ease-in-out",
+        // The tone tints border, wash and text together, so a disabled tile
+        // drops it for a flat grey rather than a washed-out version of the
+        // live color.
         disabled
-          ? "bg-background-secondary/60 text-foreground-muted opacity-60"
+          ? "border-border-light bg-background-secondary/60 text-foreground-muted opacity-60"
           : TONE_SURFACE[tone],
         className,
       )}
     >
+      <Icon size={22} color="currentColor" strokeWidth={1.6} aria-hidden />
+
       <div
         className={clsx(
-          "flex shrink-0 items-center justify-center rounded-md text-current",
-          isHorizontal ? "size-10" : "size-8",
-          disabled ? "bg-surface/60" : isHorizontal ? "bg-white/70" : "bg-surface",
+          "flex flex-col",
+          isHorizontal ? "min-w-0 gap-1" : "items-center gap-1.5",
         )}
       >
-        <Icon
-          size={isHorizontal ? 22 : 16}
-          color="currentColor"
-          strokeWidth={2}
-          aria-hidden
-        />
-      </div>
-
-      <div className={clsx("flex flex-col", isHorizontal && "min-w-0 gap-1")}>
-        <Title
-          level="h3"
-          size={isHorizontal ? "h6" : "h5"}
-          weight="bold"
-          color={disabled ? "tertiary" : "default"}
-        >
+        <Text variant="span" size="xl" weight="bold" className="text-current">
           {value}
-        </Title>
-        <Text
-          variant="span"
-          size="xs"
-          color={disabled ? "muted" : isHorizontal ? "secondary" : "tertiary"}
-        >
+        </Text>
+        <Text variant="span" size="xs" className="text-current">
           {label}
         </Text>
       </div>

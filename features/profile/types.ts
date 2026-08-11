@@ -30,7 +30,4 @@ export interface SellerImpactYear {
   exchangesCount: number;
   byCategory: ImpactCategoryBreakdown[];
   topItems: ImpactHighlight[];
-  /** Admin-curated "equivalent to…" lines; may be empty. */
-  co2Messages: string[];
-  waterMessages: string[];
 }

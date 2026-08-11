@@ -5,55 +5,54 @@ import { ArrowRight, Droplets, Leaf, PackageCheck } from "lucide-react";
 import { useParams } from "next/navigation";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
+import { useImpactYear } from "../hooks/useImpactYear";
+import { formatCo2KG, formatCount, formatWaterLT } from "../constants/impactFormat";
 import { SectionCard } from "./SectionCard";
 import { LinkButton } from "@/components/Primitives/LinkButton";
 
-// Lightweight preview — the full Environmental Impact screen owns the
-// detailed numbers. Wire to an aggregated impact endpoint when ready.
-const MOCK_IMPACT = {
-  totalCo2SavingsKG: 0,
-  totalWaterSavingsLT: 0,
-  productsReused: 0,
-};
+/** Stands in for each figure until the query resolves. */
+const PENDING = "—";
 
 /**
- * No aggregated impact endpoint exists yet, so every figure below is a
- * placeholder zero. The whole section is presented as disabled rather than
- * live: three real-looking zeros read as "you have saved nothing", which is a
- * worse lie than showing the feature isn't ready. Flip this off — and drop
- * MOCK_IMPACT — when the endpoint lands.
+ * The dashboard preview of the seller's savings. Reads the same
+ * `myImpactYear` record as the full Environmental Impact screen — through the
+ * same hook, so Apollo serves the second surface from cache — and shows the
+ * three headline totals for the current year.
  */
-const IMPACT_READY = false;
-
-function formatKg(n: number, locale: string) {
-  return n.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-}
-
 export function ImpactSnapshot() {
   const { t } = useTranslation(NAMESPACE);
   const params = useParams<{ lang?: SupportedLanguage }>();
   const lang = params.lang ?? DEFAULT_LANGUAGE;
 
+  // No year argument: the backend answers with the current one.
+  const { impact, loading } = useImpactYear();
+
   const stats = [
     {
       key: "co2",
       icon: Leaf,
-      value: `${formatKg(MOCK_IMPACT.totalCo2SavingsKG, lang)} kg`,
+      value: impact ? `${formatCo2KG(impact.totalCo2SavingsKG, lang)} kg` : PENDING,
       tone: "success",
     },
     {
       key: "water",
       icon: Droplets,
-      value: `${MOCK_IMPACT.totalWaterSavingsLT.toLocaleString(lang)} L`,
+      value: impact ? `${formatWaterLT(impact.totalWaterSavingsLT, lang)} L` : PENDING,
       tone: "info",
     },
     {
       key: "products",
       icon: PackageCheck,
-      value: String(MOCK_IMPACT.productsReused),
+      value: impact ? formatCount(impact.totalItems, lang) : PENDING,
       tone: "primary",
     },
   ] as const;
+
+  // `myImpactYear` is non-nullable, so a seller with nothing recorded still
+  // gets a record back — zeroed. Those zeros are a real measurement and render
+  // live. `impact` is only absent before the query resolves, which is the one
+  // case that greys the tiles out behind an em dash.
+  const resolved = Boolean(impact);
 
   return (
     <SectionCard
@@ -70,8 +69,6 @@ export function ImpactSnapshot() {
             label={t("dashboard.impact.viewFull")}
             iconPosition="right"
             size="sm"
-            disabled={!IMPACT_READY}
-            message={IMPACT_READY ? undefined : t("dashboard.impact.comingSoon")}
           />
         </div>
       }
@@ -85,7 +82,7 @@ export function ImpactSnapshot() {
             label={t(`dashboard.impact.${s.key}`)}
             orientation="horizontal"
             tone={s.tone}
-            disabled={!IMPACT_READY}
+            disabled={loading || !resolved}
           />
         ))}
       </div>
@@ -98,8 +95,6 @@ export function ImpactSnapshot() {
           label={t("dashboard.impact.viewFull")}
           iconPosition="right"
           size="sm"
-          disabled={!IMPACT_READY}
-          message={IMPACT_READY ? undefined : t("dashboard.impact.comingSoon")}
         />
       </div>
     </SectionCard>

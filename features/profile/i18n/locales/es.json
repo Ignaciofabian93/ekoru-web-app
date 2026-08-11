@@ -51,8 +51,7 @@
       "co2": "CO₂ ahorrado",
       "water": "Agua ahorrada",
       "products": "Productos reusados",
-      "viewFull": "Ver impacto completo",
-      "comingSoon": "Próximamente"
+      "viewFull": "Ver impacto completo"
     },
     "listings": {
       "title": "Mis publicaciones",
@@ -383,6 +382,45 @@
       "description": "Compra o intercambia tu primer producto para empezar a sumar.",
       "action": "Descubrir el marketplace"
     }
+  },
+  "impact": {
+    "title": "Tu impacto ambiental",
+    "subtitle": "Lo que evitaste al comprar y vender de segunda mano.",
+    "loading": "Cargando…",
+    "empty": {
+      "title": "Aún no tienes impacto registrado",
+      "description": "Cuando completes tu primera compra o intercambio verás aquí cuánto CO₂ y agua ayudaste a ahorrar."
+    },
+    "hero": {
+      "co2": "CO₂ evitado",
+      "water": "Agua ahorrada",
+      "co2Unit": "kg",
+      "waterUnit": "L"
+    },
+    "stats": {
+      "items": "Productos",
+      "sales": "Compras y ventas",
+      "exchanges": "Intercambios"
+    },
+    "categories": {
+      "title": "Por categoría",
+      "subtitle": "CO₂ evitado, de mayor a menor",
+      "unknown": "Sin categoría",
+      "itemsOne": "1 ítem",
+      "itemsMany": "{{count}} ítems"
+    },
+    "topItems": {
+      "title": "Tus mayores ahorros",
+      "unknownProduct": "Producto",
+      "roleBuyer": "Recibido",
+      "roleSeller": "Entregado",
+      "kindSale": "Compra/venta",
+      "kindExchange": "Intercambio"
+    },
+    "yearPicker": {
+      "label": "Año"
+    },
+    "footnote": "Estos números se calculan cuando cada trato se completa y no cambian después."
   },
   "subscription": {
     "screenTitle": "Suscripción",

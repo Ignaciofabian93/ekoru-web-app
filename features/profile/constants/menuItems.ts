@@ -269,7 +269,7 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         route: "/profile/environmental-impact",
         label: "account.environmentalImpact",
         icon: Leaf,
-        available: false,
+        available: true,
       },
       {
         route: "/profile/subscription",

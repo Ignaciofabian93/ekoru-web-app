@@ -7,17 +7,20 @@ export const MY_IMPACT_YEARS = gql`
   }
 `;
 
+/**
+ * `topItems` is a required argument, and the record carries no translatable
+ * text — category and product names are stored as they stood when each deal
+ * completed — so this operation takes no language.
+ */
 export const MY_IMPACT_YEAR = gql`
-  query MyImpactYear($year: Int, $language: Language) {
-    myImpactYear(year: $year, topItems: 5, language: $language) {
+  query MyImpactYear($year: Int) {
+    myImpactYear(year: $year, topItems: 5) {
       year
       totalCo2SavingsKG
       totalWaterSavingsLT
       totalItems
       salesCount
       exchangesCount
-      co2Messages
-      waterMessages
       byCategory {
         productCategoryId
         categoryName

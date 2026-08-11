@@ -12,8 +12,10 @@ import type { SellerImpactYear } from "../types";
  * numbers are stable — reopening a past year always shows what it showed then,
  * regardless of how the impact catalogue has been edited since. That means no
  * polling: the data for a closed year cannot change.
+ *
+ * Omit `year` for the current one.
  */
-export function useImpactYear(year: number | undefined, language: string) {
+export function useImpactYear(year?: number) {
   const isAuthed = useIsAuthenticated();
 
   const years = useQuery<{ myImpactYears: number[] }>(MY_IMPACT_YEARS, {
@@ -22,7 +24,7 @@ export function useImpactYear(year: number | undefined, language: string) {
   });
 
   const summary = useQuery<{ myImpactYear: SellerImpactYear }>(MY_IMPACT_YEAR, {
-    variables: { year, language: language.toUpperCase() },
+    variables: { year },
     skip: !isAuthed,
     fetchPolicy: "cache-and-network",
   });

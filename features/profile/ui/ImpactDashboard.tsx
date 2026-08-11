@@ -9,29 +9,27 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { useImpactYear } from "../hooks/useImpactYear";
-import { CategoryBars } from "../ui/CategoryBars";
+import {
+  formatCo2KG,
+  formatCount,
+  formatWaterLT,
+  impactLocale,
+} from "../constants/impactFormat";
+import { CategoryBars } from "./CategoryBars";
 
-const INTL_LOCALE: Record<string, string> = {
-  es: "es-CL",
-  en: "en-US",
-  fr: "fr-FR",
-};
-
-export function EnvironmentalImpactScreen() {
+export function ImpactDashboard() {
   const [language] = useLanguage();
   const { t } = useTranslation(NAMESPACE);
   const [year, setYear] = useState<number | undefined>(undefined);
 
-  const { availableYears, impact, loading } = useImpactYear(year, language);
-  const locale = INTL_LOCALE[language] ?? "es-CL";
+  const { availableYears, impact, loading } = useImpactYear(year);
 
   const format = useMemo(() => {
-    const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
-    const whole = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+    const locale = impactLocale(language);
     return {
-      co2: (kg: number) => `${number.format(kg)} ${t("hero.co2Unit")}`,
-      water: (lt: number) => `${whole.format(lt)} ${t("hero.waterUnit")}`,
-      count: (n: number) => whole.format(n),
+      co2: (kg: number) => `${formatCo2KG(kg, language)} ${t("impact.hero.co2Unit")}`,
+      water: (lt: number) => `${formatWaterLT(lt, language)} ${t("impact.hero.waterUnit")}`,
+      count: (n: number) => formatCount(n, language),
       date: (iso: string) => {
         const parsed = new Date(iso);
         return Number.isNaN(parsed.getTime())
@@ -42,26 +40,26 @@ export function EnvironmentalImpactScreen() {
             }).format(parsed);
       },
     };
-  }, [locale, t]);
+  }, [language, t]);
 
   const shownYear = impact?.year ?? year ?? new Date().getFullYear();
   const hasData = Boolean(impact && impact.totalItems > 0);
 
   return (
-    <section className="mx-auto w-full max-w-3xl px-4 py-6">
+    <section>
       <header className="mb-5">
         <Title level="h1" size="h3">
-          {t("title")}
+          {t("impact.title")}
         </Title>
         <Text variant="p" size="sm" className="mt-1 text-foreground-secondary">
-          {t("subtitle")}
+          {t("impact.subtitle")}
         </Text>
       </header>
 
       {availableYears.length > 1 && (
         <div
           role="tablist"
-          aria-label={t("yearPicker.label")}
+          aria-label={t("impact.yearPicker.label")}
           className="mb-5 flex gap-1 overflow-x-auto rounded-lg bg-background-secondary p-1"
         >
           {availableYears.map((option) => (
@@ -87,7 +85,7 @@ export function EnvironmentalImpactScreen() {
 
       {loading && (
         <p className="py-10 text-center text-sm text-foreground-tertiary">
-          {t("loading")}
+          {t("impact.loading")}
         </p>
       )}
 
@@ -100,14 +98,14 @@ export function EnvironmentalImpactScreen() {
             className="text-foreground-tertiary"
           />
           <Text variant="p" size="base" weight="bold">
-            {t("empty.title")}
+            {t("impact.empty.title")}
           </Text>
           <Text
             variant="p"
             size="sm"
             className="max-w-sm text-foreground-secondary"
           >
-            {t("empty.description")}
+            {t("impact.empty.description")}
           </Text>
         </div>
       )}
@@ -118,25 +116,23 @@ export function EnvironmentalImpactScreen() {
           <div className="grid gap-3 sm:grid-cols-2">
             <HeroFigure
               icon={<Leaf size={18} aria-hidden strokeWidth={2} />}
-              label={t("hero.co2")}
+              label={t("impact.hero.co2")}
               value={format.co2(impact.totalCo2SavingsKG)}
-              equivalences={impact.co2Messages}
               tone="primary"
             />
             <HeroFigure
               icon={<Droplets size={18} aria-hidden strokeWidth={2} />}
-              label={t("hero.water")}
+              label={t("impact.hero.water")}
               value={format.water(impact.totalWaterSavingsLT)}
-              equivalences={impact.waterMessages}
               tone="secondary"
             />
           </div>
 
           <div className="grid grid-cols-3 gap-3">
-            <StatTile label={t("stats.items")} value={format.count(impact.totalItems)} />
-            <StatTile label={t("stats.sales")} value={format.count(impact.salesCount)} />
+            <StatTile label={t("impact.stats.items")} value={format.count(impact.totalItems)} />
+            <StatTile label={t("impact.stats.sales")} value={format.count(impact.salesCount)} />
             <StatTile
-              label={t("stats.exchanges")}
+              label={t("impact.stats.exchanges")}
               value={format.count(impact.exchangesCount)}
             />
           </div>
@@ -144,17 +140,17 @@ export function EnvironmentalImpactScreen() {
           {impact.byCategory.length > 0 && (
             <Card>
               <CardHeading
-                title={t("categories.title")}
-                subtitle={t("categories.subtitle")}
+                title={t("impact.categories.title")}
+                subtitle={t("impact.categories.subtitle")}
               />
               <CategoryBars
                 categories={impact.byCategory}
                 formatCo2={format.co2}
-                unknownLabel={t("categories.unknown")}
+                unknownLabel={t("impact.categories.unknown")}
                 itemsLabel={(count) =>
                   count === 1
-                    ? t("categories.itemsOne")
-                    : t("categories.itemsMany", { count: String(count) })
+                    ? t("impact.categories.itemsOne")
+                    : t("impact.categories.itemsMany", { count: String(count) })
                 }
               />
             </Card>
@@ -162,7 +158,7 @@ export function EnvironmentalImpactScreen() {
 
           {impact.topItems.length > 0 && (
             <Card>
-              <CardHeading title={t("topItems.title")} />
+              <CardHeading title={t("impact.topItems.title")} />
               <ul className="divide-y divide-border-light">
                 {impact.topItems.map((item, index) => (
                   <li
@@ -176,7 +172,7 @@ export function EnvironmentalImpactScreen() {
                         weight="semibold"
                         className="block line-clamp-1"
                       >
-                        {item.productName || t("topItems.unknownProduct")}
+                        {item.productName || t("impact.topItems.unknownProduct")}
                       </Text>
                       <Text
                         variant="span"
@@ -184,12 +180,12 @@ export function EnvironmentalImpactScreen() {
                         className="block text-foreground-tertiary"
                       >
                         {item.role === "BUYER"
-                          ? t("topItems.roleBuyer")
-                          : t("topItems.roleSeller")}
+                          ? t("impact.topItems.roleBuyer")
+                          : t("impact.topItems.roleSeller")}
                         {" · "}
                         {item.kind === "EXCHANGE"
-                          ? t("topItems.kindExchange")
-                          : t("topItems.kindSale")}
+                          ? t("impact.topItems.kindExchange")
+                          : t("impact.topItems.kindSale")}
                         {item.occurredAt ? ` · ${format.date(item.occurredAt)}` : ""}
                       </Text>
                     </span>
@@ -212,7 +208,7 @@ export function EnvironmentalImpactScreen() {
             size="xs"
             className="text-center text-foreground-tertiary"
           >
-            {t("footnote")}
+            {t("impact.footnote")}
           </Text>
         </div>
       )}
@@ -250,21 +246,23 @@ function CardHeading({
 }
 
 /**
- * The headline number. Large, sans, with the admin-curated "equivalent to…"
- * line underneath when one exists — that copy is what makes an abstract
- * kilogram mean something.
+ * The headline number. Large and sans, on its own.
+ *
+ * This used to carry an admin-curated "equivalent to…" line underneath, but
+ * `SellerImpactYear` exposes no such field — the copy lives in the
+ * `rawCo2ImpactMessages` / `rawWaterImpactMessages` tables, keyed by a
+ * min/max band the client would have to match against. Restore it here once
+ * the seller-facing query resolves the band itself.
  */
 function HeroFigure({
   icon,
   label,
   value,
-  equivalences,
   tone,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
-  equivalences: string[];
   tone: "primary" | "secondary";
 }) {
   return (
@@ -284,16 +282,6 @@ function HeroFigure({
       <span className="font-sans text-4xl font-bold leading-none text-foreground">
         {value}
       </span>
-
-      {equivalences[0] && (
-        <Text
-          variant="p"
-          size="xs"
-          className="mt-2 text-foreground-secondary"
-        >
-          {equivalences[0]}
-        </Text>
-      )}
     </div>
   );
 }
