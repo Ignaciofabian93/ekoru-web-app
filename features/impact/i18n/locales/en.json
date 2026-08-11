@@ -1,0 +1,39 @@
+{
+  "title": "Your environmental impact",
+  "subtitle": "What you avoided by buying and selling second-hand.",
+  "loading": "Loading…",
+  "empty": {
+    "title": "No impact recorded yet",
+    "description": "Once you complete your first purchase or exchange, you'll see how much CO₂ and water you helped save."
+  },
+  "hero": {
+    "co2": "CO₂ avoided",
+    "water": "Water saved",
+    "co2Unit": "kg",
+    "waterUnit": "L"
+  },
+  "stats": {
+    "items": "Items",
+    "sales": "Purchases & sales",
+    "exchanges": "Exchanges"
+  },
+  "categories": {
+    "title": "By category",
+    "subtitle": "CO₂ avoided, highest first",
+    "unknown": "Uncategorised",
+    "itemsOne": "1 item",
+    "itemsMany": "{{count}} items"
+  },
+  "topItems": {
+    "title": "Your biggest savings",
+    "unknownProduct": "Product",
+    "roleBuyer": "Received",
+    "roleSeller": "Passed on",
+    "kindSale": "Purchase/sale",
+    "kindExchange": "Exchange"
+  },
+  "yearPicker": {
+    "label": "Year"
+  },
+  "footnote": "These figures are calculated when each deal completes and don't change afterwards."
+}
