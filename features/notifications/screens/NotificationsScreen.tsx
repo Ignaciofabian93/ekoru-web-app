@@ -9,7 +9,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { useNotifications } from "../hooks/useNotifications";
-import { NotificationItem } from "./NotificationItem";
+import { NotificationItem } from "../ui/NotificationItem";
 
 const PAGE_SIZE = 20;
 

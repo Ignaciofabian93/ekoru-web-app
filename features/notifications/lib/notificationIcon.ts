@@ -1,6 +1,10 @@
 import {
   Bell,
   BadgeCheck,
+  CalendarCheck,
+  CalendarClock,
+  CalendarX,
+  FileText,
   Handshake,
   PackageCheck,
   ShieldAlert,
@@ -43,6 +47,17 @@ const SPEC_BY_TYPE: Partial<Record<NotificationType, IconSpec>> = {
   PAYMENT_RECEIVED: { icon: BadgeCheck, accent: "text-primary" },
   PAYMENT_FAILED: { icon: XCircle, accent: "text-red-500" },
   PAYMENT_REFUNDED: { icon: RotateCcw, accent: "text-secondary-dark" },
+
+  QUOTATION_REQUEST: { icon: FileText, accent: "text-primary" },
+  QUOTATION_RECEIVED: { icon: FileText, accent: "text-primary" },
+  QUOTATION_ACCEPTED: { icon: BadgeCheck, accent: "text-primary" },
+  QUOTATION_DECLINED: { icon: XCircle, accent: "text-red-500" },
+  QUOTATION_COMPLETED: { icon: BadgeCheck, accent: "text-primary" },
+
+  BOOKING_REQUEST: { icon: CalendarClock, accent: "text-primary" },
+  BOOKING_CONFIRMED: { icon: CalendarCheck, accent: "text-primary" },
+  BOOKING_CANCELLED: { icon: CalendarX, accent: "text-red-500" },
+  BOOKING_COMPLETED: { icon: BadgeCheck, accent: "text-primary" },
 
   SECURITY_LOGIN_ALERT: { icon: ShieldAlert, accent: "text-amber-500" },
 };

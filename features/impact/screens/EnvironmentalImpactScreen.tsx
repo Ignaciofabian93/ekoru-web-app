@@ -9,7 +9,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { useImpactYear } from "../hooks/useImpactYear";
-import { CategoryBars } from "./CategoryBars";
+import { CategoryBars } from "../ui/CategoryBars";
 
 const INTL_LOCALE: Record<string, string> = {
   es: "es-CL",

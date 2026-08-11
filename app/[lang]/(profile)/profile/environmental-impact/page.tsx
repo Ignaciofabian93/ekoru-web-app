@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, type SupportedLanguage } from "@/constants/settings";
 import { DictionaryProvider } from "@/i18n/context";
 import { getImpactDictionary, NAMESPACE } from "@/features/impact/i18n";
-import { EnvironmentalImpactScreen } from "@/features/impact/ui/EnvironmentalImpactScreen";
+import { EnvironmentalImpactScreen } from "@/features/impact/screens/EnvironmentalImpactScreen";
 
 export default async function EnvironmentalImpact({
   params,

@@ -7,7 +7,7 @@ import {
   getNotificationsDictionary,
   NAMESPACE,
 } from "@/features/notifications/i18n";
-import { NotificationsScreen } from "@/features/notifications/ui/NotificationsScreen";
+import { NotificationsScreen } from "@/features/notifications/screens/NotificationsScreen";
 
 export default async function NotificationsPage({
   params,
