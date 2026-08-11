@@ -1,5 +1,4 @@
 "use client";
-import { Droplets, Leaf } from "lucide-react";
 import { useTranslation } from "@/i18n/context";
 import type { EnvironmentalImpact } from "@/types/product";
 import { formatMaterialAmount, materialLabel } from "@/utils/impact";
@@ -7,6 +6,7 @@ import { NAMESPACE } from "../i18n";
 import { Title } from "@/components/Primitives/Title";
 import { Text } from "@/components/Primitives/Text";
 import clsx from "clsx";
+import { TotalImpact } from "@/components/Patterns";
 
 export function ProductImpact({ impact }: { impact?: EnvironmentalImpact | null }) {
   const { t } = useTranslation(NAMESPACE);
@@ -27,24 +27,18 @@ export function ProductImpact({ impact }: { impact?: EnvironmentalImpact | null 
       </Text>
 
       <div className="grid grid-cols-2 gap-3 my-3">
-        <div className="flex flex-col items-center gap-1.5 rounded-2xl border border-primary/30 bg-primary/10 p-4">
-          <Leaf size={22} className="text-primary" strokeWidth={1.6} />
-          <Text variant="span" size="2xl" weight="bold">
-            {impact.totalCo2SavingsKG.toFixed(1)} {t("impact.kg")}
-          </Text>
-          <Text variant="span" size="xs">
-            {t("impact.co2")}
-          </Text>
-        </div>
-        <div className="flex flex-col items-center gap-1.5 rounded-2xl border border-secondary/30 bg-secondary/10 p-4">
-          <Droplets size={22} className="text-secondary" strokeWidth={1.6} />
-          <Text variant="span" size="2xl" weight="bold">
-            {impact.totalWaterSavingsLT.toFixed(1)} {t("impact.liters")}
-          </Text>
-          <Text variant="span" size="xs">
-            {t("impact.water")}
-          </Text>
-        </div>
+        <TotalImpact
+          type="co2"
+          totalValue={Number(impact.totalCo2SavingsKG.toFixed(1))}
+          unit={t("impact.kg")}
+          label={t("impact.co2")}
+        />
+        <TotalImpact
+          type="water"
+          totalValue={Number(impact.totalWaterSavingsLT.toFixed(1))}
+          unit={t("impact.liters")}
+          label={t("impact.water")}
+        />
       </div>
 
       {impact.materialBreakdown.length > 0 && (
@@ -55,7 +49,7 @@ export function ProductImpact({ impact }: { impact?: EnvironmentalImpact | null 
           <ul
             className={clsx(
               "bg-white flex flex-col divide-y divide-border-light",
-              "overflow-hidden rounded-2xl border border-border-light",
+              "overflow-hidden rounded-2xl",
             )}
           >
             {impact.materialBreakdown.map((m) => (

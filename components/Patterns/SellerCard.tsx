@@ -7,6 +7,7 @@ import { Title } from "@/components/Primitives/Title";
 import { Badge } from "@/components/Primitives/Badge";
 import { Text } from "@/components/Primitives/Text";
 import { LinkButton } from "@/components/Primitives/LinkButton";
+import clsx from "clsx";
 
 interface Props {
   lang: string;
@@ -56,7 +57,13 @@ export function SellerCard({
         {title}
       </Title>
 
-      <div className="flex flex-col gap-4 rounded-2xl border border-border-light bg-white p-4">
+      <div
+        className={clsx(
+          "flex flex-col gap-4 rounded-2xl shadow-sm shadow-slate-800/10",
+          "border border-slate-800/30 bg-white p-4 backdrop-blur-xl",
+          "bg-linear-180 from-slate-50/5 to-stone-50/5",
+        )}
+      >
         <div className="flex items-start gap-3">
           <div className="bg-background-secondary relative size-18 shrink-0 overflow-hidden rounded-full">
             {image ? (

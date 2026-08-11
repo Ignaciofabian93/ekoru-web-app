@@ -1,0 +1,1 @@
+export { TotalImpact } from "./TotalImpact";

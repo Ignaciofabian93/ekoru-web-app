@@ -13,6 +13,7 @@ export { SellerCard } from "./SellerCard";
 export { ShoppingCartButton } from "./ShoppingCart";
 export { StatTile } from "./StatTile";
 export { Tabs } from "./Tabs";
+export { TotalImpact } from "./TotalImpact";
 
 export type { BannerProps } from "./Banner";
 export type { BreadcrumbItem, BreadcrumbProps, Crumb } from "./Breadcrumb";

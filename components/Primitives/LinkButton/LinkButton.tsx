@@ -74,6 +74,7 @@ export function LinkButton({
           align="center"
           color={variant === "outlined" || variant === "ghost" ? "primary" : "white"}
           size="sm"
+          className="cursor-pointer"
         >
           {label}
         </Text>
