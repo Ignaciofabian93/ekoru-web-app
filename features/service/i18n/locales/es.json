@@ -25,7 +25,8 @@
     "share": "Compartir",
     "viewAll": "Ver todos",
     "ownListing": "Este es tu servicio — no puedes contratarte a ti mismo.",
-    "bookingSoon": "Próximamente"
+    "book": "Reservar este servicio",
+    "requestQuote": "Solicitar cotización"
   },
   "summary": {
     "noCategory": "Servicio",
@@ -92,5 +93,70 @@
     "empty": "Este prestador no tiene otros servicios publicados por ahora.",
     "scrollPrevious": "Ver servicios anteriores",
     "scrollNext": "Ver más servicios"
+  },
+  "booking": {
+    "title": "Reservar este servicio",
+    "intro": "Elige cuándo necesitas «{{service}}». El proveedor confirma antes de cualquier cobro.",
+    "date": "Fecha preferida",
+    "timeSlot": "Horario preferido (opcional)",
+    "timeSlotPlaceholder": "Ej. 10:00 – 12:00",
+    "notes": "Notas para el proveedor (opcional)",
+    "notesPlaceholder": "Algo que deba saber antes de llegar",
+    "disclaimer": "Enviar la solicitud no genera un cobro. El proveedor la revisa y confirma.",
+    "submit": "Enviar solicitud",
+    "cancel": "Cancelar",
+    "close": "Listo",
+    "sentTitle": "Reserva solicitada",
+    "sentBody": "El proveedor confirmará pronto. Puedes seguirla en Perfil → Reservas.",
+    "errors": {
+      "missingDate": "Elige una fecha para la reserva",
+      "failed": "No pudimos enviar la reserva. Inténtalo nuevamente."
+    }
+  },
+  "quote": {
+    "title": "Solicitar cotización",
+    "intro": "Cuéntale al proveedor qué necesitas de «{{service}}» y te responderá con un precio.",
+    "subject": "Asunto",
+    "subjectPlaceholder": "Ej. Mudanza de departamento de 2 dormitorios",
+    "description": "¿Qué necesitas?",
+    "descriptionPlaceholder": "Describe el trabajo, el lugar y si tienes un plazo",
+    "notes": "Notas adicionales (opcional)",
+    "notesPlaceholder": "Acceso, estacionamiento, horario de contacto…",
+    "disclaimer": "Pedir una cotización no te compromete. Decides cuando el proveedor responda.",
+    "submit": "Enviar solicitud",
+    "cancel": "Cancelar",
+    "close": "Listo",
+    "sentTitle": "Solicitud enviada",
+    "sentBody": "Te avisaremos cuando el proveedor responda. Síguela en Perfil → Cotizaciones.",
+    "errors": {
+      "incomplete": "Agrega un asunto y describe lo que necesitas",
+      "failed": "No pudimos enviar la solicitud. Inténtalo nuevamente."
+    }
+  },
+  "reviews": {
+    "title": "Reseñas",
+    "count": "{{count}} reseñas",
+    "verified": "Reserva verificada",
+    "empty": "Aún no hay reseñas. Sé el primero cuando termine tu reserva.",
+    "delete": "Eliminar mi reseña",
+    "submitted": "Gracias — tu reseña fue publicada.",
+    "form": {
+      "title": "Califica este servicio",
+      "placeholder": "¿Cómo te fue? ¿Qué debería saber el próximo cliente?",
+      "rate": "{{count}} estrellas",
+      "gate": "Puedes reseñar un servicio cuando una de tus reservas con este proveedor esté completada.",
+      "submit": "Publicar reseña"
+    },
+    "errors": {
+      "failed": "No pudimos guardar tu reseña. Inténtalo nuevamente."
+    }
+  },
+  "packages": {
+    "title": "Paquetes de este proveedor",
+    "validity": "Válido por {{count}} días",
+    "unnamedItem": "Servicio incluido"
+  },
+  "faqs": {
+    "title": "Preguntas frecuentes"
   }
 }

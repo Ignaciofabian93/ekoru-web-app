@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
 
+import { STORE_PRODUCT_REVIEW_FIELDS_FRAGMENT } from "./fragments";
+
 export const ADD_STORE_PRODUCT = gql`
   mutation AddStoreProduct($input: AddStoreProductInput!) {
     addStoreProduct(input: $input) {
@@ -43,5 +45,24 @@ export const TOGGLE_STORE_PRODUCT_LIKE = gql`
       id
       isLiked
     }
+  }
+`;
+
+// ─── Reviews (EK-18) ─────────────────────────────────────────────────────────
+// The reviewer comes from the session and must have a paid order for the
+// product, so neither is part of the input.
+
+export const ADD_STORE_PRODUCT_REVIEW = gql`
+  ${STORE_PRODUCT_REVIEW_FIELDS_FRAGMENT}
+  mutation AddStoreProductReview($input: AddStoreProductReviewInput!) {
+    addStoreProductReview(input: $input) {
+      ...StoreProductReviewFields
+    }
+  }
+`;
+
+export const DELETE_STORE_PRODUCT_REVIEW = gql`
+  mutation DeleteStoreProductReview($id: ID!) {
+    deleteStoreProductReview(id: $id)
   }
 `;

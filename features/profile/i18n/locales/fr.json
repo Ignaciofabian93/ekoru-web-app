@@ -150,7 +150,9 @@
     "environmentalImpact": "Impact Environnemental",
     "subscription": "Abonnement",
     "settings": "Paramètres",
-    "comingSoon": "Bientôt disponible"
+    "comingSoon": "Bientôt disponible",
+    "bookings": "Mes réservations",
+    "quotes": "Mes devis"
   },
   "editProfile": {
     "screenTitle": "Modifier le Profil",
@@ -299,14 +301,16 @@
       "shipped": "Expédié",
       "delivered": "Livré",
       "returned": "Retourné",
-      "canceled": "Annulé"
+      "canceled": "Annulé",
+      "pending": "Paiement en attente"
     },
     "status": {
       "PREPARING": "En préparation",
       "SHIPPED": "Expédié",
       "DELIVERED": "Livré",
       "RETURNED": "Retourné",
-      "CANCELED": "Annulé"
+      "CANCELED": "Annulé",
+      "PENDING_PAYMENT": "Paiement en attente"
     },
     "card": {
       "order": "Commande",
@@ -315,12 +319,24 @@
       "total": "Total",
       "viewDetails": "Voir les détails",
       "track": "Suivre la livraison",
-      "rate": "Évaluer l'achat"
+      "rate": "Évaluer l'achat",
+      "unavailableItem": "Article plus disponible"
     },
     "empty": {
       "title": "Aucune commande pour l'instant",
       "description": "Vos commandes apparaîtront ici.",
       "action": "Explorer la marketplace"
+    },
+    "error": {
+      "title": "Impossible de charger vos commandes",
+      "description": "Un problème est survenu de notre côté. Réessayez dans un instant.",
+      "action": "Réessayer"
+    },
+    "pagination": {
+      "label": "Pages de l'historique des commandes",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "position": "Page {{current}} sur {{total}}"
     }
   },
   "favorites": {
@@ -429,8 +445,8 @@
       "label": "Plan actuel",
       "renews": "Renouvellement le {{date}}",
       "free": "Vous êtes sur le plan gratuit",
-      "manage": "Gérer la facturation",
-      "cancel": "Annuler l'abonnement"
+      "until": "Actif jusqu'au {{date}}",
+      "oneOff": "Période unique — sans renouvellement automatique."
     },
     "plans": {
       "title": "Plans disponibles",
@@ -439,7 +455,9 @@
       "year": "par an",
       "select": "Choisir ce plan",
       "active": "Actuel",
-      "popular": "Le plus populaire"
+      "popular": "Le plus populaire",
+      "unavailable": "Pas encore disponible dans votre pays",
+      "perMonths": "tous les {{count}} mois"
     },
     "person": {
       "FREEMIUM": {
@@ -582,5 +600,80 @@
     "loading": "Chargement…"
   },
   "logout": "Se Déconnecter",
-  "back": "Retour"
+  "back": "Retour",
+  "bookings": {
+    "screenTitle": "Mes réservations",
+    "status": {
+      "PENDING": "À confirmer",
+      "CONFIRMED": "Confirmée",
+      "IN_PROGRESS": "En cours",
+      "COMPLETED": "Terminée",
+      "CANCELLED": "Annulée"
+    },
+    "card": {
+      "scheduledFor": "Prévue le",
+      "agreedPrice": "Prix convenu",
+      "cancel": "Annuler la réservation",
+      "cancelReason": "Motif",
+      "unknownService": "Service indisponible"
+    },
+    "cancelDialog": {
+      "title": "Annuler cette réservation ?",
+      "description": "Le prestataire sera averti. Vous pourrez réserver à nouveau plus tard.",
+      "confirm": "Annuler la réservation",
+      "cancel": "La conserver",
+      "defaultReason": "Annulée par le client"
+    },
+    "empty": {
+      "title": "Aucune réservation",
+      "description": "Les services que vous réservez apparaîtront ici avec leur statut."
+    },
+    "error": {
+      "title": "Impossible de charger vos réservations",
+      "description": "Un problème est survenu de notre côté. Réessayez dans un instant."
+    }
+  },
+  "quotes": {
+    "screenTitle": "Mes devis",
+    "tabs": {
+      "sent": "Demandés",
+      "received": "À répondre"
+    },
+    "status": {
+      "PENDING": "En attente",
+      "ACCEPTED": "Accepté",
+      "DECLINED": "Refusé",
+      "COMPLETED": "Terminé",
+      "CANCELLED": "Annulé",
+      "EXPIRED": "Expiré"
+    },
+    "card": {
+      "quotedPrice": "Prix proposé",
+      "providerNotes": "Notes du prestataire",
+      "accept": "Accepter",
+      "decline": "Refuser",
+      "awaitingProvider": "En attente du prix du prestataire."
+    },
+    "respond": {
+      "price": "Prix (CLP)",
+      "duration": "Durée (minutes)",
+      "notes": "Conditions et notes",
+      "notesPlaceholder": "Ce que le prix comprend, disponibilité, conditions…",
+      "submit": "Envoyer le devis"
+    },
+    "empty": {
+      "sent": {
+        "title": "Aucune demande de devis",
+        "description": "Demandez un prix à un prestataire et il apparaîtra ici."
+      },
+      "received": {
+        "title": "Rien à répondre",
+        "description": "Les demandes pour vos services apparaîtront ici."
+      }
+    },
+    "error": {
+      "title": "Impossible de charger vos devis",
+      "description": "Un problème est survenu de notre côté. Réessayez dans un instant."
+    }
+  }
 }

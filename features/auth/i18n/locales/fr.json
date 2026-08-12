@@ -5,13 +5,16 @@
     "loginCta": "Connectez-vous pour continuer",
     "loginSubtitle": "Connectez-vous à votre compte",
     "registerCta": "Créez votre compte gratuitement",
-    "registerSubtitle": "Créez votre compte"
+    "registerSubtitle": "Créez votre compte",
+    "forgotSubtitle": "Récupérez votre compte",
+    "resetSubtitle": "Choisissez un nouveau mot de passe"
   },
   "form": {
     "email": "Courriel",
     "emailPlaceholder": "Entrez votre courriel",
     "password": "Mot de passe",
     "passwordPlaceholder": "Entrez votre mot de passe",
+    "newPassword": "Nouveau mot de passe",
     "confirmPassword": "Confirmer le mot de passe",
     "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
     "firstName": "Prénom",
@@ -36,8 +39,21 @@
     "noAccount": "Vous n'avez pas de compte?",
     "hasAccount": "Vous avez déjà un compte?",
     "goBackHome": "Retour à l'accueil",
+    "forgotPassword": "Mot de passe oublié?",
+    "sendResetLink": "Envoyer le lien de récupération",
+    "updatePassword": "Mettre à jour le mot de passe",
     "termsAcceptLabel": "J'ai lu et j'accepte les",
     "termsAcceptLink": "Termes et Politiques"
+  },
+  "forgotPassword": {
+    "intro": "Entrez le courriel utilisé lors de votre inscription et nous vous enverrons un lien pour choisir un nouveau mot de passe.",
+    "sentTitle": "Vérifiez votre boîte de réception",
+    "sentBody": "Si cette adresse correspond à un compte Ekoru, un lien de récupération est en route. Il expire dans 30 minutes et ne peut servir qu'une fois."
+  },
+  "resetPassword": {
+    "intro": "Choisissez un nouveau mot de passe. Vous serez déconnecté de tous vos appareils et pourrez vous reconnecter avec le nouveau.",
+    "missingTokenTitle": "Ce lien est incomplet",
+    "missingToken": "Ouvrez le lien du courriel tel qu'il a été envoyé, ou demandez-en un nouveau."
   },
   "accountTypes": {
     "person": "Particulier",
@@ -83,6 +99,7 @@
     "userNotFound": "Utilisateur introuvable. Veuillez réessayer.",
     "networkError": "Erreur réseau. Veuillez vérifier votre connexion et réessayer.",
     "registerSuccess": "Compte créé avec succès. Veuillez vous connecter.",
+    "resetSuccess": "Mot de passe mis à jour. Connectez-vous avec le nouveau.",
     "termsRequired": "Vous devez accepter les Termes et Politiques pour continuer"
   }
 }

@@ -25,7 +25,8 @@
     "share": "Partager",
     "viewAll": "Voir tout",
     "ownListing": "C'est votre service — vous ne pouvez pas vous engager vous-même.",
-    "bookingSoon": "Bientôt disponible"
+    "book": "Réserver ce service",
+    "requestQuote": "Demander un devis"
   },
   "summary": {
     "noCategory": "Service",
@@ -92,5 +93,70 @@
     "empty": "Ce prestataire n'a pas d'autres services publiés pour le moment.",
     "scrollPrevious": "Voir les services précédents",
     "scrollNext": "Voir plus de services"
+  },
+  "booking": {
+    "title": "Réserver ce service",
+    "intro": "Choisissez quand vous avez besoin de «{{service}}». Le prestataire confirme avant tout paiement.",
+    "date": "Date souhaitée",
+    "timeSlot": "Horaire souhaité (facultatif)",
+    "timeSlotPlaceholder": "Ex. 10:00 – 12:00",
+    "notes": "Notes pour le prestataire (facultatif)",
+    "notesPlaceholder": "Ce qu'il doit savoir avant d'arriver",
+    "disclaimer": "Envoyer une demande ne déclenche aucun paiement. Le prestataire la vérifie et confirme.",
+    "submit": "Envoyer la demande",
+    "cancel": "Annuler",
+    "close": "Terminé",
+    "sentTitle": "Réservation demandée",
+    "sentBody": "Le prestataire confirmera bientôt. Suivez-la dans Profil → Réservations.",
+    "errors": {
+      "missingDate": "Choisissez une date pour la réservation",
+      "failed": "Nous n'avons pas pu envoyer la réservation. Réessayez."
+    }
+  },
+  "quote": {
+    "title": "Demander un devis",
+    "intro": "Décrivez ce dont vous avez besoin pour «{{service}}» et le prestataire répondra avec un prix.",
+    "subject": "Objet",
+    "subjectPlaceholder": "Ex. Déménagement d'un appartement 2 chambres",
+    "description": "De quoi avez-vous besoin ?",
+    "descriptionPlaceholder": "Décrivez le travail, le lieu et votre échéance",
+    "notes": "Notes supplémentaires (facultatif)",
+    "notesPlaceholder": "Accès, stationnement, heure de contact…",
+    "disclaimer": "Une demande de devis ne vous engage pas. Vous décidez après la réponse.",
+    "submit": "Envoyer la demande",
+    "cancel": "Annuler",
+    "close": "Terminé",
+    "sentTitle": "Demande envoyée",
+    "sentBody": "Vous serez averti dès la réponse du prestataire. Suivez-la dans Profil → Devis.",
+    "errors": {
+      "incomplete": "Ajoutez un objet et décrivez votre besoin",
+      "failed": "Nous n'avons pas pu envoyer la demande. Réessayez."
+    }
+  },
+  "reviews": {
+    "title": "Avis",
+    "count": "{{count}} avis",
+    "verified": "Réservation vérifiée",
+    "empty": "Pas encore d'avis. Soyez le premier une fois votre réservation terminée.",
+    "delete": "Supprimer mon avis",
+    "submitted": "Merci — votre avis est publié.",
+    "form": {
+      "title": "Évaluez ce service",
+      "placeholder": "Comment cela s'est-il passé ? Que doit savoir le prochain client ?",
+      "rate": "{{count}} étoiles",
+      "gate": "Vous pouvez évaluer un service une fois une de vos réservations avec ce prestataire terminée.",
+      "submit": "Publier l'avis"
+    },
+    "errors": {
+      "failed": "Nous n'avons pas pu enregistrer votre avis. Réessayez."
+    }
+  },
+  "packages": {
+    "title": "Forfaits de ce prestataire",
+    "validity": "Valable {{count}} jours",
+    "unnamedItem": "Service inclus"
+  },
+  "faqs": {
+    "title": "Questions fréquentes"
   }
 }

@@ -32,5 +32,43 @@
   },
   "feedback": {
     "loadError": "Impossible de charger la communauté"
+  },
+  "events": {
+    "title": "Événements et ateliers",
+    "subtitle": "Organisés par des entreprises Ekoru. Réservez votre place — c'est gratuit.",
+    "empty": "Aucun événement à venir pour le moment. Revenez bientôt.",
+    "places": "{{left}} places sur {{total}} restantes",
+    "unlimited": "{{count}} personnes y assistent",
+    "reserve": "Réserver une place",
+    "full": "Complet",
+    "youAreIn": "Votre place est réservée",
+    "cancel": "Annuler ma place",
+    "reserveIntro": "L'organisateur a besoin d'un nom et d'un courriel pour vous attendre.",
+    "registered": "Votre place est réservée.",
+    "cancelled": "Votre place a été libérée.",
+    "created": "Votre événement est publié.",
+    "form": {
+      "name": "Nom complet",
+      "email": "Courriel",
+      "confirm": "Confirmer la réservation"
+    },
+    "create": {
+      "open": "Publier un événement",
+      "title": "Publier un événement",
+      "name": "Nom de l'événement",
+      "description": "De quoi s'agit-il ?",
+      "startDate": "Date de début",
+      "endDate": "Date de fin (facultatif)",
+      "capacity": "Places (facultatif)",
+      "cover": "URL de l'image de couverture (facultatif)",
+      "hint": "Laissez les places vides pour un événement sans limite.",
+      "submit": "Publier"
+    },
+    "errors": {
+      "register": "Nous n'avons pas pu réserver votre place. Réessayez.",
+      "cancel": "Nous n'avons pas pu annuler votre place.",
+      "create": "Nous n'avons pas pu publier l'événement.",
+      "incomplete": "Ajoutez un nom et décrivez l'événement."
+    }
   }
 }

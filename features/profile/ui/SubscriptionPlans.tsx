@@ -25,28 +25,35 @@ type PersonPlanKey = PersonSubscriptionPlan;
 type BusinessPlanKey = BusinessSubscriptionPlan;
 type PlanKey = PersonPlanKey | BusinessPlanKey;
 
+/**
+ * Presentation only — icon, emphasis and how many feature bullets to read out
+ * of the dictionary. **Prices are never configured here**: they come from
+ * `…MembershipPricing` for the seller's country, which is what the buyer is
+ * actually charged. A hardcoded price could disagree with the charge.
+ */
 interface PlanConfig {
   key: PlanKey;
-  price: number;
-  currency: string;
   highlight?: boolean;
   icon: LucideIcon;
   features: number;
 }
 
 const PERSON_PLANS: PlanConfig[] = [
-  { key: "FREEMIUM", price: 0, currency: "USD", icon: Sparkles, features: 3 },
-  { key: "BASIC", price: 4.9, currency: "USD", icon: Gem, features: 3, highlight: true },
-  { key: "ADVANCED", price: 12.9, currency: "USD", icon: Crown, features: 4 },
+  { key: "FREEMIUM", icon: Sparkles, features: 3 },
+  { key: "BASIC", icon: Gem, features: 3, highlight: true },
+  { key: "ADVANCED", icon: Crown, features: 4 },
 ];
 
 const BUSINESS_PLANS: PlanConfig[] = [
-  { key: "FREEMIUM", price: 0, currency: "USD", icon: Sparkles, features: 3 },
-  { key: "STARTUP", price: 9.9, currency: "USD", icon: Gem, features: 3 },
-  { key: "BASIC", price: 24.9, currency: "USD", icon: Gem, features: 3, highlight: true },
-  { key: "ADVANCED", price: 49.9, currency: "USD", icon: Crown, features: 3 },
-  { key: "EXPERT", price: 99.9, currency: "USD", icon: Crown, features: 4 },
+  { key: "FREEMIUM", icon: Sparkles, features: 3 },
+  { key: "STARTUP", icon: Gem, features: 3 },
+  { key: "BASIC", icon: Gem, features: 3, highlight: true },
+  { key: "ADVANCED", icon: Crown, features: 3 },
+  { key: "EXPERT", icon: Crown, features: 4 },
 ];
+
+/** The free tier is the one plan with no payment behind it. */
+const FREE_PLAN: PlanKey = "FREEMIUM";
 
 function formatPrice(price: number, currency: string, locale: string) {
   if (price === 0) return "$0";
@@ -58,6 +65,18 @@ function formatPrice(price: number, currency: string, locale: string) {
     }).format(price);
   } catch {
     return `${currency} ${price}`;
+  }
+}
+
+function formatDate(iso: string, locale: string) {
+  try {
+    return new Intl.DateTimeFormat(locale, {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }).format(new Date(iso));
+  } catch {
+    return iso;
   }
 }
 
@@ -77,7 +96,8 @@ export function SubscriptionPlans() {
 
   const groupKey = isBusiness ? "business" : "person";
   const currentConfig = plans.find((p) => p.key === currentPlan);
-  const { subscribe, pendingKey, isSubscribable } = useSubscribe();
+  const { subscribe, pendingKey, isSubscribable, priceFor, current } = useSubscribe();
+  const currentPrice = currentConfig ? priceFor(currentConfig.key) : null;
 
   return (
     <div className="flex flex-col gap-5">
@@ -92,12 +112,16 @@ export function SubscriptionPlans() {
             : t("subscription.current.free")
         }
         headerRight={
-          currentConfig ? (
+          currentPrice ? (
             <div className="hidden sm:block">
               <Text variant="span" size="sm" color="tertiary">
-                {currentConfig.price === 0
-                  ? ""
-                  : `${formatPrice(currentConfig.price, currentConfig.currency, lang)} / ${t("subscription.plans.month")}`}
+                {`${formatPrice(currentPrice.price, currentPrice.currency, lang)} / ${
+                  currentPrice.months === 1
+                    ? t("subscription.plans.month")
+                    : t("subscription.plans.perMonths", {
+                        count: String(currentPrice.months),
+                      })
+                }`}
               </Text>
             </div>
           ) : null
@@ -111,18 +135,21 @@ export function SubscriptionPlans() {
                 : "—"}
             </Title>
           </div>
-          {currentConfig && currentConfig.price > 0 && (
-            <div className="flex flex-wrap gap-2">
-              <Button
-                text={t("subscription.current.manage")}
-                variant="outline"
-                size="sm"
-              />
-              <Button
-                text={t("subscription.current.cancel")}
-                variant="ghost"
-                size="sm"
-              />
+          {/* A paid term is one-off today: it expires rather than renewing, so
+              the honest thing to show is when it ends — not a cancel button
+              for a recurrence that does not exist. */}
+          {current?.endDate && (
+            <div className="flex flex-col gap-0.5">
+              <Text variant="span" size="sm" weight="semibold">
+                {t("subscription.current.until", {
+                  date: formatDate(current.endDate, lang),
+                })}
+              </Text>
+              {!current.autoRenew && (
+                <Text variant="span" size="xs" color="tertiary">
+                  {t("subscription.current.oneOff")}
+                </Text>
+              )}
             </div>
           )}
         </div>
@@ -141,6 +168,7 @@ export function SubscriptionPlans() {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {plans.map((plan) => {
           const Icon = plan.icon;
+          const price = priceFor(plan.key);
           const isActive = plan.key === currentPlan;
           const isHighlight = plan.highlight && !isActive;
 
@@ -192,17 +220,39 @@ export function SubscriptionPlans() {
               </div>
 
               <div className="flex items-baseline gap-1.5">
-                <Title
-                  level="h2"
-                  size="h3"
-                  weight="bold"
-                  color={isActive ? "primary" : "default"}
-                >
-                  {formatPrice(plan.price, plan.currency, lang)}
-                </Title>
-                {plan.price > 0 && (
+                {plan.key === FREE_PLAN ? (
+                  <Title
+                    level="h2"
+                    size="h3"
+                    weight="bold"
+                    color={isActive ? "primary" : "default"}
+                  >
+                    {formatPrice(0, "USD", lang)}
+                  </Title>
+                ) : price ? (
+                  <>
+                    <Title
+                      level="h2"
+                      size="h3"
+                      weight="bold"
+                      color={isActive ? "primary" : "default"}
+                    >
+                      {formatPrice(price.price, price.currency, lang)}
+                    </Title>
+                    <Text variant="span" size="sm" color="tertiary">
+                      /
+                      {price.months === 1
+                        ? t("subscription.plans.month")
+                        : t("subscription.plans.perMonths", {
+                            count: String(price.months),
+                          })}
+                    </Text>
+                  </>
+                ) : (
+                  // No pricing row for this country: say so instead of showing
+                  // a number the buyer would not actually be charged.
                   <Text variant="span" size="sm" color="tertiary">
-                    /{t("subscription.plans.month")}
+                    {t("subscription.plans.unavailable")}
                   </Text>
                 )}
               </div>
@@ -221,9 +271,10 @@ export function SubscriptionPlans() {
               </ul>
 
               {(() => {
-                // FREEMIUM (price 0) isn't a payment; only paid plans that
-                // resolved to a real membership id are subscribable.
-                const isPaid = plan.price > 0;
+                // FREEMIUM isn't a payment; a paid plan is only subscribable
+                // once it resolved to a real membership id *and* a price for
+                // this country.
+                const isPaid = plan.key !== FREE_PLAN && price !== null;
                 const canSubscribe = !isActive && isPaid && isSubscribable(plan.key);
                 const isPending = pendingKey === plan.key;
                 return (

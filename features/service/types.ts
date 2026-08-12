@@ -27,6 +27,9 @@ export type ServiceSubCategoryRef = {
  */
 export type ServiceDetail = {
   id: string;
+  /** Only fetched by the detail query — grids do not ask for these. */
+  faqs?: ServiceFaq[] | null;
+  packages?: ServicePackage[] | null;
   name: string;
   description: string | null;
   sellerId: string;
@@ -59,4 +62,32 @@ export type ServiceDetail = {
   isLiked: boolean | null;
   seller: Seller | null;
   serviceCategory: ServiceSubCategoryRef | null;
+};
+
+/** A provider's answer published against one service. */
+export type ServiceFaq = {
+  id: string;
+  question: string;
+  answer: string;
+};
+
+export type ServicePackageItem = {
+  id: string;
+  serviceId: number;
+  quantity: number;
+  serviceName?: string | null;
+};
+
+/**
+ * A bundle sold by the provider. Packages belong to the seller and reach
+ * services through their items, so one package can appear on several services.
+ */
+export type ServicePackage = {
+  id: string;
+  name: string;
+  description: string;
+  totalPrice: number;
+  discountPercentage?: number | null;
+  validityDays?: number | null;
+  items: ServicePackageItem[];
 };

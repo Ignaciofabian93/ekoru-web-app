@@ -1,12 +1,81 @@
 import { gql } from "@apollo/client";
 
 import {
+  QUOTATION_FIELDS_FRAGMENT,
+  SERVICE_BOOKING_FIELDS_FRAGMENT,
   SERVICE_CATALOG_ITEM_FIELDS_FRAGMENT,
   SERVICE_CATEGORY_FIELDS_FRAGMENT,
   SERVICE_DETAIL_FIELDS_FRAGMENT,
+  SERVICE_EXTRAS_FIELDS_FRAGMENT,
   SERVICE_PAGE_INFO_FIELDS_FRAGMENT,
+  SERVICE_REVIEW_FIELDS_FRAGMENT,
   SERVICE_SUB_CATEGORY_FIELDS_FRAGMENT,
 } from "./fragments";
+
+/**
+ * Bookings and quotations for the signed-in user. Both come in a client-side
+ * and a provider-side flavour; the backend takes the identity from the session,
+ * so neither query carries an id that a caller could swap for someone else's.
+ */
+export const GET_MY_SERVICE_BOOKINGS = gql`
+  ${SERVICE_BOOKING_FIELDS_FRAGMENT}
+  ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}
+  query GetMyServiceBookings($page: Int = 1, $pageSize: Int = 10, $status: String) {
+    myServiceBookings(page: $page, pageSize: $pageSize, status: $status) {
+      nodes {
+        ...ServiceBookingFields
+      }
+      pageInfo {
+        ...ServicePageInfoFields
+      }
+    }
+  }
+`;
+
+export const GET_MY_PROVIDER_BOOKINGS = gql`
+  ${SERVICE_BOOKING_FIELDS_FRAGMENT}
+  ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}
+  query GetMyProviderBookings($page: Int = 1, $pageSize: Int = 10, $status: String) {
+    myProviderBookings(page: $page, pageSize: $pageSize, status: $status) {
+      nodes {
+        ...ServiceBookingFields
+      }
+      pageInfo {
+        ...ServicePageInfoFields
+      }
+    }
+  }
+`;
+
+export const GET_MY_QUOTATIONS = gql`
+  ${QUOTATION_FIELDS_FRAGMENT}
+  ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}
+  query GetMyQuotations($page: Int = 1, $pageSize: Int = 10) {
+    myQuotations(page: $page, pageSize: $pageSize) {
+      nodes {
+        ...QuotationFields
+      }
+      pageInfo {
+        ...ServicePageInfoFields
+      }
+    }
+  }
+`;
+
+export const GET_MY_PROVIDER_QUOTATIONS = gql`
+  ${QUOTATION_FIELDS_FRAGMENT}
+  ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}
+  query GetMyProviderQuotations($page: Int = 1, $pageSize: Int = 10) {
+    myProviderQuotations(page: $page, pageSize: $pageSize) {
+      nodes {
+        ...QuotationFields
+      }
+      pageInfo {
+        ...ServicePageInfoFields
+      }
+    }
+  }
+`;
 
 export const GET_SERVICES_CATALOG = gql`
   ${SERVICE_CATALOG_ITEM_FIELDS_FRAGMENT}
@@ -63,9 +132,11 @@ export const GET_SERVICE_SUBCATEGORY_BY_SLUG = gql`
 
 export const GET_SERVICE_BY_ID = gql`
   ${SERVICE_DETAIL_FIELDS_FRAGMENT}
+  ${SERVICE_EXTRAS_FIELDS_FRAGMENT}
   query GetService($id: ID!) {
     getService(id: $id) {
       ...ServiceDetailFields
+      ...ServiceExtrasFields
     }
   }
 `;
@@ -258,6 +329,26 @@ export const GET_SERVICE_SUB_CATEGORY_SERVICES_BY_SLUG = gql`
       }
       serviceSubCategory @include(if: $requireServiceSubCategoryFetch) {
         ...ServiceSubCategoryFields
+      }
+    }
+  }
+`;
+
+/**
+ * Reviews for a service. `reviewerId` is all the subgraph stores — the display
+ * name is not federated onto ServiceReview, so the UI shows the rating and the
+ * comment rather than inventing an author.
+ */
+export const GET_SERVICE_REVIEWS = gql`
+  ${SERVICE_REVIEW_FIELDS_FRAGMENT}
+  ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}
+  query GetServiceReviews($serviceId: ID!, $page: Int = 1, $pageSize: Int = 10) {
+    getServiceReviews(serviceId: $serviceId, page: $page, pageSize: $pageSize) {
+      nodes {
+        ...ServiceReviewFields
+      }
+      pageInfo {
+        ...ServicePageInfoFields
       }
     }
   }

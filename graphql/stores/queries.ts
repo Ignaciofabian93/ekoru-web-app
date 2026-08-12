@@ -4,6 +4,7 @@ import {
   STORE_CATEGORY_FIELDS_FRAGMENT,
   STORE_PAGE_INFO_FIELDS_FRAGMENT,
   STORE_PRODUCT_DETAIL_FIELDS_FRAGMENT,
+  STORE_PRODUCT_REVIEW_FIELDS_FRAGMENT,
   STORE_SUB_CATEGORY_FIELDS_FRAGMENT,
 } from "./fragments";
 
@@ -597,6 +598,30 @@ export const GET_STORE_SUB_CATEGORY_PRODUCTS_BY_SLUG = gql`
       }
       storeSubCategory @include(if: $requireStoreSubCategoryFetch) {
         ...StoreSubCategoryFields
+      }
+    }
+  }
+`;
+
+/** Reviews for a store product, newest first. Public. */
+export const GET_STORE_PRODUCT_REVIEWS = gql`
+  ${STORE_PRODUCT_REVIEW_FIELDS_FRAGMENT}
+  ${STORE_PAGE_INFO_FIELDS_FRAGMENT}
+  query GetStoreProductReviews(
+    $storeProductId: ID!
+    $page: Int = 1
+    $pageSize: Int = 10
+  ) {
+    getStoreProductReviews(
+      storeProductId: $storeProductId
+      page: $page
+      pageSize: $pageSize
+    ) {
+      nodes {
+        ...StoreProductReviewFields
+      }
+      pageInfo {
+        ...StorePageInfoFields
       }
     }
   }

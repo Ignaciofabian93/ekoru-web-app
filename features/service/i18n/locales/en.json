@@ -25,7 +25,8 @@
     "share": "Share",
     "viewAll": "View all",
     "ownListing": "This is your service — you cannot hire yourself.",
-    "bookingSoon": "Coming soon"
+    "book": "Book this service",
+    "requestQuote": "Request a quote"
   },
   "summary": {
     "noCategory": "Service",
@@ -92,5 +93,70 @@
     "empty": "This provider has no other published services right now.",
     "scrollPrevious": "See previous services",
     "scrollNext": "See more services"
+  },
+  "booking": {
+    "title": "Book this service",
+    "intro": "Choose when you need «{{service}}». The provider confirms before anything is charged.",
+    "date": "Preferred date",
+    "timeSlot": "Preferred time (optional)",
+    "timeSlotPlaceholder": "e.g. 10:00 – 12:00",
+    "notes": "Notes for the provider (optional)",
+    "notesPlaceholder": "Anything they should know before arriving",
+    "disclaimer": "Sending a request does not charge you. The provider reviews it and confirms.",
+    "submit": "Send booking request",
+    "cancel": "Cancel",
+    "close": "Done",
+    "sentTitle": "Booking requested",
+    "sentBody": "The provider will confirm shortly. You can follow it under Profile → Bookings.",
+    "errors": {
+      "missingDate": "Choose a date for the booking",
+      "failed": "We could not send the booking. Try again."
+    }
+  },
+  "quote": {
+    "title": "Request a quote",
+    "intro": "Describe what you need from «{{service}}» and the provider will reply with a price.",
+    "subject": "Subject",
+    "subjectPlaceholder": "e.g. Move a two-bedroom flat",
+    "description": "What do you need?",
+    "descriptionPlaceholder": "Describe the job, the place and any deadline",
+    "notes": "Extra notes (optional)",
+    "notesPlaceholder": "Access, parking, preferred contact time…",
+    "disclaimer": "A quote request is not a commitment. You decide once the provider answers.",
+    "submit": "Send request",
+    "cancel": "Cancel",
+    "close": "Done",
+    "sentTitle": "Request sent",
+    "sentBody": "You will be notified when the provider replies. Follow it under Profile → Quotes.",
+    "errors": {
+      "incomplete": "Add a subject and describe what you need",
+      "failed": "We could not send the request. Try again."
+    }
+  },
+  "reviews": {
+    "title": "Reviews",
+    "count": "{{count}} reviews",
+    "verified": "Verified booking",
+    "empty": "No reviews yet. Be the first once your booking is done.",
+    "delete": "Delete my review",
+    "submitted": "Thanks — your review is published.",
+    "form": {
+      "title": "Rate this service",
+      "placeholder": "How did it go? What should the next buyer know?",
+      "rate": "{{count}} stars",
+      "gate": "You can review a service once one of your bookings with this provider is completed.",
+      "submit": "Publish review"
+    },
+    "errors": {
+      "failed": "We could not save your review. Try again."
+    }
+  },
+  "packages": {
+    "title": "Packages from this provider",
+    "validity": "Valid for {{count}} days",
+    "unnamedItem": "Included service"
+  },
+  "faqs": {
+    "title": "Frequently asked questions"
   }
 }

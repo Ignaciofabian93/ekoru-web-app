@@ -5,13 +5,16 @@
     "loginCta": "Sign in to continue",
     "loginSubtitle": "Log in to your account",
     "registerCta": "Create your free account",
-    "registerSubtitle": "Create your account"
+    "registerSubtitle": "Create your account",
+    "forgotSubtitle": "Recover your account",
+    "resetSubtitle": "Choose a new password"
   },
   "form": {
     "email": "Email",
     "emailPlaceholder": "Enter your email",
     "password": "Password",
     "passwordPlaceholder": "Enter your password",
+    "newPassword": "New password",
     "confirmPassword": "Confirm Password",
     "confirmPasswordPlaceholder": "Confirm your password",
     "firstName": "Name",
@@ -36,8 +39,21 @@
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
     "goBackHome": "Go back to home",
+    "forgotPassword": "Forgot your password?",
+    "sendResetLink": "Send recovery link",
+    "updatePassword": "Update password",
     "termsAcceptLabel": "I have read and accept the",
     "termsAcceptLink": "Terms and Policies"
+  },
+  "forgotPassword": {
+    "intro": "Enter the email you signed up with and we'll send you a link to choose a new password.",
+    "sentTitle": "Check your inbox",
+    "sentBody": "If that address has an Ekoru account, a recovery link is on its way. It expires in 30 minutes and can only be used once."
+  },
+  "resetPassword": {
+    "intro": "Choose a new password. You'll be signed out of every device and can sign in again with the new one.",
+    "missingTokenTitle": "This link is incomplete",
+    "missingToken": "Open the link from the email exactly as it was sent, or request a new one."
   },
   "accountTypes": {
     "person": "Person",
@@ -83,6 +99,7 @@
     "userNotFound": "User not found. Please try again.",
     "networkError": "Network error. Please check your connection and try again.",
     "registerSuccess": "Account created successfully. Please sign in.",
+    "resetSuccess": "Password updated. Sign in with your new password.",
     "termsRequired": "You must accept the Terms and Policies to continue"
   }
 }

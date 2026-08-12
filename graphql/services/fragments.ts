@@ -130,6 +130,30 @@ export const SERVICE_FIELDS_FRAGMENT = gql`
   }
 `;
 
+export const SERVICE_EXTRAS_FIELDS_FRAGMENT = gql`
+  fragment ServiceExtrasFields on Service {
+    faqs {
+      id
+      question
+      answer
+    }
+    packages {
+      id
+      name
+      description
+      totalPrice
+      discountPercentage
+      validityDays
+      items {
+        id
+        serviceId
+        quantity
+        serviceName
+      }
+    }
+  }
+`;
+
 export const SERVICE_DETAIL_FIELDS_FRAGMENT = gql`
   ${SERVICE_FIELDS_FRAGMENT}
   ${SERVICE_SELLER_FIELDS_FRAGMENT}
@@ -155,5 +179,71 @@ export const SERVICE_PAGE_INFO_FIELDS_FRAGMENT = gql`
     startCursor
     endCursor
     pageSize
+  }
+`;
+
+export const SERVICE_BOOKING_FIELDS_FRAGMENT = gql`
+  fragment ServiceBookingFields on ServiceBooking {
+    id
+    serviceId
+    clientId
+    providerId
+    scheduledDate
+    scheduledTimeSlot
+    agreedPrice
+    status
+    paymentStatus
+    clientNotes
+    providerNotes
+    cancellationReason
+    cancelledBy
+    completedAt
+    createdAt
+    service {
+      id
+      name
+      images
+      sellerId
+    }
+  }
+`;
+
+export const QUOTATION_FIELDS_FRAGMENT = gql`
+  fragment QuotationFields on Quotation {
+    id
+    serviceId
+    clientId
+    providerId
+    title
+    description
+    estimatedPrice
+    finalPrice
+    estimatedDuration
+    status
+    clientNotes
+    providerNotes
+    expiresAt
+    acceptedAt
+    declineReason
+    createdAt
+    updatedAt
+    service {
+      id
+      name
+      images
+      sellerId
+    }
+  }
+`;
+
+export const SERVICE_REVIEW_FIELDS_FRAGMENT = gql`
+  fragment ServiceReviewFields on ServiceReview {
+    id
+    serviceId
+    reviewerId
+    rating
+    comment
+    isVerifiedPurchase
+    createdAt
   }
 `;

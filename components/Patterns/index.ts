@@ -8,6 +8,7 @@ export { Pagination } from "./Pagination";
 export { ProductGallery } from "./ProductGallery";
 export { ProductTrust } from "./ProductTrust";
 export { ResultsGrid } from "./ResultsGrid";
+export { ReviewsPanel } from "./ReviewsPanel";
 export { SectionHeader } from "./SectionHeader";
 export { SellerCard } from "./SellerCard";
 export { ShoppingCartButton } from "./ShoppingCart";

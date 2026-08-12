@@ -1,10 +1,18 @@
-export default function Page() {
-  return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4 py-16">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <h1 className="text-3xl font-bold text-foreground">Terms and Policies</h1>
-        <p className="text-foreground-secondary">Coming soon</p>
-      </div>
-    </main>
-  );
+import { DEFAULT_LANGUAGE, hasLocale } from "@/constants/settings";
+import { permanentRedirect } from "next/navigation";
+
+/**
+ * `/legal` predates `/terms-and-conditions`, which is where the real terms,
+ * privacy and data sections actually live. Rather than keep a second copy of
+ * legal text in sync — the surest way to publish two contradictory versions —
+ * this route now points at the canonical page.
+ */
+export default async function LegalPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const locale = hasLocale(lang) ? lang : DEFAULT_LANGUAGE;
+  permanentRedirect(`/${locale}/terms-and-conditions`);
 }

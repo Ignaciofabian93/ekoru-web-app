@@ -32,5 +32,43 @@
   },
   "feedback": {
     "loadError": "No se pudo cargar la comunidad"
+  },
+  "events": {
+    "title": "Eventos y talleres",
+    "subtitle": "Organizados por empresas de Ekoru. Reserva tu cupo — es gratis.",
+    "empty": "No hay eventos próximos por ahora. Vuelve pronto.",
+    "places": "Quedan {{left}} de {{total}} cupos",
+    "unlimited": "{{count}} personas asistirán",
+    "reserve": "Reservar cupo",
+    "full": "Cupos agotados",
+    "youAreIn": "Tu cupo está reservado",
+    "cancel": "Cancelar mi cupo",
+    "reserveIntro": "El organizador necesita un nombre y un correo para esperarte.",
+    "registered": "Tu cupo quedó reservado.",
+    "cancelled": "Liberamos tu cupo.",
+    "created": "Tu evento fue publicado.",
+    "form": {
+      "name": "Nombre completo",
+      "email": "Correo electrónico",
+      "confirm": "Confirmar reserva"
+    },
+    "create": {
+      "open": "Publicar evento",
+      "title": "Publicar un evento",
+      "name": "Nombre del evento",
+      "description": "¿De qué se trata?",
+      "startDate": "Fecha de inicio",
+      "endDate": "Fecha de término (opcional)",
+      "capacity": "Cupos (opcional)",
+      "cover": "URL de imagen de portada (opcional)",
+      "hint": "Deja los cupos vacíos si el evento no tiene límite.",
+      "submit": "Publicar"
+    },
+    "errors": {
+      "register": "No pudimos reservar tu cupo. Inténtalo nuevamente.",
+      "cancel": "No pudimos cancelar tu cupo.",
+      "create": "No pudimos publicar el evento.",
+      "incomplete": "Agrega un nombre y describe el evento."
+    }
   }
 }

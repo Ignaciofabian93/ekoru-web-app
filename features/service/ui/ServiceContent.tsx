@@ -15,6 +15,9 @@ import { OtherFromProvider } from "./OtherFromProvider";
 import { ServiceActions } from "./ServiceActions";
 import { ServiceDescription } from "./ServiceDescription";
 import { ServiceDetails } from "./ServiceDetails";
+import { ServiceFaqs } from "./ServiceFaqs";
+import { ServicePackages } from "./ServicePackages";
+import { ServiceReviews } from "./ServiceReviews";
 import { ServiceError, ServiceLoading, ServiceNotFound } from "./ServiceStatus";
 import { ServiceSummary } from "./ServiceSummary";
 
@@ -93,6 +96,12 @@ export function ServiceContent({ id, lang }: Props) {
           <div className="flex flex-col gap-8 md:col-span-2">
             <ServiceDescription description={service.description} />
             <ServiceDetails service={service} lang={lang} />
+            <ServicePackages packages={service.packages} />
+            <ServiceFaqs faqs={service.faqs} />
+            <ServiceReviews
+              serviceId={service.id}
+              averageRating={service.averageRating}
+            />
           </div>
           <div className="flex flex-col gap-8 md:col-span-1">
             {service.seller && (

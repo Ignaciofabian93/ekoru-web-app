@@ -5,13 +5,16 @@
     "loginCta": "Inicia sesión para continuar",
     "loginSubtitle": "Inicia sesión en tu cuenta",
     "registerCta": "Crea tu cuenta gratis",
-    "registerSubtitle": "Crea tu cuenta"
+    "registerSubtitle": "Crea tu cuenta",
+    "forgotSubtitle": "Recupera tu cuenta",
+    "resetSubtitle": "Elige una nueva contraseña"
   },
   "form": {
     "email": "Correo electrónico",
     "emailPlaceholder": "Ingresa tu correo",
     "password": "Contraseña",
     "passwordPlaceholder": "Ingresa tu contraseña",
+    "newPassword": "Nueva contraseña",
     "confirmPassword": "Confirmar contraseña",
     "confirmPasswordPlaceholder": "Confirma tu contraseña",
     "firstName": "Nombre",
@@ -36,8 +39,21 @@
     "noAccount": "¿No tienes cuenta?",
     "hasAccount": "¿Ya tienes cuenta?",
     "goBackHome": "Volver al inicio",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "sendResetLink": "Enviar enlace de recuperación",
+    "updatePassword": "Actualizar contraseña",
     "termsAcceptLabel": "He leído y acepto los",
     "termsAcceptLink": "Términos y Políticas"
+  },
+  "forgotPassword": {
+    "intro": "Ingresa el correo con el que te registraste y te enviaremos un enlace para elegir una nueva contraseña.",
+    "sentTitle": "Revisa tu correo",
+    "sentBody": "Si esa dirección tiene una cuenta en Ekoru, el enlace de recuperación va en camino. Caduca en 30 minutos y solo puede usarse una vez."
+  },
+  "resetPassword": {
+    "intro": "Elige una nueva contraseña. Cerraremos tu sesión en todos los dispositivos y podrás volver a entrar con la nueva.",
+    "missingTokenTitle": "Este enlace está incompleto",
+    "missingToken": "Abre el enlace del correo tal como te llegó, o solicita uno nuevo."
   },
   "accountTypes": {
     "person": "Persona",
@@ -83,6 +99,7 @@
     "userNotFound": "Usuario no encontrado. Por favor, inténtalo de nuevo.",
     "networkError": "Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.",
     "registerSuccess": "Cuenta creada correctamente. Por favor, inicia sesión.",
+    "resetSuccess": "Contraseña actualizada. Inicia sesión con tu nueva contraseña.",
     "termsRequired": "Debes aceptar los Términos y Políticas para continuar"
   }
 }

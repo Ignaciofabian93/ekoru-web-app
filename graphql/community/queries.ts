@@ -62,3 +62,60 @@ export const GET_COMMUNITY_SUBCATEGORY_BY_SLUG = gql`
     }
   }
 `;
+
+/**
+ * Community events (workshops, tutorials, meet-ups). Organised by business
+ * accounts; anyone can reserve a place. Upcoming first — past events only when
+ * `includePast` is set.
+ */
+export const GET_COMMUNITY_EVENTS = gql`
+  query CommunityEvents(
+    $page: Int = 1
+    $pageSize: Int = 12
+    $includePast: Boolean = false
+    $authorId: String
+  ) {
+    communityEvents(
+      page: $page
+      pageSize: $pageSize
+      includePast: $includePast
+      authorId: $authorId
+    ) {
+      nodes {
+        id
+        title
+        content
+        coverImage
+        startDate
+        endDate
+        capacity
+        registrationCount
+        remainingCapacity
+        authorId
+      }
+      pageInfo {
+        currentPage
+        totalPages
+        totalCount
+        hasNextPage
+      }
+    }
+  }
+`;
+
+export const GET_MY_EVENT_REGISTRATIONS = gql`
+  query MyCommunityEventRegistrations($page: Int = 1, $pageSize: Int = 20) {
+    myCommunityEventRegistrations(page: $page, pageSize: $pageSize) {
+      nodes {
+        id
+        communityPostId
+        name
+        email
+        createdAt
+      }
+      pageInfo {
+        totalCount
+      }
+    }
+  }
+`;

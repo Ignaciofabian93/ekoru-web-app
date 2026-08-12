@@ -150,7 +150,9 @@
     "environmentalImpact": "Environmental Impact",
     "subscription": "Subscription",
     "settings": "Settings",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "bookings": "My bookings",
+    "quotes": "My quotes"
   },
   "editProfile": {
     "screenTitle": "Edit Profile",
@@ -299,14 +301,16 @@
       "shipped": "Shipped",
       "delivered": "Delivered",
       "returned": "Returned",
-      "canceled": "Canceled"
+      "canceled": "Canceled",
+      "pending": "Awaiting payment"
     },
     "status": {
       "PREPARING": "Preparing",
       "SHIPPED": "Shipped",
       "DELIVERED": "Delivered",
       "RETURNED": "Returned",
-      "CANCELED": "Canceled"
+      "CANCELED": "Canceled",
+      "PENDING_PAYMENT": "Awaiting payment"
     },
     "card": {
       "order": "Order",
@@ -315,12 +319,24 @@
       "total": "Total",
       "viewDetails": "View details",
       "track": "Track shipment",
-      "rate": "Rate purchase"
+      "rate": "Rate purchase",
+      "unavailableItem": "Item no longer available"
     },
     "empty": {
       "title": "No orders yet",
       "description": "When you buy something, your orders will show up here.",
       "action": "Explore the marketplace"
+    },
+    "error": {
+      "title": "We couldn't load your orders",
+      "description": "Something went wrong on our side. Try again in a moment.",
+      "action": "Try again"
+    },
+    "pagination": {
+      "label": "Order history pages",
+      "previous": "Previous",
+      "next": "Next",
+      "position": "Page {{current}} of {{total}}"
     }
   },
   "favorites": {
@@ -429,8 +445,8 @@
       "label": "Current plan",
       "renews": "Renews on {{date}}",
       "free": "You're on the free plan",
-      "manage": "Manage billing",
-      "cancel": "Cancel subscription"
+      "until": "Active until {{date}}",
+      "oneOff": "One-off term — it does not renew by itself."
     },
     "plans": {
       "title": "Available plans",
@@ -439,7 +455,9 @@
       "year": "per year",
       "select": "Choose plan",
       "active": "Current",
-      "popular": "Most popular"
+      "popular": "Most popular",
+      "unavailable": "Not available in your country yet",
+      "perMonths": "every {{count}} months"
     },
     "person": {
       "FREEMIUM": {
@@ -582,5 +600,80 @@
     "loading": "Loading…"
   },
   "logout": "Log Out",
-  "back": "Back"
+  "back": "Back",
+  "bookings": {
+    "screenTitle": "My bookings",
+    "status": {
+      "PENDING": "Awaiting confirmation",
+      "CONFIRMED": "Confirmed",
+      "IN_PROGRESS": "In progress",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled"
+    },
+    "card": {
+      "scheduledFor": "Scheduled for",
+      "agreedPrice": "Agreed price",
+      "cancel": "Cancel booking",
+      "cancelReason": "Reason",
+      "unknownService": "Service unavailable"
+    },
+    "cancelDialog": {
+      "title": "Cancel this booking?",
+      "description": "The provider will be notified. You can book again later.",
+      "confirm": "Cancel booking",
+      "cancel": "Keep it",
+      "defaultReason": "Cancelled by the client"
+    },
+    "empty": {
+      "title": "No bookings yet",
+      "description": "Services you book will show up here with their status."
+    },
+    "error": {
+      "title": "We couldn't load your bookings",
+      "description": "Something went wrong on our side. Try again in a moment."
+    }
+  },
+  "quotes": {
+    "screenTitle": "My quotes",
+    "tabs": {
+      "sent": "Requested",
+      "received": "To answer"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "DECLINED": "Declined",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled",
+      "EXPIRED": "Expired"
+    },
+    "card": {
+      "quotedPrice": "Quoted price",
+      "providerNotes": "Provider notes",
+      "accept": "Accept",
+      "decline": "Decline",
+      "awaitingProvider": "Waiting for the provider to send a price."
+    },
+    "respond": {
+      "price": "Price (CLP)",
+      "duration": "Duration (minutes)",
+      "notes": "Terms and notes",
+      "notesPlaceholder": "What the price includes, availability, conditions…",
+      "submit": "Send quote"
+    },
+    "empty": {
+      "sent": {
+        "title": "No quote requests",
+        "description": "Ask a provider for a price and it will appear here."
+      },
+      "received": {
+        "title": "Nothing to answer",
+        "description": "Requests for your services will show up here."
+      }
+    },
+    "error": {
+      "title": "We couldn't load your quotes",
+      "description": "Something went wrong on our side. Try again in a moment."
+    }
+  }
 }

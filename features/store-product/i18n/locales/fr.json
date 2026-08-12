@@ -129,5 +129,23 @@
     "loading": "Chargement des autres produits…",
     "scrollPrevious": "Voir les produits précédents",
     "scrollNext": "Voir plus de produits"
+  },
+  "reviews": {
+    "title": "Avis",
+    "count": "{{count}} avis",
+    "verified": "Achat vérifié",
+    "empty": "Pas encore d'avis. Achetez-le et dites aux autres comment cela s'est passé.",
+    "delete": "Supprimer mon avis",
+    "submitted": "Merci — votre avis est publié.",
+    "form": {
+      "title": "Évaluez ce produit",
+      "placeholder": "Comment était-ce ? Que doit savoir le prochain acheteur ?",
+      "rate": "{{count}} étoiles",
+      "gate": "Vous pouvez évaluer un produit une fois une de vos commandes payée.",
+      "submit": "Publier l'avis"
+    },
+    "errors": {
+      "failed": "Nous n'avons pas pu enregistrer votre avis. Réessayez."
+    }
   }
 }

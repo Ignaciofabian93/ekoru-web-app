@@ -32,5 +32,43 @@
   },
   "feedback": {
     "loadError": "Could not load the community"
+  },
+  "events": {
+    "title": "Events and workshops",
+    "subtitle": "Run by Ekoru businesses. Reserve a place — it is free.",
+    "empty": "No upcoming events right now. Check back soon.",
+    "places": "{{left}} of {{total}} places left",
+    "unlimited": "{{count}} people going",
+    "reserve": "Reserve a place",
+    "full": "Fully booked",
+    "youAreIn": "Your place is reserved",
+    "cancel": "Cancel my place",
+    "reserveIntro": "The organiser needs a name and an email to expect you.",
+    "registered": "Your place is reserved.",
+    "cancelled": "Your place was released.",
+    "created": "Your event is published.",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "confirm": "Confirm reservation"
+    },
+    "create": {
+      "open": "Publish an event",
+      "title": "Publish an event",
+      "name": "Event name",
+      "description": "What is it about?",
+      "startDate": "Start date",
+      "endDate": "End date (optional)",
+      "capacity": "Places (optional)",
+      "cover": "Cover image URL (optional)",
+      "hint": "Leave places empty for an event with no limit.",
+      "submit": "Publish"
+    },
+    "errors": {
+      "register": "We could not reserve your place. Try again.",
+      "cancel": "We could not cancel your place.",
+      "create": "We could not publish the event.",
+      "incomplete": "Add a name and describe the event."
+    }
   }
 }

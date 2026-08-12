@@ -2,7 +2,9 @@ import {
   Bell,
   BellRing,
   Building2,
+  CalendarClock,
   EyeOff,
+  FileText,
   Flag,
   Gem,
   Globe,
@@ -258,6 +260,18 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         label: "account.exchanges",
         icon: Repeat2,
         available: false,
+      },
+      {
+        route: "/profile/bookings",
+        label: "account.bookings",
+        icon: CalendarClock,
+        available: true,
+      },
+      {
+        route: "/profile/quotes",
+        label: "account.quotes",
+        icon: FileText,
+        available: true,
       },
       {
         route: "/profile/favorites",

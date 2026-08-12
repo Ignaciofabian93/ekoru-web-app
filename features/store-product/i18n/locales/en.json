@@ -129,5 +129,23 @@
     "loading": "Loading other products…",
     "scrollPrevious": "View previous products",
     "scrollNext": "View more products"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "count": "{{count}} reviews",
+    "verified": "Verified purchase",
+    "empty": "No reviews yet. Buy it and tell others how it went.",
+    "delete": "Delete my review",
+    "submitted": "Thanks — your review is published.",
+    "form": {
+      "title": "Rate this product",
+      "placeholder": "How was it? What should the next buyer know?",
+      "rate": "{{count}} stars",
+      "gate": "You can review a product once one of your orders for it has been paid.",
+      "submit": "Publish review"
+    },
+    "errors": {
+      "failed": "We could not save your review. Try again."
+    }
   }
 }

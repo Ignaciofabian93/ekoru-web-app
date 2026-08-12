@@ -128,5 +128,23 @@
     "loading": "Cargando otros productos…",
     "scrollPrevious": "Ver productos anteriores",
     "scrollNext": "Ver más productos"
+  },
+  "reviews": {
+    "title": "Reseñas",
+    "count": "{{count}} reseñas",
+    "verified": "Compra verificada",
+    "empty": "Aún no hay reseñas. Cómpralo y cuéntale al resto cómo te fue.",
+    "delete": "Eliminar mi reseña",
+    "submitted": "Gracias — tu reseña fue publicada.",
+    "form": {
+      "title": "Califica este producto",
+      "placeholder": "¿Cómo te fue? ¿Qué debería saber el próximo comprador?",
+      "rate": "{{count}} estrellas",
+      "gate": "Puedes reseñar un producto cuando uno de tus pedidos con él esté pagado.",
+      "submit": "Publicar reseña"
+    },
+    "errors": {
+      "failed": "No pudimos guardar tu reseña. Inténtalo nuevamente."
+    }
   }
 }

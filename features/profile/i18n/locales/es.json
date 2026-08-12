@@ -150,7 +150,9 @@
     "environmentalImpact": "Impacto Ambiental",
     "subscription": "Suscripción",
     "settings": "Configuración",
-    "comingSoon": "Próximamente"
+    "comingSoon": "Próximamente",
+    "bookings": "Mis reservas",
+    "quotes": "Mis cotizaciones"
   },
   "editProfile": {
     "screenTitle": "Editar Perfil",
@@ -299,14 +301,16 @@
       "shipped": "Enviado",
       "delivered": "Entregado",
       "returned": "Devuelto",
-      "canceled": "Cancelado"
+      "canceled": "Cancelado",
+      "pending": "Pago pendiente"
     },
     "status": {
       "PREPARING": "Preparando",
       "SHIPPED": "Enviado",
       "DELIVERED": "Entregado",
       "RETURNED": "Devuelto",
-      "CANCELED": "Cancelado"
+      "CANCELED": "Cancelado",
+      "PENDING_PAYMENT": "Pago pendiente"
     },
     "card": {
       "order": "Pedido",
@@ -315,12 +319,24 @@
       "total": "Total",
       "viewDetails": "Ver detalles",
       "track": "Seguir envío",
-      "rate": "Calificar compra"
+      "rate": "Calificar compra",
+      "unavailableItem": "Producto ya no disponible"
     },
     "empty": {
       "title": "Aún no tienes pedidos",
       "description": "Cuando compres algo, tus pedidos aparecerán aquí.",
       "action": "Explorar marketplace"
+    },
+    "error": {
+      "title": "No pudimos cargar tus pedidos",
+      "description": "Algo falló de nuestro lado. Inténtalo de nuevo en un momento.",
+      "action": "Reintentar"
+    },
+    "pagination": {
+      "label": "Páginas del historial de pedidos",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "position": "Página {{current}} de {{total}}"
     }
   },
   "favorites": {
@@ -429,8 +445,8 @@
       "label": "Plan actual",
       "renews": "Se renueva el {{date}}",
       "free": "Estás en el plan gratuito",
-      "manage": "Gestionar facturación",
-      "cancel": "Cancelar suscripción"
+      "until": "Activo hasta el {{date}}",
+      "oneOff": "Periodo único — no se renueva solo."
     },
     "plans": {
       "title": "Planes disponibles",
@@ -439,7 +455,9 @@
       "year": "por año",
       "select": "Elegir plan",
       "active": "Actual",
-      "popular": "Más popular"
+      "popular": "Más popular",
+      "unavailable": "Aún no disponible en tu país",
+      "perMonths": "cada {{count}} meses"
     },
     "person": {
       "FREEMIUM": {
@@ -582,5 +600,80 @@
     "loading": "Cargando…"
   },
   "logout": "Cerrar Sesión",
-  "back": "Volver"
+  "back": "Volver",
+  "bookings": {
+    "screenTitle": "Mis reservas",
+    "status": {
+      "PENDING": "Por confirmar",
+      "CONFIRMED": "Confirmada",
+      "IN_PROGRESS": "En curso",
+      "COMPLETED": "Completada",
+      "CANCELLED": "Cancelada"
+    },
+    "card": {
+      "scheduledFor": "Agendada para",
+      "agreedPrice": "Precio acordado",
+      "cancel": "Cancelar reserva",
+      "cancelReason": "Motivo",
+      "unknownService": "Servicio no disponible"
+    },
+    "cancelDialog": {
+      "title": "¿Cancelar esta reserva?",
+      "description": "Avisaremos al proveedor. Puedes volver a reservar más adelante.",
+      "confirm": "Cancelar reserva",
+      "cancel": "Mantenerla",
+      "defaultReason": "Cancelada por el cliente"
+    },
+    "empty": {
+      "title": "Aún no tienes reservas",
+      "description": "Los servicios que reserves aparecerán aquí con su estado."
+    },
+    "error": {
+      "title": "No pudimos cargar tus reservas",
+      "description": "Algo falló de nuestro lado. Inténtalo de nuevo en un momento."
+    }
+  },
+  "quotes": {
+    "screenTitle": "Mis cotizaciones",
+    "tabs": {
+      "sent": "Solicitadas",
+      "received": "Por responder"
+    },
+    "status": {
+      "PENDING": "Pendiente",
+      "ACCEPTED": "Aceptada",
+      "DECLINED": "Rechazada",
+      "COMPLETED": "Completada",
+      "CANCELLED": "Cancelada",
+      "EXPIRED": "Expirada"
+    },
+    "card": {
+      "quotedPrice": "Precio cotizado",
+      "providerNotes": "Notas del proveedor",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "awaitingProvider": "Esperando que el proveedor envíe un precio."
+    },
+    "respond": {
+      "price": "Precio (CLP)",
+      "duration": "Duración (minutos)",
+      "notes": "Condiciones y notas",
+      "notesPlaceholder": "Qué incluye el precio, disponibilidad, condiciones…",
+      "submit": "Enviar cotización"
+    },
+    "empty": {
+      "sent": {
+        "title": "Sin solicitudes de cotización",
+        "description": "Pídele un precio a un proveedor y aparecerá aquí."
+      },
+      "received": {
+        "title": "Nada por responder",
+        "description": "Las solicitudes para tus servicios aparecerán aquí."
+      }
+    },
+    "error": {
+      "title": "No pudimos cargar tus cotizaciones",
+      "description": "Algo falló de nuestro lado. Inténtalo de nuevo en un momento."
+    }
+  }
 }

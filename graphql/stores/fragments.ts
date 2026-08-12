@@ -190,3 +190,16 @@ export const STORE_PAGE_INFO_FIELDS_FRAGMENT = gql`
     pageSize
   }
 `;
+
+export const STORE_PRODUCT_REVIEW_FIELDS_FRAGMENT = gql`
+  fragment StoreProductReviewFields on StoreProductReview {
+    id
+    storeProductId
+    userId
+    rating
+    comment
+    images
+    isVerifiedPurchase
+    createdAt
+  }
+`;

@@ -70,8 +70,23 @@ export const UPDATE_PASSWORD = gql`
 `;
 
 export const REQUEST_PASSWORD_RESET = gql`
-  mutation RequestPasswordReset($email: String!) {
-    requestPasswordReset(email: $email)
+  mutation RequestPasswordReset($email: String!, $language: Language = ES) {
+    requestPasswordReset(email: $email, language: $language)
+  }
+`;
+
+/**
+ * Second half of the recovery flow. The token comes from the emailed link, so
+ * this runs unauthenticated; the backend consumes the token and signs every
+ * existing session out.
+ */
+export const RESET_PASSWORD = gql`
+  mutation ResetPassword(
+    $token: String!
+    $newPassword: String!
+    $language: Language = ES
+  ) {
+    resetPassword(token: $token, newPassword: $newPassword, language: $language)
   }
 `;
 

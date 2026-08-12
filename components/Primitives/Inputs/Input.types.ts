@@ -21,7 +21,9 @@ interface BaseInputProps
 }
 
 export interface InputProps extends BaseInputProps {
-  type?: "text" | "email" | "password" | "number" | "search";
+  // `date` renders the native picker; pair it with `min`/`max` to bound the
+  // range (the service booking form does, for the provider's notice period).
+  type?: "text" | "email" | "password" | "number" | "search" | "date";
 }
 
 export interface SearchInputProps extends Omit<BaseInputProps, "type"> {

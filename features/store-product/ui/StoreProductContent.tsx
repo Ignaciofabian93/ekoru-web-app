@@ -3,6 +3,7 @@ import type { SupportedLanguage } from "@/constants/settings";
 import { StoreProductDescription } from "./StoreProductDescription";
 import { StoreProductDetails } from "./StoreProductDetails";
 import { StoreProductImpact } from "./StoreProductImpact";
+import { StoreProductReviews } from "./StoreProductReviews";
 import {
   StoreProductError,
   StoreProductLoading,
@@ -117,6 +118,10 @@ export function StoreProductContent({ id, lang }: Props) {
             <StoreProductDescription description={product.description} />
             <StoreProductDetails product={product} lang={lang} />
             <StoreProductImpact impact={product.environmentalImpact} />
+            <StoreProductReviews
+              storeProductId={String(product.id)}
+              averageRating={product.averageRating}
+            />
           </div>
           <div className="flex flex-col gap-8 md:col-span-1">
             {product.seller && (
