@@ -27,6 +27,8 @@ export type ServiceSubCategoryRef = {
  */
 export type ServiceDetail = {
   id: string;
+  /** First image, or the provider's logo when the service has none. */
+  displayImage?: string | null;
   /** Only fetched by the detail query — grids do not ask for these. */
   faqs?: ServiceFaq[] | null;
   packages?: ServicePackage[] | null;

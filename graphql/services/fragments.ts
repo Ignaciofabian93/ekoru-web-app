@@ -112,6 +112,9 @@ export const SERVICE_FIELDS_FRAGMENT = gql`
     duration
     isActive
     images
+    # Own first photo, or the provider's logo when the service has none —
+    # resolved by the subgraph so every client falls back the same way.
+    displayImage
     tags
     createdAt
     updatedAt
@@ -202,7 +205,7 @@ export const SERVICE_BOOKING_FIELDS_FRAGMENT = gql`
     service {
       id
       name
-      images
+      displayImage
       sellerId
     }
   }
@@ -230,7 +233,7 @@ export const QUOTATION_FIELDS_FRAGMENT = gql`
     service {
       id
       name
-      images
+      displayImage
       sellerId
     }
   }

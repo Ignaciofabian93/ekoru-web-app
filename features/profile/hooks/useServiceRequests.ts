@@ -32,7 +32,8 @@ export type QuotationStatus =
 interface ServiceRef {
   id: string;
   name: string;
-  images?: string[] | null;
+  /** Own image, or the provider's logo — resolved by the services subgraph. */
+  displayImage?: string | null;
   sellerId: string;
 }
 

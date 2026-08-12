@@ -18,7 +18,8 @@ export function toServiceCardService(service: ServiceDetail): ServiceCardService
     id: service.id,
     name: service.name,
     description: service.description,
-    image: service.images?.[0],
+    // `displayImage` already falls back to the provider's logo server-side.
+    image: service.displayImage ?? service.images?.[0],
     category:
       service.serviceCategory?.translation?.subCategory ??
       service.serviceCategory?.subCategory,
