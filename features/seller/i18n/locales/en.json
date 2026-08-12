@@ -22,7 +22,8 @@
     "follow": "Follow",
     "following": "Following",
     "message": "Message",
-    "noLocation": "Location not provided"
+    "noLocation": "Location not provided",
+    "verifiedProvider": "Verified provider"
   },
   "stats": {
     "products": "Listings",
@@ -108,5 +109,12 @@
     "POOR": "Poor",
     "FOR_PARTS": "For parts",
     "REFURBISHED": "Refurbished"
+  },
+  "serviceCatalog": {
+    "title": "Services",
+    "subtitle": "What this provider offers",
+    "stat": "Services",
+    "empty": "This provider has no services listed yet.",
+    "emptyHint": "Check back later for new services."
   }
 }

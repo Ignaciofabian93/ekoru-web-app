@@ -42,9 +42,11 @@ function formatJoinDate(value: string | undefined, lang: SupportedLanguage) {
 interface Props {
   seller: Seller;
   lang: SupportedLanguage;
+  /** Providers get "verified provider" rather than "verified seller". */
+  isServiceProvider?: boolean;
 }
 
-export function SellerHero({ seller, lang }: Props) {
+export function SellerHero({ seller, lang, isServiceProvider = false }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
   const name = useDisplayName(seller);
@@ -129,7 +131,7 @@ export function SellerHero({ seller, lang }: Props) {
             </Title>
             {seller.isVerified && (
               <Badge
-                label={t("hero.verified")}
+                label={t(isServiceProvider ? "hero.verifiedProvider" : "hero.verified")}
                 variant="primary"
                 icon={BadgeCheck}
                 size="small"

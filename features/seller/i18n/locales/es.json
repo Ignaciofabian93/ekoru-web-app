@@ -22,7 +22,8 @@
     "follow": "Seguir",
     "following": "Siguiendo",
     "message": "Mensaje",
-    "noLocation": "Ubicación no informada"
+    "noLocation": "Ubicación no informada",
+    "verifiedProvider": "Proveedor verificado"
   },
   "stats": {
     "products": "Publicaciones",
@@ -108,5 +109,12 @@
     "POOR": "Desgastado",
     "FOR_PARTS": "Para repuestos",
     "REFURBISHED": "Reacondicionado"
+  },
+  "serviceCatalog": {
+    "title": "Servicios",
+    "subtitle": "Lo que ofrece este proveedor",
+    "stat": "Servicios",
+    "empty": "Este proveedor aún no tiene servicios publicados.",
+    "emptyHint": "Vuelve más tarde para ver nuevos servicios."
   }
 }

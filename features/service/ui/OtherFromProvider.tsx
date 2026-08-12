@@ -2,37 +2,13 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { CardScroller, ServiceCard, type ServiceCardService } from "@/components/Cards";
+import { CardScroller, ServiceCard } from "@/components/Cards";
 import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
-import { getBusinessProfile } from "@/utils/sellerInformation";
 
 import { useSellerServices } from "../hooks/useSellerServices";
 import { NAMESPACE } from "../i18n";
-import type { ServiceDetail } from "../types";
-
-function toCardService(service: ServiceDetail): ServiceCardService {
-  // Services are published by businesses, but `Seller.profile` is a union —
-  // narrow it before reading the business-only name and logo.
-  const profile = service.seller ? getBusinessProfile(service.seller) : null;
-
-  return {
-    id: service.id,
-    name: service.name,
-    description: service.description,
-    image: service.images?.[0],
-    category:
-      service.serviceCategory?.translation?.subCategory ??
-      service.serviceCategory?.subCategory,
-    price: service.basePrice,
-    duration: service.duration,
-    averageRating: service.averageRating,
-    reviewsNumber: service.reviewCount,
-    isLiked: service.isLiked ?? undefined,
-    providerName: profile?.businessName,
-    providerLogo: profile?.logo,
-  };
-}
+import { toServiceCardService } from "../serviceCard";
 
 interface Props {
   lang: string;
@@ -126,7 +102,7 @@ export function OtherFromProvider({ lang, sellerId, excludeServiceId }: Props) {
       >
         {services.map((service) => (
           <div key={service.id} className="snap-start">
-            <ServiceCard service={toCardService(service)} lang={lang} />
+            <ServiceCard service={toServiceCardService(service)} lang={lang} />
           </div>
         ))}
       </CardScroller>

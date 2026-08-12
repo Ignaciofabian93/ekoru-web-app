@@ -1,6 +1,8 @@
 "use client";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
+import { useSellerServices } from "@/features/service/hooks/useSellerServices";
+import { toServiceCardService } from "@/features/service/serviceCard";
 import { useMarketplaceCatalog } from "../hooks/useMarketplaceCatalog";
 import { useSellerProfile } from "../hooks/useSellerProfile";
 import { useStoreCatalog } from "../hooks/useStoreCatalog";
@@ -18,7 +20,7 @@ import {
   SellerLoading,
   SellerNotFound,
 } from "./SellerStatus";
-import { MarketplaceCard, StoreProductCard } from "@/components/Cards";
+import { MarketplaceCard, ServiceCard, StoreProductCard } from "@/components/Cards";
 import { Container, RHYTHM, Section, Stack } from "@/components/Layout";
 
 interface Props {
@@ -56,6 +58,17 @@ export function SellerContent({ id, lang }: Props) {
 
   const catalog = isBusiness ? store : marketplace;
 
+  // 3) Services are orthogonal to the product split: a seller of either kind may
+  //    offer them, and some offer nothing else. A provider with no products
+  //    should see their services here rather than an empty product shelf.
+  const { services, loading: servicesLoading } = useSellerServices({
+    sellerId: id,
+    pageSize: 24,
+  });
+  const hasServices = services.length > 0;
+  const hasProducts = catalog.products.length > 0;
+  const isServiceProvider = hasServices && !hasProducts;
+
   if (profileLoading && !seller) {
     return (
       <Container width="default">
@@ -92,12 +105,13 @@ export function SellerContent({ id, lang }: Props) {
 
   return (
     <>
-      <SellerHero seller={seller} lang={lang} />
+      <SellerHero seller={seller} lang={lang} isServiceProvider={isServiceProvider} />
       <Container width="default" gap={RHYTHM.SECTION}>
         {/* Who this seller is: the figures, then the two prose panels. */}
         <Section gap={RHYTHM.CONTENT} ariaLabel={t("about.title")}>
           <SellerStats
-            productsCount={catalog.totalCount}
+            productsCount={isServiceProvider ? services.length : catalog.totalCount}
+            productsLabel={isServiceProvider ? t("serviceCatalog.stat") : undefined}
             categoriesCount={catalog.categories.length}
             memberSince={seller.createdAt}
           />
@@ -116,7 +130,7 @@ export function SellerContent({ id, lang }: Props) {
         {isBusiness && <SellerBusinessInfo seller={seller} />}
 
         {/* Catalog — full-width grid below */}
-        {isBusiness ? (
+        {isServiceProvider ? null : isBusiness ? (
           <SellerCatalog
             title={t("storeCatalog.title")}
             subtitle={t("storeCatalog.subtitle")}
@@ -137,6 +151,21 @@ export function SellerContent({ id, lang }: Props) {
             loading={marketplace.loading}
             getKey={(p) => p.id}
             renderProduct={(p) => <MarketplaceCard product={p} lang={lang} />}
+          />
+        )}
+
+        {hasServices && (
+          <SellerCatalog
+            title={t("serviceCatalog.title")}
+            subtitle={t("serviceCatalog.subtitle")}
+            emptyTitle={t("serviceCatalog.empty")}
+            emptyHint={t("serviceCatalog.emptyHint")}
+            products={services}
+            loading={servicesLoading}
+            getKey={(service) => service.id}
+            renderProduct={(service) => (
+              <ServiceCard service={toServiceCardService(service)} lang={lang} />
+            )}
           />
         )}
       </Container>

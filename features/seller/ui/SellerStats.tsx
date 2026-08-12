@@ -10,6 +10,11 @@ import { StatTile, type StatTileTone } from "@/components/Patterns/StatTile";
 
 interface Props {
   productsCount: number;
+  /**
+   * What the first figure counts. A service provider publishes services, not
+   * products, and the tile should say so.
+   */
+  productsLabel?: string;
   categoriesCount: number;
   memberSince?: string;
 }
@@ -36,7 +41,12 @@ function memberDuration(t: ReturnType<typeof useTranslation>["t"], since?: strin
     : t("memberFor.yearsPlural", { count: String(years) });
 }
 
-export function SellerStats({ productsCount, categoriesCount, memberSince }: Props) {
+export function SellerStats({
+  productsCount,
+  productsLabel,
+  categoriesCount,
+  memberSince,
+}: Props) {
   const { t } = useTranslation(NAMESPACE);
 
   const items: Array<{
@@ -47,7 +57,7 @@ export function SellerStats({ productsCount, categoriesCount, memberSince }: Pro
   }> = [
     {
       icon: Package,
-      label: t("stats.products"),
+      label: productsLabel ?? t("stats.products"),
       value: String(productsCount),
       tone: "primary",
     },
