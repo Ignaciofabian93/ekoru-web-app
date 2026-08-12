@@ -579,24 +579,7 @@
       "received": "Aucune proposition reçue pour le moment.",
       "sent": "Vous n'avez pas encore envoyé de propositions."
     },
-    "youGive": "Vous donnez",
-    "youGet": "Vous recevez",
-    "from": "De {{name}}",
-    "to": "À {{name}}",
-    "even": "Échange équitable",
-    "youAdd": "Vous ajoutez {{amount}}",
-    "theyAdd": "Ils ajoutent {{amount}}",
-    "accept": "Accepter",
-    "decline": "Refuser",
-    "notesLabel": "Note",
-    "status": {
-      "PENDING": "En attente",
-      "ACCEPTED": "Acceptée",
-      "DECLINED": "Refusée",
-      "COMPLETED": "Terminée",
-      "CANCELLED": "Annulée"
-    },
-    "stubNotice": "Les propositions d'échange ne sont pas encore actives — ce sont des données d'exemple."
+    "loading": "Chargement…"
   },
   "logout": "Se Déconnecter",
   "back": "Retour"

@@ -16,6 +16,18 @@
   "compensation": "Compensation en espèces : {{amount}}",
   "youPay": "(vous payez)",
   "theyPay": "(l'autre partie paie)",
+  "message": {
+    "from": "Message de l'autre partie",
+    "yours": "Votre message"
+  },
+  "cash": {
+    "youBring": "Apportez {{amount}} en espèces lors de la remise.",
+    "theyBring": "L'autre partie vous remettra {{amount}} en espèces.",
+    "confirmReceived": "Je confirme avoir reçu le complément de {{amount}} en espèces.",
+    "payerHint": "N'oubliez pas de remettre les {{amount}} convenus — l'autre partie doit le confirmer pour clore l'accord.",
+    "settled": "Complément en espèces confirmé"
+  },
+  "pointsEarned": "Vous avez chacun gagné {{points}} éco-points pour cet accord.",
   "acceptedBanner": "Demande acceptée !",
   "acceptedHint": "Convenez de la remise avec l'autre personne et confirmez une fois l'article reçu.",
   "contact": "Appeler le {{phone}}",

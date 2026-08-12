@@ -38,11 +38,11 @@ export function useDealActions() {
   const opts = { refetchQueries: REFETCH, awaitRefetchQueries: false };
   const [proposeSale] = useMutation<
     { proposeSaleDeal: Deal },
-    { productId: number }
+    { productId: number; message?: string }
   >(PROPOSE_SALE_DEAL, opts);
   const [proposeExchange] = useMutation<
     { proposeExchangeDeal: Deal },
-    { requestedProductId: number; offeredProductId: number }
+    { requestedProductId: number; offeredProductId: number; message?: string }
   >(PROPOSE_EXCHANGE_DEAL, opts);
   const [accept] = useMutation(ACCEPT_DEAL, opts);
   const [decline] = useMutation(DECLINE_DEAL, opts);
@@ -65,17 +65,21 @@ export function useDealActions() {
   return {
     busyId,
 
-    proposeSaleDeal: (productId: number) =>
+    proposeSaleDeal: (productId: number, message?: string) =>
       run(productId, async () => {
-        const res = await proposeSale({ variables: { productId } });
+        const res = await proposeSale({ variables: { productId, message } });
         toast.success("Solicitud enviada al vendedor");
         return res.data?.proposeSaleDeal as Deal | undefined;
       }),
 
-    proposeExchangeDeal: (requestedProductId: number, offeredProductId: number) =>
+    proposeExchangeDeal: (
+      requestedProductId: number,
+      offeredProductId: number,
+      message?: string,
+    ) =>
       run(requestedProductId, async () => {
         const res = await proposeExchange({
-          variables: { requestedProductId, offeredProductId },
+          variables: { requestedProductId, offeredProductId, message },
         });
         toast.success("Propuesta de intercambio enviada");
         return res.data?.proposeExchangeDeal as Deal | undefined;
@@ -92,15 +96,19 @@ export function useDealActions() {
     cancelDeal: (id: number, reason?: string) =>
       run(id, () => cancel({ variables: { id, reason } })),
 
-    /** Uploads the evidence photo (if any) then confirms the deal. */
-    confirmDeal: (id: number, photo?: File) =>
+    /**
+     * Uploads the evidence photo (if any) then confirms the deal.
+     * `compensationSettled` is the cash receiver's "I got the top-up" tick —
+     * the server refuses their confirmation without it.
+     */
+    confirmDeal: (id: number, photo?: File, compensationSettled?: boolean) =>
       run(id, async () => {
         let evidenceUrl: string | undefined;
         if (photo) {
           const { imageUrl } = await uploadProductImage(photo, sellerId ?? "deal");
           evidenceUrl = imageUrl;
         }
-        await confirm({ variables: { id, evidenceUrl } });
+        await confirm({ variables: { id, evidenceUrl, compensationSettled } });
       }),
   };
 }

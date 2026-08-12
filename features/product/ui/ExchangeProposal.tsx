@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
 import type { SupportedLanguage } from "@/constants/settings";
+import { useDealSettings } from "@/features/deals/hooks/useDealSettings";
 import { useMyListings } from "@/features/profile/hooks/useMyListings";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
@@ -22,6 +23,9 @@ interface Props {
   product: Product;
   lang: SupportedLanguage;
 }
+
+/** Matches the cap the transactions subgraph applies before storing the note. */
+const MAX_NOTES_LENGTH = 500;
 
 function Thumb({ name, image }: { name: string; image?: string }) {
   const src = resolveImageUrl(image);
@@ -50,6 +54,7 @@ export function ExchangeProposal({ product, lang }: Props) {
     enabled: Boolean(seller),
   });
   const { propose, loading, done } = useProposeExchange();
+  const settings = useDealSettings();
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [notes, setNotes] = useState("");
@@ -104,13 +109,20 @@ export function ExchangeProposal({ product, lang }: Props) {
   const yourValue = selected?.price ?? 0;
   // Positive → the requested item is worth more, so the proposer tops up.
   const diff = theirValue - yourValue;
+  // The server only records a cash compensation once the gap reaches the
+  // threshold; below it the trade is settled as even, so say so rather than
+  // promising a top-up the deal will never carry.
+  const owesCash = Math.abs(diff) >= settings.compensationThresholdClp;
 
-  const balanceLabel =
-    diff === 0
+  const balanceLabel = !owesCash
+    ? diff === 0
       ? t("exchange.even")
-      : diff > 0
-        ? t("exchange.youAdd", { amount: formatPrice(Math.abs(diff)) })
-        : t("exchange.theyAdd", { amount: formatPrice(Math.abs(diff)) });
+      : t("exchange.noCompensation", {
+          threshold: formatPrice(settings.compensationThresholdClp),
+        })
+    : diff > 0
+      ? t("exchange.youAdd", { amount: formatPrice(Math.abs(diff)) })
+      : t("exchange.theyAdd", { amount: formatPrice(Math.abs(diff)) });
 
   return (
     <div className="border-border bg-surface flex flex-col gap-4 rounded-2xl border p-5">
@@ -224,7 +236,7 @@ export function ExchangeProposal({ product, lang }: Props) {
         </div>
       )}
 
-      {/* Message */}
+      {/* Message — travels with the proposal into the owner's notification. */}
       <div className="flex flex-col gap-1.5">
         <Text size="sm" weight="semibold" color="secondary">
           {t("exchange.notesLabel")}
@@ -233,10 +245,18 @@ export function ExchangeProposal({ product, lang }: Props) {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={3}
+          maxLength={MAX_NOTES_LENGTH}
           placeholder={t("exchange.notesPlaceholder")}
           className="border-input-border bg-input-bg text-input-text focus:border-input-border-focus w-full resize-none rounded-xl border p-3 text-sm outline-none"
         />
+        <Text size="xs" color="tertiary">
+          {t("exchange.notesHint")}
+        </Text>
       </div>
+
+      <Text size="xs" color="tertiary">
+        {t("exchange.pointsHint", { points: String(settings.completionPoints) })}
+      </Text>
 
       <button
         type="button"

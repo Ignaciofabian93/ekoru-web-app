@@ -144,17 +144,19 @@
     "theirValue": "Su artículo",
     "yourValue": "Tu artículo",
     "even": "Intercambio parejo — sin diferencia",
+    "noCompensation": "La diferencia es menor a {{threshold}}: no se requiere compensación en efectivo.",
     "youAdd": "Agregarías {{amount}} para equilibrarlo",
     "theyAdd": "Agregarían {{amount}} para equilibrarlo",
     "notesLabel": "Mensaje (opcional)",
     "notesPlaceholder": "Añade una nota para el vendedor…",
+    "notesHint": "El vendedor lo verá en la notificación y en el detalle del trato.",
+    "pointsHint": "Al completar el intercambio, cada uno gana {{points}} eco-puntos.",
     "send": "Enviar propuesta",
     "sending": "Enviando…",
     "sent": "Propuesta enviada",
     "sentHint": "El vendedor será notificado y podrá aceptar o rechazar tu oferta.",
     "loginRequired": "Inicia sesión para proponer un intercambio.",
     "loginCta": "Iniciar sesión",
-    "ownProduct": "Esta es tu propia publicación.",
-    "stubNotice": "Las propuestas de intercambio aún no están activas — esto es una vista previa del flujo."
+    "ownProduct": "Esta es tu propia publicación."
   }
 }

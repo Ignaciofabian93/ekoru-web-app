@@ -144,17 +144,19 @@
     "theirValue": "Son article",
     "yourValue": "Votre article",
     "even": "Échange équitable — aucun ajout nécessaire",
+    "noCompensation": "L'écart est inférieur à {{threshold}} : aucun complément en espèces n'est requis.",
     "youAdd": "Vous ajouteriez {{amount}} pour équilibrer",
     "theyAdd": "Ils ajouteraient {{amount}} pour équilibrer",
     "notesLabel": "Message (facultatif)",
     "notesPlaceholder": "Ajoutez une note pour le vendeur…",
+    "notesHint": "Le vendeur le verra dans la notification et sur l'accord.",
+    "pointsHint": "À la finalisation de l'échange, chacun gagne {{points}} éco-points.",
     "send": "Envoyer la proposition",
     "sending": "Envoi…",
     "sent": "Proposition envoyée",
     "sentHint": "Le vendeur sera notifié et pourra accepter ou refuser votre offre.",
     "loginRequired": "Connectez-vous pour proposer un échange.",
     "loginCta": "Se connecter",
-    "ownProduct": "Ceci est votre propre annonce.",
-    "stubNotice": "Les propositions d'échange ne sont pas encore actives — ceci est un aperçu du flux."
+    "ownProduct": "Ceci est votre propre annonce."
   }
 }

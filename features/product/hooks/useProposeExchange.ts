@@ -11,7 +11,7 @@ export interface ProposeExchangeInput {
   requestedProductId: string;
   /** One of the current user's own listings, offered in return. */
   offeredProductId: string;
-  /** Kept for the UI; the P2P deal has no notes field, so it isn't sent. */
+  /** Free-text note for the owner; travels with the deal and its notification. */
   notes?: string;
 }
 
@@ -34,6 +34,7 @@ export function useProposeExchange() {
         variables: {
           requestedProductId: Number(input.requestedProductId),
           offeredProductId: Number(input.offeredProductId),
+          message: input.notes,
         },
       });
       setDone(true);

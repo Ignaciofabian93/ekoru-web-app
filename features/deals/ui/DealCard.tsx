@@ -1,13 +1,16 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import {
   ArrowLeftRight,
   BadgeCheck,
   Clock,
+  Coins,
   ImageOff,
   ImagePlus,
+  Leaf,
   MapPin,
+  MessageSquareQuote,
   Phone,
   ShieldAlert,
   UserRound,
@@ -27,6 +30,7 @@ import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import type { Deal, DealPerspective, DealProduct } from "../types";
 import { useDealActions } from "../hooks/useDealActions";
+import { useDealSettings } from "../hooks/useDealSettings";
 
 const STATUS_STYLE: Record<string, string> = {
   PROPOSED: "bg-amber-50 text-amber-700",
@@ -43,7 +47,13 @@ function Thumb({ product }: { product?: DealProduct | null }) {
   return (
     <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-background-secondary">
       {cover ? (
-        <Image src={cover} alt={product?.name ?? ""} fill className="object-cover" sizes="64px" />
+        <Image
+          src={cover}
+          alt={product?.name ?? ""}
+          fill
+          className="object-cover"
+          sizes="64px"
+        />
       ) : (
         <div className="flex h-full w-full items-center justify-center">
           <ImageOff size={20} className="text-foreground-muted" />
@@ -64,7 +74,9 @@ export function DealCard({
   const formatPrice = useFormatPrice();
   const myId = useCurrentSellerId();
   const a = useDealActions();
+  const settings = useDealSettings();
   const [photo, setPhoto] = useState<File | null>(null);
+  const [cashReceived, setCashReceived] = useState(false);
   const busy = a.busyId === deal.id;
 
   const isExchange = deal.type === "EXCHANGE";
@@ -74,17 +86,26 @@ export function DealCard({
   // The buyer always receives an item; the seller only in an exchange.
   const iReceiveItem = perspective === "buyer" || isExchange;
 
+  // Cash gap: only the side owed the money can attest it changed hands, and the
+  // server refuses their confirmation until they do.
+  const hasCashGap = deal.compensationAmount > 0 && !!deal.compensationPayerId;
+  const iPayCash = hasCashGap && deal.compensationPayerId === myId;
+  const iAmOwedCash = hasCashGap && !iPayCash;
+  const cashSettled = !!deal.compensationSettledAt;
+  const mustTickCash = iAmOwedCash && !cashSettled;
+
   // Countdown to the 72h confirmation deadline (turns urgent under 12h).
-  const msLeft = deal.confirmationDeadline
-    ? new Date(deal.confirmationDeadline).getTime() - Date.now()
-    : null;
+  // `now` is null until the client mounts — reading the clock during render is
+  // impure and would also mismatch the server-rendered markup.
+  const now = useNow();
+  const msLeft =
+    deal.confirmationDeadline && now !== null
+      ? new Date(deal.confirmationDeadline).getTime() - now
+      : null;
   const urgent = msLeft !== null && msLeft < 12 * 3600_000;
 
   // Local preview of the not-yet-uploaded evidence photo.
-  const previewUrl = useMemo(
-    () => (photo ? URL.createObjectURL(photo) : null),
-    [photo],
-  );
+  const previewUrl = useMemo(() => (photo ? URL.createObjectURL(photo) : null), [photo]);
   useEffect(
     () => () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -158,6 +179,24 @@ export function DealCard({
         </span>
       </div>
 
+      {/* What the proposer wrote when they opened the deal. */}
+      {deal.message && (
+        <div className="flex items-start gap-1.5 rounded-lg bg-background-secondary p-2.5">
+          <MessageSquareQuote
+            size={14}
+            className="mt-0.5 shrink-0 text-foreground-tertiary"
+          />
+          <div className="min-w-0">
+            <p className="text-[11px] font-medium text-foreground-tertiary">
+              {perspective === "seller" ? t("message.from") : t("message.yours")}
+            </p>
+            <p className="text-xs whitespace-pre-line text-foreground-secondary">
+              {deal.message}
+            </p>
+          </div>
+        </div>
+      )}
+
       {deal.status === "ACCEPTED" && (
         <div className="flex flex-col gap-1.5 rounded-lg bg-primary/5 p-2.5">
           <p className="text-xs font-semibold text-primary">{t("acceptedBanner")}</p>
@@ -169,6 +208,18 @@ export function DealCard({
             >
               <Phone size={13} /> {t("contact", { phone: counterparty.phone })}
             </a>
+          )}
+          {hasCashGap && (
+            <p className="flex items-center gap-1.5 text-xs font-medium text-foreground-secondary">
+              <Coins size={13} className="shrink-0" />
+              {iPayCash
+                ? t("cash.youBring", {
+                    amount: formatPrice(deal.compensationAmount),
+                  })
+                : t("cash.theyBring", {
+                    amount: formatPrice(deal.compensationAmount),
+                  })}
+            </p>
           )}
           {msLeft !== null && (
             <p
@@ -184,6 +235,12 @@ export function DealCard({
           )}
         </div>
       )}
+      {deal.status === "COMPLETED" && (
+        <p className="flex items-center gap-1.5 text-xs font-medium text-success">
+          <Leaf size={13} className="shrink-0" />
+          {t("pointsEarned", { points: String(settings.completionPoints) })}
+        </p>
+      )}
       {deal.status === "DISPUTED" && deal.disputeReason && (
         <p className="flex items-center gap-1.5 text-xs text-red-600">
           <ShieldAlert size={13} /> {deal.disputeReason}
@@ -192,6 +249,12 @@ export function DealCard({
       {deal.status === "CANCELLED" && deal.cancelReason && (
         <p className="flex items-center gap-1.5 text-xs text-foreground-tertiary">
           <ShieldAlert size={13} /> {deal.cancelReason}
+        </p>
+      )}
+
+      {cashSettled && (
+        <p className="flex items-center gap-1.5 text-xs text-success">
+          <Coins size={13} className="shrink-0" /> {t("cash.settled")}
         </p>
       )}
 
@@ -268,10 +331,43 @@ export function DealCard({
                 )}
               </div>
             )}
+            {/* The side owed the top-up has to say the cash arrived before
+                their confirmation counts. */}
+            {mustTickCash && (
+              <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-border-light p-2.5 text-xs text-foreground-secondary">
+                <input
+                  type="checkbox"
+                  checked={cashReceived}
+                  onChange={(e) => setCashReceived(e.target.checked)}
+                  className="mt-0.5 size-3.5 shrink-0 accent-primary"
+                />
+                <span>
+                  {t("cash.confirmReceived", {
+                    amount: formatPrice(deal.compensationAmount),
+                  })}
+                </span>
+              </label>
+            )}
+            {iPayCash && !cashSettled && (
+              <p className="flex items-center gap-1.5 text-xs text-foreground-tertiary">
+                <Coins size={13} className="shrink-0" />
+                {t("cash.payerHint", {
+                  amount: formatPrice(deal.compensationAmount),
+                })}
+              </p>
+            )}
             <div className="flex gap-2">
               <Btn
-                onClick={() => a.confirmDeal(deal.id, photo ?? undefined)}
-                disabled={busy || (iReceiveItem && !photo)}
+                onClick={() =>
+                  a.confirmDeal(
+                    deal.id,
+                    photo ?? undefined,
+                    mustTickCash ? cashReceived : undefined,
+                  )
+                }
+                disabled={
+                  busy || (iReceiveItem && !photo) || (mustTickCash && !cashReceived)
+                }
                 primary
               >
                 {iReceiveItem
@@ -299,12 +395,50 @@ export function DealCard({
           </div>
         )}
         {deal.status === "ACCEPTED" && iConfirmed && (
-          <p className="text-xs text-foreground-tertiary">
-            {t("awaitingOther")}
-          </p>
+          <p className="text-xs text-foreground-tertiary">{t("awaitingOther")}</p>
         )}
       </div>
     </div>
+  );
+}
+
+/**
+ * One shared clock for every deal card on the page, exposed as an external
+ * store. Reading `Date.now()` during render is impure and would also mismatch
+ * the server-rendered markup, so the countdown subscribes to this instead. The
+ * snapshot is 0 until the first subscriber starts the interval.
+ */
+const clock = {
+  now: 0,
+  listeners: new Set<() => void>(),
+  timer: null as ReturnType<typeof setInterval> | null,
+  tick() {
+    clock.now = Date.now();
+    for (const listener of clock.listeners) listener();
+  },
+  subscribe(listener: () => void) {
+    clock.listeners.add(listener);
+    if (!clock.timer) {
+      clock.tick();
+      clock.timer = setInterval(clock.tick, 60_000);
+    }
+    return () => {
+      clock.listeners.delete(listener);
+      if (clock.listeners.size === 0 && clock.timer) {
+        clearInterval(clock.timer);
+        clock.timer = null;
+      }
+    };
+  },
+  snapshot: () => clock.now,
+  serverSnapshot: () => 0,
+};
+
+/** The current time, or null before the client clock has started. */
+function useNow(): number | null {
+  return (
+    useSyncExternalStore(clock.subscribe, clock.snapshot, clock.serverSnapshot) ||
+    null
   );
 }
 

@@ -16,6 +16,18 @@
   "compensation": "Cash compensation: {{amount}}",
   "youPay": "(you pay)",
   "theyPay": "(the other party pays)",
+  "message": {
+    "from": "Message from the other party",
+    "yours": "Your message"
+  },
+  "cash": {
+    "youBring": "Bring {{amount}} in cash to the handover.",
+    "theyBring": "The other party will hand you {{amount}} in cash.",
+    "confirmReceived": "I confirm I received the {{amount}} cash top-up.",
+    "payerHint": "Remember to hand over the agreed {{amount}} — the other party has to confirm it to close the deal.",
+    "settled": "Cash top-up confirmed"
+  },
+  "pointsEarned": "You both earned {{points}} eco-points for this deal.",
   "acceptedBanner": "Request accepted!",
   "acceptedHint": "Arrange the handover with the other person and confirm once you receive the item.",
   "contact": "Call {{phone}}",

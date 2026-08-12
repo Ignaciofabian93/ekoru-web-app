@@ -144,17 +144,19 @@
     "theirValue": "Their item",
     "yourValue": "Your item",
     "even": "Even exchange — no top-up needed",
+    "noCompensation": "The gap is under {{threshold}}, so no cash top-up is required.",
     "youAdd": "You'd add {{amount}} to balance it",
     "theyAdd": "They'd add {{amount}} to balance it",
     "notesLabel": "Message (optional)",
     "notesPlaceholder": "Add a note for the seller…",
+    "notesHint": "The seller sees this in the notification and on the deal.",
+    "pointsHint": "When the exchange completes, you each earn {{points}} eco-points.",
     "send": "Send proposal",
     "sending": "Sending…",
     "sent": "Proposal sent",
     "sentHint": "The seller will be notified and can accept or decline your offer.",
     "loginRequired": "Log in to propose an exchange.",
     "loginCta": "Log in",
-    "ownProduct": "This is your own listing.",
-    "stubNotice": "Exchange proposals aren't live yet — this is a preview of the flow."
+    "ownProduct": "This is your own listing."
   }
 }

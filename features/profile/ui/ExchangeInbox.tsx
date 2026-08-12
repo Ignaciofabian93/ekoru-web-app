@@ -1,34 +1,37 @@
 "use client";
 import clsx from "clsx";
-import { Info, Inbox, Send } from "lucide-react";
+import { Inbox, Send } from "lucide-react";
 import { useState } from "react";
 
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
-import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
+import { DealCard } from "@/features/deals/ui/DealCard";
+import { useDeals } from "@/features/deals/hooks/useDeals";
 import { useTranslation } from "@/i18n/context";
-import { useParams } from "next/navigation";
 
-import {
-  useExchangeProposals,
-  type ExchangeDirection,
-} from "../hooks/useExchangeProposals";
 import { NAMESPACE } from "../i18n";
-import { ExchangeProposalCard } from "./ExchangeProposalCard";
+
+/** Which side of an exchange the viewer is on. */
+export type ExchangeDirection = "received" | "sent";
 
 const TABS: { key: ExchangeDirection; icon: typeof Inbox }[] = [
   { key: "received", icon: Inbox },
   { key: "sent", icon: Send },
 ];
 
+/**
+ * The exchange half of the P2P deal inbox, scoped to `/profile/exchanges`.
+ * "Received" are proposals on the viewer's own listings (they are the seller
+ * side of the deal); "sent" are the ones they opened. Cash sales live on
+ * `/deals` — same data, same cards, both sides.
+ */
 export function ExchangeInbox() {
   const { t } = useTranslation(NAMESPACE);
-  const params = useParams<{ lang?: SupportedLanguage }>();
-  const lang = params.lang ?? DEFAULT_LANGUAGE;
-
-  const { received, sent, accept, decline, pendingId } = useExchangeProposals();
+  const { buyerDeals, sellerDeals, loading } = useDeals();
   const [tab, setTab] = useState<ExchangeDirection>("received");
 
+  const received = sellerDeals.filter((d) => d.type === "EXCHANGE");
+  const sent = buyerDeals.filter((d) => d.type === "EXCHANGE");
   const items = tab === "received" ? received : sent;
 
   return (
@@ -39,14 +42,6 @@ export function ExchangeInbox() {
         </Title>
         <Text size="sm" color="secondary">
           {t("exchanges.subtitle")}
-        </Text>
-      </div>
-
-      {/* Preview-only banner — this is sample data until the backend lands. */}
-      <div className="bg-primary/5 flex items-start gap-2 rounded-xl p-3">
-        <Info size={14} strokeWidth={2} className="text-primary mt-0.5 shrink-0" />
-        <Text size="xs" color="secondary">
-          {t("exchanges.stubNotice")}
         </Text>
       </div>
 
@@ -85,20 +80,16 @@ export function ExchangeInbox() {
       {items.length === 0 ? (
         <div className="border-border-light bg-surface rounded-2xl border border-dashed px-4 py-16 text-center">
           <Text weight="semibold" color="secondary">
-            {t(`exchanges.empty.${tab}`)}
+            {loading ? t("exchanges.loading") : t(`exchanges.empty.${tab}`)}
           </Text>
         </div>
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
-          {items.map((proposal) => (
-            <ExchangeProposalCard
-              key={proposal.id}
-              proposal={proposal}
-              direction={tab}
-              lang={lang}
-              busy={pendingId === proposal.id}
-              onAccept={accept}
-              onDecline={decline}
+          {items.map((deal) => (
+            <DealCard
+              key={deal.id}
+              deal={deal}
+              perspective={tab === "received" ? "seller" : "buyer"}
             />
           ))}
         </div>
