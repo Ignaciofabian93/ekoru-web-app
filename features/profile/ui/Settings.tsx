@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/Primitives/Button";
 import { useTranslation } from "@/i18n/context";
-import { Save } from "lucide-react";
+import { Save, ShieldAlert, Trash2 } from "lucide-react";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { SETTINGS_SECTIONS } from "../constants/menuItems";
 import { useSellerPreferences } from "../hooks/useSellerPreferences";
@@ -92,6 +92,7 @@ export function Settings() {
         <SectionCard
           icon={dangerSection.icon}
           tone="danger"
+          background="danger"
           title={t(dangerSection.label)}
           subtitle={t(dangerSection.subtitle)}
           className="border-danger/20"
@@ -117,11 +118,12 @@ export function Settings() {
                           ? t("settings.deleting")
                           : t("settings.deleteAccount")
                     }
-                    variant={item.danger ? "error" : "outline"}
+                    variant="error"
                     size="sm"
                     loading={item.action === "deactivate" ? deactivating : deleting}
                     disabled={!item.available || busy}
                     onClick={() => void handleAction(item.action)}
+                    leftIcon={item.action === "deactivate" ? ShieldAlert : Trash2}
                   />
                 }
               />

@@ -29,9 +29,10 @@ export interface LinkButtonProps {
 }
 
 const VARIANT_CLASS: Record<LinkButtonVariant, string> = {
-  primary: "bg-primary border-2 border-primary text-white hover:brightness-110",
+  primary:
+    "bg-linear-180 from-primary to-primary-light/80 border border-primary text-on-primary",
   outlined: "border-2 border-primary bg-surface text-primary",
-  ghost: "bg-transparent text-foreground hover:bg-background-light",
+  ghost: "bg-transparent text-primary",
 };
 
 const SIZE_CLASS: Record<LinkButtonSize, string> = {
@@ -74,7 +75,10 @@ export function LinkButton({
           align="center"
           color={variant === "outlined" || variant === "ghost" ? "primary" : "white"}
           size="sm"
-          className="cursor-pointer"
+          className={clsx("cursor-pointer", {
+            "underline hover:brightness-110 transition-all duration-200 ease-in-out":
+              variant === "ghost",
+          })}
         >
           {label}
         </Text>

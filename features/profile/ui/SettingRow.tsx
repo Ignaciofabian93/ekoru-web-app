@@ -33,14 +33,14 @@ export function SettingRow(props: SettingRowProps) {
   return (
     <div
       className={clsx(
-        "flex flex-wrap items-start gap-3 py-3.5",
+        "flex flex-wrap items-start gap-3 py-3.5 px-3",
         "border-b border-border-light last:border-b-0",
         className,
       )}
     >
       {Icon && (
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-light/20 text-primary">
-          <Icon size={16} color="currentColor" strokeWidth={2} />
+        <div className="flex mb-1 shrink-0 items-center justify-center text-foreground-secondary">
+          <Icon size={20} color="currentColor" strokeWidth={2} />
         </div>
       )}
       <div className="flex flex-1 flex-col gap-0.5">
@@ -48,7 +48,7 @@ export function SettingRow(props: SettingRowProps) {
           {label}
         </Text>
         {description && (
-          <Text variant="span" size="sm" color="tertiary">
+          <Text variant="span" size="sm" color="secondary">
             {description}
           </Text>
         )}

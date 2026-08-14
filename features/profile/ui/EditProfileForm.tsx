@@ -46,6 +46,7 @@ export function EditProfileForm() {
       {/* Personal / business identity */}
       <SectionCard
         icon={isBusiness ? Building2 : UserRound}
+        tone="primary"
         title={t("editProfile.personal.title")}
         subtitle={t("editProfile.personal.subtitle")}
       >
@@ -122,6 +123,7 @@ export function EditProfileForm() {
       {/* Contact */}
       <SectionCard
         icon={Phone}
+        tone="default"
         title={t("editProfile.contact.title")}
         subtitle={t("editProfile.contact.subtitle")}
       >
@@ -184,6 +186,7 @@ export function EditProfileForm() {
       {/* Location */}
       <SectionCard
         icon={MapPin}
+        tone="success"
         title={t("editProfile.location.title")}
         subtitle={t("editProfile.location.subtitle")}
       >

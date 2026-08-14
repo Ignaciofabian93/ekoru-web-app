@@ -1,7 +1,7 @@
 "use client";
 import { StatTile } from "@/components/Patterns/StatTile";
 import { useTranslation } from "@/i18n/context";
-import { ArrowRight, Droplets, Leaf, PackageCheck } from "lucide-react";
+import { ArrowRight, Droplets, Leaf, PackageCheck, TrendingUp } from "lucide-react";
 import { useParams } from "next/navigation";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
@@ -56,7 +56,7 @@ export function ImpactSnapshot() {
 
   return (
     <SectionCard
-      icon={Leaf}
+      icon={TrendingUp}
       tone="success"
       title={t("dashboard.impact.title")}
       subtitle={t("dashboard.impact.subtitle")}
@@ -73,7 +73,7 @@ export function ImpactSnapshot() {
         </div>
       }
     >
-      <div className="flex flex-col items-center justify-evenly gap-3">
+      <div className="flex flex-col sm:flex-wrap items-center justify-evenly gap-3">
         {stats.map((s) => (
           <StatTile
             key={s.key}

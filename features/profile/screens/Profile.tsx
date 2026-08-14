@@ -37,13 +37,13 @@ export async function ProfileScreen({ lang }: { lang: SupportedLanguage }) {
       }}
     >
       <PageLayout hero={<ProfileHeader />} width="default">
-        <Grid cols={1} lg={4} gap={5}>
-          <Stack gap={5} className="lg:col-span-2">
+        <Grid cols={1} lg={5} gap={4}>
+          <Stack gap={4} className="lg:col-span-2">
             <Details />
             <Account />
             <ImpactSnapshot />
           </Stack>
-          <Stack as="aside" gap={5} className="lg:col-span-2">
+          <Stack as="aside" gap={4} className="lg:col-span-3">
             <MyListings />
           </Stack>
         </Grid>

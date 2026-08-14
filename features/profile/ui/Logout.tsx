@@ -3,6 +3,7 @@ import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { Button } from "@/components/Primitives/Button";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import { LogOut } from "lucide-react";
 
 export function Logout() {
   const { t } = useTranslation(NAMESPACE);
@@ -13,9 +14,9 @@ export function Logout() {
       text={t("logout")}
       variant="error"
       size="md"
-      fullWidth
       onPress={handleLogout}
       loading={loading}
+      rightIcon={LogOut}
     />
   );
 }

@@ -17,7 +17,7 @@ const SIZE: Record<AvatarSize, { box: string; px: number }> = {
 
 const FRAME: Record<AvatarFrame, string> = {
   overlay: "border-2 border-white/20 drop-shadow-lg",
-  raised: "border-4 border-white bg-white shadow-md",
+  raised: "border-2 border-white/20 bg-white shadow-md",
 };
 
 const INTERACTIVE_FRAME: Record<AvatarFrame, string> = {

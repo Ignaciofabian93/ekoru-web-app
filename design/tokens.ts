@@ -28,6 +28,7 @@ const raw = {
 
   red400: "#f87171",
   red500: "#ef4444",
+  red600: "#dc2626",
   green500: "#22c55e",
   yellow500: "#eab308",
   blue500: "#3b82f6",
@@ -86,6 +87,7 @@ export const colors = {
   // Feedback
   danger: raw.red500,
   dangerHover: raw.red400,
+  dangerDark: raw.red600,
   success: raw.green500,
   warning: raw.yellow500,
   info: raw.blue500,

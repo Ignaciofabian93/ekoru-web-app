@@ -100,13 +100,11 @@ export function ListingsPanel<T>({
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {visible.map(renderItem)}
           </div>
-          {totalPages > 1 && (
-            <Pagination
-              currentPage={clampedPage}
-              totalPages={totalPages}
-              onPageChange={setPage}
-            />
-          )}
+          <Pagination
+            currentPage={clampedPage}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
         </>
       )}
     </div>

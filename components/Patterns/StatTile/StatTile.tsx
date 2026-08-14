@@ -59,7 +59,7 @@ export function StatTile({
   return (
     <div
       className={clsx(
-        "flex rounded-2xl border p-4 shadow-sm shadow-slate-800/10 backdrop-blur-xl",
+        "flex rounded-2xl border p-4 shadow-sm shadow-slate-800/10",
         isHorizontal ? "w-full items-center gap-4" : "flex-col items-center gap-1.5",
         "hover:brightness-120 transition-all duration-300 ease-in-out",
         // The tone tints border, wash and text together, so a disabled tile

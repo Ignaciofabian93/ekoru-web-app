@@ -4,13 +4,10 @@ import { Text } from "@/components/Primitives/Text";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import clsx from "clsx";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import {
-  PROFILE_MENU_SECTIONS,
-  type ProfileMenuItem,
-} from "../constants/menuItems";
+import { PROFILE_MENU_SECTIONS, type ProfileMenuItem } from "../constants/menuItems";
 import { NAMESPACE } from "../i18n";
 import { SectionCard } from "./SectionCard";
 
@@ -25,6 +22,8 @@ export function Account() {
     <>
       {PROFILE_MENU_SECTIONS.map((section) => (
         <SectionCard
+          icon={UserRound}
+          tone="primary"
           key={section.key}
           title={t(section.label)}
           subtitle={t(section.description)}
@@ -68,19 +67,14 @@ function AccountRow({
 
   const content = (
     <>
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-light/20 text-primary">
-        <Icon size={16} color="currentColor" strokeWidth={2} />
+      <div className="flex mb-1 shrink-0 items-center justify-center text-foreground-secondary">
+        <Icon size={20} color="currentColor" strokeWidth={2} />
       </div>
       <Text variant="span" weight="medium" size="base" className="flex-1">
         {label}
       </Text>
       {item.available ? (
-        <ChevronRight
-          size={16}
-          color="currentColor"
-          strokeWidth={2}
-          className="text-foreground-tertiary"
-        />
+        <ChevronRight size={16} strokeWidth={2} className="text-primary" />
       ) : (
         <ComingSoonChip label={comingSoonLabel} />
       )}
@@ -92,10 +86,7 @@ function AccountRow({
   }
 
   return (
-    <Link
-      href={href}
-      className={clsx(ROW_CLASS, "transition-colors hover:bg-background-secondary")}
-    >
+    <Link href={href} className={clsx(ROW_CLASS, "transition-colors hover:bg-white")}>
       {content}
     </Link>
   );

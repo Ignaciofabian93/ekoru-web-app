@@ -107,7 +107,12 @@ export function ChangePasswordForm() {
               >
                 <Check size={12} color="currentColor" strokeWidth={3} />
               </span>
-              <Text variant="span" size="sm" color={tip.check ? "default" : "tertiary"}>
+              <Text
+                variant="span"
+                size="sm"
+                color={tip.check ? "default" : "secondary"}
+                className="flex-1"
+              >
                 {tip.label}
               </Text>
             </li>

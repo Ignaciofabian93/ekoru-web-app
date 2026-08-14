@@ -9,17 +9,29 @@ interface SectionCardProps {
   subtitle?: string;
   icon?: LucideIcon;
   tone?: "default" | "primary" | "success" | "warning" | "danger";
+  background?: "primary" | "success" | "warning" | "danger";
   className?: string;
   headerRight?: React.ReactNode;
   children: React.ReactNode;
 }
 
 const TONE_CLASS: Record<NonNullable<SectionCardProps["tone"]>, string> = {
-  default: "bg-primary-light/20 text-primary",
-  primary: "bg-primary text-on-primary",
-  success: "bg-success/10 text-success",
+  default:
+    "bg-linear-180 from-secondary-hover/10 to-secondary/5 text-secondary-dark border border-secondary-dark/60",
+  primary:
+    "bg-linear-180 from-primary-light/10 to-primary-hover/5 text-primary border border-primary/60",
+  success:
+    "bg-linear-180 from-success/10 to-success/5 text-success border border-success/60",
   warning: "bg-warning/10 text-warning",
-  danger: "bg-danger/10 text-danger",
+  danger: "bg-linear-180 from-danger/10 to-danger/5 text-danger border border-danger/60",
+};
+
+const BACKGROUND_CLASS: Record<NonNullable<SectionCardProps["background"]>, string> = {
+  primary:
+    "bg-linear-120 from-secondary-hover/5 via-primary-hover/5 to-success/5 border-secondary/10",
+  success: "bg-linear-180 from-success/10 to-success/5",
+  warning: "bg-warning/10",
+  danger: "bg-linear-180 from-danger/5 to-danger/20 border-danger/10",
 };
 
 export function SectionCard({
@@ -27,6 +39,7 @@ export function SectionCard({
   subtitle,
   icon: Icon,
   tone = "default",
+  background = "primary",
   className,
   headerRight,
   children,
@@ -34,8 +47,8 @@ export function SectionCard({
   return (
     <section
       className={clsx(
-        // "rounded-2xl border border-border-light bg-surface p-5 sm:p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]",
-        "border-t-2 border-border-light pt-3 my-6",
+        "rounded-3xl p-4 shadow-sm shadow-slate-800/10 border my-1",
+        BACKGROUND_CLASS[background],
         className,
       )}
     >
@@ -56,7 +69,7 @@ export function SectionCard({
               {title}
             </Title>
             {subtitle && (
-              <Text variant="span" size="sm" color="tertiary">
+              <Text variant="span" size="sm" color="secondary">
                 {subtitle}
               </Text>
             )}

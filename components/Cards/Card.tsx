@@ -79,7 +79,7 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
                 size="sm"
                 weight="bold"
                 color="secondary"
-                className="hidden sm:flex truncate"
+                className="hidden sm:flex line-clamp-1"
               >
                 {t("impact.co2")}
               </Text>
@@ -88,7 +88,7 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
                 size="sm"
                 weight="bold"
                 color="secondary"
-                className="flex sm:hidden truncate"
+                className="flex sm:hidden line-clamp-1"
               >
                 {t("impact.co2Short")}
               </Text>
@@ -959,7 +959,7 @@ function Footer({
     return (
       <div className="relative z-20 mt-auto flex items-center gap-2 px-2 pb-2">
         <Button
-          variant="outline"
+          variant="primary"
           text={t("cta.EDIT")}
           leftIcon={Pencil}
           fullWidth
@@ -1018,7 +1018,7 @@ function Face({ children, back = false }: { children: React.ReactNode; back?: bo
       inert={!active}
       className={clsx(
         "flex overflow-hidden justify-between rounded-lg border border-slate-200 bg-white backface-hidden",
-        "shadow-md shadow-slate-800/40 hover:shadow-lg",
+        "shadow-sm shadow-slate-800/20 hover:shadow-md",
         FACE_CLASS[orientation],
         back ? "absolute inset-0 rotate-y-180" : "relative",
       )}
@@ -1082,7 +1082,7 @@ function CardScene({
         "relative w-full",
         ORIENTATION_SIZE[orientation],
         "rounded-lg",
-        "cursor-pointer transition-transform duration-200 ease-in-out hover:scale-[1.02]",
+        "cursor-pointer transition-transform duration-200 ease-in-out hover:scale-[1.01]",
         "perspective-distant",
       )}
     >

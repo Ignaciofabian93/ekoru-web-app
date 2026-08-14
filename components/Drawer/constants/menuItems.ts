@@ -96,7 +96,7 @@ export const ACCOUNT_MENU_SECTIONS: DrawerMenuSection[] = [
         route: "/profile/environmental-impact",
         label: "environmentalImpact",
         icon: Leaf,
-        available: false,
+        available: true,
       },
     ],
   },
