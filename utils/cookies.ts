@@ -1,7 +1,14 @@
-const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
+/** Default cookie lifetime. Exported so `proxy.ts` can seed cookies with the
+ *  same attributes the client uses, otherwise the two writes would coexist as
+ *  separate cookies instead of overwriting each other. */
+export const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365;
 
 /** Writes a client-side cookie. No-op during SSR. */
-export function setCookie(name: string, value: string, maxAgeSeconds = ONE_YEAR_SECONDS): void {
+export function setCookie(
+  name: string,
+  value: string,
+  maxAgeSeconds = COOKIE_MAX_AGE_SECONDS,
+): void {
   if (typeof document === "undefined") return;
   document.cookie = `${name}=${value};path=/;max-age=${maxAgeSeconds};samesite=lax`;
 }

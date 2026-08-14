@@ -27,7 +27,7 @@ export function MidPointNotice({
         {t("checkout.shipping.midPoint.note")}
       </Text>
       <Button
-        variant="secondary_outline"
+        variant="secondary"
         size="sm"
         text={t("checkout.shipping.midPoint.cta")}
         onPress={() => onContactSeller(sellerId)}

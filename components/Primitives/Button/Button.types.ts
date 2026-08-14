@@ -4,13 +4,11 @@ import type React from "react";
 export type ButtonVariant =
   | "primary"
   | "secondary"
-  | "secondary_outline"
   | "outline"
   | "ghost"
   | "success"
   | "warning"
-  | "error"
-  | "filled";
+  | "error";
 
 export type ButtonSize = "sm" | "md" | "lg";
 

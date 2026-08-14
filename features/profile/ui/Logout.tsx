@@ -17,6 +17,7 @@ export function Logout() {
       onPress={handleLogout}
       loading={loading}
       rightIcon={LogOut}
+      fullWidth
     />
   );
 }
