@@ -21,7 +21,8 @@ interface ImageUploadButtonProps {
 
 const VARIANT_CLASS: Record<ImageUploadVariant, string> = {
   scrim: "bg-black/55 text-white hover:bg-black/75",
-  badge: "border-2 border-white bg-primary text-white hover:brightness-110",
+  badge:
+    "border border-white bg-linear-120 from-primary to-primary-light/80 text-white hover:brightness-110 backdrop-blur-md",
 };
 
 /**

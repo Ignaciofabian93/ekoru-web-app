@@ -17,7 +17,8 @@ export type TextColor =
   | "success"
   | "warning"
   | "muted"
-  | "white";
+  | "white"
+  | "red";
 export type TextAlign = "left" | "center" | "right" | "justify";
 
 export interface TextProps {

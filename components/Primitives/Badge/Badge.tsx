@@ -22,8 +22,9 @@ export interface BadgeProps {
 }
 
 const VARIANT_STYLES: Record<BadgeVariant, string> = {
-  primary: "bg-primary text-white",
-  secondary: "bg-secondary-dark text-white",
+  primary: "bg-linear-120 from-primary to-primary-light/80 text-white border-primary",
+  secondary:
+    "bg-linear-120 from-secondary-dark to-secondary-dark/60 text-white border-secondary-dark",
   tertiary: "bg-secondary/15 text-secondary",
   descriptive: "bg-primary/10 text-primary",
   attention: "bg-red-500 text-white",
@@ -48,7 +49,7 @@ export function Badge({
   return (
     <span
       className={clsx(
-        "inline-flex w-fit items-center rounded-full font-semibold shadow-sm",
+        "inline-flex w-fit items-center rounded-full font-semibold shadow-sm border",
         VARIANT_STYLES[variant],
         SIZE_STYLES[size],
       )}

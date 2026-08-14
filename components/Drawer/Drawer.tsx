@@ -342,12 +342,11 @@ export default function Drawer() {
           ))}
 
           {/* Auth action */}
-          <div className="w-full flex items-center mt-3">
+          <div className="w-10/12 mx-auto flex items-center mt-6">
             {seller ? (
               <Button
                 variant="error"
                 text={t("logOut")}
-                className="mx-4 mt-3"
                 fullWidth
                 onPress={async () => {
                   logout();
@@ -358,7 +357,6 @@ export default function Drawer() {
             ) : (
               <Button
                 text={t("logIn")}
-                className="mx-4 mt-3"
                 fullWidth
                 onPress={() => handleNavigate("/login")}
               />

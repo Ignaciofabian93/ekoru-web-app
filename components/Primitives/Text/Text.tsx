@@ -38,6 +38,7 @@ const COLOR_CLASS: Record<TextColor, string> = {
   success: "text-success",
   warning: "text-warning",
   white: "text-white",
+  red: "text-red-600",
 };
 
 const ALIGN_CLASS: Record<TextAlign, string> = {

@@ -82,7 +82,7 @@ export type SettingsSection = {
   label: string;
   subtitle: string;
   icon: LucideIcon;
-  tone?: "default" | "success" | "danger";
+  tone?: "default" | "primary" | "success" | "warning" | "danger";
   items: SettingItem[];
 };
 
@@ -91,6 +91,7 @@ export const SETTINGS_SECTIONS: SettingsSection[] = [
     key: "notifications",
     label: "settings.notifications",
     subtitle: "settings.notificationsSubtitle",
+    tone: "primary",
     icon: Bell,
     items: [
       {
@@ -114,6 +115,7 @@ export const SETTINGS_SECTIONS: SettingsSection[] = [
   {
     key: "privacy",
     label: "settings.privacy",
+    tone: "default",
     subtitle: "settings.privacySubtitle",
     icon: Shield,
     items: [
@@ -259,7 +261,7 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         route: "/profile/exchanges",
         label: "account.exchanges",
         icon: Repeat2,
-        available: false,
+        available: true,
       },
       {
         route: "/profile/bookings",

@@ -19,13 +19,13 @@ export function TotalImpact({ type, totalValue, unit, label }: TotalImpactProps)
   return (
     <div
       className={clsx(
-        "flex flex-col items-center gap-1.5 rounded-2xl p-4 shadow-sm shadow-slate-800/10",
+        "flex flex-col items-center gap-1.5 rounded-2xl p-4 border shadow-sm shadow-slate-800/10",
         {
-          "backdrop-blur-xl border border-primary/30 bg-linear-180 from-primary-light/5 to-primary-dark/5":
+          "border-primary/30 bg-linear-180 from-primary-light/5 to-primary-dark/5":
             type === "co2",
-          "backdrop-blur-xl border border-secondary-dark/30 bg-linear-180 from-secondary-light/5 to-secondary-dark/5":
+          "border-secondary-dark/30 bg-linear-180 from-secondary-light/5 to-secondary-dark/5":
             type === "water",
-          "": type === "waste",
+          "border-gray-300 bg-gray-100": type === "waste",
         },
       )}
     >
