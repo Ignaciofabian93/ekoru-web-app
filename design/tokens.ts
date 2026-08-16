@@ -270,76 +270,6 @@ export const animation = {
   },
 } as const;
 
-// ─── Button geometry ──────────────────────────────────────────────
-export const button = {
-  xs: {
-    fontSize: fontSize.sm,
-    iconSize: iconSize.sm,
-    borderRadius: borderRadius.sm,
-    minHeight: 32,
-    fontFamily: fontFamily.sans,
-    padding: "0px 14px",
-    border: "none",
-    cursor: "pointer",
-    transition: `all ${animation.durationMed}ms ${animation.easing.standard}`,
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 4,
-  },
-  sm: {
-    paddingY: 0,
-    paddingX: 14,
-    fontSize: fontSize.sm,
-    iconSize: iconSize.sm,
-    borderRadius: borderRadius.sm,
-    minHeight: 32,
-  },
-  md: {
-    paddingY: 0,
-    paddingX: 20,
-    fontSize: fontSize.base,
-    iconSize: iconSize.md,
-    borderRadius: borderRadius.md,
-    minHeight: 40,
-  },
-  lg: {
-    paddingY: 0,
-    paddingX: 24,
-    fontSize: fontSize.base,
-    iconSize: iconSize.lg,
-    borderRadius: borderRadius.md,
-    minHeight: 48,
-  },
-} as const;
-
-// Card geometry
-
-export const card = {
-  horizontal: {
-    sm: { padding: "12px", borderRadius: borderRadius.sm },
-    md: {
-      borderRadius: borderRadius.lg,
-      display: "flex",
-      overflow: "hidden",
-      height: "170px",
-      boxShadow: shadows.md,
-    },
-    lg: { padding: "20px", borderRadius: borderRadius.lg },
-  },
-  vertical: {
-    sm: { padding: "12px", borderRadius: borderRadius.sm },
-    md: { padding: "16px", borderRadius: borderRadius.md },
-    lg: { padding: "20px", borderRadius: borderRadius.lg },
-  },
-} as const;
-
-// ─── Input geometry ───────────────────────────────────────────────
-export const input = {
-  sm: { height: 36, fontSize: fontSize.xs, iconSize: iconSize.xs, paddingX: 10 },
-  md: { height: 44, fontSize: fontSize.base, iconSize: iconSize.sm, paddingX: 12 },
-  lg: { height: 56, fontSize: fontSize.lg, iconSize: iconSize.md, paddingX: 14 },
-} as const;
-
 // ─── Z-index ─────────────────────────────────────────────────────
 export const zIndex = {
   base: 0,
@@ -364,11 +294,8 @@ const tokens = {
   shadows,
   iconSize,
   iconStroke,
-  button,
-  input,
   animation,
   zIndex,
-  card,
 } as const;
 
 export default tokens;

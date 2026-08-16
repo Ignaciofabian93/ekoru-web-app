@@ -2,6 +2,13 @@
 
 import clsx from "clsx";
 import type React from "react";
+import {
+  textAreaBorderClass,
+  textAreaErrorTextClass,
+  textAreaFieldClass,
+  textAreaLabelClass,
+  textAreaRootClass,
+} from "@/design/textArea";
 
 export interface TextAreaProps {
   label?: string;
@@ -52,12 +59,9 @@ export function TextArea({
   };
 
   return (
-    <div className="flex w-full flex-col gap-1.5">
+    <div className={textAreaRootClass}>
       {label && (
-        <label
-          htmlFor={name}
-          className="font-sans text-sm font-medium text-foreground-secondary"
-        >
+        <label htmlFor={name} className={textAreaLabelClass}>
           {label}
         </label>
       )}
@@ -77,17 +81,12 @@ export function TextArea({
         aria-describedby={errorId}
         style={style}
         className={clsx(
-          "resize-y rounded-md border-2 border-solid bg-surface px-4 py-3",
-          "font-sans text-base font-normal text-foreground outline-none",
-          "transition-[border-color] duration-150",
-          showError ? "border-danger" : "border-input-border focus:border-primary",
+          textAreaFieldClass,
+          showError ? textAreaBorderClass.error : textAreaBorderClass.default,
         )}
       />
       {showError && errorMessage && (
-        <span
-          id={errorId}
-          className="font-sans text-xs font-normal text-danger"
-        >
+        <span id={errorId} className={textAreaErrorTextClass}>
           {errorMessage}
         </span>
       )}

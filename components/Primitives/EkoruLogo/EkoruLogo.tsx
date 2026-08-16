@@ -1,8 +1,9 @@
 "use client";
-import { EKORU_LOGO } from "@/constants/images";
-import { useLanguage } from "@/hooks/useLanguage";
 import Image from "next/image";
 import Link from "next/link";
+import { EKORU_LOGO } from "@/constants/images";
+import { ekoruLogoImageClass, ekoruLogoLinkClass } from "@/design/ekoruLogo";
+import { useLanguage } from "@/hooks/useLanguage";
 
 interface EkoruLogoProps {
   /**
@@ -22,18 +23,14 @@ export function EkoruLogo({
   const [language] = useLanguage();
   if (enableRedirection) {
     return (
-      <Link
-        href={`/${language}`}
-        aria-label={label}
-        className="rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-      >
+      <Link href={`/${language}`} aria-label={label} className={ekoruLogoLinkClass}>
         <Image
           src={EKORU_LOGO}
           alt="EKORU"
           width={4096}
           height={996}
           priority
-          className={className ?? "min-w-18 w-full max-w-24"}
+          className={className ?? ekoruLogoImageClass}
         />
       </Link>
     );
@@ -45,7 +42,7 @@ export function EkoruLogo({
       width={4096}
       height={996}
       priority
-      className={className ?? "min-w-18 w-full max-w-24"}
+      className={className ?? ekoruLogoImageClass}
     />
   );
 }

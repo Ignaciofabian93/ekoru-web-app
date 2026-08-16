@@ -1,40 +1,27 @@
 import clsx from "clsx";
-import React from "react";
+import type React from "react";
+import {
+  bannerClass,
+  bannerDescriptionClass,
+  bannerDotBaseClass,
+  bannerDotClass,
+  bannerHeaderClass,
+  bannerTextToneClass,
+  bannerTitleClass,
+} from "@/design/banner";
 
-type Variant = "primary" | "secondary" | "outlined" | "ghost";
+export type BannerVariant = "primary" | "secondary" | "outlined" | "ghost";
 
 export interface BannerProps {
   title: string;
   description: string;
-  variant?: Variant;
+  variant?: BannerVariant;
   showDots?: boolean;
   animated?: boolean;
   style?: React.CSSProperties;
   className?: string;
   ref?: React.Ref<HTMLDivElement>;
 }
-
-const CONTAINER_CLASS: Record<Variant, string> = {
-  primary: "bg-linear-to-r from-primary-dark via-primary to-primary-dark shadow-lg",
-  secondary:
-    "bg-linear-to-r from-secondary-dark via-secondary to-secondary-dark shadow-lg",
-  outlined: "border-2 border-solid border-primary bg-background shadow-lg",
-  ghost: "bg-white/50",
-};
-
-const TEXT_CLASS: Record<Variant, string> = {
-  primary: "text-on-primary",
-  secondary: "text-on-primary",
-  outlined: "text-foreground",
-  ghost: "text-foreground",
-};
-
-const DOT_CLASS: Record<Variant, string> = {
-  primary: "bg-on-primary",
-  secondary: "bg-on-primary",
-  outlined: "bg-primary",
-  ghost: "bg-foreground-secondary",
-};
 
 export function Banner({
   title,
@@ -46,35 +33,19 @@ export function Banner({
   className,
   ref,
 }: BannerProps) {
+  const dot = <div className={clsx(bannerDotBaseClass, bannerDotClass[variant])} />;
+
   return (
-    <div
-      ref={ref}
-      style={style}
-      className={clsx(
-        "box-border w-full self-center overflow-hidden rounded-lg px-5 py-3.5",
-        CONTAINER_CLASS[variant],
-        className,
-      )}
-    >
-      <div className="mb-2 flex flex-row items-center justify-center gap-2">
-        {showDots && <div className={clsx("size-2 rounded-sm", DOT_CLASS[variant])} />}
-        <span
-          className={clsx(
-            "shrink text-center font-sans text-base font-bold tracking-[-0.3px]",
-            TEXT_CLASS[variant],
-          )}
-        >
+    <div ref={ref} style={style} className={clsx(bannerClass[variant], className)}>
+      <div className={bannerHeaderClass}>
+        {showDots && dot}
+        <span className={clsx(bannerTitleClass, bannerTextToneClass[variant])}>
           {title}
         </span>
-        {showDots && <div className={clsx("size-2 rounded-sm", DOT_CLASS[variant])} />}
+        {showDots && dot}
       </div>
 
-      <p
-        className={clsx(
-          "m-0 text-center font-sans text-sm font-normal leading-5",
-          TEXT_CLASS[variant],
-        )}
-      >
+      <p className={clsx(bannerDescriptionClass, bannerTextToneClass[variant])}>
         {description}
       </p>
     </div>

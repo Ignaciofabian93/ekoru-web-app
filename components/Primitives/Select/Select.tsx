@@ -4,47 +4,37 @@ import clsx from "clsx";
 import { Check, ChevronDown, Circle } from "lucide-react";
 import React, { useEffect, useId, useRef, useState } from "react";
 import { Text } from "@/components/Primitives/Text";
-import type {
-  Option,
-  SelectProps,
-  SelectSize,
-  SelectVariant,
-  SelectWidth,
-} from "./Select.types";
-
-const SIZE_CLASS: Record<
-  SelectSize,
-  { h: string; text: string; px: string; padLeft: string; icon: number }
-> = {
-  sm: { h: "h-9", text: "text-xs", px: "px-2.5", padLeft: "pl-5.5", icon: 14 },
-  md: { h: "h-11", text: "text-base", px: "px-3", padLeft: "pl-6", icon: 16 },
-  lg: { h: "h-14", text: "text-lg", px: "px-3.5", padLeft: "pl-6.5", icon: 18 },
-};
-
-const WIDTH_CLASS: Record<SelectWidth, string> = {
-  sm: "w-1/3",
-  md: "w-1/2",
-  lg: "w-2/3",
-  full: "w-full",
-};
-
-const VARIANT_BG: Record<SelectVariant, string> = {
-  default: "bg-input-bg",
-  filled: "bg-background-secondary",
-  outline: "bg-transparent",
-};
-
-const VARIANT_IDLE_BORDER: Record<SelectVariant, string> = {
-  default: "border-input-border",
-  filled: "border-transparent",
-  outline: "border-primary",
-};
-
-const VARIANT_FOCUS_BORDER: Record<SelectVariant, string> = {
-  default: "border-input-border-focus",
-  filled: "border-input-border-focus",
-  outline: "border-primary-active",
-};
+import {
+  selectChevronClass,
+  selectChevronToneClass,
+  selectDropdownClass,
+  selectDropdownDirectionClass,
+  selectErrorBorderClass,
+  selectErrorTextClass,
+  selectFocusBorderClass,
+  selectIconSize,
+  selectIdleBorderClass,
+  selectLeftIconClass,
+  selectListboxClass,
+  selectNoResultsClass,
+  selectOptionClass,
+  selectOptionDividerClass,
+  selectOptionLabelClass,
+  selectOptionLabelToneClass,
+  selectOptionRowClass,
+  selectOptionSelectedClass,
+  selectPadLeftClass,
+  selectRootClass,
+  selectSearchClass,
+  selectStateClass,
+  selectTextClass,
+  selectTriggerClass,
+  selectValueClass,
+  selectValueGroupClass,
+  selectValueToneClass,
+  selectWidthClass,
+} from "@/design/select";
+import type { Option, SelectProps } from "./Select.types";
 
 export function Select({
   options = [],
@@ -71,7 +61,6 @@ export function Select({
   searchPlaceholder = "Search...",
   ref,
 }: SelectProps) {
-  const s = SIZE_CLASS[size];
   const hasError = !!errorMessage;
   const reactId = useId();
   const labelId = `${reactId}-label`;
@@ -150,8 +139,10 @@ export function Select({
     else if (ref) ref.current = node;
   };
 
+  const chevronTone = hasError ? "error" : isOpen ? "open" : "idle";
+
   return (
-    <div ref={setRefs} className={clsx("relative flex flex-col gap-px", WIDTH_CLASS[width])}>
+    <div ref={setRefs} className={clsx(selectRootClass, selectWidthClass[width])}>
       {label && (
         <Text size="sm" weight="medium">
           <span id={labelId}>{label}</span>
@@ -172,42 +163,43 @@ export function Select({
         aria-labelledby={!ariaLabel && label ? labelId : undefined}
         aria-describedby={describedBy}
         className={clsx(
-          "relative box-border flex flex-row items-center gap-2 rounded-md border-2 border-solid outline-none transition-[border-color] duration-150",
-          s.h,
-          s.px,
-          VARIANT_BG[variant],
+          selectTriggerClass[variant][size],
           hasError
-            ? "border-danger"
+            ? selectErrorBorderClass
             : isOpen
-              ? VARIANT_FOCUS_BORDER[variant]
-              : VARIANT_IDLE_BORDER[variant],
-          disabled || readOnly ? "cursor-not-allowed opacity-50" : "cursor-pointer",
+              ? selectFocusBorderClass[variant]
+              : selectIdleBorderClass[variant],
+          disabled || readOnly ? selectStateClass.disabled : selectStateClass.default,
         )}
       >
         {LeftIcon && (
           <span
             className={clsx(
-              "absolute left-3 flex",
+              selectLeftIconClass,
               isOpen ? "text-primary" : "text-foreground-tertiary",
             )}
           >
-            <LeftIcon size={s.icon} color="currentColor" strokeWidth={2} aria-hidden />
+            <LeftIcon
+              size={selectIconSize[size]}
+              color="currentColor"
+              strokeWidth={2}
+              aria-hidden
+            />
           </span>
         )}
 
         <span
-          className={clsx(
-            "flex flex-1 flex-row items-center gap-2 overflow-hidden",
-            LeftIcon && s.padLeft,
-          )}
+          className={clsx(selectValueGroupClass, LeftIcon && selectPadLeftClass[size])}
         >
           {selectedOption?.icon}
           {renderColorCircle(selectedOption)}
           <span
             className={clsx(
-              "flex-1 truncate text-left font-sans font-normal",
-              s.text,
-              selectedOption ? "text-input-text" : "text-input-placeholder",
+              selectValueClass,
+              selectTextClass[size],
+              selectedOption
+                ? selectValueToneClass.selected
+                : selectValueToneClass.placeholder,
             )}
           >
             {selectedOption?.label ?? placeholder}
@@ -216,17 +208,22 @@ export function Select({
 
         <span
           className={clsx(
-            "flex transition-transform duration-200",
+            selectChevronClass,
             isOpen ? "rotate-180" : "rotate-0",
-            hasError ? "text-danger" : isOpen ? "text-primary" : "text-foreground-tertiary",
+            selectChevronToneClass[chevronTone],
           )}
         >
-          <ChevronDown size={s.icon} color="currentColor" strokeWidth={2} aria-hidden />
+          <ChevronDown
+            size={selectIconSize[size]}
+            color="currentColor"
+            strokeWidth={2}
+            aria-hidden
+          />
         </span>
       </button>
 
       {errorMessage && (
-        <span id={errorId} className="font-sans text-xs font-normal text-danger">
+        <span id={errorId} className={selectErrorTextClass}>
           {errorMessage}
         </span>
       )}
@@ -235,8 +232,8 @@ export function Select({
       {isOpen && (
         <div
           className={clsx(
-            "absolute right-0 left-0 z-10 flex max-h-80 flex-col overflow-hidden rounded-lg border-[1.5px] border-solid border-border-light bg-surface shadow-md",
-            dropdownDirection === "up" ? "bottom-full mb-2" : "top-full mt-2",
+            selectDropdownClass,
+            selectDropdownDirectionClass[dropdownDirection],
           )}
         >
           {searchEnabled && (
@@ -248,20 +245,17 @@ export function Select({
               aria-controls={listboxId}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="shrink-0 border-b border-border-light px-4 py-2 font-sans text-base font-normal text-input-text outline-none"
+              className={selectSearchClass}
             />
           )}
           <div
             id={listboxId}
             role="listbox"
             aria-label={ariaLabel ?? label}
-            className="max-h-67 overflow-y-auto"
+            className={selectListboxClass}
           >
             {filteredOptions.length === 0 ? (
-              <span
-                role="status"
-                className="block px-4 py-3 font-sans text-sm font-normal italic text-foreground-secondary"
-              >
+              <span role="status" className={selectNoResultsClass}>
                 {noResultsText}
               </span>
             ) : (
@@ -277,24 +271,24 @@ export function Select({
                     aria-selected={isSelected}
                     onClick={() => handleSelect(item.value)}
                     className={clsx(
-                      "flex w-full cursor-pointer p-0 text-left",
-                      isSelected && "bg-primary/10",
-                      i < filteredOptions.length - 1 && "border-b border-border-light",
+                      selectOptionClass,
+                      isSelected && selectOptionSelectedClass,
+                      i < filteredOptions.length - 1 && selectOptionDividerClass,
                     )}
                   >
                     {renderOption ? (
                       renderOption(item, isSelected)
                     ) : (
-                      <span className="flex flex-1 flex-row items-center gap-2.5 px-4 py-3.5">
+                      <span className={selectOptionRowClass}>
                         {item.icon}
                         {renderColorCircle(item)}
                         <span
                           className={clsx(
-                            "flex-1 font-sans leading-5",
-                            s.text,
+                            selectOptionLabelClass,
+                            selectTextClass[size],
                             isSelected
-                              ? "font-semibold text-primary"
-                              : "font-normal text-foreground",
+                              ? selectOptionLabelToneClass.selected
+                              : selectOptionLabelToneClass.default,
                           )}
                         >
                           {item.label}

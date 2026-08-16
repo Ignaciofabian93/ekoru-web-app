@@ -9,17 +9,17 @@ import type {
   ButtonSize,
   ButtonVariant,
 } from "@/components/Primitives/Button/Button.types";
-import { fontFamily, iconSize } from "@/design/tokens";
+import { iconSize } from "@/design/tokens";
+import { cross } from "@/design/variants";
 
 const buttonBaseClass = clsx(
   "relative box-border inline-flex flex-row items-center justify-center",
   "mx-auto min-w-35",
-  "font-bold leading-[1.45]",
+  "font-sans font-bold leading-[1.45]",
   "cursor-pointer select-none",
   "border border-solid outline-none",
   "transition duration-200 ease-in-out active:scale-[0.96]",
   "disabled:cursor-not-allowed disabled:opacity-50",
-  fontFamily.sans,
 );
 
 const buttonSizeClass: Record<ButtonSize, string> = {
@@ -57,17 +57,7 @@ const buttonVariantClass: Record<ButtonVariant, string> = {
 };
 
 /** Root class for every variant × size pair: `buttonClass[variant][size]`. */
-export const buttonClass = Object.fromEntries(
-  (Object.keys(buttonVariantClass) as ButtonVariant[]).map((variant) => [
-    variant,
-    Object.fromEntries(
-      (Object.keys(buttonSizeClass) as ButtonSize[]).map((size) => [
-        size,
-        clsx(buttonBaseClass, buttonSizeClass[size], buttonVariantClass[variant]),
-      ]),
-    ),
-  ]),
-) as Record<ButtonVariant, Record<ButtonSize, string>>;
+export const buttonClass = cross(buttonBaseClass, buttonVariantClass, buttonSizeClass);
 
 /** Wrapper around the label + icons, hidden while the spinner shows. */
 export const buttonContentClass: Record<ButtonSize, string> = {

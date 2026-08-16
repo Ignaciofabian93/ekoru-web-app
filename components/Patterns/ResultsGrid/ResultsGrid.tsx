@@ -3,6 +3,15 @@ import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { Grid } from "@/components/Layout";
 import { Skeleton } from "@/components/Primitives/Skeleton";
+import {
+  resultsGridClass,
+  resultsGridEmptyClass,
+  resultsGridEmptyHintClass,
+  resultsGridEmptyIconClass,
+  resultsGridEmptyIconSize,
+  resultsGridEmptyTitleClass,
+  resultsGridSkeletonClass,
+} from "@/design/results-grid";
 
 export interface ResultsGridProps<T> {
   items: T[];
@@ -39,9 +48,9 @@ export function ResultsGrid<T>({
     // not per placeholder.
     return (
       <div aria-busy="true">
-        <Grid cols={2} sm={3} md={4} lg={5} gap={4} className="place-items-center">
+        <Grid cols={2} sm={3} md={4} lg={5} gap={4} className={resultsGridClass}>
           {Array.from({ length: skeletonCount }, (_, i) => (
-            <Skeleton key={i} radius="xl" className="aspect-3/4 w-full" />
+            <Skeleton key={i} radius="xl" className={resultsGridSkeletonClass} />
           ))}
         </Grid>
       </div>
@@ -50,21 +59,21 @@ export function ResultsGrid<T>({
 
   if (items.length === 0) {
     return (
-      <div className="text-foreground-secondary py-16 text-center">
+      <div className={resultsGridEmptyClass}>
         <EmptyIcon
-          size={48}
+          size={resultsGridEmptyIconSize}
           aria-hidden
-          className="mx-auto mb-4 opacity-30"
+          className={resultsGridEmptyIconClass}
           strokeWidth={1.5}
         />
-        <p className="font-semibold">{emptyTitle}</p>
-        {emptyHint && <p className="mt-1 text-sm">{emptyHint}</p>}
+        <p className={resultsGridEmptyTitleClass}>{emptyTitle}</p>
+        {emptyHint && <p className={resultsGridEmptyHintClass}>{emptyHint}</p>}
       </div>
     );
   }
 
   return (
-    <Grid cols={2} sm={3} md={4} lg={5} gap={2} className="place-items-center">
+    <Grid cols={2} sm={3} md={4} lg={5} gap={2} className={resultsGridClass}>
       {items.map(renderItem)}
     </Grid>
   );

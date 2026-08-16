@@ -1,61 +1,17 @@
 import clsx from "clsx";
+import {
+  textAlignClass,
+  textBaseClass,
+  textBlockquoteBarClass,
+  textBlockquoteWrapperClass,
+  textColorClass,
+  textLineClampClass,
+  textSizeClass,
+  textVariantClass,
+  textWeightClass,
+} from "@/design/text";
 import { lineHeight } from "@/design/tokens";
-import type {
-  TextAlign,
-  TextColor,
-  TextProps,
-  TextSize,
-  TextVariant,
-  TextWeight,
-} from "./Text.types";
-
-const SIZE_CLASS: Record<TextSize, string> = {
-  xs: "text-xs",
-  sm: "text-sm",
-  base: "text-base",
-  lg: "text-lg",
-  xl: "text-xl",
-  "2xl": "text-2xl",
-  "3xl": "text-3xl",
-  "4xl": "text-4xl",
-};
-
-const WEIGHT_CLASS: Record<TextWeight, string> = {
-  normal: "font-normal",
-  medium: "font-medium",
-  semibold: "font-semibold",
-  bold: "font-bold",
-};
-
-const COLOR_CLASS: Record<TextColor, string> = {
-  default: "text-foreground",
-  primary: "text-primary",
-  primaryDark: "text-primary-dark",
-  secondary: "text-foreground-secondary",
-  tertiary: "text-foreground-tertiary",
-  muted: "text-foreground-muted",
-  error: "text-danger",
-  success: "text-success",
-  warning: "text-warning",
-  white: "text-white",
-  red: "text-red-600",
-};
-
-const ALIGN_CLASS: Record<TextAlign, string> = {
-  left: "text-left",
-  center: "text-center",
-  right: "text-right",
-  justify: "text-justify",
-};
-
-const LINE_CLAMP_CLASS: Record<number, string> = {
-  1: "truncate",
-  2: "line-clamp-2",
-  3: "line-clamp-3",
-  4: "line-clamp-4",
-  5: "line-clamp-5",
-  6: "line-clamp-6",
-};
+import type { TextProps, TextSize, TextVariant, TextWeight } from "./Text.types";
 
 const VARIANT_DEFAULTS: Partial<
   Record<TextVariant, { size?: TextSize; weight?: TextWeight }>
@@ -84,14 +40,13 @@ export function Text({
   const resolvedWeight = weight ?? defaults.weight ?? "normal";
 
   const computed = clsx(
-    "m-0 font-sans",
-    SIZE_CLASS[resolvedSize],
-    WEIGHT_CLASS[resolvedWeight],
-    COLOR_CLASS[color],
-    ALIGN_CLASS[align],
-    numberOfLines && LINE_CLAMP_CLASS[numberOfLines],
-    variant === "blockquote" && "italic pl-3",
-    variant === "code" && "font-mono bg-background-secondary rounded-[4px] px-1 py-0.5",
+    textBaseClass,
+    textSizeClass[resolvedSize],
+    textWeightClass[resolvedWeight],
+    textColorClass[color],
+    textAlignClass[align],
+    numberOfLines && textLineClampClass[numberOfLines],
+    textVariantClass[variant],
   );
 
   // The rendered tag varies per variant, so the ref cannot be narrowed here.
@@ -104,8 +59,8 @@ export function Text({
 
   if (variant === "blockquote") {
     return (
-      <div className="flex items-stretch gap-2.5 py-0.5">
-        <div className="w-0.75 shrink-0 rounded-xs bg-primary" />
+      <div className={textBlockquoteWrapperClass}>
+        <div className={textBlockquoteBarClass} />
         <blockquote {...sharedProps}>{children}</blockquote>
       </div>
     );

@@ -32,7 +32,12 @@ export function SectionHeader({
 
   const heading = (
     <Stack gap={RHYTHM.TEXT} align={isCentered ? "center" : "start"}>
-      <Title level="h2" size="h4" weight="semibold" align={isCentered ? "center" : "left"}>
+      <Title
+        level="h2"
+        size="h4"
+        weight="semibold"
+        align={isCentered ? "center" : "left"}
+      >
         {title}
       </Title>
       {subtitle && (

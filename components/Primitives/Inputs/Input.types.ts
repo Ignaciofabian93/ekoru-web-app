@@ -5,8 +5,10 @@ export type InputVariant = "default" | "filled" | "outline";
 export type InputSize = "sm" | "md" | "lg";
 export type InputWidth = "sm" | "md" | "lg" | "full";
 
-interface BaseInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "size"> {
+interface BaseInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "onChange" | "size"
+> {
   label?: string;
   name?: string;
   leftIcon?: LucideIcon;

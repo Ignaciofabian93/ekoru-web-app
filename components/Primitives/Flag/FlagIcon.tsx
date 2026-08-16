@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { flagIconClass } from "@/design/flag";
 import CA from "country-flag-icons/react/3x2/CA";
 import CL from "country-flag-icons/react/3x2/CL";
 import AR from "country-flag-icons/react/3x2/AR";
@@ -33,7 +34,7 @@ export function FlagIcon({
     <Icon
       title={title}
       aria-hidden={title ? undefined : true}
-      className={clsx("inline-block object-cover", className)}
+      className={clsx(flagIconClass, className)}
     />
   );
 }

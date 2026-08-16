@@ -20,7 +20,7 @@ import { useNavigation } from "@/hooks/useNavigation";
 import { NAMESPACE } from "../i18n";
 import { ProductGallery } from "@/components/Patterns/ProductGallery";
 import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/ProductTrust";
-import { SellerCard } from "@/components/Patterns/SellerCard";
+import { SellerCard } from "@/components/Patterns/SellerCard/SellerCard";
 import { ReceiptText, ShieldCheck, Truck } from "lucide-react";
 
 interface Props {

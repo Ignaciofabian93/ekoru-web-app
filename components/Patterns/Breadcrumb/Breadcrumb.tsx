@@ -1,5 +1,13 @@
 import { ChevronRight } from "lucide-react";
 import { Text } from "@/components/Primitives/Text";
+import {
+  breadcrumbButtonClass,
+  breadcrumbChevronColor,
+  breadcrumbChevronSize,
+  breadcrumbItemClass,
+  breadcrumbLinkClass,
+  breadcrumbNavClass,
+} from "@/design/breadcrumb";
 
 export interface BreadcrumbItem {
   label: string;
@@ -26,19 +34,20 @@ export function Breadcrumb({
   ariaLabel,
 }: BreadcrumbProps) {
   return (
-    <nav
-      aria-label={ariaLabel}
-      className="flex flex-row flex-wrap items-center ml-2 mb-6 -mt-2"
-    >
+    <nav aria-label={ariaLabel} className={breadcrumbNavClass}>
       {items.map((item, idx) => {
         const isLast = idx === items.length - 1;
         return (
-          <div key={idx} className="flex flex-row items-center gap-1">
+          <div key={idx} className={breadcrumbItemClass}>
             {idx > 0 && (
               <ChevronRight
-                size={12}
+                size={breadcrumbChevronSize}
                 aria-hidden
-                color={chevronColor === "inverted" ? "white" : "#94a3b8"}
+                color={
+                  chevronColor === "inverted"
+                    ? breadcrumbChevronColor.inverted
+                    : breadcrumbChevronColor.default
+                }
                 strokeWidth={2}
               />
             )}
@@ -46,12 +55,12 @@ export function Breadcrumb({
               <button
                 type="button"
                 onClick={item.onPress}
-                className="cursor-pointer px-0 py-0.5"
+                className={breadcrumbButtonClass}
               >
                 <Text
                   size="sm"
                   color={crumbColor === "inverted" ? "white" : "secondary"}
-                  className="underline"
+                  className={breadcrumbLinkClass}
                 >
                   {item.label}
                 </Text>

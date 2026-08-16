@@ -1,11 +1,29 @@
 "use client";
-import clsx from "clsx";
 import { BadgeCheck, Star, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/Primitives/Button";
 import { Text } from "@/components/Primitives/Text";
 import { TextArea } from "@/components/Primitives/TextArea";
 import { Title } from "@/components/Primitives/Title";
+import {
+  reviewsPanelDeleteClass,
+  reviewsPanelFormClass,
+  reviewsPanelHeaderClass,
+  reviewsPanelItemClass,
+  reviewsPanelItemHeaderClass,
+  reviewsPanelListClass,
+  reviewsPanelLoadingClass,
+  reviewsPanelRatingButtonClass,
+  reviewsPanelRatingRowClass,
+  reviewsPanelRootClass,
+  reviewsPanelStarClass,
+  reviewsPanelStarSize,
+  reviewsPanelStarSizeInput,
+  reviewsPanelStarSizeSmall,
+  reviewsPanelStarsClass,
+  reviewsPanelSummaryClass,
+  reviewsPanelVerifiedClass,
+} from "@/design/reviews-panel";
 
 const STARS = [1, 2, 3, 4, 5];
 
@@ -52,19 +70,19 @@ export interface ReviewsPanelProps {
   deleting?: boolean;
 }
 
-function Stars({ value, size = 16 }: { value: number; size?: number }) {
+function Stars({ value, size = reviewsPanelStarSize }: { value: number; size?: number }) {
   return (
-    <span className="flex items-center gap-0.5" aria-hidden="true">
+    <span className={reviewsPanelStarsClass} aria-hidden="true">
       {STARS.map((star) => (
         <Star
           key={star}
           size={size}
           strokeWidth={2}
-          className={clsx(
+          className={
             star <= Math.round(value)
-              ? "fill-warning text-warning"
-              : "text-border-strong",
-          )}
+              ? reviewsPanelStarClass.filled
+              : reviewsPanelStarClass.empty
+          }
         />
       ))}
     </span>
@@ -105,12 +123,12 @@ export function ReviewsPanel({
   deleting = false,
 }: ReviewsPanelProps) {
   return (
-    <section className="flex flex-col gap-4" aria-label={labels.title}>
-      <header className="flex flex-wrap items-baseline justify-between gap-2">
+    <section className={reviewsPanelRootClass} aria-label={labels.title}>
+      <header className={reviewsPanelHeaderClass}>
         <Title level="h2" size="h5" weight="semibold">
           {labels.title}
         </Title>
-        <div className="flex items-center gap-2">
+        <div className={reviewsPanelSummaryClass}>
           <Stars value={averageRating ?? 0} />
           <Text variant="span" size="sm" color="tertiary">
             {labels.count}
@@ -120,7 +138,7 @@ export function ReviewsPanel({
 
       {canWrite && (
         <form
-          className="flex flex-col gap-3 rounded-2xl border border-border-light bg-surface p-4"
+          className={reviewsPanelFormClass}
           onSubmit={(e) => {
             e.preventDefault();
             onSubmit();
@@ -130,7 +148,7 @@ export function ReviewsPanel({
             {labels.formTitle}
           </Text>
 
-          <div className="flex items-center gap-1">
+          <div className={reviewsPanelRatingRowClass}>
             {STARS.map((star) => (
               <button
                 key={star}
@@ -138,16 +156,16 @@ export function ReviewsPanel({
                 onClick={() => onRatingChange(star)}
                 aria-label={labels.rateLabel(star)}
                 aria-pressed={rating === star}
-                className="p-0.5"
+                className={reviewsPanelRatingButtonClass}
               >
                 <Star
-                  size={22}
+                  size={reviewsPanelStarSizeInput}
                   strokeWidth={2}
-                  className={clsx(
+                  className={
                     star <= rating
-                      ? "fill-warning text-warning"
-                      : "text-border-strong hover:text-warning",
-                  )}
+                      ? reviewsPanelStarClass.filled
+                      : reviewsPanelStarClass.emptyInteractive
+                  }
                 />
               </button>
             ))}
@@ -171,24 +189,21 @@ export function ReviewsPanel({
       )}
 
       {loading ? (
-        <div className="h-24 animate-pulse rounded-2xl bg-background-secondary" />
+        <div className={reviewsPanelLoadingClass} />
       ) : reviews.length === 0 ? (
         <Text variant="p" color="tertiary">
           {labels.empty}
         </Text>
       ) : (
-        <ul className="flex flex-col gap-3">
+        <ul className={reviewsPanelListClass}>
           {reviews.map((review) => (
-            <li
-              key={review.id}
-              className="flex flex-col gap-2 rounded-2xl border border-border-light bg-surface p-4"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <Stars value={review.rating} size={14} />
+            <li key={review.id} className={reviewsPanelItemClass}>
+              <div className={reviewsPanelItemHeaderClass}>
+                <div className={reviewsPanelSummaryClass}>
+                  <Stars value={review.rating} size={reviewsPanelStarSizeSmall} />
                   {review.isVerifiedPurchase && (
-                    <span className="flex items-center gap-1 text-xs font-semibold text-success">
-                      <BadgeCheck size={14} strokeWidth={2} />
+                    <span className={reviewsPanelVerifiedClass}>
+                      <BadgeCheck size={reviewsPanelStarSizeSmall} strokeWidth={2} />
                       {labels.verified}
                     </span>
                   )}
@@ -209,9 +224,9 @@ export function ReviewsPanel({
                   type="button"
                   onClick={() => onDelete(review.id)}
                   disabled={deleting}
-                  className="flex w-fit items-center gap-1 text-xs font-semibold text-danger hover:underline disabled:opacity-50"
+                  className={reviewsPanelDeleteClass}
                 >
-                  <Trash2 size={14} strokeWidth={2} />
+                  <Trash2 size={reviewsPanelStarSizeSmall} strokeWidth={2} />
                   {labels.delete}
                 </button>
               )}

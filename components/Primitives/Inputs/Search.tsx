@@ -3,8 +3,24 @@
 import clsx from "clsx";
 import { Search as SearchIcon, X } from "lucide-react";
 import React from "react";
+import {
+  inputErrorTextClass,
+  inputFieldClass,
+  inputFieldErrorClass,
+  inputHeightClass,
+  inputIconSize,
+  inputLabelClass,
+  inputLeftIconClass,
+  inputLeftIconToneClass,
+  inputPadLeftClass,
+  inputPadRightClass,
+  inputRootClass,
+  inputRowClass,
+  inputSearchResetClass,
+  inputTrailingButtonClass,
+  inputWidthClass,
+} from "@/design/input";
 import type { SearchInputProps } from "./Input.types";
-import { FIELD_BASE, SIZE_CLASS, VARIANT_CLASS, WIDTH_CLASS } from "./styles";
 
 /**
  * Search form field — the same shell as `Input`, typed `search`, with a clear
@@ -33,7 +49,6 @@ export function SearchInput({
   ref,
   ...rest
 }: SearchInputProps) {
-  const s = SIZE_CLASS[size];
   const showError = hasError || isInvalid;
   const showClear = clearable && Boolean(value);
 
@@ -47,21 +62,21 @@ export function SearchInput({
   };
 
   return (
-    <div className={clsx("relative flex flex-col gap-px", WIDTH_CLASS[width])}>
+    <div className={clsx(inputRootClass, inputWidthClass[width])}>
       {label && (
-        <label htmlFor={name} className="font-sans text-sm font-medium text-foreground">
+        <label htmlFor={name} className={inputLabelClass}>
           {label}
         </label>
       )}
 
-      <div className={clsx("group relative flex items-center", s.h)}>
+      <div className={clsx(inputRowClass, inputHeightClass[size])}>
         <div
           className={clsx(
-            "pointer-events-none absolute left-3 z-1 flex",
-            showError ? "text-danger" : "text-foreground-tertiary group-focus-within:text-primary",
+            inputLeftIconClass,
+            showError ? inputLeftIconToneClass.error : inputLeftIconToneClass.default,
           )}
         >
-          <LeftIcon size={s.icon} color="currentColor" strokeWidth={2} />
+          <LeftIcon size={inputIconSize[size]} color="currentColor" strokeWidth={2} />
         </div>
 
         <input
@@ -76,13 +91,10 @@ export function SearchInput({
           onBlur={onBlur}
           onChange={handleChange}
           className={clsx(
-            FIELD_BASE,
-            "[&::-webkit-search-cancel-button]:appearance-none",
-            s.text,
-            s.px,
-            s.padLeft,
-            showClear && s.padRight,
-            showError ? "border-danger" : VARIANT_CLASS[variant],
+            showError ? inputFieldErrorClass[size] : inputFieldClass[variant][size],
+            inputSearchResetClass,
+            inputPadLeftClass[size],
+            showClear && inputPadRightClass[size],
           )}
           {...rest}
         />
@@ -92,17 +104,15 @@ export function SearchInput({
             type="button"
             onClick={handleClear}
             aria-label={clearLabel}
-            className="absolute right-3 flex cursor-pointer items-center p-0 text-foreground-tertiary transition-opacity duration-75 hover:text-foreground"
+            className={clsx(inputTrailingButtonClass, "hover:text-foreground")}
           >
-            <X size={s.icon} color="currentColor" strokeWidth={2} />
+            <X size={inputIconSize[size]} color="currentColor" strokeWidth={2} />
           </button>
         )}
       </div>
 
       {showError && errorMessage && (
-        <span className="absolute -bottom-4.5 font-sans text-xs font-normal text-danger">
-          {errorMessage}
-        </span>
+        <span className={inputErrorTextClass}>{errorMessage}</span>
       )}
     </div>
   );

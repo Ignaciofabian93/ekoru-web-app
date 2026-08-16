@@ -1,19 +1,19 @@
 "use client";
 
-import type { LucideIcon } from "lucide-react";
 import clsx from "clsx";
+import type { LucideIcon } from "lucide-react";
 import { Text } from "@/components/Primitives/Text";
+import {
+  productTrustBodyClass,
+  productTrustIconClass,
+  productTrustIconSize,
+  productTrustIconStroke,
+  productTrustItemClass,
+  productTrustListClass,
+  productTrustToneCycle,
+} from "@/design/product-trust";
 
 export type ProductTrustTone = "primary" | "secondary" | "accent";
-
-const TONE_STYLES: Record<ProductTrustTone, string> = {
-  primary: "bg-primary/60 text-white",
-  secondary: "bg-secondary/60 text-white",
-  accent: "bg-accent/60 text-white",
-};
-
-/** Fallback order, so a list without explicit tones still alternates. */
-const TONE_CYCLE: ProductTrustTone[] = ["secondary", "accent", "primary"];
 
 /**
  * One reassurance row. Shared components never read a feature namespace, so the
@@ -36,25 +36,23 @@ export function ProductTrust({ items, className }: ProductTrustProps) {
   if (items.length === 0) return null;
 
   return (
-    <ul
-      className={clsx(
-        "bg-white flex flex-col divide-y",
-        "divide-border-light rounded-2xl",
-        "border border-border-light",
-        className,
-      )}
-    >
+    <ul className={clsx(productTrustListClass, className)}>
       {items.map(({ icon: Icon, title, hint, tone }, index) => (
-        <li key={title} className="flex items-start gap-3 px-4 py-3">
+        <li key={title} className={productTrustItemClass}>
           <span
-            className={clsx(
-              "flex size-9 shrink-0 items-center justify-center rounded-full",
-              TONE_STYLES[tone ?? TONE_CYCLE[index % TONE_CYCLE.length]],
-            )}
+            className={
+              productTrustIconClass[
+                tone ?? productTrustToneCycle[index % productTrustToneCycle.length]
+              ]
+            }
           >
-            <Icon size={18} strokeWidth={1.8} aria-hidden />
+            <Icon
+              size={productTrustIconSize}
+              strokeWidth={productTrustIconStroke}
+              aria-hidden
+            />
           </span>
-          <div className="flex flex-col">
+          <div className={productTrustBodyClass}>
             <Text variant="span" weight="semibold" size="sm">
               {title}
             </Text>

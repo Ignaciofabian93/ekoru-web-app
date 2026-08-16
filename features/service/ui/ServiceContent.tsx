@@ -4,7 +4,7 @@ import { Section } from "@/components/Layout";
 import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
 import { ProductGallery } from "@/components/Patterns/ProductGallery";
 import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/ProductTrust";
-import { SellerCard } from "@/components/Patterns/SellerCard";
+import { SellerCard } from "@/components/Patterns/SellerCard/SellerCard";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useTranslation } from "@/i18n/context";
 

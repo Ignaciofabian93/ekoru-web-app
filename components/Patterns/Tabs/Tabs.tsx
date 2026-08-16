@@ -3,6 +3,13 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import {
+  tabsCountClass,
+  tabsIndicatorClass,
+  tabsItemClass,
+  tabsListClass,
+  tabsScrollableClass,
+} from "@/design/tabs";
 
 export interface Tab {
   key: string;
@@ -43,7 +50,9 @@ export function Tabs({
   scrollable = false,
 }: TabsProps) {
   const tabRefs = useRef<Record<string, HTMLElement | null>>({});
-  const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
+  const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(
+    null,
+  );
 
   // Counts change a label's width, so fold them into the effect deps.
   const countsKey = tabs.map((t) => t.count ?? "").join(",");
@@ -59,24 +68,11 @@ export function Tabs({
     return () => window.removeEventListener("resize", measure);
   }, [activeKey, countsKey, remeasureKey, tabs.length]);
 
-  const tabClass = (active: boolean) =>
-    clsx(
-      "flex shrink-0 items-center gap-2 whitespace-nowrap pb-2.5 text-sm font-semibold transition-colors",
-      active ? "text-primary" : "text-foreground-tertiary hover:text-foreground-secondary",
-    );
-
   const renderContent = (tab: Tab, active: boolean) => (
     <>
       {tab.label}
       {typeof tab.count === "number" && (
-        <span
-          className={clsx(
-            "text-xs font-medium tabular-nums transition-colors",
-            active ? "text-primary/70" : "text-foreground-muted",
-          )}
-        >
-          {tab.count}
-        </span>
+        <span className={tabsCountClass[active ? "active" : "idle"]}>{tab.count}</span>
       )}
     </>
   );
@@ -85,13 +81,11 @@ export function Tabs({
     <div
       role="tablist"
       aria-label={ariaLabel}
-      className={clsx(
-        "relative flex items-center gap-6 border-b border-border-light",
-        scrollable && "scrollbar-none overflow-x-auto",
-      )}
+      className={clsx(tabsListClass, scrollable && tabsScrollableClass)}
     >
       {tabs.map((tab) => {
         const active = tab.key === activeKey;
+        const className = tabsItemClass[active ? "active" : "idle"];
 
         if (tab.href) {
           return (
@@ -103,7 +97,7 @@ export function Tabs({
               href={tab.href}
               role="tab"
               aria-selected={active}
-              className={tabClass(active)}
+              className={className}
             >
               {renderContent(tab, active)}
             </Link>
@@ -120,7 +114,7 @@ export function Tabs({
             role="tab"
             aria-selected={active}
             onClick={() => onSelect?.(tab.key)}
-            className={tabClass(active)}
+            className={className}
           >
             {renderContent(tab, active)}
           </button>
@@ -129,7 +123,7 @@ export function Tabs({
       {indicator && (
         <span
           aria-hidden
-          className="absolute -bottom-px h-0.5 rounded-full bg-primary transition-[transform,width] duration-300 ease-out"
+          className={tabsIndicatorClass}
           style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }}
         />
       )}

@@ -1,13 +1,26 @@
 "use client";
 import { BadgeCheck, Store, User, UserRound } from "lucide-react";
 import Image from "next/image";
+import { Badge } from "@/components/Primitives/Badge";
+import { LinkButton } from "@/components/Primitives/LinkButton";
+import { Text } from "@/components/Primitives/Text";
+import { Title } from "@/components/Primitives/Title";
+import {
+  sellerCardAvatarClass,
+  sellerCardAvatarFallbackClass,
+  sellerCardAvatarIconSize,
+  sellerCardAvatarImageClass,
+  sellerCardBadgeRowClass,
+  sellerCardClass,
+  sellerCardFooterClass,
+  sellerCardHeaderClass,
+  sellerCardIdentityClass,
+  sellerCardNameClass,
+  sellerCardRootClass,
+  sellerCardTitleClass,
+} from "@/design/seller-card";
 import type { Seller } from "@/types/user";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import { Title } from "@/components/Primitives/Title";
-import { Badge } from "@/components/Primitives/Badge";
-import { Text } from "@/components/Primitives/Text";
-import { LinkButton } from "@/components/Primitives/LinkButton";
-import clsx from "clsx";
 
 interface Props {
   lang: string;
@@ -52,33 +65,42 @@ export function SellerCard({
   const isBusiness = seller.profile?.__typename === "BusinessProfile";
 
   return (
-    <div className="px-2">
-      <Title level="h5" size="h5" weight="semibold" className="mb-3">
+    <div className={sellerCardRootClass}>
+      <Title level="h5" size="h5" weight="semibold" className={sellerCardTitleClass}>
         {title}
       </Title>
 
-      <div
-        className={clsx(
-          "flex flex-col gap-4 rounded-2xl shadow-sm shadow-slate-800/10",
-          "border border-slate-800/30 bg-white p-4 backdrop-blur-xl",
-          "bg-linear-180 from-slate-50/5 to-stone-50/5",
-        )}
-      >
-        <div className="flex items-start gap-3">
-          <div className="bg-background-secondary relative size-18 shrink-0 overflow-hidden rounded-full">
+      <div className={sellerCardClass}>
+        <div className={sellerCardHeaderClass}>
+          <div className={sellerCardAvatarClass}>
             {image ? (
-              <Image src={image} alt={name} fill sizes="56px" className="object-cover" />
+              <Image
+                src={image}
+                alt={name}
+                fill
+                sizes="56px"
+                className={sellerCardAvatarImageClass}
+              />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-foreground-muted">
-                {isBusiness ? <Store size={22} /> : <User size={22} />}
+              <div className={sellerCardAvatarFallbackClass}>
+                {isBusiness ? (
+                  <Store size={sellerCardAvatarIconSize} />
+                ) : (
+                  <User size={sellerCardAvatarIconSize} />
+                )}
               </div>
             )}
           </div>
-          <div className="flex flex-col items-start justify-start gap-1">
-            <Text variant="span" size="lg" weight="semibold" className="truncate mb-1">
+          <div className={sellerCardIdentityClass}>
+            <Text
+              variant="span"
+              size="lg"
+              weight="semibold"
+              className={sellerCardNameClass}
+            >
               {name}
             </Text>
-            <div className="flex items-center justify-start gap-1">
+            <div className={sellerCardBadgeRowClass}>
               {seller.isVerified && (
                 <Badge
                   label={verifiedLabel}
@@ -97,7 +119,7 @@ export function SellerCard({
           </div>
         </div>
 
-        <div className="flex items-center justify-end">
+        <div className={sellerCardFooterClass}>
           <LinkButton
             href={`/${lang}/seller/${seller.id}`}
             icon={UserRound}

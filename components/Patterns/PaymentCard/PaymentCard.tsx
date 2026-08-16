@@ -1,7 +1,42 @@
 "use client";
 
 import { Lock } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
+import {
+  paymentCardAmexChipClass,
+  paymentCardAmexTextClass,
+  paymentCardBackRowClass,
+  paymentCardChipClass,
+  paymentCardChipInnerClass,
+  paymentCardCvvChipClass,
+  paymentCardCvvTextClass,
+  paymentCardDecorBottomClass,
+  paymentCardDecorTopClass,
+  paymentCardFaceClass,
+  paymentCardFieldClass,
+  paymentCardFieldRowClass,
+  paymentCardFinePrintClass,
+  paymentCardFormClass,
+  paymentCardInputClass,
+  paymentCardLabelClass,
+  paymentCardLockIconSize,
+  paymentCardMastercardLeftClass,
+  paymentCardMastercardRightClass,
+  paymentCardMastercardRowClass,
+  paymentCardMetaLabelClass,
+  paymentCardMetaRowClass,
+  paymentCardMetaValueClass,
+  paymentCardNumberClass,
+  paymentCardRootClass,
+  paymentCardSignatureClass,
+  paymentCardSignatureTextClass,
+  paymentCardStageClass,
+  paymentCardStripeClass,
+  paymentCardSubmitClass,
+  paymentCardSubmitTextClass,
+  paymentCardTheme,
+  paymentCardVisaClass,
+} from "@/design/payment-card";
 
 export interface CardData {
   number: string;
@@ -15,7 +50,7 @@ interface PaymentCardProps {
   onSave?: (data: CardData) => void;
 }
 
-type CardType = "visa" | "mastercard" | "amex" | "discover" | "unknown";
+export type CardType = "visa" | "mastercard" | "amex" | "discover" | "unknown";
 
 function detectCardType(number: string): CardType {
   const n = number.replace(/\D/g, "");
@@ -25,30 +60,6 @@ function detectCardType(number: string): CardType {
   if (/^(6011|65|64[4-9]|622)/.test(n)) return "discover";
   return "unknown";
 }
-
-type GradientTuple = [string, string, string];
-const CARD_THEMES: Record<CardType, { front: GradientTuple; back: GradientTuple }> = {
-  visa: {
-    front: ["#1a1f71", "#1565c0", "#1976d2"],
-    back: ["#0d1245", "#0d3d7a", "#0f4a8c"],
-  },
-  mastercard: {
-    front: ["#1a1a2e", "#16213e", "#0f3460"],
-    back: ["#0d0d1a", "#0a1225", "#08203e"],
-  },
-  amex: {
-    front: ["#006747", "#007a55", "#00a878"],
-    back: ["#004a33", "#005a3d", "#006747"],
-  },
-  discover: {
-    front: ["#7c3a00", "#b05400", "#d97706"],
-    back: ["#4a2200", "#6b3300", "#8b4500"],
-  },
-  unknown: {
-    front: ["#0c4a6e", "#0369a1", "#06b6d4"],
-    back: ["#1e3a5f", "#0c4a6e", "#075985"],
-  },
-};
 
 function formatExpiry(raw: string): string {
   const digits = raw.replace(/\D/g, "").slice(0, 4);
@@ -83,36 +94,22 @@ function formatCardNumberInput(digits: string, type: CardType): string {
 }
 
 function NetworkBadge({ type }: { type: CardType }) {
-  if (type === "visa")
-    return (
-      <span className="font-sans text-[22px] font-bold italic tracking-[1px] text-white">
-        VISA
-      </span>
-    );
+  if (type === "visa") return <span className={paymentCardVisaClass}>VISA</span>;
   if (type === "mastercard")
     return (
-      <div className="flex flex-row items-center">
-        <div className="size-7 rounded-full bg-[#eb001b]/90" />
-        <div className="-ml-2.5 size-7 rounded-full bg-[#f79e1b]/90" />
+      <div className={paymentCardMastercardRowClass}>
+        <div className={paymentCardMastercardLeftClass} />
+        <div className={paymentCardMastercardRightClass} />
       </div>
     );
   if (type === "amex")
     return (
-      <div className="rounded-[4px] bg-white/20 px-2 py-1">
-        <span className="font-sans text-xs font-bold tracking-[2px] text-white">
-          AMEX
-        </span>
+      <div className={paymentCardAmexChipClass}>
+        <span className={paymentCardAmexTextClass}>AMEX</span>
       </div>
     );
   return null;
 }
-
-const INPUT_CLASS =
-  "box-border h-12 w-full rounded-md border-[1.5px] border-solid border-input-border bg-input-bg px-3.5 font-sans text-base font-medium text-input-text outline-none";
-const LABEL_CLASS =
-  "mt-3 mb-1.5 block font-sans text-xs font-semibold uppercase tracking-[0.6px] text-foreground-secondary";
-const CARD_FACE =
-  "absolute top-0 left-0 box-border flex h-50 w-full flex-col justify-between overflow-hidden rounded-2xl p-5.5 [backface-visibility:hidden] transition-transform duration-500";
 
 export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
   const [card, setCard] = useState<CardData>({
@@ -124,7 +121,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const cardType = detectCardType(card.number);
-  const theme = CARD_THEMES[cardType];
+  const theme = paymentCardTheme[cardType];
   const isAmex = cardType === "amex";
   const numberMaxLen = isAmex ? 17 : 19;
   const cvvMaxLen = isAmex ? 4 : 3;
@@ -134,42 +131,32 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
   const displayHolder = card.holder || "FULL NAME";
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className={paymentCardRootClass}>
       {/* Card preview */}
-      <div className="relative h-50 perspective-distant">
+      <div className={paymentCardStageClass}>
         {/* Front — gradient is theme-driven, transform/z-index depend on flip state */}
         <div
-          className={CARD_FACE}
+          className={paymentCardFaceClass}
           style={{
             background: `linear-gradient(135deg, ${theme.front[0]}, ${theme.front[1]}, ${theme.front[2]})`,
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
             zIndex: isFlipped ? 0 : 1,
           }}
         >
-          <div className="absolute -top-15 -right-15 size-55 rounded-full bg-white/5" />
-          <div className="absolute -bottom-12.5 -left-7.5 size-40 rounded-full bg-white/5" />
-          <div className="flex h-8 w-10.5 items-center justify-center rounded-sm bg-[#d4a843]">
-            <div className="h-5 w-7 rounded-[4px] border border-[#b8922d]" />
+          <div className={paymentCardDecorTopClass} />
+          <div className={paymentCardDecorBottomClass} />
+          <div className={paymentCardChipClass}>
+            <div className={paymentCardChipInnerClass} />
           </div>
-          <span className="mt-3.5 font-sans text-xl font-medium tracking-[3px] text-on-primary">
-            {maskedNumber}
-          </span>
-          <div className="flex flex-row items-end justify-between">
+          <span className={paymentCardNumberClass}>{maskedNumber}</span>
+          <div className={paymentCardMetaRowClass}>
             <div>
-              <span className="mb-0.75 block font-sans text-xs font-semibold tracking-[1.2px] text-white/60">
-                CARD HOLDER
-              </span>
-              <span className="font-sans text-sm font-semibold tracking-[0.5px] text-on-primary">
-                {displayHolder}
-              </span>
+              <span className={paymentCardMetaLabelClass}>CARD HOLDER</span>
+              <span className={paymentCardMetaValueClass}>{displayHolder}</span>
             </div>
             <div>
-              <span className="mb-0.75 block font-sans text-xs font-semibold tracking-[1.2px] text-white/60">
-                EXPIRES
-              </span>
-              <span className="font-sans text-sm font-semibold tracking-[0.5px] text-on-primary">
-                {displayExpiry}
-              </span>
+              <span className={paymentCardMetaLabelClass}>EXPIRES</span>
+              <span className={paymentCardMetaValueClass}>{displayExpiry}</span>
             </div>
             <NetworkBadge type={cardType} />
           </div>
@@ -177,36 +164,34 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
 
         {/* Back */}
         <div
-          className={CARD_FACE}
+          className={paymentCardFaceClass}
           style={{
             background: `linear-gradient(135deg, ${theme.back[0]}, ${theme.back[1]}, ${theme.back[2]})`,
             transform: isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)",
             zIndex: isFlipped ? 1 : 0,
           }}
         >
-          <div className="absolute -top-15 -right-15 size-55 rounded-full bg-white/5" />
-          <div className="-mx-5.5 mt-1 h-11 bg-[#111]" />
-          <div className="mt-4 flex flex-row items-center gap-2.5">
-            <div className="flex h-9 flex-1 items-center justify-end rounded-[4px] bg-white/90 px-3">
-              <span className="font-sans text-base font-bold tracking-[3px] text-foreground">
+          <div className={paymentCardDecorTopClass} />
+          <div className={paymentCardStripeClass} />
+          <div className={paymentCardBackRowClass}>
+            <div className={paymentCardSignatureClass}>
+              <span className={paymentCardSignatureTextClass}>
                 {card.cvv ? "•".repeat(card.cvv.length) : "•••"}
               </span>
             </div>
-            <div className="rounded-sm bg-white/15 px-2.5 py-1.5">
-              <span className="font-sans text-xs font-bold tracking-[1px] text-on-primary">
-                CVV
-              </span>
+            <div className={paymentCardCvvChipClass}>
+              <span className={paymentCardCvvTextClass}>CVV</span>
             </div>
           </div>
-          <p className="m-0 text-center font-sans text-xs font-normal leading-3 text-white/40">
+          <p className={paymentCardFinePrintClass}>
             This card is issued subject to the conditions of the cardholder agreement.
           </p>
         </div>
       </div>
 
       {/* Form */}
-      <div className="flex flex-col gap-1">
-        <label className={LABEL_CLASS}>Card Number</label>
+      <div className={paymentCardFormClass}>
+        <label className={paymentCardLabelClass}>Card Number</label>
         <input
           type="text"
           inputMode="numeric"
@@ -221,10 +206,10 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
             setCard((c) => ({ ...c, number: e.target.value.replace(/\D/g, "") }))
           }
           onFocus={() => setIsFlipped(false)}
-          className={INPUT_CLASS}
+          className={paymentCardInputClass}
         />
 
-        <label className={LABEL_CLASS}>Cardholder Name</label>
+        <label className={paymentCardLabelClass}>Cardholder Name</label>
         <input
           type="text"
           placeholder="Full Name"
@@ -233,12 +218,12 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
             setCard((c) => ({ ...c, holder: e.target.value.toUpperCase() }))
           }
           onFocus={() => setIsFlipped(false)}
-          className={INPUT_CLASS}
+          className={paymentCardInputClass}
         />
 
-        <div className="flex flex-row gap-3">
-          <div className="flex-1">
-            <label className={LABEL_CLASS}>Expiry Date</label>
+        <div className={paymentCardFieldRowClass}>
+          <div className={paymentCardFieldClass}>
+            <label className={paymentCardLabelClass}>Expiry Date</label>
             <input
               type="text"
               inputMode="numeric"
@@ -249,11 +234,11 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
                 setCard((c) => ({ ...c, expiry: e.target.value.replace(/[^\d/]/g, "") }))
               }
               onFocus={() => setIsFlipped(false)}
-              className={INPUT_CLASS}
+              className={paymentCardInputClass}
             />
           </div>
-          <div className="flex-1">
-            <label className={LABEL_CLASS}>CVV</label>
+          <div className={paymentCardFieldClass}>
+            <label className={paymentCardLabelClass}>CVV</label>
             <input
               type="password"
               inputMode="numeric"
@@ -265,7 +250,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
               }
               onFocus={() => setIsFlipped(true)}
               onBlur={() => setIsFlipped(false)}
-              className={INPUT_CLASS}
+              className={paymentCardInputClass}
             />
           </div>
         </div>
@@ -273,10 +258,10 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
         <button
           type="button"
           onClick={() => onSave?.(card)}
-          className="mt-5 flex w-full cursor-pointer flex-row items-center justify-center gap-2 rounded-lg bg-primary py-3.5 text-on-primary"
+          className={paymentCardSubmitClass}
         >
-          <Lock size={15} color="currentColor" strokeWidth={2.5} />
-          <span className="font-sans text-base font-bold text-on-primary">Save Card</span>
+          <Lock size={paymentCardLockIconSize} color="currentColor" strokeWidth={2.5} />
+          <span className={paymentCardSubmitTextClass}>Save Card</span>
         </button>
       </div>
     </div>

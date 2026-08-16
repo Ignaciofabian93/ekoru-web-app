@@ -3,6 +3,19 @@
 import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import {
+  productGalleryCounterClass,
+  productGalleryEmptyClass,
+  productGalleryEmptyIconSize,
+  productGalleryEmptyTextClass,
+  productGalleryFrameClass,
+  productGalleryImageClass,
+  productGalleryNavClass,
+  productGalleryNavIconSize,
+  productGalleryRootClass,
+  productGalleryThumbClass,
+  productGalleryThumbRailClass,
+} from "@/design/product-gallery";
 import { resolveImageUrl } from "@/utils/resolveImage";
 
 /**
@@ -40,21 +53,21 @@ export function ProductGallery({ images, labels }: ProductGalleryProps) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="bg-background-secondary relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-2xl border border-border-light">
+    <div className={productGalleryRootClass}>
+      <div className={productGalleryFrameClass}>
         {current ? (
           <Image
             src={current}
             alt={labels.imageAlt(index + 1, total)}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
-            className="object-cover"
+            className={productGalleryImageClass}
             priority={index === 0}
           />
         ) : (
-          <div className="flex flex-col items-center gap-2 text-foreground-muted">
-            <ImageOff size={48} strokeWidth={1.5} aria-hidden />
-            <span className="text-sm">{labels.noImage}</span>
+          <div className={productGalleryEmptyClass}>
+            <ImageOff size={productGalleryEmptyIconSize} strokeWidth={1.5} aria-hidden />
+            <span className={productGalleryEmptyTextClass}>{labels.noImage}</span>
           </div>
         )}
 
@@ -64,19 +77,23 @@ export function ProductGallery({ images, labels }: ProductGalleryProps) {
               type="button"
               onClick={() => go(-1)}
               aria-label={labels.previous}
-              className="absolute top-1/2 left-3 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-foreground shadow-sm transition hover:bg-white"
+              className={productGalleryNavClass.previous}
             >
-              <ChevronLeft size={20} strokeWidth={2} aria-hidden />
+              <ChevronLeft size={productGalleryNavIconSize} strokeWidth={2} aria-hidden />
             </button>
             <button
               type="button"
               onClick={() => go(1)}
               aria-label={labels.next}
-              className="absolute top-1/2 right-3 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-foreground shadow-sm transition hover:bg-white"
+              className={productGalleryNavClass.next}
             >
-              <ChevronRight size={20} strokeWidth={2} aria-hidden />
+              <ChevronRight
+                size={productGalleryNavIconSize}
+                strokeWidth={2}
+                aria-hidden
+              />
             </button>
-            <div className="absolute right-3 bottom-3 rounded-full bg-black/60 px-2.5 py-1 text-xs font-medium text-white">
+            <div className={productGalleryCounterClass}>
               {index + 1} / {total}
             </div>
           </>
@@ -84,7 +101,7 @@ export function ProductGallery({ images, labels }: ProductGalleryProps) {
       </div>
 
       {total > 1 && (
-        <div className="scrollbar-none flex gap-2 overflow-x-auto pb-1">
+        <div className={productGalleryThumbRailClass}>
           {urls.map((url, i) => (
             <button
               key={url + i}
@@ -92,16 +109,14 @@ export function ProductGallery({ images, labels }: ProductGalleryProps) {
               onClick={() => setIndex(i)}
               aria-label={labels.goToImage(i + 1)}
               aria-current={i === index}
-              className={`bg-background-secondary relative size-16 shrink-0 overflow-hidden rounded-lg border-2 transition ${
-                i === index ? "border-primary" : "border-transparent hover:border-border"
-              }`}
+              className={productGalleryThumbClass[i === index ? "current" : "idle"]}
             >
               <Image
                 src={url}
                 alt={labels.thumbnailAlt(i + 1)}
                 fill
                 sizes="64px"
-                className="object-cover"
+                className={productGalleryImageClass}
               />
             </button>
           ))}

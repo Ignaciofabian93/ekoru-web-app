@@ -1,8 +1,17 @@
 import clsx from "clsx";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { Text } from "@/components/Primitives/Text";
 import { ComingSoonChip } from "@/components/Primitives/Chip";
+import { Text } from "@/components/Primitives/Text";
+import {
+  linkButtonClass,
+  linkButtonContentClass,
+  linkButtonGhostLabelClass,
+  linkButtonIconSize,
+  linkButtonLabelClass,
+  linkButtonLayoutClass,
+  linkButtonStateClass,
+} from "@/design/linkButton";
 
 export type LinkButtonVariant = "primary" | "outlined" | "ghost";
 export type LinkButtonSize = "sm" | "md" | "lg";
@@ -28,19 +37,6 @@ export interface LinkButtonProps {
   message?: string;
 }
 
-const VARIANT_CLASS: Record<LinkButtonVariant, string> = {
-  primary:
-    "bg-linear-180 from-primary to-primary-light/80 border border-primary text-on-primary",
-  outlined: "border-2 border-primary bg-surface text-primary",
-  ghost: "bg-transparent text-primary",
-};
-
-const SIZE_CLASS: Record<LinkButtonSize, string> = {
-  sm: "px-2 py-1",
-  md: "px-3 py-1.5",
-  lg: "px-4 py-2",
-};
-
 export function LinkButton({
   href,
   icon: Icon,
@@ -53,37 +49,42 @@ export function LinkButton({
   message,
 }: LinkButtonProps) {
   const className = clsx(
-    "inline-flex items-center justify-center rounded-md",
-    "transition-all duration-200 ease-in-out",
-    // The message sits on its own line under the label, so the control becomes
-    // a column once there is one.
-    message ? "flex-col gap-1" : "gap-1.5",
-    VARIANT_CLASS[variant],
-    SIZE_CLASS[size],
+    linkButtonClass[variant][size],
+    message ? linkButtonLayoutClass.withMessage : linkButtonLayoutClass.default,
     fullWidth && "w-full",
-    disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer",
+    disabled ? linkButtonStateClass.disabled : linkButtonStateClass.default,
   );
 
   const content = (
     <>
-      <span className="inline-flex items-center justify-center gap-1.5">
+      <span className={linkButtonContentClass}>
         {iconPosition === "left" && (
-          <Icon size={14} color="currentColor" strokeWidth={2.5} aria-hidden />
+          <Icon
+            size={linkButtonIconSize}
+            color="currentColor"
+            strokeWidth={2.5}
+            aria-hidden
+          />
         )}
         <Text
           variant="label"
           align="center"
           color={variant === "outlined" || variant === "ghost" ? "primary" : "white"}
           size="sm"
-          className={clsx("cursor-pointer", {
-            "underline hover:brightness-110 transition-all duration-200 ease-in-out":
-              variant === "ghost",
-          })}
+          className={clsx(
+            linkButtonLabelClass,
+            variant === "ghost" && linkButtonGhostLabelClass,
+          )}
         >
           {label}
         </Text>
         {iconPosition === "right" && (
-          <Icon size={14} color="currentColor" strokeWidth={2.5} aria-hidden />
+          <Icon
+            size={linkButtonIconSize}
+            color="currentColor"
+            strokeWidth={2.5}
+            aria-hidden
+          />
         )}
       </span>
       {message && <ComingSoonChip label={message} />}

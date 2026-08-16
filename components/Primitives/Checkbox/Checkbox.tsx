@@ -3,6 +3,19 @@
 import clsx from "clsx";
 import { Check } from "lucide-react";
 import type React from "react";
+import {
+  checkboxBoxCheckedClass,
+  checkboxBoxClass,
+  checkboxControlClass,
+  checkboxDescriptionClass,
+  checkboxErrorClass,
+  checkboxIconSize,
+  checkboxLabelClass,
+  checkboxLabelGroupClass,
+  checkboxLabelToneClass,
+  checkboxRootClass,
+  checkboxTickClass,
+} from "@/design/checkbox";
 
 export type CheckboxVariant = "default" | "filled" | "outline";
 export type CheckboxSize = "sm" | "md" | "lg";
@@ -22,18 +35,6 @@ export interface CheckboxProps {
   ref?: React.Ref<HTMLDivElement>;
 }
 
-const SIZE_CLASS: Record<CheckboxSize, { box: string; icon: number }> = {
-  sm: { box: "size-4.5 rounded-[4px]", icon: 12 },
-  md: { box: "size-5.5 rounded-[5px]", icon: 16 },
-  lg: { box: "size-6.5 rounded-[6px]", icon: 20 },
-};
-
-const VARIANT_IDLE: Record<CheckboxVariant, string> = {
-  default: "border-input-border bg-surface",
-  filled: "border-transparent bg-background-secondary",
-  outline: "border-primary bg-transparent",
-};
-
 export function Checkbox({
   checked = false,
   onCheckedChange,
@@ -48,8 +49,6 @@ export function Checkbox({
   className,
   ref,
 }: CheckboxProps) {
-  const s = SIZE_CLASS[size];
-
   const handlePress = () => {
     if (disabled) return;
     onCheckedChange?.(!checked);
@@ -57,65 +56,53 @@ export function Checkbox({
   };
 
   const hasLabel = label || description;
+  const labelTone = errorMessage ? "error" : disabled ? "disabled" : "default";
 
   return (
-    <div ref={ref} style={style} className={clsx("flex flex-col gap-1", className)}>
+    <div ref={ref} style={style} className={clsx(checkboxRootClass, className)}>
       <button
         type="button"
         onClick={handlePress}
         disabled={disabled}
         aria-checked={checked}
         role="checkbox"
-        className="flex cursor-pointer flex-row items-start gap-3 p-0 text-left disabled:cursor-not-allowed disabled:opacity-50"
+        className={checkboxControlClass}
       >
         {/* Box */}
         <div
-          className={clsx(
-            "mt-px flex shrink-0 items-center justify-center border-2 border-solid transition-[background-color,border-color] duration-150",
-            s.box,
-            checked ? "border-primary bg-primary" : VARIANT_IDLE[variant],
-          )}
+          className={
+            checked ? checkboxBoxCheckedClass[size] : checkboxBoxClass[variant][size]
+          }
         >
           <span
-            className={clsx(
-              "text-on-primary transition-opacity duration-100",
-              checked ? "opacity-100" : "opacity-0",
-            )}
+            className={clsx(checkboxTickClass, checked ? "opacity-100" : "opacity-0")}
           >
-            <Check size={s.icon} color="currentColor" strokeWidth={3} aria-hidden />
+            <Check
+              size={checkboxIconSize[size]}
+              color="currentColor"
+              strokeWidth={3}
+              aria-hidden
+            />
           </span>
         </div>
 
         {hasLabel && (
-          <div className="flex flex-1 flex-col gap-0.5">
+          <div className={checkboxLabelGroupClass}>
             {label && (
               <span
-                className={clsx(
-                  "font-sans text-sm font-medium",
-                  errorMessage
-                    ? "text-danger"
-                    : disabled
-                      ? "text-foreground-tertiary"
-                      : "text-foreground",
-                )}
+                className={clsx(checkboxLabelClass, checkboxLabelToneClass[labelTone])}
               >
                 {label}
               </span>
             )}
             {description && (
-              <span className="font-sans text-sm font-normal leading-4.5 text-foreground-secondary">
-                {description}
-              </span>
+              <span className={checkboxDescriptionClass}>{description}</span>
             )}
           </div>
         )}
       </button>
 
-      {errorMessage && (
-        <span className="pl-8.5 font-sans text-xs font-normal text-danger">
-          {errorMessage}
-        </span>
-      )}
+      {errorMessage && <span className={checkboxErrorClass}>{errorMessage}</span>}
     </div>
   );
 }

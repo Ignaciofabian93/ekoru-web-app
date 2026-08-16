@@ -10,7 +10,7 @@ import { ProductImpact } from "./ProductImpact";
 import { ProductError, ProductLoading, ProductNotFound } from "./ProductStatus";
 import { ProductSummary } from "./ProductSummary";
 import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/ProductTrust";
-import { SellerCard } from "@/components/Patterns/SellerCard";
+import { SellerCard } from "@/components/Patterns/SellerCard/SellerCard";
 import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
 import { useNavigation } from "@/hooks/useNavigation";
 import { Section } from "@/components/Layout";

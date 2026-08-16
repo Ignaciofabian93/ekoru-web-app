@@ -3,8 +3,23 @@
 import clsx from "clsx";
 import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
+import {
+  inputErrorTextClass,
+  inputFieldClass,
+  inputFieldErrorClass,
+  inputHeightClass,
+  inputIconSize,
+  inputLabelClass,
+  inputLeftIconClass,
+  inputLeftIconToneClass,
+  inputPadLeftClass,
+  inputPadRightClass,
+  inputRootClass,
+  inputRowClass,
+  inputTrailingButtonClass,
+  inputWidthClass,
+} from "@/design/input";
 import type { InputProps } from "./Input.types";
-import { FIELD_BASE, SIZE_CLASS, VARIANT_CLASS, WIDTH_CLASS } from "./styles";
 
 export function Input({
   label,
@@ -25,7 +40,6 @@ export function Input({
   ref,
   ...rest
 }: InputProps) {
-  const s = SIZE_CLASS[size];
   const showError = hasError || isInvalid;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -38,22 +52,22 @@ export function Input({
   };
 
   return (
-    <div className={clsx("relative flex flex-col gap-px", WIDTH_CLASS[width])}>
+    <div className={clsx(inputRootClass, inputWidthClass[width])}>
       {label && (
-        <label htmlFor={name} className="font-sans text-sm font-medium text-foreground">
+        <label htmlFor={name} className={inputLabelClass}>
           {label}
         </label>
       )}
 
-      <div className={clsx("group relative flex items-center", s.h)}>
+      <div className={clsx(inputRowClass, inputHeightClass[size])}>
         {LeftIcon && (
           <div
             className={clsx(
-              "pointer-events-none absolute left-3 z-1 flex",
-              showError ? "text-danger" : "text-foreground-tertiary group-focus-within:text-primary",
+              inputLeftIconClass,
+              showError ? inputLeftIconToneClass.error : inputLeftIconToneClass.default,
             )}
           >
-            <LeftIcon size={s.icon} color="currentColor" strokeWidth={2} />
+            <LeftIcon size={inputIconSize[size]} color="currentColor" strokeWidth={2} />
           </div>
         )}
 
@@ -68,12 +82,9 @@ export function Input({
           onBlur={onBlur}
           onChange={handleChange}
           className={clsx(
-            FIELD_BASE,
-            s.text,
-            s.px,
-            LeftIcon && s.padLeft,
-            isPassword && s.padRight,
-            showError ? "border-danger" : VARIANT_CLASS[variant],
+            showError ? inputFieldErrorClass[size] : inputFieldClass[variant][size],
+            LeftIcon && inputPadLeftClass[size],
+            isPassword && inputPadRightClass[size],
           )}
           {...rest}
         />
@@ -82,21 +93,19 @@ export function Input({
           <button
             type="button"
             onClick={() => setShowPassword((p) => !p)}
-            className="absolute right-3 flex cursor-pointer items-center p-0 text-foreground-tertiary transition-opacity duration-75"
+            className={inputTrailingButtonClass}
           >
             {showPassword ? (
-              <EyeOff size={s.icon} color="currentColor" strokeWidth={2} />
+              <EyeOff size={inputIconSize[size]} color="currentColor" strokeWidth={2} />
             ) : (
-              <Eye size={s.icon} color="currentColor" strokeWidth={2} />
+              <Eye size={inputIconSize[size]} color="currentColor" strokeWidth={2} />
             )}
           </button>
         )}
       </div>
 
       {showError && errorMessage && (
-        <span className="absolute -bottom-4.5 font-sans text-xs font-normal text-danger">
-          {errorMessage}
-        </span>
+        <span className={inputErrorTextClass}>{errorMessage}</span>
       )}
     </div>
   );
