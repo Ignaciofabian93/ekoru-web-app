@@ -39,9 +39,6 @@ export function ProfileHeader() {
   };
 
   return (
-    // Pinned to the same width as the profile body below (`default`), so the
-    // banner reads as this account's header rather than a full-bleed page hero.
-    // Mirrors the seller hero's proportions.
     <Container as="section" width="default" gap={0} paddingY={2}>
       <Cover
         image={coverImage}
@@ -51,10 +48,7 @@ export function ProfileHeader() {
         changeCoverAriaLabel={t("header.upload.changeCover")}
       />
 
-      {/* Identity bar — avatar overlaps the cover, details sit on the surface */}
       <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:gap-5 sm:text-left mt-3">
-        {/* The negative margin is half the avatar's size, so it always
-            straddles the cover's bottom edge. */}
         <div className="relative z-10 -mt-11 shrink-0">
           <Avatar image={profileImage} alt="" size="xl" frame="raised" />
           <ImageUploadButton
