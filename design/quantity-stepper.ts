@@ -6,7 +6,7 @@
 
 import clsx from "clsx";
 import type { ButtonSize } from "@/components/Primitives/Button/Button.types";
-import { buttonShapeClass, buttonVariantClass } from "@/design/button";
+import { buttonPaddingClass, buttonSizeClass, buttonVariantClass } from "@/design/button";
 import { cross } from "@/design/variants";
 
 /**
@@ -22,13 +22,14 @@ const quantityStepperBaseClass = clsx(
   "select-none",
   "border border-solid outline-none",
   "transition duration-200 ease-in-out",
+  buttonPaddingClass,
 );
 
 /** Root class for every variant × size pair: `quantityStepperClass[variant][size]`. */
 export const quantityStepperClass = cross(
   quantityStepperBaseClass,
   buttonVariantClass,
-  buttonShapeClass,
+  buttonSizeClass,
 );
 
 /**

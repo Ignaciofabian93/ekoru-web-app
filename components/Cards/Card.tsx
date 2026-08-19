@@ -23,10 +23,14 @@ function Face({ children, back = false }: { children: React.ReactNode; back?: bo
     <div
       inert={!active}
       className={clsx(
-        "flex overflow-hidden justify-between rounded-lg border border-slate-200 bg-white backface-hidden",
+        "flex overflow-hidden justify-between rounded-lg border border-slate-200 backface-hidden",
         "shadow-sm shadow-slate-800/20 hover:shadow-md",
         FACE_CLASS[orientation],
         back ? "absolute inset-0 rotate-y-180" : "relative",
+        {
+          "bg-linear-120 from-primary-light/20 to-secondary-light/20": back,
+          "bg-white": !back,
+        },
       )}
     >
       {children}
@@ -49,7 +53,7 @@ function BackSide({ children }: CardBackSideProps) {
 }
 
 const ORIENTATION_SIZE: Record<Orientation, string> = {
-  vertical: "min-w-0 w-full max-w-60 min-h-[300px] h-full",
+  vertical: "min-w-0 w-full max-w-60 h-full",
   horizontal: "min-w-80 min-h-[170px]",
 };
 

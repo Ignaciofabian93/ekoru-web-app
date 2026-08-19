@@ -34,13 +34,13 @@ export const buttonShapeClass: Record<ButtonSize, string> = {
   lg: "min-h-12 rounded-md text-base",
 };
 
-const buttonPaddingClass: Record<ButtonSize, string> = {
+export const buttonPaddingClass: Record<ButtonSize, string> = {
   sm: "px-3.5 py-2",
   md: "px-5 py-3",
   lg: "px-6 py-4",
 };
 
-const buttonSizeClass: Record<ButtonSize, string> = {
+export const buttonSizeClass: Record<ButtonSize, string> = {
   sm: clsx(buttonShapeClass.sm, buttonPaddingClass.sm),
   md: clsx(buttonShapeClass.md, buttonPaddingClass.md),
   lg: clsx(buttonShapeClass.lg, buttonPaddingClass.lg),

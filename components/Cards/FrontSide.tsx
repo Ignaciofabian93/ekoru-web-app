@@ -12,43 +12,20 @@ import { NAMESPACE } from "./i18n";
 import { useState } from "react";
 import clsx from "clsx";
 import Image from "next/image";
-import {
-  BadgeCheck,
-  Clock,
-  Heart,
-  ImageOff,
-  MapPin,
-  Pencil,
-  Repeat,
-  Star,
-  X,
-} from "lucide-react";
+import { BadgeCheck, Clock, ImageOff, MapPin, Pencil, Repeat, Star } from "lucide-react";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { resolveImageUrl } from "@/utils/resolveImage";
 import { FlipButton } from "./FlipButton";
-import { Button, Text } from "../Primitives";
+import { Button, ProductConditionBadge, ProductInfoBadge, Text } from "../Primitives";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useNavigation } from "@/hooks/useNavigation";
 import { QuantityStepper } from "../Patterns";
+import { useIsAuthenticated } from "@/store/useAuthStore";
+import { LikeButton } from "./LikeButton";
 
 const HEADER_CLASS: Record<Orientation, string> = {
-  // Vertical: the image owns a definite height via aspect ratio, so it never
-  // depends on a percentage-height chain resolving — that chain silently
-  // collapses to 0 the moment an ancestor lacks an explicit height.
-  // Horizontal: the card has a fixed height, so `h-full` + `basis` is safe.
   vertical: "w-full aspect-4/3",
   horizontal: "h-full basis-2/5",
-};
-
-const CONDITION_STYLES: Record<string, string> = {
-  NEW: "bg-primary-light-bg text-primary",
-  LIKE_NEW: "bg-primary-light-bg text-primary",
-  OPEN_BOX: "bg-primary-light-bg text-primary",
-  REFURBISHED: "bg-primary-light-bg text-primary",
-  GOOD: "bg-primary-light-bg text-primary",
-  FAIR: "bg-amber-50 text-amber-700",
-  POOR: "bg-red-50 text-red-600",
-  FOR_PARTS: "bg-red-50 text-red-600",
 };
 
 const ACCENT_PANEL: Record<BrandAccent, string> = {
@@ -63,12 +40,7 @@ const ACCENT_TEXT: Record<BrandAccent, string> = {
   amber: "text-amber-700",
 };
 
-/**
- * The seller-card counterpart to a product photo: a tinted, softly patterned
- * panel with the logo on a light tile, so brand marks of any shape or color
- * stay legible instead of being cropped like a photo.
- */
-function BrandPanel({
+function ProviderPanel({
   logo,
   imageAlt,
   initials,
@@ -167,16 +139,13 @@ export function Header({
   const { toggleFavorite } = useToggleFavorite();
   const cover = resolveImageUrl(coverImageString);
   const [imageError, setImageError] = useState<boolean>(false);
+  const isAuthenticated = useIsAuthenticated();
 
-  // The heart needs an id to toggle against, and an owner manages a listing
-  // rather than favoriting it — in either case, don't render a dead control.
   const showLike = isLikeEnabled && !isManaged && typeof itemId === "number";
 
-  // Seller cards show a brand panel instead of a photo, and carry none of the
-  // product chrome (condition, offer, favorite, flip).
   if (!isProduct) {
     return (
-      <BrandPanel
+      <ProviderPanel
         logo={cover}
         imageAlt={imageAlt}
         initials={initials}
@@ -188,8 +157,6 @@ export function Header({
   }
 
   return (
-    // `relative` is required: <Image fill> is absolutely positioned and would
-    // otherwise size itself against the nearest positioned ancestor further up.
     <div
       className={clsx(
         "relative shrink-0 overflow-hidden",
@@ -207,7 +174,6 @@ export function Header({
           onError={() => setImageError(true)}
           className={clsx(
             "h-full w-full object-cover transition-transform duration-300",
-            // Sold-out stock is still browsable, just visually de-emphasised.
             isSoldOut && "opacity-45 saturate-50",
           )}
           loading="eager"
@@ -217,71 +183,45 @@ export function Header({
           <ImageOff size={36} strokeWidth={1.5} className="text-foreground-muted" />
         </div>
       )}
-      {/* Badges are decorative: `pointer-events-none` lets clicks fall through
-          to the stretched link beneath them, so tapping over a badge still
-          navigates. `z-20` keeps them painted above that link. */}
-      {/* Condition label is resolved from the enum value, not passed in — the
-          card owns its own copy: t(`condition.NEW`) etc. */}
+
       {condition && (
-        <span
-          className={clsx(
-            "pointer-events-none absolute bottom-2 left-2 z-20 rounded-md px-2 py-0.5 text-xs font-medium",
-            CONDITION_STYLES[condition] ?? "bg-white/90 text-foreground",
-          )}
-        >
-          {t(`condition.${condition}`)}
-        </span>
+        <ProductConditionBadge
+          label={t(`condition.${condition}`)}
+          condition={condition}
+        />
       )}
 
-      {/* Stacked so a product can carry more than one status at once (an
-          exchangeable item on promotion, say) without the badges overlapping. */}
       {(isExchangeable || hasOffer || isSoldOut) && (
-        <div className="pointer-events-none absolute top-2 left-2 z-20 flex flex-col items-start gap-1">
+        <>
           {hasOffer && (
-            <span className="inline-flex items-center rounded-md bg-danger px-2 py-0.5 text-xs font-semibold text-white shadow-sm">
-              {discountPercent
-                ? t("badges.discount", { value: String(Math.round(discountPercent)) })
-                : t("badges.offer")}
-            </span>
-          )}
-          {isSoldOut && (
-            <span className="inline-flex items-center rounded-md bg-gray-800 px-2 py-0.5 text-xs font-semibold text-white shadow-sm">
-              {t("badges.soldOut")}
-            </span>
-          )}
-          {isExchangeable && (
-            <span className="inline-flex items-center gap-1 rounded-md bg-gray-700 px-2 py-0.5 text-xs font-medium text-white shadow-sm">
-              <Repeat size={11} strokeWidth={2.5} />
-              {t("badges.exchangeable")}
-            </span>
-          )}
-        </div>
-      )}
-
-      {/* Controls sit above the stretched link (z-20 > z-10) so they take their
-          own clicks instead of navigating. The flip control keeps the top-right
-          corner in every mode; management moves the owner's actions menu to the
-          bottom-right instead. */}
-      <div className="absolute top-2 right-2 z-20 flex flex-col-reverse items-center gap-1.5">
-        {showLike && (
-          <button
-            type="button"
-            aria-label={isLiked ? t("actions.unlike") : t("actions.like")}
-            aria-pressed={isLiked}
-            onClick={() => toggleFavorite(itemId, isLiked, favoriteSource)}
-            className="flex size-8 cursor-pointer items-center justify-center rounded-full bg-white/85 shadow-sm transition-colors hover:bg-white"
-          >
-            <Heart
-              size={15}
-              strokeWidth={2}
-              className={
-                isLiked ? "fill-red-500 text-red-500" : "text-foreground-secondary"
+            <ProductInfoBadge
+              type="OFFER"
+              label={
+                discountPercent
+                  ? t("badges.discount", { value: String(Math.round(discountPercent)) })
+                  : t("badges.offer")
               }
             />
-          </button>
+          )}
+          {isSoldOut && <ProductInfoBadge type="SOLD_OUT" label={t("badges.soldOut")} />}
+          {isExchangeable && (
+            <ProductInfoBadge
+              type="EXCHANGEABLE"
+              label={t("badges.exchangeable")}
+              icon={Repeat}
+            />
+          )}
+        </>
+      )}
+
+      <div className="absolute top-2 right-2 z-20 flex flex-col-reverse items-center gap-1.5">
+        {showLike && isAuthenticated && (
+          <LikeButton
+            ariaLabel={isLiked ? t("actions.unlike") : t("actions.like")}
+            onClick={() => toggleFavorite(itemId, isLiked, favoriteSource)}
+            isLiked={isLiked}
+          />
         )}
-        {/* The name follows what the back face actually shows: an impact panel
-            on products, a description on services. `flipLabel` overrides it. */}
         {hasBackSide && (
           <FlipButton
             label={
@@ -297,107 +237,6 @@ export function Header({
   );
 }
 
-// The exchange trigger + its in-card panel, self-contained so it manages its
-// own open state. Built as a plain button (not the shared IconButton, which
-// currently drops onClick/aria-label). The panel covers the front face via
-// `absolute inset-0` — an in-card popover, not a portal — so it stays clipped
-// to the card's rounded bounds and never overflows the grid cell.
-function ExchangeButton({
-  interests = [],
-  onPropose,
-}: {
-  interests?: string[];
-  onPropose?: () => void;
-}) {
-  const { t } = useTranslation(NAMESPACE);
-  const [open, setOpen] = useState<boolean>(false);
-
-  return (
-    <>
-      {/* z-20 lifts the trigger above the stretched link (z-10) so it opens the
-          panel instead of navigating. */}
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label={t("exchange.trigger")}
-        aria-haspopup="dialog"
-        className="bg-primary text-on-primary hover:bg-primary-active relative z-20 flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-sm transition-colors"
-      >
-        <Repeat size={14} strokeWidth={2.5} />
-      </button>
-
-      {/* Panel: above the link (z-10) and the header controls (z-20). Rendered
-          inside Body, which is static, so `inset-0` resolves to the front face. */}
-      {open && (
-        <div
-          className={clsx(
-            "absolute inset-0 mx-auto my-auto z-30 flex flex-col",
-            "border border-slate-200 bg-white h-10/12 w-10/12",
-            "rounded-md shadow-lg",
-          )}
-        >
-          <div className="flex items-center justify-between border-b border-slate-200 px-3 py-2">
-            <Text variant="label" weight="bold" size="sm" numberOfLines={1}>
-              {t("exchange.title")}
-            </Text>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label={t("exchange.close")}
-              className="text-foreground-secondary flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full hover:bg-slate-100"
-            >
-              <X size={14} strokeWidth={2.5} />
-            </button>
-          </div>
-
-          <div className="flex-1 overflow-y-auto px-3 py-2">
-            {interests.length > 0 ? (
-              <ul className="flex flex-col gap-1.5">
-                {interests.map((item, i) => (
-                  <li key={i} className="flex items-center gap-1.5">
-                    <Repeat
-                      size={12}
-                      strokeWidth={2.5}
-                      className="text-primary shrink-0"
-                    />
-                    <Text variant="span" size="sm" numberOfLines={1}>
-                      {item}
-                    </Text>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <Text variant="span" size="sm" color="secondary">
-                {t("exchange.anyOffer")}
-              </Text>
-            )}
-          </div>
-
-          <div className="p-2">
-            {/* CTA owns no logic itself — it closes the panel and delegates to
-                the prop, keeping the exchange flow outside the card. */}
-            <button
-              type="button"
-              onClick={() => {
-                setOpen(false);
-                onPropose?.();
-              }}
-              className={clsx(
-                "flex w-full cursor-pointer items-center justify-center gap-1",
-                "bg-primary rounded-sm px-2 py-2 transition-all hover:brightness-110",
-              )}
-            >
-              <Text variant="label" size="sm" color="white">
-                {t("exchange.propose")}
-              </Text>
-            </button>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
 export function Body({
   isProduct = true,
   brand,
@@ -405,9 +244,6 @@ export function Body({
   price,
   hasOffer = false,
   offerPrice,
-  isExchangeable = false,
-  interests,
-  exchangeRedirectUrl,
   averageRating,
   reviewsNumber,
   duration,
@@ -421,11 +257,7 @@ export function Body({
 }: CardBodyProps) {
   const { t } = useTranslation(NAMESPACE);
   const formatPrice = useFormatPrice();
-  const { navigateTo } = useNavigation();
-  const { isManaged } = useCard();
 
-  // An "offer" only counts when it actually undercuts the list price —
-  // otherwise the struck-through original would read as nonsense.
   const onOffer =
     hasOffer &&
     typeof offerPrice === "number" &&
@@ -434,8 +266,6 @@ export function Body({
   const hasRating = typeof averageRating === "number" && averageRating > 0;
   const isSoldOut = typeof stock === "number" && stock <= 0;
 
-  // Seller cards describe a business, not a listing: no brand, price or
-  // exchange row, but a location and a blurb instead.
   if (!isProduct) {
     return (
       <div className="flex flex-1 flex-col justify-start gap-1 px-3.5 py-2.5">
@@ -499,8 +329,6 @@ export function Body({
         </Text>
       </div>
 
-      {/* Rating and duration share a row: both are short, and a line each would
-          push the price below the fold on a narrow card. */}
       {(hasRating || duration) && (
         <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
           {hasRating && (
@@ -527,8 +355,6 @@ export function Body({
               )}
             </span>
           )}
-          {/* Free text from the backend ("45 min", "2 h") — rendered verbatim,
-              so no unit is appended here. */}
           {duration && (
             <span className="flex items-center gap-1">
               <Clock
@@ -571,8 +397,6 @@ export function Body({
         ) : (
           price && (
             <div className="flex items-baseline gap-1">
-              {/* Services quote a starting price, so the amount reads
-                  "From $X" rather than as a fixed price. */}
               {isPriceFrom && (
                 <Text variant="span" size="xs" color="tertiary" weight="bold">
                   {t("price.from")}
@@ -583,14 +407,6 @@ export function Body({
               </Text>
             </div>
           )
-        )}
-        {/* Proposing a swap for your own listing is meaningless, so the
-            exchange affordance comes off alongside the other shopper controls. */}
-        {isExchangeable && exchangeRedirectUrl && !isManaged && (
-          <ExchangeButton
-            interests={interests}
-            onPropose={() => navigateTo({ route: exchangeRedirectUrl })}
-          />
         )}
       </div>
     </div>
@@ -612,9 +428,6 @@ export function Footer({
   const { navigateTo } = useNavigation();
   const { isManaged, onEdit } = useCard();
 
-  // An owner edits their listing rather than buying it — "Add to cart" on your
-  // own product is meaningless, so the CTA becomes Edit. With no handler there
-  // is nothing to offer, so the row goes away entirely.
   if (isManaged) {
     if (!onEdit) return null;
     return (
@@ -631,24 +444,14 @@ export function Footer({
     );
   }
 
-  // The CTA label is chosen by item type — t(`cta.MARKETPLACE`) / `cta.STORE` /
-  // etc. — unless a state overrides it.
   const LABEL: Record<CardFooterState, string> = {
     default: t(`cta.${itemType}`),
     added: t("actions.added"),
     unavailable: t("stock.outOfStock"),
   };
 
-  // `relative z-20` lifts the footer's controls above the stretched link so
-  // they receive their own clicks rather than triggering navigation.
   return (
     <div className="relative z-20 mt-auto flex items-center gap-2 px-2 pb-2">
-      {/* Once the shopper holds units of this item, the CTA has done its job:
-          it becomes the stepper in place, so adjusting the count never costs a
-          trip to the cart. Falling back to zero brings the CTA back — that
-          swap is what removing the last unit looks like. The checks are inline
-          because narrowing through an aliased boolean doesn't hold for
-          destructured params. */}
       {typeof quantity === "number" &&
       quantity > 0 &&
       typeof maxQuantity === "number" &&

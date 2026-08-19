@@ -62,12 +62,13 @@ export type BusinessFormalizationStatus =
 // Product Related
 export type ProductCondition =
   | "NEW"
-  | "OPEN_BOX"
   | "LIKE_NEW"
+  | "OPEN_BOX"
+  | "REFURBISHED"
+  | "GOOD"
   | "FAIR"
   | "POOR"
-  | "FOR_PARTS"
-  | "REFURBISHED";
+  | "FOR_PARTS";
 
 export type ProductSize = "XS" | "S" | "M" | "L" | "XL";
 

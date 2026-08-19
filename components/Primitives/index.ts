@@ -1,5 +1,5 @@
 export { Avatar } from "./Avatar";
-export { Badge } from "./Badge";
+export { Badge, ProductConditionBadge, ProductInfoBadge } from "./Badge";
 export { Button } from "./Button";
 export { Checkbox } from "./Checkbox";
 export { EkoruLogo } from "./EkoruLogo";

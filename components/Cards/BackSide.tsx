@@ -9,25 +9,17 @@ import type {
 import clsx from "clsx";
 import { Text } from "../Primitives";
 import { FlipButton } from "./FlipButton";
-import Image from "next/image";
-import { getInitials } from "./utils/initials";
-import { resolveImageUrl } from "@/utils/resolveImage";
-import {
-  useDisplayName,
-  useInitials,
-  useProfileImage,
-  useSellerRegion,
-} from "@/hooks/useSellerData";
+import { useDisplayName, useSellerRegion } from "@/hooks/useSellerData";
 import type { EnvironmentalImpact } from "@/types/product";
 import { useState } from "react";
-import { ChevronRight, Droplets, Info, Leaf } from "lucide-react";
+import { Droplets, Leaf, TrendingUp } from "lucide-react";
 import ImpactModal from "./ImpactModal";
 
 function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
   const { t } = useTranslation(NAMESPACE);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   return (
-    <div className={clsx("w-full px-2 py-1 h-2/4")}>
+    <div className={clsx("w-full mt-10 px-2 py-1 h-2/4")}>
       <section className="mb-3">
         <div className="mb-2 flex items-center justify-between gap-2">
           <div className="flex items-center gap-1.5">
@@ -35,11 +27,10 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
               {t("impact.title")}
             </Text>
           </div>
-          <Info size={12} strokeWidth={2.5} />
         </div>
 
         <div className="mb-2 grid grid-cols-1">
-          <div className="flex items-center justify-between p-1">
+          <div className="flex flex-col items-start justify-between p-1">
             <div className="flex items-center gap-1">
               <Leaf size={14} className="text-primary" strokeWidth={2} />
               <Text
@@ -47,27 +38,22 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
                 size="sm"
                 weight="bold"
                 color="secondary"
-                className="hidden sm:flex line-clamp-1"
+                className="flex line-clamp-1"
               >
-                {t("impact.co2")}
-              </Text>
-              <Text
-                variant="span"
-                size="sm"
-                weight="bold"
-                color="secondary"
-                className="flex sm:hidden line-clamp-1"
-              >
-                {t("impact.co2Short")}
+                {t("impact.co2")}:
               </Text>
             </div>
-            <Text variant="span" size="sm" weight="bold" color="secondary">
-              {/* Static unit copy lives in the dictionary ("{{value}} kg"); only
-                  the number is injected, per the {{ }} value pattern. */}
+            <Text
+              variant="span"
+              size="sm"
+              weight="bold"
+              color="secondary"
+              className="ml-4.5"
+            >
               {t("impact.co2Value", { value: String(impact?.totalCo2SavingsKG ?? 0) })}
             </Text>
           </div>
-          <div className="flex items-center justify-between p-1">
+          <div className="flex flex-col items-start justify-between p-1">
             <div className="flex items-center gap-1">
               <Droplets size={14} className="text-info" strokeWidth={2} />
               <Text
@@ -75,21 +61,18 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
                 size="sm"
                 weight="bold"
                 color="secondary"
-                className="hidden sm:flex truncate"
+                className="flex line-clamp-1"
               >
-                {t("impact.water")}
-              </Text>
-              <Text
-                variant="span"
-                size="sm"
-                weight="bold"
-                color="secondary"
-                className="flex sm:hidden truncate"
-              >
-                {t("impact.waterShort")}
+                {t("impact.water")}:
               </Text>
             </div>
-            <Text variant="span" size="sm" weight="bold" color="secondary">
+            <Text
+              variant="span"
+              size="sm"
+              weight="bold"
+              color="secondary"
+              className="ml-4.5"
+            >
               {t("impact.waterValue", {
                 value: String(impact?.totalWaterSavingsLT ?? 0),
               })}
@@ -102,8 +85,10 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
           onClick={() => setIsModalOpen(true)}
           className={clsx(
             "flex my-4 w-full cursor-pointer items-center justify-center",
-            "gap-1 rounded-sm bg-primary px-2 py-1.5",
-            "transition-all hover:brightness-110",
+            "gap-1 rounded-sm px-2 py-1.5",
+            "border-primary bg-linear-180 from-primary to-primary/60 text-on-primary",
+            "hover:from-primary/90 hover:to-primary/80",
+            "transition-all",
           )}
         >
           <Text
@@ -122,7 +107,7 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
           >
             {t("impact.viewFullShort")}
           </Text>
-          <ChevronRight size={12} strokeWidth={2.5} color="#fff" />
+          <TrendingUp size={12} strokeWidth={2.5} color="#fff" />
         </button>
       </section>
 
@@ -153,29 +138,16 @@ function Description({ description }: { description?: string | null }) {
   );
 }
 
-export function BackHeader({ itemName }: CardBackHeaderProps) {
+export function BackHeader({}: CardBackHeaderProps) {
   const { hasBackSide } = useCard();
   const { t } = useTranslation(NAMESPACE);
 
   return (
     <div
       className={clsx(
-        "flex items-center justify-between w-full px-3 py-2",
-        "border-b border-slate-200",
-        "bg-primary/10",
+        "absolute top-2 right-2 z-20 flex items-center justify-end gap-1.5",
       )}
     >
-      <Text
-        variant="label"
-        weight="bold"
-        size="base"
-        color="default"
-        className="line-clamp-1"
-      >
-        {itemName}
-      </Text>
-      {/* `itemName` is dynamic (a prop); the flip control's label is static
-          card copy, so it comes from the dictionary. */}
       {hasBackSide && <FlipButton label={t("actions.flipBack")} />}
     </div>
   );
@@ -188,39 +160,17 @@ export function BackBody({ itemType, impact, description }: CardBackBodyProps) {
   return <Description description={description} />;
 }
 
-export function BackFooter({ seller, name, imageUrl, subtitle }: CardBackFooterProps) {
-  // The hooks run unconditionally and the explicit props win afterwards, so a
-  // caller holding only a provider name still gets a rendered footer.
+export function BackFooter({ seller, name, subtitle }: CardBackFooterProps) {
   const sellerName = useDisplayName(seller);
   const sellerRegion = useSellerRegion(seller);
-  const sellerImage = useProfileImage(seller);
-  const sellerInitials = useInitials(seller);
-
   const displayName = name ?? sellerName;
-  const image = imageUrl ? resolveImageUrl(imageUrl) : sellerImage;
   const secondLine = subtitle ?? sellerRegion;
-  const initials = name ? getInitials(name) : sellerInitials;
 
-  // Nothing identifies the provider — drop the row rather than leave an empty
-  // bar under the back face.
   if (!displayName && !secondLine) return null;
 
   return (
-    <div className="w-full flex px-2 py-2 items-center justify-center sm:justify-start gap-1 border-t border-slate-200">
-      <div className="bg-background-secondary rounded-full h-10 w-10 shrink-0 items-center justify-center overflow-hidden hidden sm:flex">
-        {image ? (
-          <Image
-            src={image}
-            alt=""
-            width={100}
-            height={100}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <span className="text-foreground-secondary text-xs font-bold">{initials}</span>
-        )}
-      </div>
-      <div className="flex flex-col w-full sm:w-fit min-w-0">
+    <div className="w-full flex px-2 py-2 items-center justify-center gap-1 border-t border-secondary-light">
+      <div className="flex flex-col items-center">
         {displayName && (
           <Text variant="span" weight="semibold" size="sm" className="line-clamp-1">
             {displayName}
