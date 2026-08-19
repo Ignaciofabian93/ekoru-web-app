@@ -22,13 +22,32 @@ const buttonBaseClass = clsx(
   "disabled:cursor-not-allowed disabled:opacity-50",
 );
 
-const buttonSizeClass: Record<ButtonSize, string> = {
-  sm: "min-h-8 rounded-sm px-3.5 py-2 text-sm",
-  md: "min-h-10 rounded-md px-5 py-3 text-base",
-  lg: "min-h-12 rounded-md px-6 py-4 text-base",
+/**
+ * Height, radius and type scale — the button's frame, without the padding that
+ * only a label needs. Split out so a control that must sit in a button's place
+ * inherits the same footprint instead of restating it (see
+ * `design/quantity-stepper.ts`).
+ */
+export const buttonShapeClass: Record<ButtonSize, string> = {
+  sm: "min-h-8 rounded-sm text-sm",
+  md: "min-h-10 rounded-md text-base",
+  lg: "min-h-12 rounded-md text-base",
 };
 
-const buttonVariantClass: Record<ButtonVariant, string> = {
+const buttonPaddingClass: Record<ButtonSize, string> = {
+  sm: "px-3.5 py-2",
+  md: "px-5 py-3",
+  lg: "px-6 py-4",
+};
+
+const buttonSizeClass: Record<ButtonSize, string> = {
+  sm: clsx(buttonShapeClass.sm, buttonPaddingClass.sm),
+  md: clsx(buttonShapeClass.md, buttonPaddingClass.md),
+  lg: clsx(buttonShapeClass.lg, buttonPaddingClass.lg),
+};
+
+/** The look itself: gradient, border and text color per variant. */
+export const buttonVariantClass: Record<ButtonVariant, string> = {
   primary: clsx(
     "border-primary bg-linear-180 from-primary to-primary/60 text-on-primary",
     "hover:from-primary/90 hover:to-primary/80",

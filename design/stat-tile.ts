@@ -12,7 +12,7 @@ import type {
 import { cross, crossState } from "@/design/variants";
 
 const statTileBaseClass = clsx(
-  "flex rounded-2xl border p-4 shadow-sm shadow-slate-800/10",
+  "flex rounded-2xl border p-4 shadow-xs shadow-slate-800/10",
   "hover:brightness-120 transition-all duration-300 ease-in-out",
 );
 

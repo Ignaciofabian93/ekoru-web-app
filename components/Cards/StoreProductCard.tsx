@@ -1,6 +1,7 @@
 "use client";
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
+import { useCartQuantity } from "@/features/cart/hooks/useCartQuantity";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import type { StoreProductCardProduct } from "./types/Card.types";
 import { Card } from "./Card";
@@ -10,9 +11,11 @@ interface StoreProductCardProps {
   lang: string;
   priority?: boolean;
   /**
-   * Overrides the built-in add-to-cart with the quantity picked on the card.
-   * The default already routes through the shared `useAddToCart`, so pass this
-   * only for a genuinely different action (a picker, a bulk flow).
+   * Replaces the built-in add-to-cart, called with the single unit the CTA
+   * stands for. A card that overrides it owns the flow from there on — nothing
+   * reaches the cart, so the CTA stays a CTA rather than becoming a stepper.
+   * Pass it only for a genuinely different action (a picker, a bulk flow); the
+   * default already routes through the shared `useAddToCart`.
    */
   onAddToCart?: (quantity: number) => void;
   /** Owner controls — see `CardProps.actions`. Switches to management mode. */
@@ -20,9 +23,6 @@ interface StoreProductCardProps {
   /** Owner's primary action — see `CardProps.onEdit`. */
   onEdit?: () => void;
 }
-
-/** How long the CTA holds its "Added" confirmation before reverting. */
-const ADDED_FEEDBACK_MS = 1500;
 
 export function StoreProductCard({
   product,
@@ -37,15 +37,14 @@ export function StoreProductCard({
   const { addStoreProduct } = useAddToCart();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
 
-  // Starts at zero: picking a quantity is a deliberate act, and the CTA stays
-  // inert until the shopper chooses one.
-  const [quantity, setQuantity] = useState(0);
-  const [justAdded, setJustAdded] = useState(false);
+  // The card shows what the cart holds, rather than a count of its own: the
+  // CTA adds the first unit, and from then on the stepper edits that line.
+  const { quantity, setQuantity } = useCartQuantity("store", product.id);
 
   const onOffer = Boolean(
     product.hasOffer &&
-      typeof product.offerPrice === "number" &&
-      product.offerPrice < product.price,
+    typeof product.offerPrice === "number" &&
+    product.offerPrice < product.price,
   );
 
   // Whole-number discount for the badge; only meaningful on a real offer.
@@ -61,29 +60,35 @@ export function StoreProductCard({
   const isManaged = Boolean(actions || onEdit);
   const canBuy = !isOwnProduct && !isManaged;
 
-  function handleAddToCart(picked: number) {
+  // A sold-out card keeps its "Out of stock" CTA even when units are already in
+  // the cart: there is nothing left to add, and the line stays editable from
+  // the cart itself.
+  const canStep = canBuy && !isSoldOut;
+
+  // The CTA commits a single unit; the stepper it turns into covers the rest.
+  // `addStoreProduct` owns the auth / ownership / stock rules and its own
+  // toasts, and the resulting cart line is what the card reads back — so
+  // nothing here has to track the outcome.
+  function handleAddToCart() {
     if (onAddToCart) {
-      onAddToCart(picked);
+      onAddToCart(1);
       return;
     }
-    // `addStoreProduct` owns the auth / ownership / stock rules and its own
-    // toasts; the card only reflects the outcome. The projection allows `null`
-    // where the cart expects `undefined`, so the line is normalized here.
-    const line = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      images: product.images ?? undefined,
-      hasOffer: onOffer,
-      offerPrice: product.offerPrice ?? undefined,
-      sellerId: product.sellerId ?? undefined,
-      stock,
-    };
-    if (addStoreProduct(line, picked) === "added") {
-      setJustAdded(true);
-      setTimeout(() => setJustAdded(false), ADDED_FEEDBACK_MS);
-      setQuantity(0);
-    }
+    // The projection allows `null` where the cart expects `undefined`, so the
+    // line is normalized here.
+    addStoreProduct(
+      {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        images: product.images ?? undefined,
+        hasOffer: onOffer,
+        offerPrice: product.offerPrice ?? undefined,
+        sellerId: product.sellerId ?? undefined,
+        stock,
+      },
+      1,
+    );
   }
 
   return (
@@ -119,9 +124,6 @@ export function StoreProductCard({
           reviewsNumber={product.reviewsNumber ?? undefined}
           stock={product.stock ?? undefined}
           isLowStock={product.isLowStock ?? undefined}
-          quantity={canBuy ? quantity : undefined}
-          onQuantityChange={canBuy ? setQuantity : undefined}
-          maxQuantity={canBuy ? stock : undefined}
         />
         {/* Managed cards still render the footer — it resolves to the owner's
             Edit CTA rather than the add-to-cart button. */}
@@ -129,10 +131,11 @@ export function StoreProductCard({
           <Card.Footer
             itemType="STORE"
             url={href}
-            onAction={() => handleAddToCart(quantity)}
-            state={isSoldOut ? "unavailable" : justAdded ? "added" : "default"}
-            // Nothing to add until a quantity is picked.
-            disabled={quantity === 0}
+            onAction={handleAddToCart}
+            state={isSoldOut ? "unavailable" : "default"}
+            quantity={canStep ? quantity : undefined}
+            onQuantityChange={canStep ? setQuantity : undefined}
+            maxQuantity={canStep ? stock : undefined}
           />
         )}
       </Card.FrontSide>

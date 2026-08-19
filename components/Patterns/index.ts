@@ -7,6 +7,7 @@ export { PageHero } from "./PageHero";
 export { Pagination } from "./Pagination";
 export { ProductGallery } from "./ProductGallery";
 export { ProductTrust } from "./ProductTrust";
+export { QuantityStepper } from "./QuantityStepper";
 export { ResultsGrid } from "./ResultsGrid";
 export { ReviewsPanel } from "./ReviewsPanel";
 export { SectionHeader } from "./SectionHeader";
@@ -28,6 +29,7 @@ export type {
   ProductTrustProps,
   ProductTrustTone,
 } from "./ProductTrust";
+export type { QuantityStepperProps } from "./QuantityStepper";
 export type { ResultsGridProps } from "./ResultsGrid";
 export type { SectionHeaderProps } from "./SectionHeader";
 export type { StatTileOrientation, StatTileProps, StatTileTone } from "./StatTile";

@@ -17,12 +17,18 @@ export async function POST(req: Request) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
-  // Forward the raw cookie header so the gateway can fall back to the
-  // `refreshToken` cookie when the 15-minute access token is expired or already
-  // dropped by the browser. Without it, an expired access token resolves as an
-  // anonymous request and viewer-scoped filters silently stop applying — e.g.
-  // the marketplace would show the logged-in seller their own products, which
-  // are meant to be excluded, until the access token is re-minted.
+  // Forward the raw cookie header so the gateway sees the session cookies.
+  //
+  // NOTE: the gateway no longer falls back to the `refreshToken` cookie when
+  // the access token is expired — a 7-day refresh token authenticating ordinary
+  // requests meant logout did not end a session. Recovery is now the client's
+  // job: the Apollo error link catches UNAUTHORIZED, POSTs /api/auth/refresh to
+  // mint a new access token, and replays the operation.
+  //
+  // The consequence of getting that wrong is quiet rather than loud: an expired
+  // token resolves as an anonymous request, so viewer-scoped filters stop
+  // applying — the marketplace would show a signed-in seller their own
+  // products, which are meant to be excluded — instead of raising an error.
   const cookieHeader = req.headers.get("cookie") ?? "";
 
   const res = await fetch(GRAPHQL_URL, {

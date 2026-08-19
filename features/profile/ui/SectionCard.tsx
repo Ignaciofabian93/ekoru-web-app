@@ -26,20 +26,11 @@ const TONE_CLASS: Record<NonNullable<SectionCardProps["tone"]>, string> = {
   danger: "bg-linear-180 from-danger/10 to-danger/5 text-danger border border-danger/60",
 };
 
-const BACKGROUND_CLASS: Record<NonNullable<SectionCardProps["background"]>, string> = {
-  primary:
-    "bg-linear-120 from-secondary-hover/5 via-primary-hover/5 to-success/5 border-secondary/10",
-  success: "bg-linear-180 from-success/10 to-success/5",
-  warning: "bg-warning/10",
-  danger: "bg-linear-180 from-danger/5 to-danger/20 border-danger/10",
-};
-
 export function SectionCard({
   title,
   subtitle,
   icon: Icon,
   tone = "default",
-  background = "primary",
   className,
   headerRight,
   children,
@@ -47,8 +38,8 @@ export function SectionCard({
   return (
     <section
       className={clsx(
-        "rounded-3xl p-4 shadow-sm shadow-slate-800/10 border my-1",
-        BACKGROUND_CLASS[background],
+        "rounded-2xl p-4 bg-white shadow-md shadow-slate-800/10 border border-slate-200 my-1",
+        // BACKGROUND_CLASS[background],
         className,
       )}
     >

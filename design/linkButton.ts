@@ -55,6 +55,6 @@ export const linkButtonContentClass = "inline-flex items-center justify-center g
 export const linkButtonLabelClass = "cursor-pointer";
 
 export const linkButtonGhostLabelClass =
-  "underline transition-all duration-200 ease-in-out hover:brightness-110";
+  "transition-all duration-200 ease-in-out hover:brightness-110";
 
 export const linkButtonIconSize = 14;

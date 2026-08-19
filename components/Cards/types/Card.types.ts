@@ -212,14 +212,6 @@ export interface CardBodyProps {
   /** Drives the stock line: sold out at 0, low when `isLowStock`. */
   stock?: number;
   isLowStock?: boolean;
-  /**
-   * Current quantity. Pass with `onQuantityChange` to show the stepper; the
-   * caller owns the value so it can be read when adding to the cart.
-   */
-  quantity?: number;
-  onQuantityChange?: (next: number) => void;
-  /** Upper bound of the stepper, normally the available stock. */
-  maxQuantity?: number;
   // Business
   businessName?: string;
   businessType?: BusinessType;
@@ -242,12 +234,19 @@ export interface CardFooterProps {
    */
   onAction?: () => void;
   state?: CardFooterState;
-  /**
-   * Gates the CTA independently of `state` — e.g. a store product in stock but
-   * with the quantity stepper still at zero.
-   */
+  /** Gates the CTA independently of `state` — e.g. an unresolved seller. */
   disabled?: boolean;
   loading?: boolean;
+  /**
+   * Units of this item the shopper already holds. Above zero — and paired with
+   * `onQuantityChange` and `maxQuantity` — the CTA is replaced in place by a
+   * quantity stepper, so the count is adjusted from the card itself. Back at
+   * zero the CTA returns, which is how the last unit is removed.
+   */
+  quantity?: number;
+  onQuantityChange?: (next: number) => void;
+  /** Upper bound of the stepper, normally the available stock. */
+  maxQuantity?: number;
 }
 
 export interface CardFrontSideProps {

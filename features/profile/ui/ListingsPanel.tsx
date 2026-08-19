@@ -97,7 +97,7 @@ export function ListingsPanel<T>({
         />
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3">
             {visible.map(renderItem)}
           </div>
           <Pagination

@@ -38,16 +38,16 @@ export async function ProfileScreen({ lang }: { lang: SupportedLanguage }) {
     >
       <PageLayout hero={<ProfileHeader />} width="default">
         <Grid cols={1} lg={5} gap={4}>
-          <Stack gap={4} className="lg:col-span-2">
-            <Details />
-            <Account />
-            <ImpactSnapshot />
-          </Stack>
-          <Stack as="aside" gap={4} className="lg:col-span-3">
+          <Stack gap={4} className="lg:col-span-3">
             <MyListings />
           </Stack>
+          <Stack as="aside" gap={4} className="lg:col-span-2">
+            <ImpactSnapshot />
+            <Account />
+            <Details />
+            <Logout />
+          </Stack>
         </Grid>
-        <Logout />
       </PageLayout>
     </DictionaryProvider>
   );
