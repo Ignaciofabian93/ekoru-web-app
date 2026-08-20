@@ -4,40 +4,22 @@ import { CalendarClock, CalendarX, Star } from "lucide-react";
 import { Badge } from "@/components/Primitives/Badge";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
-import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
 import type { ServiceDetail } from "../types";
 
+/**
+ * Identity only: what the service is, not what it costs. The price moved into
+ * the panel below, where it sits with the actions it belongs to.
+ */
 export function ServiceSummary({ service }: { service: ServiceDetail }) {
-  const formatPrice = useFormatPrice();
   const { t } = useTranslation(NAMESPACE);
 
   const category =
     service.serviceCategory?.translation?.subCategory ||
     service.serviceCategory?.subCategory ||
     t("summary.noCategory");
-
-  // Services quote four different ways, and the headline has to read correctly
-  // for all of them: a fixed job shows its price, an hourly one a rate, a
-  // package a floor, and a quotation has no number to show at all.
-  const price = service.basePrice;
-  const pricing = service.pricingType;
-
-  let priceLabel: string;
-  let pricePrefix: string | null = null;
-  let priceSuffix: string | null = null;
-
-  if (pricing === "QUOTATION" || price === null || price === undefined) {
-    priceLabel =
-      pricing === "QUOTATION" ? t("summary.onQuotation") : t("summary.noPrice");
-    priceSuffix = pricing === "QUOTATION" ? t("summary.onQuotationHint") : null;
-  } else {
-    priceLabel = formatPrice(price);
-    if (pricing === "HOURLY") priceSuffix = t("summary.perHour");
-    if (pricing === "PACKAGE") pricePrefix = t("summary.from");
-  }
 
   const rating = service.averageRating;
   const reviews = service.reviewCount ?? 0;
@@ -88,22 +70,6 @@ export function ServiceSummary({ service }: { service: ServiceDetail }) {
         ) : (
           <Text variant="span" size="sm" color="tertiary">
             {t("summary.noReviews")}
-          </Text>
-        )}
-      </div>
-
-      <div className="flex flex-wrap items-baseline gap-2">
-        {pricePrefix && (
-          <Text variant="span" size="base" weight="semibold" color="tertiary">
-            {pricePrefix}
-          </Text>
-        )}
-        <Text variant="p" weight="bold" size="4xl" color="primary">
-          {priceLabel}
-        </Text>
-        {priceSuffix && (
-          <Text variant="span" size="base" weight="semibold" color="tertiary">
-            {priceSuffix}
           </Text>
         )}
       </div>

@@ -28,7 +28,7 @@ export const sellerCardAvatarFallbackClass =
 
 export const sellerCardIdentityClass = "flex flex-col items-start justify-start gap-1";
 
-export const sellerCardNameClass = "truncate mb-1";
+export const sellerCardNameClass = "mb-1 line-clamp-2";
 
 export const sellerCardBadgeRowClass = "flex items-center justify-start gap-1";
 

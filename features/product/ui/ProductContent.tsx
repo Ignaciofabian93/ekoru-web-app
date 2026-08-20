@@ -20,15 +20,7 @@ import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { ExchangeProposal } from "./ExchangeProposal";
 import { Handshake, MapPin, PackageSearch } from "lucide-react";
-
-/**
- * The page's two rails. Declared once and reused by every row, which is what
- * keeps the columns lined up from the gallery down to the spec table. Stacked
- * below `md` — at phone width the rails would be too narrow to read.
- */
-const RAILS = "grid grid-cols-1 gap-6 md:grid-cols-12 md:items-start md:gap-10";
-const RAIL_MAIN = "md:col-span-7";
-const RAIL_SIDE = "md:col-span-5";
+import { RAIL_MAIN, RAIL_SIDE, RAILS } from "@/design/detail-rails";
 
 interface Props {
   id: string;

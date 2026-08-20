@@ -1,4 +1,5 @@
 "use client";
+import clsx from "clsx";
 import type { SupportedLanguage } from "@/constants/settings";
 import { Section } from "@/components/Layout";
 import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
@@ -7,12 +8,13 @@ import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/Produ
 import { SellerCard } from "@/components/Patterns/SellerCard/SellerCard";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useTranslation } from "@/i18n/context";
+import { RAIL_MAIN, RAIL_SIDE, RAILS } from "@/design/detail-rails";
 
 import { SERVICE_TRUST_ITEMS } from "../constants/trust";
 import { useService } from "../hooks/useService";
 import { NAMESPACE } from "../i18n";
 import { OtherFromProvider } from "./OtherFromProvider";
-import { ServiceActions } from "./ServiceActions";
+import { ServicePricePanel } from "./ServicePricePanel";
 import { ServiceDescription } from "./ServiceDescription";
 import { ServiceDetails } from "./ServiceDetails";
 import { ServiceFaqs } from "./ServiceFaqs";
@@ -66,44 +68,32 @@ export function ServiceContent({ id, lang }: Props) {
         chevronColor="default"
       />
       <Section>
-        <div className="grid gap-6 md:grid-cols-2 md:gap-10">
-          <ProductGallery
-            images={service.images ?? []}
-            labels={{
-              imageAlt: (index, total) =>
-                t("gallery.imageAlt", {
-                  name: service.name,
-                  index: String(index),
-                  total: String(total),
-                }),
-              noImage: t("gallery.noImage"),
-              previous: t("gallery.previous"),
-              next: t("gallery.next"),
-              thumbnailAlt: (index) =>
-                t("gallery.thumbnailAlt", { index: String(index) }),
-              goToImage: (index) => t("gallery.goToImage", { index: String(index) }),
-            }}
-          />
-
-          <div className="flex flex-col gap-5">
-            <ServiceSummary service={service} />
-            <ServiceActions lang={lang} service={service} />
-            <ProductTrust items={trustItems} />
-          </div>
-        </div>
-
-        <div className="grid gap-8 md:grid-cols-3">
-          <div className="flex flex-col gap-8 md:col-span-2">
-            <ServiceDescription description={service.description} />
-            <ServiceDetails service={service} lang={lang} />
-            <ServicePackages packages={service.packages} />
-            <ServiceFaqs faqs={service.faqs} />
-            <ServiceReviews
-              serviceId={service.id}
-              averageRating={service.averageRating}
+        <div className={RAILS}>
+          <div className={RAIL_MAIN}>
+            <ProductGallery
+              images={service.images ?? []}
+              labels={{
+                imageAlt: (index, total) =>
+                  t("gallery.imageAlt", {
+                    name: service.name,
+                    index: String(index),
+                    total: String(total),
+                  }),
+                noImage: t("gallery.noImage"),
+                previous: t("gallery.previous"),
+                next: t("gallery.next"),
+                thumbnailAlt: (index) =>
+                  t("gallery.thumbnailAlt", { index: String(index) }),
+                goToImage: (index) => t("gallery.goToImage", { index: String(index) }),
+              }}
             />
           </div>
-          <div className="flex flex-col gap-8 md:col-span-1">
+
+          <div className={clsx(RAIL_SIDE, "flex flex-col gap-5")}>
+            <ServiceSummary service={service} />
+
+            <ServicePricePanel service={service} lang={lang} />
+
             {service.seller && (
               <SellerCard
                 lang={lang}
@@ -113,8 +103,25 @@ export function ServiceContent({ id, lang }: Props) {
                 viewSellerLabel={t("actions.viewProvider")}
               />
             )}
+
+            <ProductTrust items={trustItems} />
           </div>
         </div>
+
+        <div className={RAILS}>
+          <div className={RAIL_MAIN}>
+            <ServiceDescription description={service.description} />
+          </div>
+          <div className={RAIL_SIDE}>
+            <ServiceDetails service={service} lang={lang} />
+          </div>
+        </div>
+
+        <ServicePackages packages={service.packages} />
+
+        <ServiceFaqs faqs={service.faqs} />
+
+        <ServiceReviews serviceId={service.id} averageRating={service.averageRating} />
 
         {service.sellerId && (
           <OtherFromProvider

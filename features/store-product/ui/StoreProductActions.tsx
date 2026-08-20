@@ -1,23 +1,24 @@
 "use client";
+import clsx from "clsx";
 import { Check, Heart, PackageCheck, Share2, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/Primitives/Button";
+import { buttonIconSize } from "@/design/button";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { useIsInCart } from "@/store/useCartStore";
 import { useTranslation } from "@/i18n/context";
 import type { StoreProduct } from "@/types/product";
-
 import { NAMESPACE } from "../i18n";
 import { useShareProduct } from "@/hooks/useShareProduct";
-import Link from "next/link";
 
 interface Props {
   lang: string;
   product: StoreProduct;
 }
 
-export function StoreProductActions({ lang, product }: Props) {
+export function StoreProductActions({ product }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const { addStoreProduct } = useAddToCart();
   const { toggleFavorite } = useToggleFavorite();
@@ -49,68 +50,45 @@ export function StoreProductActions({ lang, product }: Props) {
           {t("actions.ownListing")}
         </div>
       ) : (
-        <>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              disabled={inCart}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3.5 text-base font-semibold transition-colors ${
-                popped ? "animate-cart-pop" : ""
-              } ${
-                inCart
-                  ? "cursor-not-allowed bg-success/15 text-success"
-                  : "bg-primary text-white hover:opacity-90"
-              }`}
-            >
-              {inCart ? (
-                <Check size={20} strokeWidth={2.2} />
-              ) : (
-                <ShoppingCart size={20} strokeWidth={2} />
-              )}
-              {inCart ? t("actions.added") : t("actions.addToCart")}
-            </button>
-            <Link
-              href={`/${lang}/cart`}
-              aria-label={t("actions.viewCart")}
-              className="flex w-14 items-center justify-center rounded-xl border-2 border-primary text-primary transition-colors hover:bg-primary-light-bg"
-            >
-              <ShoppingCart size={20} strokeWidth={2} />
-            </Link>
-          </div>
-        </>
+        <Button
+          variant="primary"
+          size="md"
+          fullWidth
+          className={clsx(popped && "animate-cart-pop")}
+          disabled={inCart}
+          leftIcon={inCart ? Check : ShoppingCart}
+          text={inCart ? t("actions.added") : t("actions.addToCart")}
+          onPress={handleAddToCart}
+        />
       )}
 
+      {/* Secondary to the CTA above, so both stay `outline` in either state —
+          the filled heart and the label carry "saved", not a second color of
+          button. `flex-1` rather than `fullWidth`: they share one row. */}
       <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={() => toggleFavorite(product.id, liked)}
-          aria-pressed={liked}
-          className={`flex flex-1 items-center justify-center gap-2 rounded-xl border py-2.5 text-sm font-medium transition-colors ${
-            liked
-              ? "border-red-200 bg-red-50 text-red-600"
-              : "border-border bg-surface text-foreground-secondary hover:bg-background-secondary"
-          }`}
-        >
-          <Heart
-            size={16}
-            strokeWidth={2}
-            className={liked ? "fill-red-500 text-red-500" : ""}
-          />
-          {liked ? t("actions.saved") : t("actions.save")}
-        </button>
-        <button
-          type="button"
-          onClick={share}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-surface py-2.5 text-sm font-medium text-foreground-secondary transition-colors hover:bg-background-secondary"
-        >
-          {copied ? (
-            <Check size={16} strokeWidth={2.2} />
-          ) : (
-            <Share2 size={16} strokeWidth={2} />
-          )}
-          {t("actions.share")}
-        </button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1"
+          ariaPressed={liked}
+          leftIcon={
+            <Heart
+              size={buttonIconSize.sm}
+              strokeWidth={2}
+              className={liked ? "fill-red-500 text-red-500" : ""}
+            />
+          }
+          text={liked ? t("actions.saved") : t("actions.save")}
+          onPress={() => toggleFavorite(product.id, liked)}
+        />
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1"
+          leftIcon={copied ? Check : Share2}
+          text={t("actions.share")}
+          onPress={share}
+        />
       </div>
     </div>
   );

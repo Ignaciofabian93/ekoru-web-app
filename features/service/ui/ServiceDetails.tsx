@@ -1,7 +1,6 @@
 "use client";
-import clsx from "clsx";
-
 import type { SupportedLanguage } from "@/constants/settings";
+import { DataList } from "@/components/Patterns";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
@@ -108,30 +107,7 @@ export function ServiceDetails({
       <Title level="h5" size="h5" weight="semibold" className="mb-3">
         {t("details.title")}
       </Title>
-      <dl
-        className={clsx(
-          "bg-white flex flex-col divide-y divide-border-light",
-          "overflow-hidden rounded-2xl border border-border-light",
-        )}
-      >
-        {rows.map((row) => (
-          <div
-            key={row.label}
-            className="flex items-center justify-between gap-4 px-4 py-3"
-          >
-            <dt>
-              <Text variant="span" size="sm" weight="bold">
-                {row.label}
-              </Text>
-            </dt>
-            <dd className="text-right">
-              <Text variant="span" size="sm" weight="semibold" color="default">
-                {row.value}
-              </Text>
-            </dd>
-          </div>
-        ))}
-      </dl>
+      <DataList rows={rows} />
 
       {service.tags && service.tags.length > 0 && (
         <div className="mt-4 flex flex-col gap-2">
@@ -142,7 +118,7 @@ export function ServiceDetails({
             {service.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-border-light bg-white px-3 py-1 text-xs font-medium text-foreground-secondary"
+                className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-foreground-secondary"
               >
                 {tag}
               </span>

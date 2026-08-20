@@ -1,4 +1,5 @@
 "use client";
+import clsx from "clsx";
 import type { SupportedLanguage } from "@/constants/settings";
 import { StoreProductDescription } from "./StoreProductDescription";
 import { StoreProductDetails } from "./StoreProductDetails";
@@ -11,7 +12,7 @@ import {
 } from "./StoreProductStatus";
 import { StoreProductSummary } from "./StoreProductSummary";
 import { useStoreProduct } from "../hooks/useStoreProduct";
-import { StoreProductActions } from "./StoreProductActions";
+import { StoreProductPurchasePanel } from "./StoreProductPurchasePanel";
 import { OtherFromBusiness } from "./OtherFromBusiness";
 import { Section } from "@/components/Layout";
 import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
@@ -22,6 +23,7 @@ import { ProductGallery } from "@/components/Patterns/ProductGallery";
 import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/ProductTrust";
 import { SellerCard } from "@/components/Patterns/SellerCard/SellerCard";
 import { ReceiptText, ShieldCheck, Truck } from "lucide-react";
+import { RAIL_MAIN, RAIL_SIDE, RAILS } from "@/design/detail-rails";
 
 interface Props {
   id: string;
@@ -87,43 +89,32 @@ export function StoreProductContent({ id, lang }: Props) {
         chevronColor="default"
       />
       <Section>
-        <div className="grid gap-6 md:grid-cols-2 md:gap-10">
-          <ProductGallery
-            images={product.images ?? []}
-            labels={{
-              imageAlt: (index, total) =>
-                t("gallery.imageAlt", {
-                  name: product.name,
-                  index: String(index),
-                  total: String(total),
-                }),
-              noImage: t("gallery.noImage"),
-              previous: t("gallery.previous"),
-              next: t("gallery.next"),
-              thumbnailAlt: (index) =>
-                t("gallery.thumbnailAlt", { index: String(index) }),
-              goToImage: (index) => t("gallery.goToImage", { index: String(index) }),
-            }}
-          />
-
-          <div className="flex flex-col gap-5">
-            <StoreProductSummary product={product} />
-            <StoreProductActions lang={lang} product={product} />
-            <ProductTrust items={trustItems} />
-          </div>
-        </div>
-
-        <div className="grid gap-8 md:grid-cols-3">
-          <div className="flex flex-col gap-8 md:col-span-2">
-            <StoreProductDescription description={product.description} />
-            <StoreProductDetails product={product} lang={lang} />
-            <StoreProductImpact impact={product.environmentalImpact} />
-            <StoreProductReviews
-              storeProductId={String(product.id)}
-              averageRating={product.averageRating}
+        <div className={RAILS}>
+          <div className={RAIL_MAIN}>
+            <ProductGallery
+              images={product.images ?? []}
+              labels={{
+                imageAlt: (index, total) =>
+                  t("gallery.imageAlt", {
+                    name: product.name,
+                    index: String(index),
+                    total: String(total),
+                  }),
+                noImage: t("gallery.noImage"),
+                previous: t("gallery.previous"),
+                next: t("gallery.next"),
+                thumbnailAlt: (index) =>
+                  t("gallery.thumbnailAlt", { index: String(index) }),
+                goToImage: (index) => t("gallery.goToImage", { index: String(index) }),
+              }}
             />
           </div>
-          <div className="flex flex-col gap-8 md:col-span-1">
+
+          <div className={clsx(RAIL_SIDE, "flex flex-col gap-5")}>
+            <StoreProductSummary product={product} />
+
+            <StoreProductPurchasePanel product={product} lang={lang} />
+
             {product.seller && (
               <SellerCard
                 lang={lang}
@@ -133,8 +124,26 @@ export function StoreProductContent({ id, lang }: Props) {
                 viewSellerLabel={t("actions.viewSeller")}
               />
             )}
+
+            <ProductTrust items={trustItems} />
           </div>
         </div>
+
+        <div className={RAILS}>
+          <div className={RAIL_MAIN}>
+            <StoreProductDescription description={product.description} />
+          </div>
+          <div className={RAIL_SIDE}>
+            <StoreProductDetails product={product} lang={lang} />
+          </div>
+        </div>
+
+        <StoreProductImpact impact={product.environmentalImpact} />
+
+        <StoreProductReviews
+          storeProductId={String(product.id)}
+          averageRating={product.averageRating}
+        />
 
         {product.sellerId && (
           <OtherFromBusiness
