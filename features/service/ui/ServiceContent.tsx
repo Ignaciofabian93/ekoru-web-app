@@ -108,7 +108,6 @@ export function ServiceContent({ id, lang }: Props) {
               <SellerCard
                 lang={lang}
                 seller={service.seller}
-                title={t("provider.title")}
                 verifiedLabel={t("provider.verified")}
                 sellerTypeLabel={t(`provider.types.${service.seller.sellerType}`)}
                 viewSellerLabel={t("actions.viewProvider")}

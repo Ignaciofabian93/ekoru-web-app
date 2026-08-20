@@ -128,7 +128,6 @@ export function StoreProductContent({ id, lang }: Props) {
               <SellerCard
                 lang={lang}
                 seller={product.seller}
-                title={t("seller.title")}
                 verifiedLabel={t("seller.verified")}
                 sellerTypeLabel={t(`seller.types.${product.seller.sellerType}`)}
                 viewSellerLabel={t("actions.viewSeller")}

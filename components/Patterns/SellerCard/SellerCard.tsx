@@ -115,8 +115,8 @@ export function SellerCard({
           icon={ArrowUpRight}
           iconPosition="right"
           label={viewSellerLabel}
-          fullWidth
           variant="ghost"
+          size="sm"
         />
       </div>
     </div>
