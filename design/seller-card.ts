@@ -11,9 +11,9 @@ export const sellerCardRootClass = "px-2";
 export const sellerCardTitleClass = "mb-3";
 
 export const sellerCardClass = clsx(
-  "flex flex-col gap-4 rounded-2xl shadow-sm shadow-slate-800/10",
-  "border border-slate-800/30 bg-white p-4 backdrop-blur-xl",
-  "bg-linear-180 from-slate-50/5 to-stone-50/5",
+  "flex items-start justify-between gap-4 rounded-2xl",
+  "backdrop-blur-xl",
+  "p-4 bg-white shadow-md shadow-slate-800/10 border border-slate-200",
 );
 
 export const sellerCardHeaderClass = "flex items-start gap-3";

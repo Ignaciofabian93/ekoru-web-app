@@ -1,6 +1,8 @@
 "use client";
-import { Check, HandCoins, Heart, PackageCheck, Share2 } from "lucide-react";
+import { Check, HandCoins, Heart, PackageCheck, Repeat, Share2 } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/Primitives/Button";
+import { buttonIconSize } from "@/design/button";
 import { useDealActions } from "@/features/deals/hooks/useDealActions";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
@@ -13,9 +15,14 @@ import { useShareProduct } from "../../../hooks/useShareProduct";
 interface Props {
   lang: string;
   product: Product;
+  /**
+   * Opens the exchange proposal in place of this panel. Omit it and the
+   * exchange CTA is left off — there would be nowhere for it to lead.
+   */
+  onProposeExchange?: () => void;
 }
 
-export function ProductActions({ product }: Props) {
+export function ProductActions({ product, onProposeExchange }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
@@ -36,6 +43,10 @@ export function ProductActions({ product }: Props) {
     if (deal) setRequested(true);
   }
 
+  // An exchangeable listing can still be bought outright, so the swap is a
+  // second CTA rather than a replacement for the first.
+  const canExchange = product.isExchangeable && !isOwnProduct && onProposeExchange;
+
   return (
     <div className="flex flex-col gap-2.5">
       {isOwnProduct ? (
@@ -45,69 +56,70 @@ export function ProductActions({ product }: Props) {
         </div>
       ) : (
         <>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={handleRequestToBuy}
-              disabled={requesting || requested || !isAuthed}
-              className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-3.5 text-base font-semibold transition-colors disabled:cursor-not-allowed ${
-                requested
-                  ? "bg-success/15 text-success"
-                  : "bg-primary text-white hover:opacity-90 disabled:opacity-50"
-              }`}
-            >
-              {requested ? (
-                <Check size={20} strokeWidth={2.2} />
-              ) : (
-                <HandCoins size={20} strokeWidth={2} />
-              )}
-              {requested
+          <Button
+            variant="primary"
+            size="md"
+            fullWidth
+            leftIcon={requested ? Check : HandCoins}
+            disabled={requesting || requested || !isAuthed}
+            text={
+              requested
                 ? t("actions.requested")
                 : requesting
                   ? t("actions.requesting")
                   : isAuthed
                     ? t("actions.requestToBuy")
-                    : t("actions.loginToBuy")}
-            </button>
-          </div>
+                    : t("actions.loginToBuy")
+            }
+            onPress={handleRequestToBuy}
+          />
+
+          {canExchange && (
+            <Button
+              variant="outline"
+              size="md"
+              fullWidth
+              leftIcon={Repeat}
+              text={t("exchange.title")}
+              onPress={onProposeExchange}
+            />
+          )}
+
           <p className="text-center text-xs text-foreground-tertiary">
             {t("actions.cashHint")}
           </p>
         </>
       )}
 
+      {/* Secondary to the CTAs above, so both stay `outline` in either state —
+          the filled heart and the label carry "saved", not a second color of
+          button. `flex-1` rather than `fullWidth`: they share one row. */}
       <div className="flex gap-2">
         {!isOwnProduct && (
-          <button
-            type="button"
-            onClick={() => toggleFavorite(product.id, liked)}
-            aria-pressed={liked}
-            className={`flex flex-1 items-center justify-center gap-2 rounded-xl border py-2.5 text-sm font-medium transition-colors ${
-              liked
-                ? "border-red-200 bg-red-50 text-red-600"
-                : "border-border bg-surface text-foreground-secondary hover:bg-background-secondary"
-            }`}
-          >
-            <Heart
-              size={16}
-              strokeWidth={2}
-              className={liked ? "fill-red-500 text-red-500" : ""}
-            />
-            {liked ? t("actions.saved") : t("actions.save")}
-          </button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            ariaPressed={liked}
+            leftIcon={
+              <Heart
+                size={buttonIconSize.sm}
+                strokeWidth={2}
+                className={liked ? "fill-red-500 text-red-500" : ""}
+              />
+            }
+            text={liked ? t("actions.saved") : t("actions.save")}
+            onPress={() => toggleFavorite(product.id, liked)}
+          />
         )}
-        <button
-          type="button"
-          onClick={share}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-surface py-2.5 text-sm font-medium text-foreground-secondary transition-colors hover:bg-background-secondary"
-        >
-          {copied ? (
-            <Check size={16} strokeWidth={2.2} />
-          ) : (
-            <Share2 size={16} strokeWidth={2} />
-          )}
-          {t("actions.share")}
-        </button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1"
+          leftIcon={copied ? Check : Share2}
+          text={t("actions.share")}
+          onPress={share}
+        />
       </div>
     </div>
   );

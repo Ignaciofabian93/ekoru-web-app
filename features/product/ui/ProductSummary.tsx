@@ -1,17 +1,43 @@
 "use client";
 import { Repeat } from "lucide-react";
-import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
+import type { SupportedLanguage } from "@/constants/settings";
 import type { Product } from "@/types/product";
 import { NAMESPACE } from "../i18n";
+import { formatDate } from "../utils/formatDate";
 import { ProductBadges } from "./ProductBadges";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
-import { Badge } from "@/components/Primitives/Badge";
+import { ProductConditionBadge, ProductInfoBadge } from "@/components/Primitives/Badge";
 
-export function ProductSummary({ product }: { product: Product }) {
+/**
+ * Identity only: what the listing is, not what it costs. The price moved into
+ * the purchase panel below, where it sits with the actions it belongs to.
+ */
+export function ProductSummary({
+  product,
+  lang,
+}: {
+  product: Product;
+  lang: SupportedLanguage;
+}) {
   const { t } = useTranslation(NAMESPACE);
-  const formatPrice = useFormatPrice();
+
+  const views = product.viewCount ?? 0;
+  const publishedOn = formatDate(product.createdAt, lang);
+
+  // Both halves are optional — a fresh listing has no views, and a malformed
+  // date formats to "". Joined so the separator never leads or trails.
+  const meta = [
+    views > 0
+      ? t(views === 1 ? "summary.views" : "summary.viewsPlural", {
+          count: String(views),
+        })
+      : null,
+    publishedOn ? `${t("details.publishedOn")} ${publishedOn}` : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <div className="flex flex-col gap-3">
@@ -32,27 +58,28 @@ export function ProductSummary({ product }: { product: Product }) {
         </Title>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <Badge
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        {/* The same two badges the card shows, in the same colors — the
+            listing shouldn't change appearance between the grid and here. */}
+        <ProductConditionBadge
+          condition={product.condition}
           label={t(`conditions.${product.condition}`)}
-          variant="primary"
           size="medium"
         />
         {product.isExchangeable && (
-          <Badge
+          <ProductInfoBadge
+            type="EXCHANGEABLE"
             icon={Repeat}
             label={t("summary.exchangeable")}
-            variant="secondary"
             size="medium"
           />
         )}
       </div>
-
-      <div className="flex">
-        <Text variant="p" weight="bold" size="4xl" color="primary">
-          {formatPrice(product.price)}
+      {meta && (
+        <Text variant="span" size="sm" color="tertiary">
+          {meta}
         </Text>
-      </div>
+      )}
     </div>
   );
 }

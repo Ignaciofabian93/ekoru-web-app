@@ -184,15 +184,23 @@ export function Header({
         </div>
       )}
 
+      {/* Badges are decorative: `pointer-events-none` lets clicks fall through
+          to the stretched link beneath, so tapping over one still navigates.
+          `z-20` keeps them painted above that link. Position lives here rather
+          than in the badge — a badge that placed itself couldn't be stacked. */}
       {condition && (
-        <ProductConditionBadge
-          label={t(`condition.${condition}`)}
-          condition={condition}
-        />
+        <div className="pointer-events-none absolute bottom-2 left-2 z-20">
+          <ProductConditionBadge
+            label={t(`condition.${condition}`)}
+            condition={condition}
+          />
+        </div>
       )}
 
+      {/* Stacked, so a listing can carry more than one status at once (an
+          exchangeable item on promotion, say) without the badges overlapping. */}
       {(isExchangeable || hasOffer || isSoldOut) && (
-        <>
+        <div className="pointer-events-none absolute top-2 left-2 z-20 flex flex-col items-start gap-1">
           {hasOffer && (
             <ProductInfoBadge
               type="OFFER"
@@ -211,7 +219,7 @@ export function Header({
               icon={Repeat}
             />
           )}
-        </>
+        </div>
       )}
 
       <div className="absolute top-2 right-2 z-20 flex flex-col-reverse items-center gap-1.5">

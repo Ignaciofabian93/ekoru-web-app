@@ -57,8 +57,8 @@ export const buttonVariantClass: Record<ButtonVariant, string> = {
     "hover:from-secondary-dark/90 hover:to-secondary-dark/80",
   ),
   outline: clsx(
-    "border-slate-800 bg-linear-180 from-slate-50 to-slate-50/60 text-slate-800",
-    "hover:from-slate-50/90 hover:to-slate-50/80",
+    "border-secondary-dark bg-white text-secondary-dark",
+    "hover:brightness-110",
   ),
   ghost: "border-transparent bg-transparent text-foreground hover:bg-slate-50",
   success: clsx(

@@ -31,6 +31,7 @@ export function Button({
   leftIcon,
   rightIcon,
   fullWidth = false,
+  ariaPressed,
   style,
   type = "button",
   className,
@@ -51,6 +52,7 @@ export function Button({
       type={type}
       onClick={handleClick}
       disabled={isDisabled}
+      aria-pressed={ariaPressed}
       style={style}
       className={clsx(
         buttonClass[variant][size],

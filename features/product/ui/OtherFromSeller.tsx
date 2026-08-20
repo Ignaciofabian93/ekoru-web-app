@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/i18n/context";
 import { useSellerProducts } from "../hooks/useSellerProducts";
@@ -9,7 +8,8 @@ import { SectionHeader } from "@/components/Patterns/SectionHeader";
 import { EmptyState } from "@/components/Feedback/EmptyState";
 import { CardScroller } from "@/components/Cards/CardScroller";
 import { MarketplaceCard } from "@/components/Cards";
-import { PackageSearch } from "lucide-react";
+import { ArrowUpRight, PackageSearch } from "lucide-react";
+import { LinkButton } from "@/components/Primitives";
 
 interface Props {
   lang: string;
@@ -59,16 +59,15 @@ export function OtherFromSeller({ lang, sellerId, excludeProductId }: Props) {
       <SectionHeader
         align="start"
         title={t("otherProducts.title")}
-        // Nothing to browse means nothing to link to, so the seller link is
-        // dropped rather than left pointing at an empty storefront.
         action={
           isEmpty ? undefined : (
-            <Link
+            <LinkButton
               href={`/${lang}/seller/${sellerId}`}
-              className="shrink-0 rounded-sm text-sm font-semibold text-primary underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              {t("actions.viewAll")}
-            </Link>
+              label={t("actions.viewAll")}
+              icon={ArrowUpRight}
+              iconPosition="right"
+              variant="ghost"
+            />
           )
         }
       />

@@ -24,6 +24,12 @@ export interface ButtonProps {
   leftIcon?: LucideIcon | React.ReactElement;
   rightIcon?: LucideIcon | React.ReactElement;
   fullWidth?: boolean;
+  /**
+   * Pressed state for a button that toggles something on and off (save,
+   * follow, mute). Without it the label is the only thing that changes, which
+   * a screen reader announces as a new button rather than a flipped state.
+   */
+  ariaPressed?: boolean;
   style?: React.CSSProperties;
   type?: "button" | "submit" | "reset";
   className?: string;

@@ -60,8 +60,7 @@
   },
   "impact": {
     "title": "Impact environnemental",
-    "viewFull": "Voir l'impact complet",
-    "viewFullShort": "Voir l'impact",
+    "viewImpact": "Voir l'impact",
     "co2": "CO₂ économisé",
     "water": "Eau économisée",
     "co2Short": "CO₂",

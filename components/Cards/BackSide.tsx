@@ -53,7 +53,7 @@ function ImpactTile({
         />
         <Text
           variant="span"
-          size="sm"
+          size="xs"
           weight="bold"
           className={clsx(tone, "line-clamp-1")}
         >
@@ -104,21 +104,8 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
             "transition-all",
           )}
         >
-          <Text
-            variant="label"
-            size="sm"
-            color="white"
-            className="hidden sm:flex truncate"
-          >
-            {t("impact.viewFull")}
-          </Text>
-          <Text
-            variant="label"
-            size="sm"
-            color="white"
-            className="flex sm:hidden truncate"
-          >
-            {t("impact.viewFullShort")}
+          <Text variant="label" size="sm" color="white" className="flex line-clamp-1">
+            {t("impact.viewImpact")}
           </Text>
           <TrendingUp size={12} strokeWidth={2.5} color="#fff" />
         </button>
@@ -185,7 +172,7 @@ export function BackFooter({ seller, name, subtitle }: CardBackFooterProps) {
     <div className="w-full flex px-2 py-2 items-center justify-center gap-1 border-t border-secondary-light">
       <div className="flex flex-col items-center">
         {displayName && (
-          <Text variant="span" weight="semibold" size="sm" className="line-clamp-1">
+          <Text variant="span" weight="semibold" size="xs" className="line-clamp-1">
             {displayName}
           </Text>
         )}

@@ -1,47 +1,44 @@
 "use client";
 
-import type React from "react";
-import type { ProductCondition } from "@/types/enums";
 import clsx from "clsx";
-import { type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import type React from "react";
+import {
+  badgeIconSize,
+  productConditionBadgeClass,
+  productInfoBadgeClass,
+} from "@/design/badge";
+import type { ProductCondition } from "@/types/enums";
+import type { BadgeSize } from "./Badge";
 
-type ProductInfoType = "EXCHANGEABLE" | "OFFER" | "SOLD_OUT";
+/** What is happening to a listing right now, as opposed to how worn it is. */
+export type ProductInfoType = "EXCHANGEABLE" | "OFFER" | "SOLD_OUT";
 
 export interface ProductConditionBadgeProps {
-  label?: string | number;
+  /** Drives the colour — see `conditionToneClass` in `design/badge.ts`. */
+  condition: ProductCondition;
+  /** Pass a translated string; the badge resolves no copy of its own. */
+  label: string;
+  size?: BadgeSize;
+  /** Positioning and stacking belong to the caller, not the badge. */
+  className?: string;
   style?: React.CSSProperties;
-  condition?: ProductCondition;
 }
 
-export interface ProductInfoBadgeProps {
-  label?: string;
-  style?: React.CSSProperties;
-  icon?: LucideIcon;
-  type?: ProductInfoType;
-}
-
-const CONDITION_STYLES: Record<ProductCondition, string> = {
-  NEW: "bg-primary-light-bg text-primary",
-  LIKE_NEW: "bg-primary-light-bg text-primary",
-  OPEN_BOX: "bg-primary-light-bg text-primary",
-  REFURBISHED: "bg-primary-light-bg text-primary",
-  GOOD: "bg-primary-light-bg text-primary",
-  FAIR: "bg-amber-50 text-amber-700",
-  POOR: "bg-red-50 text-red-600",
-  FOR_PARTS: "bg-red-50 text-red-600",
-};
-
+/**
+ * How worn the product is. One tone per `ProductCondition`, so the same
+ * listing reads identically on a card and on its detail page.
+ */
 export function ProductConditionBadge({
-  label,
-  style,
   condition,
+  label,
+  size = "small",
+  className,
+  style,
 }: ProductConditionBadgeProps) {
   return (
     <span
-      className={clsx(
-        "pointer-events-none absolute bottom-2 left-2 z-20 rounded-md px-2 py-0.5 text-xs font-medium",
-        CONDITION_STYLES[condition as ProductCondition],
-      )}
+      className={clsx(productConditionBadgeClass[condition][size], className)}
       style={style}
     >
       {label}
@@ -49,29 +46,33 @@ export function ProductConditionBadge({
   );
 }
 
-const productInfoBadgeClass: Record<ProductInfoType, string> = {
-  EXCHANGEABLE: "bg-gray-700 text-white",
-  OFFER: "bg-danger text-white",
-  SOLD_OUT: "bg-red-800 text-white",
-};
+export interface ProductInfoBadgeProps {
+  /** Drives the colour — see `infoToneClass` in `design/badge.ts`. */
+  type: ProductInfoType;
+  /** Pass a translated string; the badge resolves no copy of its own. */
+  label: string;
+  icon?: LucideIcon;
+  size?: BadgeSize;
+  /** Positioning and stacking belong to the caller, not the badge. */
+  className?: string;
+  style?: React.CSSProperties;
+}
 
+/**
+ * A listing's current status: open to swaps, on promotion, or gone. Solid
+ * fills, since these are the badges that sit over a photo.
+ */
 export function ProductInfoBadge({
+  type,
   label,
   icon: Icon,
+  size = "small",
+  className,
   style,
-  type,
 }: ProductInfoBadgeProps) {
   return (
-    <span
-      className={clsx(
-        "pointer-events-none absolute top-2 left-2 z-20",
-        "inline-flex items-center gap-1 rounded-md",
-        "px-2 py-0.5 text-xs font-medium",
-        productInfoBadgeClass[type as ProductInfoType],
-      )}
-      style={style}
-    >
-      {Icon && <Icon size={12} strokeWidth={2.5} />}
+    <span className={clsx(productInfoBadgeClass[type][size], className)} style={style}>
+      {Icon && <Icon size={badgeIconSize[size]} strokeWidth={2.5} aria-hidden />}
       {label}
     </span>
   );

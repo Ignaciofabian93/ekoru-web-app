@@ -72,9 +72,8 @@ export type CardsDictionary = {
   cta: Record<ItemType, string>;
   impact: {
     title: string;
-    viewFull: string;
-    /** Compact label for the flip-panel button on narrow cards. */
-    viewFullShort: string;
+    /** Label on the button that opens the full impact modal. */
+    viewImpact: string;
     co2: string;
     water: string;
     /** Compact labels shown below the `sm` breakpoint. */
