@@ -12,82 +12,95 @@ import { FlipButton } from "./FlipButton";
 import { useDisplayName, useSellerRegion } from "@/hooks/useSellerData";
 import type { EnvironmentalImpact } from "@/types/product";
 import { useState } from "react";
-import { Droplets, Leaf, TrendingUp } from "lucide-react";
+import { Droplets, Leaf, TrendingUp, type LucideIcon } from "lucide-react";
+import type { TotalImpactType } from "@/components/Patterns/TotalImpact/TotalImpact";
+import { buttonVariantClass } from "@/design/button";
+import {
+  impactIconSize,
+  impactIconStroke,
+  impactTileClass,
+  impactToneClass,
+} from "@/design/total-impact";
 import ImpactModal from "./ImpactModal";
+
+/**
+ * One saving on the back face — the same surface and hue as the standalone
+ * `TotalImpact` tile, at the density a card back can afford: the icon and its
+ * caption on one line, the figure under it.
+ */
+function ImpactTile({
+  type,
+  icon: Icon,
+  label,
+  value,
+}: {
+  type: TotalImpactType;
+  icon: LucideIcon;
+  label: string;
+  value: string;
+}) {
+  const tone = impactToneClass[type];
+  return (
+    <div
+      className={clsx(impactTileClass[type].sm, "w-full items-center justify-between")}
+    >
+      <div className="flex items-center gap-1">
+        <Icon
+          size={impactIconSize.sm}
+          className={tone}
+          strokeWidth={impactIconStroke}
+          aria-hidden
+        />
+        <Text
+          variant="span"
+          size="sm"
+          weight="bold"
+          className={clsx(tone, "line-clamp-1")}
+        >
+          {label}
+        </Text>
+      </div>
+      <Text variant="span" size="sm" weight="bold" className={tone}>
+        {value}
+      </Text>
+    </div>
+  );
+}
 
 function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
   const { t } = useTranslation(NAMESPACE);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   return (
     <div className={clsx("w-full mt-10 px-2 py-1 h-2/4")}>
-      <section className="mb-3">
-        <div className="mb-2 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5">
-            <Text variant="label" weight="bold" size="sm">
-              {t("impact.title")}
-            </Text>
-          </div>
+      <section className="my-2">
+        <div className="flex flex-col items-center gap-2">
+          <ImpactTile
+            type="co2"
+            icon={Leaf}
+            label={t("impact.co2")}
+            value={t("impact.co2Value", {
+              value: String(impact?.totalCo2SavingsKG ?? 0),
+            })}
+          />
+          <ImpactTile
+            type="water"
+            icon={Droplets}
+            label={t("impact.water")}
+            value={t("impact.waterValue", {
+              value: String(impact?.totalWaterSavingsLT ?? 0),
+            })}
+          />
         </div>
 
-        <div className="mb-2 grid grid-cols-1">
-          <div className="flex flex-col items-start justify-between p-1">
-            <div className="flex items-center gap-1">
-              <Leaf size={14} className="text-primary" strokeWidth={2} />
-              <Text
-                variant="span"
-                size="sm"
-                weight="bold"
-                color="secondary"
-                className="flex line-clamp-1"
-              >
-                {t("impact.co2")}:
-              </Text>
-            </div>
-            <Text
-              variant="span"
-              size="sm"
-              weight="bold"
-              color="secondary"
-              className="ml-4.5"
-            >
-              {t("impact.co2Value", { value: String(impact?.totalCo2SavingsKG ?? 0) })}
-            </Text>
-          </div>
-          <div className="flex flex-col items-start justify-between p-1">
-            <div className="flex items-center gap-1">
-              <Droplets size={14} className="text-info" strokeWidth={2} />
-              <Text
-                variant="span"
-                size="sm"
-                weight="bold"
-                color="secondary"
-                className="flex line-clamp-1"
-              >
-                {t("impact.water")}:
-              </Text>
-            </div>
-            <Text
-              variant="span"
-              size="sm"
-              weight="bold"
-              color="secondary"
-              className="ml-4.5"
-            >
-              {t("impact.waterValue", {
-                value: String(impact?.totalWaterSavingsLT ?? 0),
-              })}
-            </Text>
-          </div>
-        </div>
-
+        {/* The primary button's own gradient, borrowed rather than restated —
+            this is a plain button because it carries two responsive labels. */}
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
           className={clsx(
-            "flex my-4 w-full cursor-pointer items-center justify-center",
+            "flex my-2 w-full cursor-pointer items-center justify-center",
             "gap-1 rounded-sm px-2 py-1.5",
-            "border-primary bg-linear-180 from-primary to-primary/60 text-on-primary",
-            "hover:from-primary/90 hover:to-primary/80",
+            buttonVariantClass.primary,
             "transition-all",
           )}
         >

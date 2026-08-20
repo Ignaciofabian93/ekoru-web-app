@@ -23,14 +23,10 @@ function Face({ children, back = false }: { children: React.ReactNode; back?: bo
     <div
       inert={!active}
       className={clsx(
-        "flex overflow-hidden justify-between rounded-lg border border-slate-200 backface-hidden",
+        "flex overflow-hidden justify-between rounded-lg bg-white border border-slate-200 backface-hidden",
         "shadow-sm shadow-slate-800/20 hover:shadow-md",
         FACE_CLASS[orientation],
         back ? "absolute inset-0 rotate-y-180" : "relative",
-        {
-          "bg-linear-120 from-primary-light/20 to-secondary-light/20": back,
-          "bg-white": !back,
-        },
       )}
     >
       {children}
