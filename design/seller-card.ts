@@ -11,7 +11,7 @@ export const sellerCardRootClass = "px-2";
 export const sellerCardTitleClass = "mb-3";
 
 export const sellerCardClass = clsx(
-  "flex items-start justify-between gap-4 rounded-2xl",
+  "flex flex-col md:flex-row items-start justify-between gap-2 rounded-2xl",
   "backdrop-blur-xl",
   "p-4 bg-white shadow-md shadow-slate-800/10 border border-slate-200",
 );
@@ -32,6 +32,6 @@ export const sellerCardNameClass = "truncate mb-1";
 
 export const sellerCardBadgeRowClass = "flex items-center justify-start gap-1";
 
-export const sellerCardFooterClass = "flex items-center justify-end";
+export const sellerCardFooterClass = "w-full md:w-fit flex items-center justify-end";
 
 export const sellerCardAvatarIconSize = 22;

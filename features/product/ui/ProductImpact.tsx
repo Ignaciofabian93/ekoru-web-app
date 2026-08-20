@@ -7,7 +7,7 @@ import { formatMaterialAmount, materialLabel } from "@/utils/impact";
 import { NAMESPACE } from "../i18n";
 import { Title } from "@/components/Primitives/Title";
 import { Text } from "@/components/Primitives/Text";
-import { TotalImpact } from "@/components/Patterns";
+import { DataList, TotalImpact } from "@/components/Patterns";
 
 /**
  * The full-width band under the two rails. Impact is what separates Ekoru from
@@ -39,7 +39,7 @@ export function ProductImpact({ impact }: { impact?: EnvironmentalImpact | null 
         <span
           className={clsx(
             "flex size-10 shrink-0 items-center justify-center rounded-xl",
-            "border border-primary/30 bg-surface text-primary-dark",
+            "border border-primary/30 bg-linear-120 from-primary-light/30 to-primary-light/10 text-primary",
           )}
         >
           <Leaf size={20} strokeWidth={2} aria-hidden />
@@ -74,39 +74,14 @@ export function ProductImpact({ impact }: { impact?: EnvironmentalImpact | null 
 
         {materials.length > 0 && (
           <div className="md:col-span-6">
-            <div
-              className={clsx(
-                "flex h-full flex-col overflow-hidden",
-                "rounded-2xl border border-border-light bg-surface",
-              )}
-            >
-              <div className="border-b border-border-light px-4 py-2.5">
-                <Text
-                  variant="span"
-                  size="xs"
-                  weight="bold"
-                  color="secondary"
-                  className="tracking-wide uppercase"
-                >
-                  {t("impact.materials")}
-                </Text>
-              </div>
-              <ul className="flex flex-col divide-y divide-border-light">
-                {materials.map((m) => (
-                  <li
-                    key={m.materialType}
-                    className="flex items-center justify-between gap-3 px-4 py-2.5"
-                  >
-                    <Text variant="span" size="sm">
-                      {materialLabel(m)}
-                    </Text>
-                    <Text variant="span" size="sm" weight="semibold">
-                      {formatMaterialAmount(m)}
-                    </Text>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <DataList
+              className="h-full"
+              caption={t("impact.materials")}
+              rows={materials.map((m) => ({
+                label: materialLabel(m),
+                value: formatMaterialAmount(m),
+              }))}
+            />
           </div>
         )}
       </div>

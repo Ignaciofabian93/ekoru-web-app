@@ -5,7 +5,7 @@ import type { Product } from "@/types/product";
 import { NAMESPACE } from "../i18n";
 import { Title } from "@/components/Primitives/Title";
 import { Text } from "@/components/Primitives/Text";
-import clsx from "clsx";
+import { DataList } from "@/components/Patterns";
 
 const LOCALE_MAP: Record<SupportedLanguage, string> = {
   es: "es-CL",
@@ -61,33 +61,10 @@ export function ProductDetails({
       <Title level="h5" size="h5" weight="semibold" className="mb-3">
         {t("details.title")}
       </Title>
-      <dl
-        className={clsx(
-          "bg-white flex flex-col divide-y divide-border-light",
-          "overflow-hidden rounded-2xl border border-border-light",
-        )}
-      >
-        {rows.map((row) => (
-          <div
-            key={row.label}
-            className="flex items-center justify-between gap-4 px-4 py-3"
-          >
-            <dt>
-              <Text variant="span" size="sm" weight="bold">
-                {row.label}
-              </Text>
-            </dt>
-            <dd className="text-sm font-medium text-foreground">
-              <Text variant="span" size="sm" weight="semibold" color="default">
-                {row.value}
-              </Text>
-            </dd>
-          </div>
-        ))}
-      </dl>
+      <DataList rows={rows} />
 
       {product.conditionDescription && (
-        <div className="mt-3 rounded-xl bg-background-secondary border border-border-light px-4 py-3">
+        <div className="mt-3 rounded-xl bg-background-secondary border border-slate-200 px-4 py-3">
           <Text
             variant="p"
             size="xs"

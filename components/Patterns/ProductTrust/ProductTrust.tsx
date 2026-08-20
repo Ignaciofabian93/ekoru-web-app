@@ -53,10 +53,16 @@ export function ProductTrust({ items, className }: ProductTrustProps) {
             />
           </span>
           <div className={productTrustBodyClass}>
-            <Text variant="span" weight="semibold" size="sm">
+            <Text variant="span" weight="semibold" size="sm" leading="snug">
               {title}
             </Text>
-            <Text variant="span" weight="semibold" size="xs">
+            <Text
+              variant="span"
+              weight="medium"
+              size="xs"
+              color="secondary"
+              leading="normal"
+            >
               {hint}
             </Text>
           </div>

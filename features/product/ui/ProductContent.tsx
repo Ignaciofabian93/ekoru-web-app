@@ -104,10 +104,6 @@ export function ProductContent({ id, lang }: Props) {
         chevronColor="default"
       />
       <Section>
-        {/* Two rails, 7 and 5, held all the way down: the description and the
-            spec table stay aligned with the gallery and the buy panel above
-            them. The page used to change grid halfway (two columns, then
-            three), which left the seller card starting on its own. */}
         <div className={RAILS}>
           <div className={RAIL_MAIN}>
             <ProductGallery
@@ -129,10 +125,6 @@ export function ProductContent({ id, lang }: Props) {
             />
           </div>
 
-          {/* What it is, what it costs and how to act, then who is selling and
-              how the handover works — the order the decision is made in. The
-              seller moved up here from the bottom column: trust matters at the
-              moment of deciding, not after the spec table. */}
           <div className={clsx(RAIL_SIDE, "flex flex-col gap-5")}>
             <ProductSummary product={product} lang={lang} />
 
@@ -142,10 +134,6 @@ export function ProductContent({ id, lang }: Props) {
               onProposeExchange={() => setProposingExchange(true)}
             />
 
-            {/* Opens over the listing rather than replacing the panel, so the
-                price stays put and Cancel comes straight back to it. Mounted
-                only while open: the viewer's listings are not fetched until
-                asked for, and nothing stale is left behind on close. */}
             {isExchangeable && proposingExchange && (
               <ExchangeProposal
                 product={product}
@@ -177,7 +165,6 @@ export function ProductContent({ id, lang }: Props) {
           </div>
         </div>
 
-        {/* Full width, below both rails — see `ProductImpact`. */}
         <ProductImpact impact={product.environmentalImpact} />
 
         {product.sellerId && (
