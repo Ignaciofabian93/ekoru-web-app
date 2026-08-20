@@ -2,13 +2,71 @@
   "heading": "Resultados para \"{{query}}\"",
   "count": "{{count}} resultado",
   "countPlural": "{{count}} resultados",
+  "timing": "encontrados en {{ms}} ms",
   "emptyQuery": {
     "title": "¿Qué estás buscando?",
     "hint": "Escribe un producto o servicio en la barra de búsqueda."
   },
+  "suggestions": {
+    "label": "Búsquedas relacionadas"
+  },
+  "corrected": {
+    "prefix": "¿Quisiste decir",
+    "suffix": "?"
+  },
+  "tabs": {
+    "ALL": "Todo",
+    "PRODUCTS": "Productos",
+    "SERVICES": "Servicios"
+  },
+  "filters": {
+    "title": "Filtros",
+    "clear": "Limpiar",
+    "clearAll": "Limpiar todo",
+    "open": "Filtros",
+    "close": "Cerrar",
+    "apply": "Ver resultados",
+    "remove": "Quitar filtro",
+    "categories": "Categorías",
+    "price": "Precio",
+    "min": "Mín.",
+    "max": "Máx.",
+    "priceFrom": "Desde {{min}}",
+    "priceTo": "Hasta {{max}}",
+    "priceBetween": "{{min}} – {{max}}",
+    "tags": "Etiquetas",
+    "offers": "Ofertas",
+    "onlyOffers": "Solo ofertas",
+    "onlyOffersHint": "Publicaciones con descuento activo"
+  },
+  "sort": {
+    "label": "Ordenar por",
+    "RELEVANCE": "Más relevantes",
+    "PRICE_ASC": "Precio: menor a mayor",
+    "PRICE_DESC": "Precio: mayor a menor",
+    "RATING": "Mejor evaluados"
+  },
   "results": {
+    "showing": "Mostrando {{from}}–{{to}} de {{total}}",
     "empty": "No se encontraron resultados",
-    "emptyHint": "Prueba con palabras distintas o más generales."
+    "emptyHint": "Prueba con palabras distintas o más generales.",
+    "emptyFiltered": "Ningún resultado con estos filtros",
+    "emptyFilteredHint": "Quita alguno de los filtros activos para ver más publicaciones."
+  },
+  "zero": {
+    "title": "No se encontraron resultados",
+    "description": "Nada en el marketplace, las tiendas ni los servicios coincide con lo que buscaste.",
+    "tipSpelling": "Revisa la ortografía de las palabras.",
+    "tipFewer": "Usa menos palabras o términos más generales.",
+    "tipCategory": "Prueba buscando la categoría en lugar de la marca.",
+    "otherSearches": "Otras personas buscaron",
+    "browseTitle": "Explora por sección",
+    "marketplace": "Marketplace",
+    "marketplaceHint": "Artículos de segunda mano entre personas",
+    "stores": "Tiendas",
+    "storesHint": "Marcas y negocios sustentables",
+    "services": "Servicios",
+    "servicesHint": "Reparación, mantención y más"
   },
   "error": {
     "title": "Algo salió mal",

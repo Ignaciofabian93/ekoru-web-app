@@ -1,1 +1,2 @@
-export { ComingSoonChip } from "./Chip";
+export { Chip, ComingSoonChip } from "./Chip";
+export type { ChipProps } from "./Chip";

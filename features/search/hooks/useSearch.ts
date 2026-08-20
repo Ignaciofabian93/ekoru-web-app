@@ -2,7 +2,7 @@
 import { useQuery } from "@apollo/client/react";
 import { SEARCH } from "@/graphql/search/queries";
 import type { Language } from "@/graphql/enums/enums";
-import type { SearchResponse } from "../types";
+import type { SearchFilters, SearchResponse } from "../types";
 
 interface Params {
   query: string;
@@ -12,6 +12,8 @@ interface Params {
   country: string;
   page: number;
   pageSize: number;
+  /** Facet selections and sort order, applied by the engine rather than here. */
+  filters?: SearchFilters;
 }
 
 /**
@@ -19,14 +21,34 @@ interface Params {
  * is skipped while the term is empty so an empty search bar costs nothing, and
  * the previous page is kept on screen while the next one loads.
  */
-export function useSearch({ query, language, country, page, pageSize }: Params) {
+export function useSearch({
+  query,
+  language,
+  country,
+  page,
+  pageSize,
+  filters,
+}: Params) {
   const trimmed = query.trim();
 
   const { data, previousData, loading, error } = useQuery<{
     search: SearchResponse;
   }>(SEARCH, {
     variables: {
-      input: { query: trimmed, page, pageSize },
+      input: {
+        query: trimmed,
+        page,
+        pageSize,
+        // Omitted keys keep the server's defaults, so an untouched rail sends
+        // the same input the page sent before there was a rail at all.
+        ...(filters?.type && filters.type !== "ALL" ? { type: filters.type } : {}),
+        ...(filters?.sortBy ? { sortBy: filters.sortBy } : {}),
+        ...(filters?.categories?.length ? { categories: filters.categories } : {}),
+        ...(filters?.tags?.length ? { tags: filters.tags } : {}),
+        ...(filters?.minPrice !== undefined ? { minPrice: filters.minPrice } : {}),
+        ...(filters?.maxPrice !== undefined ? { maxPrice: filters.maxPrice } : {}),
+        ...(filters?.hasOffer ? { hasOffer: true } : {}),
+      },
       language,
       country,
     },
@@ -41,6 +63,9 @@ export function useSearch({ query, language, country, page, pageSize }: Params) 
     items: payload?.items ?? [],
     pageInfo: payload?.pageInfo,
     facets: payload?.facets,
+    suggestions: payload?.suggestions ?? [],
+    correctedQuery: payload?.correctedQuery ?? null,
+    processingTimeMs: payload?.processingTimeMs,
     total: payload?.pageInfo?.totalItems ?? 0,
     loading,
     error,

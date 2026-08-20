@@ -77,17 +77,50 @@ export interface SearchFacet {
 
 export interface SearchFacets {
   categories?: SearchFacet[];
+  /** Counts per `SearchResultType`, which is what feeds the type tabs. */
   types?: SearchFacet[];
   tags?: SearchFacet[];
+  /** Only the legacy PostgreSQL strategy fills this; Typesense leaves it out. */
+  priceRanges?: SearchFacet[];
 }
 
 export interface SearchResponse {
   searchId?: number | null;
   query: string;
   processingTimeMs: number;
+  /** Related terms the engine offers for the same query. */
+  suggestions?: string[] | null;
+  /** A spelling fix the engine is confident about ("did you mean …"). */
+  correctedQuery?: string | null;
   items: SearchResultItem[];
   pageInfo: SearchPageInfo;
   facets?: SearchFacets | null;
+}
+
+/**
+ * The catalogs a search can be narrowed to. `PRODUCTS` covers both marketplace
+ * and store hits — the index has one `type` field per hit, but the API's filter
+ * only splits goods from services, so the tabs stop where the backend does.
+ */
+export type SearchTypeFilter = "ALL" | "PRODUCTS" | "SERVICES";
+
+/** The sort orders offered in the toolbar, a subset of the API's `SearchSortBy`. */
+export type SearchSortBy = "RELEVANCE" | "PRICE_ASC" | "PRICE_DESC" | "RATING";
+
+/**
+ * Everything the results body can narrow or reorder by. Every field maps
+ * straight onto a `SearchInput` field, so filtering happens in the engine
+ * rather than over the page of hits already on screen.
+ */
+export interface SearchFilters {
+  type: SearchTypeFilter;
+  sortBy: SearchSortBy;
+  categories: string[];
+  tags: string[];
+  minPrice?: number;
+  maxPrice?: number;
+  /** On means "only items currently discounted". */
+  hasOffer?: boolean;
 }
 
 export const SEARCH_PAGE_SIZE = 10;

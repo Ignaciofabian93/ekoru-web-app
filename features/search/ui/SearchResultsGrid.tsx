@@ -15,6 +15,11 @@ interface Props {
   items: SearchResultItem[];
   lang: string;
   loading?: boolean;
+  /**
+   * Whether filters are on. An empty page then means "nothing left after
+   * filtering", which is a different dead end from "nothing for this term".
+   */
+  filtered?: boolean;
 }
 
 /** `item` narrows to a single variant in each branch, so every card gets the
@@ -47,7 +52,7 @@ const renderItemCard = (item: SearchResultItem, lang: string) => {
   }
 };
 
-export function SearchResultsGrid({ items, lang, loading }: Props) {
+export function SearchResultsGrid({ items, lang, loading, filtered }: Props) {
   const { t } = useTranslation(NAMESPACE);
 
   return (
@@ -55,8 +60,8 @@ export function SearchResultsGrid({ items, lang, loading }: Props) {
       items={items}
       loading={loading}
       emptyIcon={PackageSearch}
-      emptyTitle={t("results.empty")}
-      emptyHint={t("results.emptyHint")}
+      emptyTitle={filtered ? t("results.emptyFiltered") : t("results.empty")}
+      emptyHint={filtered ? t("results.emptyFilteredHint") : t("results.emptyHint")}
       renderItem={(item) => renderItemCard(item, lang)}
     />
   );
