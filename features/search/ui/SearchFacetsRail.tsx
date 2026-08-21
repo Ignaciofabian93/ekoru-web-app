@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Input } from "@/components/Primitives/Inputs";
 import { Checkbox } from "@/components/Primitives/Checkbox";
 import { Chip } from "@/components/Primitives/Chip";
+import { Text } from "@/components/Primitives/Text";
 import { FilterGroup, FilterOptions, FilterPanel } from "@/components/Patterns";
 import {
   filterRangeDashClass,
@@ -10,13 +11,22 @@ import {
   filterTagsClass,
 } from "@/design/filter-panel";
 import { useTranslation } from "@/i18n/context";
+import type { ProductCondition } from "@/types/enums";
 import { NAMESPACE } from "../i18n";
-import type { SearchFacets as Facets, SearchFilters } from "../types";
+import { PRODUCT_CONDITIONS, SEARCH_SOURCES } from "../narrow";
+import type { SearchFacets as Facets, SearchFilters, SearchSource } from "../types";
 
 interface Props {
   facets?: Facets | null;
   filters: SearchFilters;
   activeCount: number;
+  /** Hits per catalog on the current page — source and condition are not indexed. */
+  sourceCounts: Record<SearchSource, number>;
+  conditionCounts: Record<ProductCondition, number>;
+  /** True while store items are in scope, since those carry no condition. */
+  conditionsDisabled: boolean;
+  onToggleSource: (value: SearchSource) => void;
+  onToggleCondition: (value: ProductCondition) => void;
   onToggleCategory: (value: string) => void;
   onToggleTag: (value: string) => void;
   onPriceChange: (min?: number, max?: number) => void;
@@ -39,6 +49,11 @@ export function SearchFacetsRail({
   facets,
   filters,
   activeCount,
+  sourceCounts,
+  conditionCounts,
+  conditionsDisabled,
+  onToggleSource,
+  onToggleCondition,
   onToggleCategory,
   onToggleTag,
   onPriceChange,
@@ -68,6 +83,36 @@ export function SearchFacetsRail({
         onClearAll();
       }}
     >
+      <FilterGroup label={t("filters.source")}>
+        <FilterOptions
+          options={SEARCH_SOURCES.map((source) => ({
+            value: source,
+            label: t(`filters.sources.${source}`),
+            count: sourceCounts[source],
+          }))}
+          selected={filters.sources}
+          onToggle={(value) => onToggleSource(value as SearchSource)}
+        />
+      </FilterGroup>
+
+      <FilterGroup label={t("filters.condition")}>
+        {conditionsDisabled && (
+          <Text variant="span" size="xs" color="tertiary">
+            {t("filters.conditionDisabled")}
+          </Text>
+        )}
+        <FilterOptions
+          options={PRODUCT_CONDITIONS.map((condition) => ({
+            value: condition,
+            label: t(`conditions.${condition}`),
+            count: conditionCounts[condition],
+          }))}
+          selected={filters.conditions}
+          disabled={conditionsDisabled}
+          onToggle={(value) => onToggleCondition(value as ProductCondition)}
+        />
+      </FilterGroup>
+
       {categories.length > 0 && (
         <FilterGroup label={t("filters.categories")}>
           <FilterOptions

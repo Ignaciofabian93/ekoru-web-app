@@ -73,7 +73,7 @@ export function ResultsGrid<T>({
   }
 
   return (
-    <Grid cols={2} sm={3} md={4} lg={5} gap={2} className={resultsGridClass}>
+    <Grid cols={2} sm={3} md={4} lg={4} gap={2} className={resultsGridClass}>
       {items.map(renderItem)}
     </Grid>
   );

@@ -9,10 +9,16 @@ import { useCountry } from "@/hooks/useCountry";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useTranslation } from "@/i18n/context";
+import type { ProductCondition } from "@/types/enums";
 import { useSearch } from "../hooks/useSearch";
 import { useSearchFilters } from "../hooks/useSearchFilters";
 import { NAMESPACE } from "../i18n";
-import { SEARCH_PAGE_SIZE, type SearchTypeFilter } from "../types";
+import { countConditions, countSources, narrowItems } from "../narrow";
+import {
+  SEARCH_PAGE_SIZE,
+  type SearchSource,
+  type SearchTypeFilter,
+} from "../types";
 import { SearchActiveFilters } from "./SearchActiveFilters";
 import { SearchDidYouMean } from "./SearchDidYouMean";
 import { SearchFacetsRail } from "./SearchFacetsRail";
@@ -52,6 +58,8 @@ export function SearchContent({ lang, language, query }: Props) {
   const chipLabels = useMemo(
     () => ({
       type: (type: SearchTypeFilter) => t(`tabs.${type}`),
+      source: (source: SearchSource) => t(`filters.sources.${source}`),
+      condition: (condition: ProductCondition) => t(`conditions.${condition}`),
       price: (min?: number, max?: number) => {
         if (min !== undefined && max !== undefined)
           return t("filters.priceBetween", {
@@ -76,6 +84,9 @@ export function SearchContent({ lang, language, query }: Props) {
     setHasOffer,
     toggleCategory,
     toggleTag,
+    toggleCondition,
+    toggleSource,
+    conditionsDisabled,
     activeFilters,
     activeCount,
     clearAll,
@@ -153,12 +164,25 @@ export function SearchContent({ lang, language, query }: Props) {
             : servicesCount,
   }));
 
+  // Source and condition are not engine-side filters, so they are applied to
+  // the page that came back — and the toolbar has to say so, because the
+  // engine's totals still describe the unnarrowed result set.
+  const visibleItems = narrowItems(items, filters);
+  const sourceCounts = countSources(items);
+  const conditionCounts = countConditions(items, filters.sources);
+  const narrowed = filters.sources.length > 0 || filters.conditions.length > 0;
+
   const from = total === 0 ? 0 : (page - 1) * SEARCH_PAGE_SIZE + 1;
-  const showingLabel = t("results.showing", {
-    from: String(from),
-    to: String(Math.min(page * SEARCH_PAGE_SIZE, total)),
-    total: String(total),
-  });
+  const showingLabel = narrowed
+    ? t("results.narrowed", {
+        count: String(visibleItems.length),
+        page: String(items.length),
+      })
+    : t("results.showing", {
+        from: String(from),
+        to: String(Math.min(page * SEARCH_PAGE_SIZE, total)),
+        total: String(total),
+      });
 
   // Nothing anywhere for this term is a different failure from nothing left
   // after filtering: the first needs a way out of the term, the second a way
@@ -170,6 +194,11 @@ export function SearchContent({ lang, language, query }: Props) {
       facets={facets}
       filters={filters}
       activeCount={activeCount}
+      sourceCounts={sourceCounts}
+      conditionCounts={conditionCounts}
+      conditionsDisabled={conditionsDisabled}
+      onToggleSource={toggleSource}
+      onToggleCondition={toggleCondition}
       onToggleCategory={toggleCategory}
       onToggleTag={toggleTag}
       onPriceChange={setPriceRange}
@@ -224,7 +253,7 @@ export function SearchContent({ lang, language, query }: Props) {
               <SearchActiveFilters filters={activeFilters} onClearAll={clearAll} />
 
               <SearchResultsGrid
-                items={items}
+                items={visibleItems}
                 lang={lang}
                 loading={loading}
                 filtered={activeCount > 0}

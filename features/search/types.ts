@@ -1,3 +1,4 @@
+import type { ProductCondition } from "@/types/enums";
 import type { Product, StoreProduct } from "@/types/product";
 import type { Service } from "@/types/services";
 
@@ -108,6 +109,13 @@ export type SearchTypeFilter = "ALL" | "PRODUCTS" | "SERVICES";
 export type SearchSortBy = "RELEVANCE" | "PRICE_ASC" | "PRICE_DESC" | "RATING";
 
 /**
+ * Which catalog a goods hit came from. The engine indexes this as the hit's
+ * `type` but exposes no filter for it, so — unlike everything else in
+ * `SearchFilters` — this one is applied over the page of hits on screen.
+ */
+export type SearchSource = "MARKETPLACE" | "STORE";
+
+/**
  * Everything the results body can narrow or reorder by. Every field maps
  * straight onto a `SearchInput` field, so filtering happens in the engine
  * rather than over the page of hits already on screen.
@@ -121,6 +129,18 @@ export interface SearchFilters {
   maxPrice?: number;
   /** On means "only items currently discounted". */
   hasOffer?: boolean;
+  /**
+   * Marketplace and/or store. Empty means both plus services — the engine's
+   * `PRODUCTS` type is the closest it can narrow, so the rest happens client
+   * side; see `narrowItems`.
+   */
+  sources: SearchSource[];
+  /**
+   * Marketplace conditions to keep. Not indexed either, so it is applied
+   * client side and is meaningless once store items are in scope — store
+   * products have no condition.
+   */
+  conditions: ProductCondition[];
 }
 
 export const SEARCH_PAGE_SIZE = 10;

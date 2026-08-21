@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/Primitives/Checkbox";
 import { Text } from "@/components/Primitives/Text";
 import {
   filterOptionCountClass,
+  filterOptionDisabledClass,
   filterOptionLabelClass,
   filterOptionRowClass,
   filterOptionsClass,
@@ -22,6 +23,8 @@ export interface FilterOptionsProps {
   /** Values currently on. */
   selected: string[];
   onToggle: (value: string) => void;
+  /** Greys the whole list out — the facet does not apply to what is in scope. */
+  disabled?: boolean;
   className?: string;
 }
 
@@ -33,6 +36,7 @@ export function FilterOptions({
   options,
   selected,
   onToggle,
+  disabled = false,
   className,
 }: FilterOptionsProps) {
   if (options.length === 0) return null;
@@ -42,10 +46,17 @@ export function FilterOptions({
       {options.map((option) => {
         const checked = selected.includes(option.value);
         return (
-          <div key={option.value} className={filterOptionRowClass}>
+          <div
+            key={option.value}
+            className={clsx(
+              filterOptionRowClass,
+              disabled && filterOptionDisabledClass,
+            )}
+          >
             <Checkbox
               size="sm"
               checked={checked}
+              disabled={disabled}
               onCheckedChange={() => onToggle(option.value)}
               label={option.label}
               className={filterOptionLabelClass}

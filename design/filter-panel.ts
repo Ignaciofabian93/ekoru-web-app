@@ -57,6 +57,9 @@ export const filterOptionRowClass = clsx(
   "transition-colors hover:bg-background-secondary",
 );
 
+/** The facet has nothing to say about what is in scope: visible, but inert. */
+export const filterOptionDisabledClass = "pointer-events-none opacity-50 hover:bg-transparent";
+
 export const filterOptionLabelClass = "flex-1 min-w-0";
 
 export const filterOptionCountClass = "text-xs text-foreground-tertiary tabular-nums";

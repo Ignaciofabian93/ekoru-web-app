@@ -1,12 +1,20 @@
 "use client";
 import { useCallback, useMemo, useState } from "react";
-import type { SearchFilters, SearchSortBy, SearchTypeFilter } from "../types";
+import type { ProductCondition } from "@/types/enums";
+import type {
+  SearchFilters,
+  SearchSortBy,
+  SearchSource,
+  SearchTypeFilter,
+} from "../types";
 
 const INITIAL: SearchFilters = {
   type: "ALL",
   sortBy: "RELEVANCE",
   categories: [],
   tags: [],
+  sources: [],
+  conditions: [],
 };
 
 /** One active filter, ready to render as a removable chip. */
@@ -20,6 +28,8 @@ export interface ActiveFilter {
 interface Labels {
   /** Reads a type tab's label, so the chip says "Services", not "SERVICES". */
   type: (type: SearchTypeFilter) => string;
+  source: (source: SearchSource) => string;
+  condition: (condition: ProductCondition) => string;
   /** Label for the price chip, given whichever bounds are set. */
   price: (min?: number, max?: number) => string;
   offers: string;
@@ -42,9 +52,9 @@ export function useSearchFilters(labels: Labels) {
   }, []);
 
   const toggleInList = useCallback(
-    (key: "categories" | "tags", value: string) => {
+    (key: "categories" | "tags" | "conditions", value: string) => {
       setFilters((current) => {
-        const list = current[key];
+        const list = current[key] as string[];
         const next = list.includes(value)
           ? list.filter((v) => v !== value)
           : [...list, value];
@@ -55,8 +65,34 @@ export function useSearchFilters(labels: Labels) {
     [],
   );
 
+  /**
+   * Picking a catalog implies goods, so the type follows along — otherwise the
+   * tab could say "Services" while the rail asks for marketplace items, and
+   * the two would cancel each other out to an empty page.
+   *
+   * Store products carry no condition either, so bringing the store catalog
+   * into scope drops any condition picks with it: leaving them on would
+   * silently filter out every store hit the user just asked for.
+   */
+  const toggleSource = useCallback((source: SearchSource) => {
+    setFilters((current) => {
+      const next = current.sources.includes(source)
+        ? current.sources.filter((s) => s !== source)
+        : [...current.sources, source];
+      return {
+        ...current,
+        sources: next,
+        type: next.length > 0 ? "PRODUCTS" : current.type,
+        conditions: next.includes("STORE") ? [] : current.conditions,
+      };
+    });
+    setPage(1);
+  }, []);
+
+  /** The tab is the coarser control, so leaving goods drops the catalog picks. */
   const setType = useCallback(
-    (type: SearchTypeFilter) => update({ type }),
+    (type: SearchTypeFilter) =>
+      update(type === "PRODUCTS" ? { type } : { type, sources: [] }),
     [update],
   );
   const setSortBy = useCallback(
@@ -81,6 +117,22 @@ export function useSearchFilters(labels: Labels) {
         remove: () => update({ type: "ALL" }),
       });
     }
+
+    filters.sources.forEach((source) =>
+      chips.push({
+        key: `source:${source}`,
+        label: labels.source(source),
+        remove: () => toggleSource(source),
+      }),
+    );
+
+    filters.conditions.forEach((condition) =>
+      chips.push({
+        key: `condition:${condition}`,
+        label: labels.condition(condition),
+        remove: () => toggleInList("conditions", condition),
+      }),
+    );
 
     filters.categories.forEach((value) =>
       chips.push({
@@ -115,7 +167,7 @@ export function useSearchFilters(labels: Labels) {
     }
 
     return chips;
-  }, [filters, labels, toggleInList, update]);
+  }, [filters, labels, toggleInList, toggleSource, update]);
 
   return {
     filters,
@@ -128,6 +180,10 @@ export function useSearchFilters(labels: Labels) {
     setHasOffer: (hasOffer: boolean) => update({ hasOffer: hasOffer || undefined }),
     toggleCategory: (value: string) => toggleInList("categories", value),
     toggleTag: (value: string) => toggleInList("tags", value),
+    toggleCondition: (value: ProductCondition) => toggleInList("conditions", value),
+    toggleSource,
+    /** Store items have no condition, so the group is dead while they're in scope. */
+    conditionsDisabled: filters.sources.includes("STORE"),
     activeFilters,
     activeCount: activeFilters.length,
     clearAll,

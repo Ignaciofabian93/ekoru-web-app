@@ -37,7 +37,14 @@
     "tags": "Etiquetas",
     "offers": "Ofertas",
     "onlyOffers": "Solo ofertas",
-    "onlyOffersHint": "Publicaciones con descuento activo"
+    "onlyOffersHint": "Publicaciones con descuento activo",
+    "source": "Origen",
+    "sources": {
+      "MARKETPLACE": "Marketplace",
+      "STORE": "Tiendas"
+    },
+    "condition": "Condición",
+    "conditionDisabled": "Las publicaciones de tiendas no tienen condición."
   },
   "sort": {
     "label": "Ordenar por",
@@ -51,7 +58,8 @@
     "empty": "No se encontraron resultados",
     "emptyHint": "Prueba con palabras distintas o más generales.",
     "emptyFiltered": "Ningún resultado con estos filtros",
-    "emptyFilteredHint": "Quita alguno de los filtros activos para ver más publicaciones."
+    "emptyFilteredHint": "Quita alguno de los filtros activos para ver más publicaciones.",
+    "narrowed": "Mostrando {{count}} de {{page}} en esta página"
   },
   "zero": {
     "title": "No se encontraron resultados",
@@ -79,5 +87,15 @@
   },
   "card": {
     "noImage": "Sin imagen"
+  },
+  "conditions": {
+    "NEW": "Nuevo",
+    "LIKE_NEW": "Como nuevo",
+    "OPEN_BOX": "Caja abierta",
+    "REFURBISHED": "Reacondicionado",
+    "GOOD": "Bueno",
+    "FAIR": "Regular",
+    "POOR": "Desgastado",
+    "FOR_PARTS": "Para repuestos"
   }
 }

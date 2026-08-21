@@ -37,7 +37,14 @@
     "tags": "Tags",
     "offers": "Offers",
     "onlyOffers": "On sale only",
-    "onlyOffersHint": "Items with an active discount"
+    "onlyOffersHint": "Items with an active discount",
+    "source": "Source",
+    "sources": {
+      "MARKETPLACE": "Marketplace",
+      "STORE": "Stores"
+    },
+    "condition": "Condition",
+    "conditionDisabled": "Store listings have no condition."
   },
   "sort": {
     "label": "Sort by",
@@ -51,7 +58,8 @@
     "empty": "No results found",
     "emptyHint": "Try different or more general keywords.",
     "emptyFiltered": "No results with these filters",
-    "emptyFilteredHint": "Remove one of the active filters to see more listings."
+    "emptyFilteredHint": "Remove one of the active filters to see more listings.",
+    "narrowed": "Showing {{count}} of {{page}} on this page"
   },
   "zero": {
     "title": "No results found",
@@ -79,5 +87,15 @@
   },
   "card": {
     "noImage": "No image"
+  },
+  "conditions": {
+    "NEW": "New",
+    "LIKE_NEW": "Like new",
+    "OPEN_BOX": "Open box",
+    "REFURBISHED": "Refurbished",
+    "GOOD": "Good",
+    "FAIR": "Fair",
+    "POOR": "Poor",
+    "FOR_PARTS": "For parts"
   }
 }

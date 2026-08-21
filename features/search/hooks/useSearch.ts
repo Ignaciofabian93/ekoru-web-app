@@ -41,6 +41,10 @@ export function useSearch({
         pageSize,
         // Omitted keys keep the server's defaults, so an untouched rail sends
         // the same input the page sent before there was a rail at all.
+        //
+        // Picking a catalog forces `type` to `PRODUCTS` upstream, which is the
+        // closest the engine can narrow; marketplace vs store is then sorted
+        // out client side, in `narrowItems`.
         ...(filters?.type && filters.type !== "ALL" ? { type: filters.type } : {}),
         ...(filters?.sortBy ? { sortBy: filters.sortBy } : {}),
         ...(filters?.categories?.length ? { categories: filters.categories } : {}),
