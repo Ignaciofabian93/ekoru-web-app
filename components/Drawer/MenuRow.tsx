@@ -1,6 +1,16 @@
 import clsx from "clsx";
-import type { LucideIcon } from "lucide-react";
+import { ChevronRight, type LucideIcon } from "lucide-react";
 import React from "react";
+import { Badge } from "@/components/Primitives/Badge";
+import { Text } from "@/components/Primitives/Text";
+import {
+  drawerRowChevronClass,
+  drawerRowChevronSize,
+  drawerRowClass,
+  drawerRowIconClass,
+  drawerRowIconSize,
+  drawerRowTrailingClass,
+} from "@/design/drawer";
 
 export default function MenuRow({
   icon: Icon,
@@ -22,7 +32,7 @@ export default function MenuRow({
   /** Rows for pages that haven't shipped: visible, but not navigable. */
   disabled?: boolean;
 }) {
-  const hasTrailing = !!badge || (typeof badgeCount === "number" && badgeCount > 0);
+  const showCount = typeof badgeCount === "number" && badgeCount > 0;
 
   return (
     <button
@@ -30,25 +40,42 @@ export default function MenuRow({
       onClick={onPress}
       disabled={disabled}
       className={clsx(
-        "flex w-full flex-row items-center gap-3 px-3.5 py-3.25 text-left",
+        drawerRowClass,
         hasBorder && "border-b border-border-strong",
-        disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer",
+        disabled
+          ? "cursor-not-allowed opacity-60"
+          : "cursor-pointer hover:bg-surface-hover",
       )}
     >
-      <div className="flex size-8 shrink-0 items-center justify-center rounded-sm bg-primary/10 text-primary">
-        <Icon size={18} strokeWidth={1.5} color="currentColor" />
-      </div>
-      <span className="font-sans text-sm font-medium text-foreground">{label}</span>
-      {hasTrailing && (
-        <div className="ml-auto flex shrink-0 items-center gap-2">
-          {badge}
-          {typeof badgeCount === "number" && badgeCount > 0 && (
-            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-bold text-white">
-              {badgeCount > 99 ? "99+" : badgeCount}
-            </span>
-          )}
-        </div>
-      )}
+      <span className={drawerRowIconClass}>
+        <Icon size={drawerRowIconSize} color="currentColor" strokeWidth={2} />
+      </span>
+
+      <Text variant="span" weight="medium" size="base" className="flex-1">
+        {label}
+      </Text>
+
+      <span className={drawerRowTrailingClass}>
+        {badge}
+        {showCount && (
+          <Badge
+            variant="primary"
+            size="small"
+            label={badgeCount > 99 ? "99+" : badgeCount}
+          />
+        )}
+        {/* A row carrying a coming-soon chip leads nowhere, so it gets no
+            chevron — the chip stands in for the affordance. */}
+        {!badge && (
+          <ChevronRight
+            size={drawerRowChevronSize}
+            color="currentColor"
+            strokeWidth={2}
+            aria-hidden
+            className={drawerRowChevronClass}
+          />
+        )}
+      </span>
     </button>
   );
 }

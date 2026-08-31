@@ -1,5 +1,5 @@
 "use client";
-import { useId } from "react";
+import { useEffect, useId, useRef } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import { Bell } from "lucide-react";
@@ -37,13 +37,28 @@ export function NotificationBell() {
     useDropdown<HTMLButtonElement>();
 
   const unreadCount = useNotificationsBadge();
-  const { notifications, loading, markRead, markAllRead, markingAll } =
-    useNotifications({
-      pageSize: PREVIEW_SIZE,
-      // `hasOpened` would keep it mounted after closing; `isOpen` is enough
-      // because Apollo caches the result for the next open.
-      enabled: isOpen,
-    });
+  const { notifications, loading, markRead, markAllRead } = useNotifications({
+    pageSize: PREVIEW_SIZE,
+    // `hasOpened` would keep it mounted after closing; `isOpen` is enough
+    // because Apollo caches the result for the next open.
+    enabled: isOpen,
+  });
+
+  // Opening the panel is the acknowledgement: putting the list on screen is
+  // what "seeing" a notification means here, so the badge clears on open rather
+  // than one row at a time. Once per open — the latch releases on close, and
+  // anything that lands while the panel is up is marked too, since the refetch
+  // pulls it into the list the user is already looking at.
+  const markedThisOpen = useRef(false);
+  useEffect(() => {
+    if (!isOpen) {
+      markedThisOpen.current = false;
+      return;
+    }
+    if (markedThisOpen.current || unreadCount === 0) return;
+    markedThisOpen.current = true;
+    void markAllRead();
+  }, [isOpen, unreadCount, markAllRead]);
 
   if (!isAuthenticated) return null;
 
@@ -55,10 +70,9 @@ export function NotificationBell() {
         : t("a11y.bellUnread", { count: String(unreadCount) });
 
   return (
-    <div
-      ref={containerRef}
-      className="relative flex items-center justify-center"
-    >
+    // No `relative` on the container on purpose: the panel anchors to the
+    // navbar's right-hand cluster instead, which is what keeps it on screen.
+    <div ref={containerRef} className="flex items-center justify-center">
       <button
         ref={triggerRef}
         type="button"
@@ -99,25 +113,12 @@ export function NotificationBell() {
         width="w-[22rem] max-w-[calc(100vw-2rem)]"
         className="top-[calc(100%+10px)]"
       >
-        <div className="flex items-center justify-between gap-2 border-b border-border-light px-4 py-3">
+        {/* No "mark all read" control: opening the panel already did it. The
+            full notifications screen still offers one, for rows read there. */}
+        <div className="border-b border-border-light px-4 py-3">
           <Text variant="span" size="sm" weight="bold">
             {t("title")}
           </Text>
-          {unreadCount > 0 && (
-            <button
-              type="button"
-              onClick={() => void markAllRead()}
-              disabled={markingAll}
-              className={clsx(
-                "cursor-pointer rounded-md px-1.5 py-0.5 text-xs font-semibold",
-                "text-primary outline-none transition-colors",
-                "hover:bg-primary-light-bg focus-visible:ring-2 focus-visible:ring-primary",
-                "disabled:cursor-not-allowed disabled:opacity-50",
-              )}
-            >
-              {t("markAllRead")}
-            </button>
-          )}
         </div>
 
         <div
@@ -136,11 +137,7 @@ export function NotificationBell() {
               <Text variant="p" size="sm" weight="semibold">
                 {t("empty.title")}
               </Text>
-              <Text
-                variant="p"
-                size="xs"
-                className="mt-1 text-foreground-secondary"
-              >
+              <Text variant="p" size="xs" className="mt-1 text-foreground-secondary">
                 {t("empty.description")}
               </Text>
             </div>

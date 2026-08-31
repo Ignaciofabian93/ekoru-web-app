@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BadgeCheck,
   BookOpen,
   House,
   MessageSquare,
@@ -32,6 +33,7 @@ import {
 } from "./constants/menuItems";
 import { useDrawerMarketplace } from "./hooks/useDrawerMarketplace";
 
+import { Badge } from "@/components/Primitives/Badge";
 import { Button } from "@/components/Primitives/Button";
 import { Title } from "@/components/Primitives/Title";
 import { Accordion, type AccordionSectionDef } from "./Accordion";
@@ -258,20 +260,20 @@ export default function Drawer() {
           {/* User identity */}
           {seller && (
             <div className="flex flex-col items-center gap-3 bg-secondary/10 p-3.5">
-              {/* Both branches fill the same 52px slot — the photo used to
+              {/* Both branches fill the same 68px slot — the photo used to
                   render at 130px from a 100px source, so it was both upscaled
                   and 2.5× the size of the initials fallback beside it. */}
               {profileImage ? (
                 <Image
                   src={profileImage}
                   alt=""
-                  width={104}
-                  height={104}
-                  className="size-13 shrink-0 rounded-full object-cover"
+                  width={136}
+                  height={136}
+                  className="size-17 shrink-0 rounded-full object-cover"
                 />
               ) : (
-                <div className="flex size-13 shrink-0 items-center justify-center rounded-full bg-primary">
-                  <span className="font-sans text-lg font-bold text-on-primary">
+                <div className="flex size-17 shrink-0 items-center justify-center rounded-full bg-primary">
+                  <span className="font-sans text-xl font-bold text-on-primary">
                     {initials || "?"}
                   </span>
                 </div>
@@ -283,10 +285,14 @@ export default function Drawer() {
                 <span className="max-w-full truncate font-sans text-xs font-normal text-foreground-secondary">
                   {seller.email}
                 </span>
-                <div className="flex items-center justify-center mt-2 self-center-safe rounded-2xl bg-primary/15 px-2 py-1">
-                  <span className="font-sans text-xs font-semibold text-primary-dark">
-                    {t(`sellerType.${seller.sellerType}`)}
-                  </span>
+                {/* Same badge the profile header wears for the same fact. */}
+                <div className="mt-2 self-center-safe">
+                  <Badge
+                    variant="primary"
+                    size="small"
+                    icon={BadgeCheck}
+                    label={t(`sellerType.${seller.sellerType}`)}
+                  />
                 </div>
               </div>
             </div>

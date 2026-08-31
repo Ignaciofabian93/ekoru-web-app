@@ -46,7 +46,10 @@ export function NavBar() {
       >
         <div className="flex items-center justify-between px-2 mb-2">
           <EkoruLogo label={t("a11y.homeLink")} />
-          <div className="flex items-center justify-end gap-3">
+          {/* Positioning context for the notification panel: anchored to the
+              bell it would hang off the left edge of a phone screen, so it
+              anchors to the navbar's own right edge instead. */}
+          <div className="relative flex items-center justify-end gap-3">
             <LanguageSwitcher />
             {/* Renders nothing for guests, so the row collapses cleanly. */}
             <NotificationBell />

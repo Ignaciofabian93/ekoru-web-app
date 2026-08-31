@@ -1,6 +1,8 @@
 import clsx from "clsx";
 import { ChevronDown, ChevronRight, type LucideIcon } from "lucide-react";
 import React, { useState } from "react";
+import { Text } from "@/components/Primitives/Text";
+import { drawerRowClass, drawerRowIconClass, drawerRowIconSize } from "@/design/drawer";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 export type L3Item = { label: string; route: string };
@@ -181,18 +183,20 @@ function AccordionSection({
 
   return (
     <div>
-      <div className="flex flex-row items-center gap-3 border-b border-border-strong px-3.5 py-3.25">
+      <div className="flex flex-row items-center border-b border-border-strong pr-3.5">
+        {/* Same skin as MenuRow: the two sit in one list, so the section header
+            has to carry the icon and label exactly the way a link does. */}
         <button
           type="button"
           onClick={() => onNavigate(section.baseRoute)}
-          className="flex flex-1 cursor-pointer flex-row items-center gap-3 p-0"
+          className={clsx(drawerRowClass, "flex-1 cursor-pointer hover:bg-surface-hover")}
         >
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-sm bg-primary/10 text-primary">
-            <Icon size={18} strokeWidth={1.5} color="currentColor" />
-          </div>
-          <span className="font-sans text-sm font-medium text-foreground">
-            {section.label}
+          <span className={drawerRowIconClass}>
+            <Icon size={drawerRowIconSize} color="currentColor" strokeWidth={2} />
           </span>
+          <Text variant="span" weight="medium" size="base" className="flex-1">
+            {section.label}
+          </Text>
         </button>
         <button
           type="button"
