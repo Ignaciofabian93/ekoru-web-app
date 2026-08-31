@@ -22,10 +22,13 @@ export type NavigationDictionary = {
   search: {
     placeholder: string;
   };
-  localeSwitcher: {
-    country: string;
-    language: string;
-    singleLanguage: string;
+  banner: {
+    /** Site-wide beta notice shown above the navbar. */
+    beta: string;
+  };
+  languageSwitcher: {
+    /** Heading above the list of languages in the popover. */
+    heading: string;
   };
   dropdown: {
     myProfile: string;
@@ -53,9 +56,7 @@ export type NavigationDictionary = {
     accountMenu: string;
     openAccountMenu: string;
     closeAccountMenu: string;
-    localeTrigger: string;
-    localePanel: string;
-    countrySelect: string;
+    languageTrigger: string;
     languageSelect: string;
   };
 };

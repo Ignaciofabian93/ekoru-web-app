@@ -6,8 +6,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      # args:
-      # NEXT_PUBLIC_ENVIRONMENT: staging
+      args:
+        NEXT_PUBLIC_ENVIRONMENT: staging
     restart: always
     container_name: ekoru-app-staging
     env_file:

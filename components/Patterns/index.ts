@@ -8,6 +8,7 @@ export { EmptyState } from "./EmptyState";
 export { FilterGroup, FilterOptions, FilterPanel } from "./FilterPanel";
 export { GradientHeader } from "./GradientHeader";
 export { NavCard } from "./NavCard";
+export { NotificationBanner } from "./NotificationBanner";
 export { PageHero } from "./PageHero";
 export { Pagination } from "./Pagination";
 export { ProductGallery } from "./ProductGallery";
@@ -36,6 +37,10 @@ export type {
 } from "./FilterPanel";
 export type { GradientHeaderProps } from "./GradientHeader";
 export type { NavCardProps } from "./NavCard";
+export type {
+  NotificationBannerProps,
+  NotificationBannerVariant,
+} from "./NotificationBanner";
 export type { PageHeroProps } from "./PageHero";
 export type { PaginationProps } from "./Pagination";
 export type { ProductGalleryLabels, ProductGalleryProps } from "./ProductGallery";

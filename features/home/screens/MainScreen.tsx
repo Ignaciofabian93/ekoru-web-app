@@ -7,7 +7,7 @@ import {
 import { getHomeDictionary, NAMESPACE } from "../i18n";
 import { CategoriesSection } from "../ui/CategoriesSection";
 import { HomeHero } from "../ui/HomeHero";
-import { StatsSection } from "../ui/StatsSection";
+// import { StatsSection } from "../ui/StatsSection";
 import { StoresHighlight } from "../ui/StoresHighlight";
 import { ExchangeHighlight } from "../ui/ExchangeHighlight";
 import { ServicesHighlight } from "../ui/ServicesHighlight";
@@ -27,7 +27,7 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
     >
       <PageLayout hero={<HomeHero lang={lang} />} width="default">
         <CategoriesSection lang={lang} />
-        <StatsSection />
+        {/* <StatsSection /> */}
         <AdBannerSection lang={lang} variant="teal" domain="stores" />
         <StoresHighlight lang={lang} />
         <StoreProductsHighlight lang={lang} />

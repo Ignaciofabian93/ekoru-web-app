@@ -36,8 +36,9 @@ const COUNTRY_HEADERS = [
 const UNKNOWN_COUNTRIES = new Set(["XX", "T1"]);
 
 /**
- * The visitor's market: a pick made in the LocaleSwitcher wins, then whatever
- * the edge reports about their IP. `null` when neither is available.
+ * The visitor's market: the country resolved from their location on first
+ * contact wins (see `useLocaleDetection`), then whatever the edge reports about
+ * their IP. `null` when neither is available.
  */
 function getCountry(request: NextRequest): string | null {
   const saved = request.cookies.get(COUNTRY_COOKIE)?.value?.trim().toUpperCase() ?? "";
@@ -56,8 +57,8 @@ function getCountry(request: NextRequest): string | null {
  * the cookie holds a real choice, and for countries outside the served markets
  * (a visitor from Mexico keeps falling back to the default).
  *
- * Attributes mirror `utils/cookies.ts` so the LocaleSwitcher overwrites this
- * value in place rather than creating a second cookie of the same name.
+ * Attributes mirror `utils/cookies.ts` so the client's own write overwrites
+ * this value in place rather than creating a second cookie of the same name.
  */
 function seedCountry(
   request: NextRequest,

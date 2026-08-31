@@ -17,13 +17,13 @@ const getEndpoints = () => {
         images: "https://staging-images.ekoru.cl",
       };
     default: {
-      const devBase = "https://staging-api.ekoru.cl";
+      const devBase = "https://api.ekoru.cl";
       return {
         base: devBase,
         graphql: `${devBase}/graphql`,
         rest: `${devBase}/session`,
         // In dev the browser still hits the staging CDN; only the gateway is local.
-        images: "https://staging-images.ekoru.cl",
+        images: "https://images.ekoru.cl",
       };
     }
   }

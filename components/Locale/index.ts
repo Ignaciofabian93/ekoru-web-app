@@ -1,0 +1,1 @@
+export { LocaleDetector } from "./LocaleDetector";

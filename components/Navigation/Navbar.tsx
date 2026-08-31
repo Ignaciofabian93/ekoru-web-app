@@ -1,12 +1,14 @@
 "use client";
 import clsx from "clsx";
+import { FlaskConical } from "lucide-react";
 import { useTranslation } from "@/i18n/context";
 import { MAIN_CONTENT_ID } from "../Layout/tokens";
 import { EkoruLogo } from "../Primitives/EkoruLogo";
 import SubHeader from "./Subheader";
 import ProfileDropdown from "./ProfileDropdown";
-import LocaleSwitcher from "./LocaleSwitcher";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { ShoppingCartButton } from "../Patterns/ShoppingCart";
+import { NotificationBanner } from "../Patterns/NotificationBanner";
 import { SearchBar } from "./SearchBar";
 import MenuButton from "./MenuButton";
 import { NotificationBell } from "@/features/notifications/ui/NotificationBell";
@@ -21,6 +23,10 @@ export function NavBar() {
       aria-label={t("a11y.headerLabel")}
       className="w-screen bg-linear-to-r from-primary via-secondary-dark to-primary"
     >
+      {/* Above everything, including the skip link — it carries no focusable
+          controls, so it can't get between a keyboard user and that link. */}
+      <NotificationBanner message={t("banner.beta")} icon={FlaskConical} />
+
       {/* Visible only once focused; the target is the <main> that PageLayout
           renders. Must be the first focusable thing on the page. */}
       <a
@@ -41,7 +47,7 @@ export function NavBar() {
         <div className="flex items-center justify-between px-2 mb-2">
           <EkoruLogo label={t("a11y.homeLink")} />
           <div className="flex items-center justify-end gap-3">
-            <LocaleSwitcher />
+            <LanguageSwitcher />
             {/* Renders nothing for guests, so the row collapses cleanly. */}
             <NotificationBell />
             <ShoppingCartButton

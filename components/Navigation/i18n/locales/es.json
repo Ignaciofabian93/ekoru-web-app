@@ -10,10 +10,11 @@
   "search": {
     "placeholder": "Buscar en EKORU"
   },
-  "localeSwitcher": {
-    "country": "País",
-    "language": "Idioma",
-    "singleLanguage": "Solo hay un idioma disponible para este país."
+  "banner": {
+    "beta": "Versión beta: algunas funciones aún están en desarrollo."
+  },
+  "languageSwitcher": {
+    "heading": "Idioma"
   },
   "dropdown": {
     "account": "Cuenta",
@@ -46,9 +47,7 @@
     "accountMenu": "Menú de la cuenta",
     "openAccountMenu": "Abrir el menú de la cuenta",
     "closeAccountMenu": "Cerrar el menú de la cuenta",
-    "localeTrigger": "Cambiar país e idioma",
-    "localePanel": "País e idioma",
-    "countrySelect": "Selecciona tu país",
+    "languageTrigger": "Cambiar idioma",
     "languageSelect": "Selecciona tu idioma"
   }
 }

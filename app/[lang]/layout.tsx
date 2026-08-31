@@ -16,6 +16,7 @@ import { ApolloWrapper } from "@/lib/apollo/ApolloWrapper";
 import { DrawerProvider } from "@/context/DrawerContext";
 import Drawer from "@/components/Drawer/Drawer";
 import { ToastProvider } from "@/components/Feedback/Toast";
+import { LocaleDetector } from "@/components/Locale";
 import {
   getDrawerDictionary,
   NAMESPACE as DRAWER_NAMESPACE,
@@ -184,6 +185,8 @@ export default async function RootLayout({
           </DictionaryProvider>
         </ApolloWrapper>
         <ToastProvider />
+        {/* Asks for the location permission once, on a visitor's first page. */}
+        <LocaleDetector />
       </body>
     </html>
   );
