@@ -234,6 +234,14 @@ export interface CardFooterProps {
    */
   onAction?: () => void;
   state?: CardFooterState;
+  /**
+   * Strips the buy affordance: the CTA reads "view details" and navigates to
+   * `url` instead of acting, and the quantity stepper never appears. For a
+   * catalog that is browsable before it is transactable — see
+   * `constants/features.ts`. Stock still reports honestly, so a sold-out card
+   * keeps saying so.
+   */
+  browseOnly?: boolean;
   /** Gates the CTA independently of `state` — e.g. an unresolved seller. */
   disabled?: boolean;
   loading?: boolean;

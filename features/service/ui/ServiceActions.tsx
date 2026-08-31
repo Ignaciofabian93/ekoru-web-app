@@ -14,6 +14,7 @@ import { useState } from "react";
 import clsx from "clsx";
 
 import { Button } from "@/components/Primitives/Button";
+import { FEATURES } from "@/constants/features";
 import { buttonClass, buttonIconSize } from "@/design/button";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useShareProduct } from "@/hooks/useShareProduct";
@@ -50,8 +51,13 @@ export function ServiceActions({ lang, service }: Props) {
   // be requested; anything with a price can be booked directly. Both are
   // offered when the provider prices by package or by the hour, where a buyer
   // may want a tailored figure before committing.
+  //
+  // Beta: both are switched off, so the panel is browse-and-contact only. The
+  // contact route below is unaffected — it was never transacted on Ekoru, and
+  // it's the whole point of a service listing. See `constants/features.ts`.
   const quoteOnly = service.pricingType === "QUOTATION";
-  const canBook = !quoteOnly;
+  const canBook = !quoteOnly && FEATURES.serviceBooking.available;
+  const canRequestQuote = FEATURES.serviceQuotes.available;
 
   // Nothing is transacted on Ekoru for a service: the buyer has to reach the
   // provider. A published phone number is the direct route; otherwise the
@@ -94,14 +100,16 @@ export function ServiceActions({ lang, service }: Props) {
             />
           )}
 
-          <Button
-            text={t("actions.requestQuote")}
-            leftIcon={FileText}
-            variant={quoteOnly ? "primary" : "ghost"}
-            size="md"
-            fullWidth
-            onClick={() => setQuoteOpen(true)}
-          />
+          {canRequestQuote && (
+            <Button
+              text={t("actions.requestQuote")}
+              leftIcon={FileText}
+              variant={quoteOnly ? "primary" : "ghost"}
+              size="md"
+              fullWidth
+              onClick={() => setQuoteOpen(true)}
+            />
+          )}
         </>
       )}
 
@@ -134,16 +142,20 @@ export function ServiceActions({ lang, service }: Props) {
         />
       </div>
 
-      <BookServiceDialog
-        service={service}
-        isOpen={bookingOpen}
-        onClose={() => setBookingOpen(false)}
-      />
-      <RequestQuoteDialog
-        service={service}
-        isOpen={quoteOpen}
-        onClose={() => setQuoteOpen(false)}
-      />
+      {canBook && (
+        <BookServiceDialog
+          service={service}
+          isOpen={bookingOpen}
+          onClose={() => setBookingOpen(false)}
+        />
+      )}
+      {canRequestQuote && (
+        <RequestQuoteDialog
+          service={service}
+          isOpen={quoteOpen}
+          onClose={() => setQuoteOpen(false)}
+        />
+      )}
     </div>
   );
 }

@@ -7,7 +7,18 @@ import {
   SUPPORTED_LANGUAGES,
 } from "@/constants/settings";
 import { getLanguagesForCountry } from "@/constants/language-data";
+import { FEATURES } from "@/constants/features";
 import { COOKIE_MAX_AGE_SECONDS } from "@/utils/cookies";
+
+/**
+ * Routes a disabled feature owns, evaluated AFTER the leading `/[lang]` segment
+ * is stripped. Blocking here (rather than only hiding the links) is what makes
+ * a switched-off capability unreachable by typing its URL — and it costs one
+ * line to bring back when the flag flips. See `constants/features.ts`.
+ */
+const DISABLED_PATTERNS: RegExp[] = [
+  ...(FEATURES.cart.available ? [] : [/^\/cart(\/|$)/]),
+];
 
 // Patterns evaluated AFTER the leading `/[lang]` segment is stripped.
 const PROTECTED_PATTERNS: RegExp[] = [
@@ -139,6 +150,16 @@ export function proxy(request: NextRequest) {
   }
 
   const rest = `/${segments.slice(2).join("/")}`;
+
+  // A route behind a switched-off feature doesn't exist for now: send the
+  // visitor home rather than to a page whose controls are all disabled.
+  if (DISABLED_PATTERNS.some((rx) => rx.test(rest))) {
+    const home = request.nextUrl.clone();
+    home.pathname = `/${maybeLang}`;
+    home.search = "";
+    return seedCountry(request, NextResponse.redirect(home), country);
+  }
+
   const isProtected = PROTECTED_PATTERNS.some((rx) => rx.test(rest));
   if (!isProtected) return seedCountry(request, NextResponse.next(), country);
 

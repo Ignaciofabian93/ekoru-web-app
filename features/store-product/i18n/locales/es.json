@@ -29,7 +29,8 @@
     "contactSeller": "Contactar al vendedor",
     "viewSeller": "Ver vendedor",
     "viewAll": "Ver todos",
-    "ownListing": "Esta es tu publicación — no puedes comprar tus propios productos."
+    "ownListing": "Esta es tu publicación — no puedes comprar tus propios productos.",
+    "browsingOnly": "Por ahora solo exploración: las compras estarán disponibles pronto."
   },
   "summary": {
     "by": "por",

@@ -56,7 +56,8 @@
     "SERVICE": "Réserver",
     "BUSINESS": "Voir la boutique",
     "PROVIDER": "Voir le prestataire",
-    "EDIT": "Modifier l'annonce"
+    "EDIT": "Modifier l'annonce",
+    "BROWSE": "Voir les détails"
   },
   "impact": {
     "title": "Impact environnemental",

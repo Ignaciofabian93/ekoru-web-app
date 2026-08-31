@@ -12,6 +12,7 @@ import { NotificationBanner } from "../Patterns/NotificationBanner";
 import { SearchBar } from "./SearchBar";
 import MenuButton from "./MenuButton";
 import { NotificationBell } from "@/features/notifications/ui/NotificationBell";
+import { FEATURES } from "@/constants/features";
 import { NAMESPACE } from "./i18n";
 
 export function NavBar() {
@@ -53,11 +54,13 @@ export function NavBar() {
             <LanguageSwitcher />
             {/* Renders nothing for guests, so the row collapses cleanly. */}
             <NotificationBell />
-            <ShoppingCartButton
-              label={t("a11y.cart")}
-              labelWithOneItem={t("a11y.cartWithOneItem")}
-              labelWithItems={t("a11y.cartWithItems")}
-            />
+            {FEATURES.cart.available && (
+              <ShoppingCartButton
+                label={t("a11y.cart")}
+                labelWithOneItem={t("a11y.cartWithOneItem")}
+                labelWithItems={t("a11y.cartWithItems")}
+              />
+            )}
             {/* Below md the drawer carries the account links, so the dropdown
                 gives way to the menu button that opens it. */}
             <div className="hidden md:flex">

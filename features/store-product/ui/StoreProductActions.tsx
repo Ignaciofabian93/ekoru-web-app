@@ -1,8 +1,9 @@
 "use client";
 import clsx from "clsx";
-import { Check, Heart, PackageCheck, Share2, ShoppingCart } from "lucide-react";
+import { Check, Heart, Info, PackageCheck, Share2, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/Primitives/Button";
+import { FEATURES } from "@/constants/features";
 import { buttonIconSize } from "@/design/button";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
@@ -16,6 +17,22 @@ import { useShareProduct } from "@/hooks/useShareProduct";
 interface Props {
   lang: string;
   product: StoreProduct;
+}
+
+/** Shared shell for the two states that replace the CTA rather than disable it. */
+function ActionNotice({
+  icon: Icon,
+  children,
+}: {
+  icon: typeof PackageCheck;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-2 rounded-xl border border-border bg-background-secondary px-4 py-3.5 text-sm font-medium text-foreground-secondary">
+      <Icon size={18} strokeWidth={2} className="shrink-0 text-primary" />
+      {children}
+    </div>
+  );
 }
 
 export function StoreProductActions({ product }: Props) {
@@ -33,6 +50,11 @@ export function StoreProductActions({ product }: Props) {
     text: product.description,
   });
 
+  // Beta: the store is browsable but nothing is transacted yet. A notice takes
+  // the CTA's place rather than a disabled button — there is nothing to retry,
+  // so an inert button would only look broken. See `constants/features.ts`.
+  const canPurchase = FEATURES.storePurchase.available;
+
   function handleAddToCart(): boolean {
     const result = addStoreProduct(product);
     if (result === "added") {
@@ -45,10 +67,9 @@ export function StoreProductActions({ product }: Props) {
   return (
     <div className="flex flex-col gap-2.5">
       {isOwnProduct ? (
-        <div className="flex items-center gap-2 rounded-xl border border-border bg-background-secondary px-4 py-3.5 text-sm font-medium text-foreground-secondary">
-          <PackageCheck size={18} strokeWidth={2} className="shrink-0 text-primary" />
-          {t("actions.ownListing")}
-        </div>
+        <ActionNotice icon={PackageCheck}>{t("actions.ownListing")}</ActionNotice>
+      ) : !canPurchase ? (
+        <ActionNotice icon={Info}>{t("actions.browsingOnly")}</ActionNotice>
       ) : (
         <Button
           variant="primary"

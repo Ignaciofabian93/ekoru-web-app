@@ -25,6 +25,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { FEATURES } from "@/constants/features";
 import type { Seller } from "@/types/user";
 
 /**
@@ -263,17 +264,20 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         icon: Repeat2,
         available: true,
       },
+      // Nothing can be booked or quoted while those capabilities are off, so
+      // these two inboxes are guaranteed empty — they follow the same switch
+      // that brings the requests back. See `constants/features.ts`.
       {
         route: "/profile/bookings",
         label: "account.bookings",
         icon: CalendarClock,
-        available: true,
+        available: FEATURES.serviceBooking.available,
       },
       {
         route: "/profile/quotes",
         label: "account.quotes",
         icon: FileText,
-        available: true,
+        available: FEATURES.serviceQuotes.available,
       },
       {
         route: "/profile/favorites",

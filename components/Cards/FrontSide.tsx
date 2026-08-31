@@ -426,6 +426,7 @@ export function Footer({
   url,
   onAction,
   state = "default",
+  browseOnly = false,
   disabled = false,
   loading,
   quantity,
@@ -453,14 +454,21 @@ export function Footer({
   }
 
   const LABEL: Record<CardFooterState, string> = {
-    default: t(`cta.${itemType}`),
+    // A browse-only card can't say "add to cart" or "book now" for something it
+    // won't do — the CTA becomes the navigation it actually performs.
+    default: browseOnly ? t("cta.BROWSE") : t(`cta.${itemType}`),
     added: t("actions.added"),
     unavailable: t("stock.outOfStock"),
   };
 
+  // Browse-only is authoritative over whatever the caller passed, so a stale
+  // `onAction` can never smuggle the buy path back in.
+  const action = browseOnly ? undefined : onAction;
+
   return (
     <div className="relative z-20 mt-auto flex items-center gap-2 px-2 pb-2">
-      {typeof quantity === "number" &&
+      {!browseOnly &&
+      typeof quantity === "number" &&
       quantity > 0 &&
       typeof maxQuantity === "number" &&
       onQuantityChange ? (
@@ -482,7 +490,7 @@ export function Footer({
           size="sm"
           disabled={disabled || state === "unavailable"}
           loading={loading}
-          onPress={onAction ?? (() => navigateTo({ route: url }))}
+          onPress={action ?? (() => navigateTo({ route: url }))}
         />
       )}
     </div>

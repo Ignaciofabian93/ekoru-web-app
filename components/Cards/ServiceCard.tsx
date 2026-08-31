@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { ServiceCardService } from "./types/Card.types";
+import { FEATURES } from "@/constants/features";
 import { Card } from "./Card";
 
 interface ServiceCardProps {
@@ -62,7 +63,13 @@ export function ServiceCard({
           averageRating={service.averageRating ?? undefined}
           reviewsNumber={service.reviewsNumber ?? undefined}
         />
-        <Card.Footer itemType="SERVICE" url={target} />
+        {/* The card only ever navigated; with booking off, the CTA stops
+            promising a booking it can't take. */}
+        <Card.Footer
+          itemType="SERVICE"
+          url={target}
+          browseOnly={!FEATURES.serviceBooking.available}
+        />
       </Card.FrontSide>
       <Card.BackSide>
         <Card.BackHeader itemName={service.name} />

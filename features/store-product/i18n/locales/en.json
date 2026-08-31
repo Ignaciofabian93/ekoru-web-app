@@ -29,7 +29,8 @@
     "contactSeller": "Contact seller",
     "viewSeller": "View seller",
     "viewAll": "View all",
-    "ownListing": "This is your listing — you can't buy your own products."
+    "ownListing": "This is your listing — you can't buy your own products.",
+    "browsingOnly": "Browsing only for now — purchases open soon."
   },
   "summary": {
     "by": "by",

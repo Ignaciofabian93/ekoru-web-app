@@ -69,7 +69,8 @@ export type CardsDictionary = {
     added: string;
   };
   /** Primary call-to-action label, chosen by the card's ItemType. */
-  cta: Record<ItemType, string>;
+  /** `BROWSE` is the neutral CTA a card falls back to when it can't transact. */
+  cta: Record<ItemType | "BROWSE", string>;
   impact: {
     title: string;
     /** Label on the button that opens the full impact modal. */

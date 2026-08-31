@@ -1,5 +1,6 @@
 "use client";
 import type { ReactNode } from "react";
+import { FEATURES } from "@/constants/features";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { useCartQuantity } from "@/features/cart/hooks/useCartQuantity";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
@@ -58,7 +59,12 @@ export function StoreProductCard({
   // mode the owner's controls replace the CTA — either way the buy affordances
   // (stepper included) come off the card.
   const isManaged = Boolean(actions || onEdit);
-  const canBuy = !isOwnProduct && !isManaged;
+  const isShopper = !isOwnProduct && !isManaged;
+  // Beta: the store is browsable but not transactable, so a shopper's card
+  // keeps its footer and turns it into "view details". Own and managed cards
+  // are unaffected — they never had a buy CTA. See `constants/features.ts`.
+  const canBuy = isShopper && FEATURES.storePurchase.available;
+  const browseOnly = isShopper && !canBuy;
 
   // A sold-out card keeps its "Out of stock" CTA even when units are already in
   // the cart: there is nothing left to add, and the line stays editable from
@@ -127,11 +133,12 @@ export function StoreProductCard({
         />
         {/* Managed cards still render the footer — it resolves to the owner's
             Edit CTA rather than the add-to-cart button. */}
-        {(canBuy || isManaged) && (
+        {(canBuy || browseOnly || isManaged) && (
           <Card.Footer
             itemType="STORE"
             url={href}
-            onAction={handleAddToCart}
+            browseOnly={browseOnly}
+            onAction={canBuy ? handleAddToCart : undefined}
             state={isSoldOut ? "unavailable" : "default"}
             quantity={canStep ? quantity : undefined}
             onQuantityChange={canStep ? setQuantity : undefined}

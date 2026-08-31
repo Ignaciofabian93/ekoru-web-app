@@ -56,7 +56,8 @@
     "SERVICE": "Reservar ahora",
     "BUSINESS": "Ver tienda",
     "PROVIDER": "Ver proveedor",
-    "EDIT": "Editar"
+    "EDIT": "Editar",
+    "BROWSE": "Ver detalles"
   },
   "impact": {
     "title": "Impacto ambiental",
