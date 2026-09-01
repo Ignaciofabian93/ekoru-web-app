@@ -59,7 +59,7 @@ export function MarketplaceCard({
         <Card.Footer itemType="MARKETPLACE" url={href} />
       </Card.FrontSide>
       <Card.BackSide>
-        <Card.BackHeader itemName={product.name} />
+        <Card.BackHeader itemType="MARKETPLACE" itemName={product.name} />
         <Card.BackBody itemType="MARKETPLACE" impact={product.environmentalImpact} />
         <Card.BackFooter seller={product.seller} />
       </Card.BackSide>

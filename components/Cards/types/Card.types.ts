@@ -114,7 +114,17 @@ export interface CardProps {
 export interface CardBackHeaderProps {
   /** Accessible name for the flip control. Pass a translated string. */
   flipLabel?: string;
+  /**
+   * Titles the face. Flipped, the cover image is gone, so without this the back
+   * never says which item the panel under it belongs to.
+   */
   itemName: string;
+  /**
+   * Decides the eyebrow above the name: the products (`MARKETPLACE` / `STORE`)
+   * head their face with the impact title, everything else shows the name
+   * alone. Omit it to get just the name.
+   */
+  itemType?: ItemType;
 }
 
 export interface CardBackBodyProps {

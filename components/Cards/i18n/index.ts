@@ -73,17 +73,24 @@ export type CardsDictionary = {
   cta: Record<ItemType | "BROWSE", string>;
   impact: {
     title: string;
-    /** Label on the button that opens the full impact modal. */
+    /** Titles the card's back face. Short: it shares a line with the flip control. */
+    saved: string;
+    /** Label on the link that opens the full impact modal. */
     viewImpact: string;
+    /** Heads the material breakdown on the card's back face. */
+    composition: string;
     co2: string;
     water: string;
     /** Compact labels shown below the `sm` breakpoint. */
     co2Short: string;
     waterShort: string;
-    /** e.g. "{{value}} kg" — pass the number as `value`. */
-    co2Value: string;
-    /** e.g. "{{value}} L" — pass the number as `value`. */
-    waterValue: string;
+    /**
+     * Units, kept apart from the figure so the back face can set the number
+     * large and the unit small. Not translated in practice — they are SI — but
+     * they live here so a locale can change them without a code change.
+     */
+    co2Unit: string;
+    waterUnit: string;
   };
   exchange: {
     /** aria-label on the trigger icon button. */

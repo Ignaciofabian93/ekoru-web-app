@@ -61,13 +61,15 @@
   },
   "impact": {
     "title": "Impacto ambiental",
+    "saved": "Impacto ahorrado",
     "viewImpact": "Ver impacto",
+    "composition": "Composición",
     "co2": "CO₂ ahorrado",
     "water": "Agua ahorrada",
     "co2Short": "CO₂",
     "waterShort": "Agua",
-    "co2Value": "{{value}} kg",
-    "waterValue": "{{value}} L"
+    "co2Unit": "kg",
+    "waterUnit": "L"
   },
   "exchange": {
     "trigger": "Ver intereses de intercambio",
