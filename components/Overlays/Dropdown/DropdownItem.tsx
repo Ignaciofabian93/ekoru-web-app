@@ -64,7 +64,11 @@ export function DropdownItem({
     : isDanger
       ? highlighted
         ? "cursor-pointer bg-danger text-white hover:brightness-125"
-        : "cursor-pointer text-white hover:brightness-125"
+        : // White only works against the filled red above it. Unhighlighted, the
+          // row sits on the panel's white surface, so the tone has to come from
+          // the text itself — it was rendering white on white: invisible, but
+          // still hoverable.
+          "cursor-pointer text-danger hover:bg-danger/10 focus-visible:bg-danger/10"
       : highlighted
         ? "cursor-pointer bg-primary/10 text-primary hover:bg-primary/15 focus-visible:bg-primary/15"
         : "cursor-pointer text-foreground hover:bg-surface-hover focus-visible:bg-surface-hover";
@@ -107,7 +111,7 @@ export function DropdownItem({
           variant="span"
           size="sm"
           weight="medium"
-          color={isDanger ? "white" : "secondary"}
+          color={isDanger ? (highlighted ? "white" : "error") : "secondary"}
         >
           {label}
         </Text>

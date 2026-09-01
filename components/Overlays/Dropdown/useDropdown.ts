@@ -28,19 +28,44 @@ export function useDropdown<T extends HTMLElement = HTMLElement>({
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<T>(null);
 
-  const close = useCallback(() => setIsOpen(false), []);
+  /**
+   * Hands focus back to the trigger if it is still inside the panel, before the
+   * panel closes.
+   *
+   * A `keepMounted` panel goes `inert` + `aria-hidden` on close, and hiding a
+   * subtree that still holds focus is exactly what the browser refuses to do —
+   * it logs "Blocked aria-hidden on an element because its descendant retained
+   * focus" and the user is left focused on something no longer exposed. Moving
+   * focus first is also what the menu-button pattern asks for: dismissing a menu
+   * returns you to the control that opened it.
+   */
+  const releaseFocus = useCallback(() => {
+    if (containerRef.current?.contains(document.activeElement)) {
+      triggerRef.current?.focus();
+    }
+  }, []);
+
+  const close = useCallback(() => {
+    releaseFocus();
+    setIsOpen(false);
+  }, [releaseFocus]);
+
   const toggle = useCallback(() => setIsOpen((prev) => !prev), []);
 
   useEffect(() => {
     if (!isOpen) return;
     const onMouseDown = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        // Runs before the browser's own focus handling for this click, so a
+        // focusable target still ends up with the focus — the trigger only
+        // keeps it when the click landed on something that takes none.
+        releaseFocus();
         setIsOpen(false);
       }
     };
     document.addEventListener("mousedown", onMouseDown);
     return () => document.removeEventListener("mousedown", onMouseDown);
-  }, [isOpen]);
+  }, [isOpen, releaseFocus]);
 
   useEffect(() => {
     if (!isOpen) return;
