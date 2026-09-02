@@ -17,7 +17,7 @@ import { useParams } from "next/navigation";
 import { useSellerPoints } from "@/store/useAuthStore";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 
 // Lightweight placeholder data — real values should come from the impact API.
 const IMPACT = {

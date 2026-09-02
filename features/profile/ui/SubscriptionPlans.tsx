@@ -19,7 +19,7 @@ import type {
 } from "@/types/enums";
 import { NAMESPACE } from "../i18n";
 import { useSubscribe } from "../hooks/useSubscribe";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 
 type PersonPlanKey = PersonSubscriptionPlan;
 type BusinessPlanKey = BusinessSubscriptionPlan;

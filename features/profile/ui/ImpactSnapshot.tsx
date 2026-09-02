@@ -7,7 +7,7 @@ import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
 import { useImpactYear } from "../hooks/useImpactYear";
 import { formatCo2KG, formatCount, formatWaterLT } from "../constants/impactFormat";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 import { LinkButton } from "@/components/Primitives/LinkButton";
 
 /** Stands in for each figure until the query resolves. */

@@ -16,6 +16,7 @@ export { ProductTrust } from "./ProductTrust";
 export { QuantityStepper } from "./QuantityStepper";
 export { ResultsGrid } from "./ResultsGrid";
 export { ReviewsPanel } from "./ReviewsPanel";
+export { SectionCard } from "./SectionCard";
 export { SectionHeader } from "./SectionHeader";
 export { SellerCard } from "./SellerCard";
 export { ShoppingCartButton } from "./ShoppingCart";
@@ -51,6 +52,7 @@ export type {
 } from "./ProductTrust";
 export type { QuantityStepperProps } from "./QuantityStepper";
 export type { ResultsGridProps } from "./ResultsGrid";
+export type { SectionCardProps } from "./SectionCard";
 export type { SectionHeaderProps } from "./SectionHeader";
 export type { StatTileOrientation, StatTileProps, StatTileTone } from "./StatTile";
 export type { Tab, TabsProps } from "./Tabs";

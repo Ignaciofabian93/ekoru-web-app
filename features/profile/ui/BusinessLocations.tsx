@@ -6,7 +6,7 @@ import { useTranslation } from "@/i18n/context";
 import { Building2, MapPin, Pencil, Plus, Star, Trash2 } from "lucide-react";
 import { useBusinessAddresses } from "../hooks/useBusinessAddresses";
 import { NAMESPACE } from "../i18n";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 
 export function BusinessLocations() {
   const { t } = useTranslation(NAMESPACE);

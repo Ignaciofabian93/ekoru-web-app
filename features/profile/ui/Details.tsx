@@ -4,7 +4,7 @@ import { useTranslation } from "@/i18n/context";
 import { useSeller } from "@/store/useAuthStore";
 import { PROFILE_DETAIL_SECTIONS } from "../constants/menuItems";
 import { NAMESPACE } from "../i18n";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 import { Contact2, Pen } from "lucide-react";
 import { LinkButton } from "@/components/Primitives";
 import { useParams } from "next/navigation";

@@ -30,7 +30,7 @@ import {
   Trash2,
   type ProductMenuAction,
 } from "./ProductActionsMenu";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 import { Tabs } from "@/components/Patterns/Tabs";
 import {
   MarketplaceCard,

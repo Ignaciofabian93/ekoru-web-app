@@ -1,7 +1,13 @@
 {
   "page": {
     "heroLabel": "About us",
-    "heroTitle": "What EKORU is"
+    "heroTitle": "What EKORU is",
+    "heroTagline": "A circular economy platform: buy, sell, swap, repair and recycle from one account — with the impact measured.",
+    "badges": {
+      "circular": "Circular economy",
+      "origin": "Born in Chile",
+      "languages": "3 languages"
+    }
   },
   "intro": {
     "title": "A platform for making things last longer",
@@ -69,6 +75,8 @@
     "message": "A connected community generates more impact than thousands of isolated actions."
   },
   "cta": {
+    "title": "Start from here",
+    "subtitle": "Two ways in: browse what's listed, or write to us.",
     "explore": "Explore the market",
     "contact": "Get in touch"
   }

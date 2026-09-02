@@ -1,7 +1,13 @@
 {
   "page": {
     "heroLabel": "À propos",
-    "heroTitle": "Qu'est-ce qu'EKORU"
+    "heroTitle": "Qu'est-ce qu'EKORU",
+    "heroTagline": "Une plateforme d'économie circulaire : acheter, vendre, échanger, réparer et recycler depuis un seul compte, avec l'impact mesuré.",
+    "badges": {
+      "circular": "Économie circulaire",
+      "origin": "Née au Chili",
+      "languages": "3 langues"
+    }
   },
   "intro": {
     "title": "Une plateforme pour faire durer les choses",
@@ -69,6 +75,8 @@
     "message": "Une communauté connectée génère plus d'impact que des milliers d'actions isolées."
   },
   "cta": {
+    "title": "Commencez ici",
+    "subtitle": "Deux chemins : parcourir les annonces, ou nous écrire.",
     "explore": "Explorer le marché",
     "contact": "Nous écrire"
   }

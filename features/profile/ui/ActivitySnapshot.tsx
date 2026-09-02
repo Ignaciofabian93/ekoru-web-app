@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { Activity, Coins, Heart, TrendingUp } from "lucide-react";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 
 // TODO(activity): wire to a getMyActivitySummary aggregated query.
 const MOCK_ACTIVITY = {

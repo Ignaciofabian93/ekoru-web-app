@@ -6,7 +6,7 @@ import { useTranslation } from "@/i18n/context";
 import { Check, KeyRound, Lock, Save, ShieldCheck } from "lucide-react";
 import { useChangePassword } from "../hooks/useChangePassword";
 import { NAMESPACE } from "../i18n";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 
 export function ChangePasswordForm() {
   const { t } = useTranslation(NAMESPACE);

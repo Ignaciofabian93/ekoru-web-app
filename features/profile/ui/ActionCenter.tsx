@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 
 // TODO(action-center): wire to real GraphQL counts (pending orders / unread
 // messages / open exchange proposals) when those endpoints land.

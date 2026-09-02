@@ -6,7 +6,7 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 import { SETTINGS_SECTIONS } from "../constants/menuItems";
 import { useSellerPreferences } from "../hooks/useSellerPreferences";
 import { NAMESPACE } from "../i18n";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 import { SettingRow } from "./SettingRow";
 import { ComingSoonChip } from "@/components/Primitives";
 
@@ -92,7 +92,6 @@ export function Settings() {
         <SectionCard
           icon={dangerSection.icon}
           tone="danger"
-          background="danger"
           title={t(dangerSection.label)}
           subtitle={t(dangerSection.subtitle)}
           className="border-danger/20"

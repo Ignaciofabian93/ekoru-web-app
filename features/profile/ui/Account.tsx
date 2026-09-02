@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { PROFILE_MENU_SECTIONS, type ProfileMenuItem } from "../constants/menuItems";
 import { NAMESPACE } from "../i18n";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 
 const ROW_CLASS = "flex items-center gap-3 rounded-lg p-2.5";
 

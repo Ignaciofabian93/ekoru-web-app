@@ -8,7 +8,7 @@ import { Building2, Globe2, MapPin, Phone, Save, Tags, UserRound } from "lucide-
 import { useEditProfile } from "../hooks/useEditProfile";
 import { NAMESPACE } from "../i18n";
 import { BusinessLocations } from "./BusinessLocations";
-import { SectionCard } from "./SectionCard";
+import { SectionCard } from "@/components/Patterns/SectionCard";
 import { TagSelector } from "./TagSelector";
 
 export function EditProfileForm() {
