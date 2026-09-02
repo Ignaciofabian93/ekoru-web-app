@@ -62,11 +62,13 @@ export function useProductActions() {
   const remove = useCallback(
     async (id: string | number): Promise<boolean> => {
       try {
-        await deleteMutation({ variables: { id: String(id) } });
+        await deleteMutation({ variables: { id: Number(id) } });
         toast.success(t("dashboard.listings.delete.success"));
         return true;
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : t("dashboard.listings.delete.error"));
+        toast.error(
+          err instanceof Error ? err.message : t("dashboard.listings.delete.error"),
+        );
         return false;
       }
     },
@@ -84,7 +86,9 @@ export function useProductActions() {
         );
         return true;
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : t("dashboard.listings.toggle.error"));
+        toast.error(
+          err instanceof Error ? err.message : t("dashboard.listings.toggle.error"),
+        );
         return false;
       }
     },
@@ -121,7 +125,9 @@ export function useProductActions() {
         toast.success(t("dashboard.listings.edit.success"));
         return true;
       } catch (err) {
-        toast.error(err instanceof Error ? err.message : t("dashboard.listings.edit.error"));
+        toast.error(
+          err instanceof Error ? err.message : t("dashboard.listings.edit.error"),
+        );
         return false;
       }
     },

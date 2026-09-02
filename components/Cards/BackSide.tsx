@@ -150,10 +150,10 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const materials = topMaterials(impact);
 
-  // `pt-2` on a wide card, where BackHeader has already ruled off above this;
-  // the full `pt-2.5` on a narrow one, which hides that header and starts here.
+  // `pt-2` at every size: BackHeader has already ruled off above this, so this
+  // is the gap under that rule rather than the face's own top padding.
   return (
-    <div className="flex min-h-0 flex-1 flex-col px-2.5 pt-2.5 @min-[12rem]:px-3 @min-[12rem]:pt-2">
+    <div className="flex min-h-0 flex-1 flex-col px-2.5 pt-2 @min-[12rem]:px-3">
       <div
         className={clsx(
           "flex min-h-0 flex-1 flex-col",
@@ -162,9 +162,6 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
           materials.length > 0 ? "justify-between gap-2" : "justify-center gap-3",
         )}
       >
-        {/* Two entries, same size and alignment. `pr-10` only matters on the
-            narrow card that hides the header above: there the first row is the
-            topmost thing on the face and would run under the flip control. */}
         <div className="flex shrink-0 flex-col gap-1.5">
           <SavingRow
             icon={Leaf}
@@ -173,7 +170,6 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
             shortLabel={t("impact.co2Short")}
             value={String(impact?.totalCo2SavingsKG ?? 0)}
             unit={t("impact.co2Unit")}
-            className="pr-10 @min-[12rem]:pr-0"
           />
           <SavingRow
             icon={Droplets}
@@ -285,9 +281,14 @@ function Description({ description }: { description?: string | null }) {
  * types get it — a service shows its name over a description, not a saving.
  *
  * The flip control keeps its own absolute box: it is pinned to the face's
- * corner rather than to this header, so it sits in the same place whether or
- * not there is a title under it. The title clears it with `pr-10`, and steps
- * aside entirely on a narrow card, where the two would collide.
+ * corner rather than to this header, so it sits in the same place whichever
+ * title is under it. `pr-10` reserves that corner, and both lines clamp to one
+ * — on the narrow card that leaves them about 100px, so they truncate rather
+ * than wrap and push the panel down.
+ *
+ * This renders at every card size on purpose. Hidden on the narrow card, its
+ * height went with it and the savings underneath rode up level with the flip
+ * control, reading as though they belonged to it.
  */
 export function BackHeader({ itemType, itemName }: CardBackHeaderProps) {
   const { hasBackSide } = useCard();
@@ -306,12 +307,7 @@ export function BackHeader({ itemType, itemName }: CardBackHeaderProps) {
       </div>
 
       {(showImpactTitle || itemName) && (
-        <div
-          className={clsx(
-            "hidden shrink-0 px-2.5 pt-2.5",
-            "@min-[12rem]:block @min-[12rem]:px-3 @min-[12rem]:pt-3",
-          )}
-        >
+        <div className="shrink-0 px-2.5 pt-2.5 @min-[12rem]:px-3 @min-[12rem]:pt-3">
           {/* `numberOfLines` guards both lines: a long name ellipses rather
               than wrapping and shifting everything under it. */}
           <div className="border-b border-slate-200 pr-10 pb-1.5">
