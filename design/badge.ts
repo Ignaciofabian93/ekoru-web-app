@@ -43,7 +43,11 @@ const badgeVariantClass: Record<BadgeVariant, string> = {
   primary: "border-primary bg-linear-120 from-primary to-primary/60 text-white",
   secondary:
     "border-secondary-dark bg-linear-120 from-secondary-dark to-secondary-dark/60 text-white",
-  tertiary: "bg-secondary/15 text-secondary",
+  // Carried `text-secondary` (#22d3ee) on a 15% wash of itself — 1.6:1 against
+  // that near-white fill, and the uncoloured `border` in the base class fell
+  // back to `currentColor`, so the edge disappeared with it. The dark step of
+  // the same hue reads at 4.8:1 and gives the pill a visible outline.
+  tertiary: "border-secondary-dark/40 bg-secondary/15 text-secondary-dark",
   descriptive: "bg-primary/10 text-primary",
   attention: "bg-red-500 text-white",
   ghost: "border-border-light bg-transparent text-foreground-secondary",

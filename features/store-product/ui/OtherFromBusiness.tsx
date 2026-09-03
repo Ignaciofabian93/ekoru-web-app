@@ -101,7 +101,7 @@ export function OtherFromBusiness({ lang, sellerId, excludeProductId }: Props) {
         scrollPreviousAriaLabel={t("otherProducts.scrollPrevious")}
       >
         {products.map((product) => (
-          <div key={product.id} className="snap-start">
+          <div key={product.id} className="w-44 shrink-0 snap-start">
             <StoreProductCard product={product} lang={lang} />
           </div>
         ))}

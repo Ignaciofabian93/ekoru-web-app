@@ -19,6 +19,11 @@ export interface SectionCardProps {
   title: string;
   subtitle?: string;
   icon?: LucideIcon;
+  /**
+   * Content for the toned chip, in place of `icon` — a clause number, a count.
+   * Ignored when `icon` is given.
+   */
+  chip?: ReactNode;
   /** Tints the icon chip only. The card surface stays white in every tone. */
   tone?: SectionCardTone;
   /** Trailing node pushed to the far edge of the header — a "see all" link. */
@@ -36,6 +41,7 @@ export function SectionCard({
   title,
   subtitle,
   icon: Icon,
+  chip,
   tone = "default",
   headerRight,
   className,
@@ -45,9 +51,13 @@ export function SectionCard({
     <section className={clsx(sectionCardClass, className)}>
       <header className={sectionCardHeaderClass}>
         <div className={sectionCardHeadingClass}>
-          {Icon && (
+          {(Icon || chip) && (
             <div className={sectionCardIconClass[tone]}>
-              <Icon size={sectionCardIconSize} color="currentColor" strokeWidth={2} />
+              {Icon ? (
+                <Icon size={sectionCardIconSize} color="currentColor" strokeWidth={2} />
+              ) : (
+                chip
+              )}
             </div>
           )}
           <div className={sectionCardTitleClass}>

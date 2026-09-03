@@ -11,7 +11,9 @@ export async function TermsAndConditions({ lang }: { lang: SupportedLanguage }) 
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <PageLayout hero={<TermsHero />} width="narrow">
+      {/* Same shell and width as the about page: the hero owns its own
+          container, and the body is a card grid rather than a prose column. */}
+      <PageLayout hero={<TermsHero />} width="default">
         <TermsContent />
       </PageLayout>
     </DictionaryProvider>

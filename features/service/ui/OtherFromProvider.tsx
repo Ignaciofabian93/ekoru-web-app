@@ -101,7 +101,7 @@ export function OtherFromProvider({ lang, sellerId, excludeServiceId }: Props) {
         scrollPreviousAriaLabel={t("otherServices.scrollPrevious")}
       >
         {services.map((service) => (
-          <div key={service.id} className="snap-start">
+          <div key={service.id} className="w-44 shrink-0 snap-start">
             <ServiceCard service={toServiceCardService(service)} lang={lang} />
           </div>
         ))}

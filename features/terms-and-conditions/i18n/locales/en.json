@@ -1,7 +1,19 @@
 {
   "page": {
     "heroLabel": "Legal",
-    "heroTitle": "Terms, Policies and Conditions"
+    "heroTitle": "Terms, Policies and Conditions",
+    "tagline": "The rules for using EKORU: what you agree to, what we do with your data, and how disputes are handled.",
+    "badges": {
+      "clauses": "{{count}} clauses",
+      "updated": "Updated 2026",
+      "jurisdiction": "Chilean law"
+    },
+    "toc": "On this page",
+    "questions": {
+      "title": "Questions about these terms?",
+      "subtitle": "Write to us and we'll walk you through them.",
+      "cta": "Get in touch"
+    }
   },
   "s1Title": "1. Introduction",
   "s1Body": "Welcome to EKORU, a digital platform designed to promote the circular economy through the buying, selling, and exchanging of products, access to sustainable services, and participation in an active community with environmental impact.\n\nThese Terms and Conditions govern access to, use of, and operation of the EKORU platform. By registering, accessing, or using any functionality, you declare that you have read, understood, and fully accepted these terms.\n\nUsing EKORU constitutes a binding contractual relationship between the user and the platform. If you disagree with any of the points set forth herein, you must refrain from using our services. EKORU may update these terms at any time to adapt to technological, legal, or strategic changes, and it is the user's responsibility to review them periodically.",

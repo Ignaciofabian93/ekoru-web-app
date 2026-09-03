@@ -95,7 +95,7 @@ export function OtherFromSeller({ lang, sellerId, excludeProductId }: Props) {
                 />
               ))
             : products.map((product, i) => (
-                <div key={product.id} className="snap-start">
+                <div key={product.id} className="w-44 shrink-0 snap-start">
                   <MarketplaceCard priority={i < 4} product={product} lang={lang} />
                 </div>
               ))}
