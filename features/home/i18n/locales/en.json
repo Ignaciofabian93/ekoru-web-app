@@ -105,14 +105,17 @@
     "scrollPrevious": "Scroll left",
     "scrollNext": "Scroll right"
   },
-  "products": {
-    "title": "Featured Products",
-    "subtitle": "Handpicked sustainable finds",
-    "seeAll": "See all"
-  },
-  "exchange": {
-    "title": "Ready to Swap",
-    "subtitle": "Trade items and give them a second life",
+  "marketplace": {
+    "exchange": {
+      "title": "Ready to Swap",
+      "subtitle": "Trade items and give them a second life",
+      "empty": "No items are open to a swap right now."
+    },
+    "forSale": {
+      "title": "Second-hand Finds",
+      "subtitle": "Pre-loved items listed for sale near you",
+      "empty": "No second-hand items are listed for sale right now."
+    },
     "seeAll": "See all",
     "scrollPrevious": "Scroll left",
     "scrollNext": "Scroll right"

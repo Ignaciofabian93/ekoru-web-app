@@ -105,14 +105,17 @@
     "scrollPrevious": "Défiler vers la gauche",
     "scrollNext": "Défiler vers la droite"
   },
-  "products": {
-    "title": "Produits en vedette",
-    "subtitle": "Trouvailles durables sélectionnées",
-    "seeAll": "Voir tout"
-  },
-  "exchange": {
-    "title": "Prêts à échanger",
-    "subtitle": "Échangez des articles et donnez-leur une seconde vie",
+  "marketplace": {
+    "exchange": {
+      "title": "Prêts à échanger",
+      "subtitle": "Échangez des objets et offrez-leur une seconde vie",
+      "empty": "Aucun objet n'est proposé à l'échange pour le moment."
+    },
+    "forSale": {
+      "title": "Trouvailles d'occasion",
+      "subtitle": "Des objets d'occasion mis en vente près de chez vous",
+      "empty": "Aucun objet d'occasion n'est mis en vente pour le moment."
+    },
     "seeAll": "Voir tout",
     "scrollPrevious": "Défiler vers la gauche",
     "scrollNext": "Défiler vers la droite"

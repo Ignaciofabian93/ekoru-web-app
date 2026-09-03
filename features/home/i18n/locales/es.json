@@ -105,14 +105,17 @@
     "scrollPrevious": "Desplazar a la izquierda",
     "scrollNext": "Desplazar a la derecha"
   },
-  "products": {
-    "title": "Productos destacados",
-    "subtitle": "Hallazgos sostenibles seleccionados",
-    "seeAll": "Ver todos"
-  },
-  "exchange": {
-    "title": "Listos para intercambiar",
-    "subtitle": "Intercambia artículos y dales una segunda vida",
+  "marketplace": {
+    "exchange": {
+      "title": "Listos para intercambiar",
+      "subtitle": "Intercambia objetos y dales una segunda vida",
+      "empty": "Por ahora no hay objetos disponibles para intercambio."
+    },
+    "forSale": {
+      "title": "Hallazgos de segunda mano",
+      "subtitle": "Objetos usados publicados a la venta cerca de ti",
+      "empty": "Por ahora no hay objetos de segunda mano publicados a la venta."
+    },
     "seeAll": "Ver todos",
     "scrollPrevious": "Desplazar a la izquierda",
     "scrollNext": "Desplazar a la derecha"

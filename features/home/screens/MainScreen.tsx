@@ -9,7 +9,7 @@ import { CategoriesSection } from "../ui/CategoriesSection";
 import { HomeHero } from "../ui/HomeHero";
 // import { StatsSection } from "../ui/StatsSection";
 import { StoresHighlight } from "../ui/StoresHighlight";
-import { ExchangeHighlight } from "../ui/ExchangeHighlight";
+import { MarketplaceHighlight } from "../ui/MarketplaceHighlight";
 import { ServicesHighlight } from "../ui/ServicesHighlight";
 import { AdBannerSection } from "../ui/AdBannerSection";
 import { StoreProductsHighlight } from "../ui/StoreProductsHighlight";
@@ -34,7 +34,7 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
         <AdBannerSection lang={lang} variant="amber" domain="services" />
         <ServicesHighlight lang={lang} />
         <AdBannerSection lang={lang} variant="green" domain="marketplace" />
-        <ExchangeHighlight lang={lang} />
+        <MarketplaceHighlight lang={lang} />
       </PageLayout>
     </DictionaryProvider>
   );

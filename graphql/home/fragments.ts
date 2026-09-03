@@ -1,10 +1,10 @@
 import { gql } from "@apollo/client";
 
-// Fragments for the home feature's product queries. The exchangeable-products
-// section renders MarketplaceCard, whose front/back sides read the product's
-// scalars, environmental impact and seller, so the fragments below project
-// exactly those fields. Field sets mirror the TS types in `types/product.ts`
-// and `types/user.ts` to stay aligned with the GraphQL schema.
+// Fragments for the home feature's product queries. Both marketplace rails —
+// the swap row and the sale-only row — render MarketplaceCard, whose front/back
+// sides read the product's scalars, environmental impact and seller, so the
+// fragments below project exactly those fields. Field sets mirror the TS types
+// in `types/product.ts` and `types/user.ts` to stay aligned with the schema.
 
 export const HOME_ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT = gql`
   fragment HomeEnvironmentalImpactFields on EnvironmentalImpact {
@@ -70,11 +70,11 @@ export const HOME_PRODUCT_CATEGORY_FIELDS_FRAGMENT = gql`
   }
 `;
 
-export const HOME_EXCHANGEABLE_PRODUCT_FIELDS_FRAGMENT = gql`
+export const HOME_MARKETPLACE_PRODUCT_FIELDS_FRAGMENT = gql`
   ${HOME_ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT}
   ${HOME_SELLER_FIELDS_FRAGMENT}
   ${HOME_PRODUCT_CATEGORY_FIELDS_FRAGMENT}
-  fragment HomeExchangeableProductFields on Product {
+  fragment HomeMarketplaceProductFields on Product {
     id
     name
     description
