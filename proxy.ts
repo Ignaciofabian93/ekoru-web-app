@@ -8,7 +8,7 @@ import {
 } from "@/constants/settings";
 import { getLanguagesForCountry } from "@/constants/language-data";
 import { FEATURES } from "@/constants/features";
-import { COOKIE_MAX_AGE_SECONDS } from "@/utils/cookies";
+import { COOKIE_MAX_AGE_SECONDS, SESSION_COOKIES } from "@/utils/cookies";
 
 /**
  * Routes a disabled feature owns, evaluated AFTER the leading `/[lang]` segment
@@ -165,7 +165,7 @@ export function proxy(request: NextRequest) {
 
   // Either cookie is enough: if only `refreshToken` is present, the axios
   // client will exchange it for a fresh `token` on the first 401.
-  const hasSession = request.cookies.has("token") || request.cookies.has("refreshToken");
+  const hasSession = SESSION_COOKIES.some((name) => request.cookies.has(name));
   if (hasSession) return seedCountry(request, NextResponse.next(), country);
 
   const loginUrl = request.nextUrl.clone();

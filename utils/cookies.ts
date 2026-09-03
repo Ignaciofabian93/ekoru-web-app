@@ -1,3 +1,11 @@
+/**
+ * The HttpOnly cookies the gateway issues for a session, re-emitted onto the
+ * Next.js origin by the auth proxy routes. Named here so `proxy.ts` (which
+ * decides whether a protected route is reachable) and the logout route (which
+ * expires them) can never disagree about which cookies constitute a session.
+ */
+export const SESSION_COOKIES = ["token", "refreshToken"] as const;
+
 /** Default cookie lifetime. Exported so `proxy.ts` can seed cookies with the
  *  same attributes the client uses, otherwise the two writes would coexist as
  *  separate cookies instead of overwriting each other. */
