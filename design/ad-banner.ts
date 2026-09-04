@@ -15,12 +15,12 @@ const adBannerBaseClass = clsx(
 );
 
 // Every variant is an eco gradient so banners feel part of the same family:
-// green = forest/brand green, teal = ocean teal, amber = harvest,
+// green = forest/brand green, teal = ocean teal, charcoal = satin graphite,
 // emerald = green→teal growth. All are dark enough to carry white content.
 const adBannerVariantClass: Record<AdBannerVariant, string> = {
   green: "bg-linear-to-r from-primary-dark via-primary to-primary-dark",
   teal: "bg-linear-to-r from-secondary-dark via-secondary to-secondary-dark",
-  amber: "bg-linear-to-br from-amber-800 via-amber-600 to-amber-800",
+  charcoal: "bg-linear-to-r from-zinc-900 via-zinc-700 to-zinc-900",
   emerald: "bg-linear-to-br from-green-700 via-emerald-600 to-teal-600",
 };
 
@@ -38,7 +38,7 @@ const adBannerCtaBaseClass = clsx(
 const adBannerCtaAccentClass: Record<AdBannerVariant, string> = {
   green: "text-primary",
   teal: "text-secondary-dark",
-  amber: "text-amber-700",
+  charcoal: "text-zinc-800",
   emerald: "text-emerald-700",
 };
 

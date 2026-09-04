@@ -31,7 +31,7 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
         <AdBannerSection lang={lang} variant="teal" domain="stores" />
         <StoresHighlight lang={lang} />
         <StoreProductsHighlight lang={lang} />
-        <AdBannerSection lang={lang} variant="amber" domain="services" />
+        <AdBannerSection lang={lang} variant="charcoal" domain="services" />
         <ServicesHighlight lang={lang} />
         <AdBannerSection lang={lang} variant="green" domain="marketplace" />
         <MarketplaceHighlight lang={lang} />

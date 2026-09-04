@@ -83,8 +83,8 @@ export type ServiceCardService = {
  */
 export type ItemType = "MARKETPLACE" | "STORE" | "SERVICE" | "BUSINESS" | "PROVIDER";
 
-/** Brand tint for the seller-card panel — stores read teal, providers amber. */
-export type BrandAccent = "primary" | "secondary" | "amber";
+/** Brand tint for the seller-card panel — stores read teal, providers charcoal. */
+export type BrandAccent = "primary" | "secondary" | "charcoal";
 
 export interface CardProps {
   children: React.ReactNode;

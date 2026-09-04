@@ -71,7 +71,14 @@ function BackSide({ children }: CardBackSideProps) {
 
 const ORIENTATION_SIZE: Record<Orientation, string> = {
   vertical: "min-w-0 w-full max-w-60 h-full",
-  horizontal: "min-w-80 min-h-[170px]",
+  // `flex` is load-bearing, not layout for its own sake. The height here is
+  // `min-h` only, which leaves the box's own height `auto` — and a percentage
+  // height resolved against an auto-height containing block computes to `auto`
+  // too. So the `h-full` on the wrapper, the face and the left panel all
+  // collapsed to content height and sat at the top of a 170px card. As a flex
+  // container it stretches its child to the line instead, and `min-h` counts
+  // toward that line, so the chain below gets a real height to work from.
+  horizontal: "flex min-w-60 max-w-90 min-h-[170px] h-full",
 };
 
 const WRAPPER_SIZE: Record<Orientation, string> = {

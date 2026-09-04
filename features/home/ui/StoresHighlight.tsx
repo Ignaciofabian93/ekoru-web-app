@@ -69,7 +69,9 @@ export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
           scrollNextAriaLabel={t("stores.scrollNext")}
         >
           {sellers.map((seller) => (
-            <StoresCard key={seller.id} store={seller} lang={lang} />
+            <div key={seller.id} className="shrink-0 snap-start">
+              <StoresCard store={seller} lang={lang} />
+            </div>
           ))}
         </CardScroller>
       ) : (

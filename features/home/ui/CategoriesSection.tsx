@@ -69,7 +69,7 @@ export function CategoriesSection({ lang }: { lang: SupportedLanguage }) {
       id: "services",
       Icon: Wrench,
       href: "/services",
-      gradient: "from-amber-800 to-amber-500",
+      gradient: "from-zinc-900 to-zinc-600",
       span: "lg:col-span-2",
       loading: serviceLoading,
       categories: services?.map((c) => ({ id: c.id, name: c.name, slug: c.slug })) ?? [],

@@ -31,13 +31,16 @@ const HEADER_CLASS: Record<Orientation, string> = {
 const ACCENT_PANEL: Record<BrandAccent, string> = {
   primary: "bg-linear-to-br from-primary-dark to-primary",
   secondary: "bg-linear-to-br from-secondary-dark to-secondary",
-  amber: "bg-linear-to-br from-amber-800 to-amber-500",
+  // Satin charcoal: neutral zinc so it takes no side against the lime and
+  // cyan the other two accents carry, with the mid stop lighter than both
+  // ends — that diagonal lift is what reads as sheen rather than flat grey.
+  charcoal: "bg-linear-to-br from-zinc-900 via-zinc-700 to-zinc-800",
 };
 
 const ACCENT_TEXT: Record<BrandAccent, string> = {
   primary: "text-primary-dark",
   secondary: "text-secondary-dark",
-  amber: "text-amber-700",
+  charcoal: "text-zinc-800",
 };
 
 function ProviderPanel({
@@ -77,7 +80,15 @@ function ProviderPanel({
         className="absolute -right-6 bottom-2 size-16 rounded-full bg-white/10"
       />
 
-      <div className="relative z-10 flex w-full flex-1 items-center justify-center px-4 pt-4 pb-8">
+      {/* The bottom inset only exists to clear the verified pill, which is
+          absolutely positioned over this panel. Without a pill there is nothing
+          to clear, and holding the padding anyway pushed the logo above centre. */}
+      <div
+        className={clsx(
+          "relative z-10 flex w-full flex-1 items-center justify-center px-4 py-4",
+          isVerified && "pb-8",
+        )}
+      >
         <div className="flex size-20 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-black/5">
           {logo && !logoError ? (
             <Image

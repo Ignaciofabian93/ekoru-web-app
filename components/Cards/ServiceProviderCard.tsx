@@ -31,7 +31,7 @@ export function ServiceProviderCard({
           isVerified={Boolean(provider.isVerified)}
           initials={getInitials(businessName)}
           // Amber separates providers from stores at a glance.
-          accent="amber"
+          accent="charcoal"
         />
         <div className="flex w-full min-w-0 flex-col">
           <Card.Body
