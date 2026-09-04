@@ -87,15 +87,5 @@
   },
   "card": {
     "noImage": "Aucune image"
-  },
-  "conditions": {
-    "NEW": "Neuf",
-    "LIKE_NEW": "Comme neuf",
-    "OPEN_BOX": "Boîte ouverte",
-    "REFURBISHED": "Reconditionné",
-    "GOOD": "Bon état",
-    "FAIR": "État correct",
-    "POOR": "Usé",
-    "FOR_PARTS": "Pour pièces"
   }
 }

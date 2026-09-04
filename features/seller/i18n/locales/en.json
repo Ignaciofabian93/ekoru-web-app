@@ -100,16 +100,6 @@
     "view": "View product",
     "noImage": "No image"
   },
-  "conditions": {
-    "NEW": "New",
-    "LIKE_NEW": "Like new",
-    "OPEN_BOX": "Open box",
-    "GOOD": "Good",
-    "FAIR": "Fair",
-    "POOR": "Poor",
-    "FOR_PARTS": "For parts",
-    "REFURBISHED": "Refurbished"
-  },
   "serviceCatalog": {
     "title": "Services",
     "subtitle": "What this provider offers",

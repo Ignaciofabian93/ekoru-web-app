@@ -44,16 +44,6 @@
     "noBrand": "Sin marca",
     "exchangeable": "Intercambiable"
   },
-  "conditions": {
-    "NEW": "Nuevo",
-    "LIKE_NEW": "Como nuevo",
-    "OPEN_BOX": "Caja abierta",
-    "GOOD": "Bueno",
-    "FAIR": "Regular",
-    "POOR": "Desgastado",
-    "FOR_PARTS": "Para repuestos",
-    "REFURBISHED": "Reacondicionado"
-  },
   "trust": {
     "inPersonPayment": "Pago en persona",
     "inPersonPaymentHint": "Acuerdas el monto y pagas directamente al vendedor en la entrega",

@@ -13,12 +13,9 @@ import type { ProductCondition } from "@/types/enums";
 import { useSearch } from "../hooks/useSearch";
 import { useSearchFilters } from "../hooks/useSearchFilters";
 import { NAMESPACE } from "../i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
 import { countConditions, countSources, narrowItems } from "../narrow";
-import {
-  SEARCH_PAGE_SIZE,
-  type SearchSource,
-  type SearchTypeFilter,
-} from "../types";
+import { SEARCH_PAGE_SIZE, type SearchSource, type SearchTypeFilter } from "../types";
 import { SearchActiveFilters } from "./SearchActiveFilters";
 import { SearchDidYouMean } from "./SearchDidYouMean";
 import { SearchFacetsRail } from "./SearchFacetsRail";
@@ -48,6 +45,10 @@ interface Props {
 
 export function SearchContent({ lang, language, query }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  // Condition wording is owned by the shared `cards` dictionary — the same
+  // one the product badge renders from — so the filter, the detail page and
+  // the badge can never word the same enum differently again.
+  const { t: tCondition } = useTranslation(CARDS_NAMESPACE);
   const [country] = useCountry();
   const { navigateTo } = useNavigation();
   const formatPrice = useFormatPrice();
@@ -59,7 +60,7 @@ export function SearchContent({ lang, language, query }: Props) {
     () => ({
       type: (type: SearchTypeFilter) => t(`tabs.${type}`),
       source: (source: SearchSource) => t(`filters.sources.${source}`),
-      condition: (condition: ProductCondition) => t(`conditions.${condition}`),
+      condition: (condition: ProductCondition) => tCondition(`condition.${condition}`),
       price: (min?: number, max?: number) => {
         if (min !== undefined && max !== undefined)
           return t("filters.priceBetween", {
@@ -71,7 +72,7 @@ export function SearchContent({ lang, language, query }: Props) {
       },
       offers: t("filters.onlyOffers"),
     }),
-    [t, formatPrice],
+    [t, tCondition, formatPrice],
   );
 
   const {
@@ -146,8 +147,7 @@ export function SearchContent({ lang, language, query }: Props) {
   }
 
   const typeCounts = facets?.types ?? [];
-  const countFor = (name: string) =>
-    typeCounts.find((f) => f.name === name)?.count ?? 0;
+  const countFor = (name: string) => typeCounts.find((f) => f.name === name)?.count ?? 0;
   const goodsCount = countFor("PRODUCT") + countFor("STORE_PRODUCT");
   const servicesCount = countFor("SERVICE");
 

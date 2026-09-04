@@ -41,16 +41,6 @@
     "priceDesc": "Price: high to low",
     "popular": "Most viewed"
   },
-  "conditions": {
-    "NEW": "New",
-    "LIKE_NEW": "Like new",
-    "OPEN_BOX": "Open box",
-    "GOOD": "Good",
-    "FAIR": "Fair",
-    "POOR": "Poor",
-    "FOR_PARTS": "For parts",
-    "REFURBISHED": "Refurbished"
-  },
   "product": {
     "addToCart": "Add to cart",
     "favorite": "Save to favorites",

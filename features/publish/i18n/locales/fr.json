@@ -129,15 +129,6 @@
     "interestsHint": "Ce contre quoi vous l'échangeriez. Laissez vide pour accepter toute offre.",
     "removeInterest": "Retirer l'intérêt"
   },
-  "conditions": {
-    "new": "Neuf",
-    "open_box": "Boîte ouverte",
-    "like_new": "Comme neuf",
-    "fair": "Correct",
-    "poor": "Usé",
-    "for_parts": "Pour pièces",
-    "refurbished": "Reconditionné"
-  },
   "servicePricingTypes": {
     "fixed": "Prix fixe",
     "quotation": "Sur devis",

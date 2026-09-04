@@ -1,6 +1,7 @@
 "use client";
 import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
 
 import {
   CONDITION_OPTIONS,
@@ -23,8 +24,9 @@ export function ReviewStep({
   materialsLabel,
 }: ReviewStepProps) {
   const { t } = useTranslation("publish");
+  const { t: tCondition } = useTranslation(CARDS_NAMESPACE);
 
-  const selectedCondition = CONDITION_OPTIONS.find((c) => c.value === form.condition);
+  const selectedCondition = CONDITION_OPTIONS.find((c) => c === form.condition);
   const selectedPricing = SERVICE_PRICING_OPTIONS.find(
     (p) => p.value === form.servicePricing,
   );
@@ -86,14 +88,12 @@ export function ReviewStep({
       ? null
       : {
           label: t("review.condition"),
-          value: selectedCondition ? t(selectedCondition.labelKey) : "",
+          value: selectedCondition ? tCondition(`condition.${selectedCondition}`) : "",
         },
     isMarketplace && form.conditionDescription
       ? { label: t("review.conditionDescription"), value: form.conditionDescription }
       : null,
-    isMarketplace && form.color
-      ? { label: t("review.color"), value: form.color }
-      : null,
+    isMarketplace && form.color ? { label: t("review.color"), value: form.color } : null,
     // Only when the listing actually accepts swaps — matching what gets sent.
     isMarketplace && form.isExchangeable
       ? {

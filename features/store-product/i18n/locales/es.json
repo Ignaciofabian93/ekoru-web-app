@@ -38,16 +38,6 @@
     "viewsPlural": "{{count}} reseñas",
     "noBrand": "Sin marca"
   },
-  "conditions": {
-    "NEW": "Nuevo",
-    "LIKE_NEW": "Como nuevo",
-    "OPEN_BOX": "Caja abierta",
-    "GOOD": "Bueno",
-    "FAIR": "Regular",
-    "POOR": "Desgastado",
-    "FOR_PARTS": "Para repuestos",
-    "REFURBISHED": "Reacondicionado"
-  },
   "trust": {
     "onlinePayment": "Pago en línea",
     "onlinePaymentHint": "Paga con tarjeta o transferencia, tus datos viajan encriptados",

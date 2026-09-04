@@ -26,7 +26,12 @@ export const BUSINESS_TARGETS: {
   labelKey: PublishKey;
   descKey: PublishKey;
 }[] = [
-  { value: "STORE", icon: Store, labelKey: "targets.store", descKey: "targets.storeDesc" },
+  {
+    value: "STORE",
+    icon: Store,
+    labelKey: "targets.store",
+    descKey: "targets.storeDesc",
+  },
   {
     value: "SERVICE",
     icon: Wrench,
@@ -35,24 +40,31 @@ export const BUSINESS_TARGETS: {
   },
 ];
 
-/** Second-hand product condition (marketplace listings). */
-export const CONDITION_OPTIONS: { value: ProductCondition; labelKey: PublishKey }[] = [
-  { value: "NEW", labelKey: "conditions.new" },
-  { value: "OPEN_BOX", labelKey: "conditions.open_box" },
-  { value: "LIKE_NEW", labelKey: "conditions.like_new" },
-  { value: "FAIR", labelKey: "conditions.fair" },
-  { value: "POOR", labelKey: "conditions.poor" },
-  { value: "FOR_PARTS", labelKey: "conditions.for_parts" },
-  { value: "REFURBISHED", labelKey: "conditions.refurbished" },
-];
+/**
+ * Second-hand product condition (marketplace listings), in the order the
+ * seller reads them: best first. Labels are not carried here — they resolve
+ * from the shared `cards` condition dictionary, so what a seller picks when
+ * listing is worded exactly like the badge the buyer later sees.
+ */
+export const CONDITION_OPTIONS: readonly ProductCondition[] = [
+  "NEW",
+  "LIKE_NEW",
+  "OPEN_BOX",
+  "REFURBISHED",
+  "GOOD",
+  "FAIR",
+  "POOR",
+  "FOR_PARTS",
+] as const;
 
 /** Pricing model for service listings. */
-export const SERVICE_PRICING_OPTIONS: { value: ServicePricing; labelKey: PublishKey }[] = [
-  { value: "FIXED", labelKey: "servicePricingTypes.fixed" },
-  { value: "QUOTATION", labelKey: "servicePricingTypes.quotation" },
-  { value: "HOURLY", labelKey: "servicePricingTypes.hourly" },
-  { value: "PACKAGE", labelKey: "servicePricingTypes.package" },
-];
+export const SERVICE_PRICING_OPTIONS: { value: ServicePricing; labelKey: PublishKey }[] =
+  [
+    { value: "FIXED", labelKey: "servicePricingTypes.fixed" },
+    { value: "QUOTATION", labelKey: "servicePricingTypes.quotation" },
+    { value: "HOURLY", labelKey: "servicePricingTypes.hourly" },
+    { value: "PACKAGE", labelKey: "servicePricingTypes.package" },
+  ];
 
 /** Weight units accepted by the stores subgraph (StoreProduct.weightUnit). */
 export const WEIGHT_UNIT_OPTIONS: { value: WeightUnit; labelKey: PublishKey }[] = [

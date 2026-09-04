@@ -100,16 +100,6 @@
     "view": "Ver producto",
     "noImage": "Sin imagen"
   },
-  "conditions": {
-    "NEW": "Nuevo",
-    "LIKE_NEW": "Como nuevo",
-    "OPEN_BOX": "Caja abierta",
-    "GOOD": "Bueno",
-    "FAIR": "Regular",
-    "POOR": "Desgastado",
-    "FOR_PARTS": "Para repuestos",
-    "REFURBISHED": "Reacondicionado"
-  },
   "serviceCatalog": {
     "title": "Servicios",
     "subtitle": "Lo que ofrece este proveedor",

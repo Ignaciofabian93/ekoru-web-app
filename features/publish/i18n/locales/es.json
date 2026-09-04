@@ -129,15 +129,6 @@
     "interestsHint": "Por qué lo cambiarías. Déjalo vacío para aceptar cualquier oferta.",
     "removeInterest": "Quitar interés"
   },
-  "conditions": {
-    "new": "Nuevo",
-    "open_box": "Caja abierta",
-    "like_new": "Como nuevo",
-    "fair": "Aceptable",
-    "poor": "Deteriorado",
-    "for_parts": "Para repuestos",
-    "refurbished": "Reacondicionado"
-  },
   "servicePricingTypes": {
     "fixed": "Precio fijo",
     "quotation": "Por cotización",

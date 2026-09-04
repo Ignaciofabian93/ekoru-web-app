@@ -1,12 +1,13 @@
 {
   "condition": {
     "NEW": "Nuevo",
-    "OPEN_BOX": "Caja abierta",
     "LIKE_NEW": "Como nuevo",
+    "OPEN_BOX": "Caja abierta",
+    "REFURBISHED": "Reacondicionado",
+    "GOOD": "Bueno",
     "FAIR": "Aceptable",
     "POOR": "Deficiente",
-    "FOR_PARTS": "Para piezas",
-    "REFURBISHED": "Reacondicionado"
+    "FOR_PARTS": "Para piezas"
   },
   "badges": {
     "exchangeable": "Intercambiable",

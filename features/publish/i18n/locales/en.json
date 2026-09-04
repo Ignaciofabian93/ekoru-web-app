@@ -129,15 +129,6 @@
     "interestsHint": "What you would swap this for. Leave empty to stay open to any offer.",
     "removeInterest": "Remove interest"
   },
-  "conditions": {
-    "new": "New",
-    "open_box": "Open box",
-    "like_new": "Like new",
-    "fair": "Fair",
-    "poor": "Poor",
-    "for_parts": "For parts",
-    "refurbished": "Refurbished"
-  },
   "servicePricingTypes": {
     "fixed": "Fixed price",
     "quotation": "By quotation",

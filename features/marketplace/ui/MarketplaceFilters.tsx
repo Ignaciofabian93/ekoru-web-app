@@ -10,17 +10,21 @@ import type { ProductCondition } from "@/types/enums";
 import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { NAMESPACE } from "../i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
 import {
   EMPTY_FILTERS,
   type ProductFilters as ProductFiltersState,
   type ProductSortValue,
 } from "../types";
 
+// Mirrors `ProductCondition`. `GOOD` was absent, so a whole tier of listings
+// could not be filtered for even though the backend stores and returns it.
 const CONDITION_VALUES: ProductCondition[] = [
   "NEW",
   "LIKE_NEW",
   "OPEN_BOX",
   "REFURBISHED",
+  "GOOD",
   "FAIR",
   "POOR",
   "FOR_PARTS",
@@ -62,6 +66,10 @@ interface Props {
 
 export function MarketplaceFilters({ filters, sort, setField, setSort }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  // Condition wording is owned by the shared `cards` dictionary — the same
+  // one the product badge renders from — so the filter, the detail page and
+  // the badge can never word the same enum differently again.
+  const { t: tCondition } = useTranslation(CARDS_NAMESPACE);
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<FilterDraft>(pickDraft(filters));
 
@@ -83,7 +91,7 @@ export function MarketplaceFilters({ filters, sort, setField, setSort }: Props) 
     { value: "", label: t("filters.anyCondition") },
     ...CONDITION_VALUES.map((value) => ({
       value,
-      label: t(`conditions.${value}`),
+      label: tCondition(`condition.${value}`),
     })),
   ];
 
@@ -207,12 +215,7 @@ export function MarketplaceFilters({ filters, sort, setField, setSort }: Props) 
 
           {/* Actions */}
           <div className="flex items-center justify-between gap-3 border-t border-border-light pt-5">
-            <Button
-              text={t("filters.clear")}
-              variant="ghost"
-              size="md"
-              onPress={clear}
-            />
+            <Button text={t("filters.clear")} variant="ghost" size="md" onPress={clear} />
             <Button
               text={t("filters.apply")}
               variant="primary"

@@ -41,16 +41,6 @@
     "priceDesc": "Prix : décroissant",
     "popular": "Plus vus"
   },
-  "conditions": {
-    "NEW": "Neuf",
-    "LIKE_NEW": "Comme neuf",
-    "OPEN_BOX": "Boîte ouverte",
-    "GOOD": "Bon",
-    "FAIR": "Correct",
-    "POOR": "Usé",
-    "FOR_PARTS": "Pour pièces",
-    "REFURBISHED": "Reconditionné"
-  },
   "product": {
     "addToCart": "Ajouter au panier",
     "favorite": "Ajouter aux favoris",

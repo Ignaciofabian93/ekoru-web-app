@@ -44,16 +44,6 @@
     "noBrand": "Unbranded",
     "exchangeable": "Exchangeable"
   },
-  "conditions": {
-    "NEW": "New",
-    "LIKE_NEW": "Like new",
-    "OPEN_BOX": "Open box",
-    "GOOD": "Good",
-    "FAIR": "Fair",
-    "POOR": "Poor",
-    "FOR_PARTS": "For parts",
-    "REFURBISHED": "Refurbished"
-  },
   "trust": {
     "inPersonPayment": "Pay in person",
     "inPersonPaymentHint": "You agree on the amount and pay the seller directly at handover",

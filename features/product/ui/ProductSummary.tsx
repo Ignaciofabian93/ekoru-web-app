@@ -4,6 +4,7 @@ import { useTranslation } from "@/i18n/context";
 import type { SupportedLanguage } from "@/constants/settings";
 import type { Product } from "@/types/product";
 import { NAMESPACE } from "../i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
 import { formatDate } from "../utils/formatDate";
 import { ProductBadges } from "./ProductBadges";
 import { Text } from "@/components/Primitives/Text";
@@ -22,6 +23,10 @@ export function ProductSummary({
   lang: SupportedLanguage;
 }) {
   const { t } = useTranslation(NAMESPACE);
+  // Condition wording is owned by the shared `cards` dictionary — the same
+  // one the product badge renders from — so the filter, the detail page and
+  // the badge can never word the same enum differently again.
+  const { t: tCondition } = useTranslation(CARDS_NAMESPACE);
 
   const views = product.viewCount ?? 0;
   const publishedOn = formatDate(product.createdAt, lang);
@@ -63,7 +68,7 @@ export function ProductSummary({
             listing shouldn't change appearance between the grid and here. */}
         <ProductConditionBadge
           condition={product.condition}
-          label={t(`conditions.${product.condition}`)}
+          label={tCondition(`condition.${product.condition}`)}
           size="medium"
         />
         {product.isExchangeable && (

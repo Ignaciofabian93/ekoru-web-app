@@ -1,12 +1,13 @@
 {
   "condition": {
     "NEW": "New",
-    "OPEN_BOX": "Open box",
     "LIKE_NEW": "Like new",
+    "OPEN_BOX": "Open box",
+    "REFURBISHED": "Refurbished",
+    "GOOD": "Good",
     "FAIR": "Fair",
     "POOR": "Poor",
-    "FOR_PARTS": "For parts",
-    "REFURBISHED": "Refurbished"
+    "FOR_PARTS": "For parts"
   },
   "badges": {
     "exchangeable": "Exchangeable",

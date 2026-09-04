@@ -13,6 +13,7 @@ import {
 import { useTranslation } from "@/i18n/context";
 import type { ProductCondition } from "@/types/enums";
 import { NAMESPACE } from "../i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
 import { PRODUCT_CONDITIONS, SEARCH_SOURCES } from "../narrow";
 import type { SearchFacets as Facets, SearchFilters, SearchSource } from "../types";
 
@@ -61,6 +62,10 @@ export function SearchFacetsRail({
   onClearAll,
 }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  // Condition wording is owned by the shared `cards` dictionary — the same
+  // one the product badge renders from — so the filter, the detail page and
+  // the badge can never word the same enum differently again.
+  const { t: tCondition } = useTranslation(CARDS_NAMESPACE);
 
   // The inputs stay local until the user leaves the field: re-querying on every
   // keystroke would fire a search per digit.
@@ -104,7 +109,7 @@ export function SearchFacetsRail({
         <FilterOptions
           options={PRODUCT_CONDITIONS.map((condition) => ({
             value: condition,
-            label: t(`conditions.${condition}`),
+            label: tCondition(`condition.${condition}`),
             count: conditionCounts[condition],
           }))}
           selected={filters.conditions}

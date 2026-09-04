@@ -3,6 +3,7 @@ import { useTranslation } from "@/i18n/context";
 import type { SupportedLanguage } from "@/constants/settings";
 import type { Product } from "@/types/product";
 import { NAMESPACE } from "../i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
 import { Title } from "@/components/Primitives/Title";
 import { Text } from "@/components/Primitives/Text";
 import { DataList } from "@/components/Patterns";
@@ -34,13 +35,17 @@ export function ProductDetails({
   lang: SupportedLanguage;
 }) {
   const { t } = useTranslation(NAMESPACE);
+  // Condition wording is owned by the shared `cards` dictionary — the same
+  // one the product badge renders from — so the filter, the detail page and
+  // the badge can never word the same enum differently again.
+  const { t: tCondition } = useTranslation(CARDS_NAMESPACE);
 
   const rows = [
     { label: t("details.brand"), value: product.brand },
     { label: t("details.color"), value: product.color },
     {
       label: t("details.condition"),
-      value: t(`conditions.${product.condition}`),
+      value: tCondition(`condition.${product.condition}`),
     },
     {
       label: t("details.category"),
