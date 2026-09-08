@@ -108,6 +108,9 @@ export function ProductActions({ product, onProposeExchange }: Props) {
             variant="outline"
             size="sm"
             className="flex-1"
+            // Favoriting is stored per seller, so there is nothing to save it
+            // to without a session. The CTAs above already say to log in.
+            disabled={!isAuthed}
             ariaPressed={liked}
             leftIcon={
               <Heart
