@@ -5,8 +5,8 @@ import { Button } from "@/components/Primitives/Button";
 import { buttonIconSize } from "@/design/button";
 import { useDealActions } from "@/features/deals/hooks/useDealActions";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
-import { useIsAuthenticated } from "@/store/useAuthStore";
 import { useTranslation } from "@/i18n/context";
 import type { Product } from "@/types/product";
 import { NAMESPACE } from "../i18n";
@@ -26,7 +26,9 @@ export function ProductActions({ product, onProposeExchange }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
-  const isAuthed = useIsAuthenticated();
+  // Both CTAs are seller-to-seller actions, so both need an account. Anonymous
+  // users keep a pressable button that takes them to login and back.
+  const { isAuthed, requireAuth } = useRequireAuth();
   // Marketplace is cash + in person, so the primary action starts a P2P deal
   // (a purchase request), not an online cart checkout.
   const { proposeSaleDeal, busyId } = useDealActions();
@@ -39,8 +41,14 @@ export function ProductActions({ product, onProposeExchange }: Props) {
   });
 
   async function handleRequestToBuy() {
+    if (!requireAuth()) return;
     const deal = await proposeSaleDeal(product.id);
     if (deal) setRequested(true);
+  }
+
+  function handleProposeExchange() {
+    if (!requireAuth()) return;
+    onProposeExchange?.();
   }
 
   // An exchangeable listing can still be bought outright, so the swap is a
@@ -61,7 +69,7 @@ export function ProductActions({ product, onProposeExchange }: Props) {
             size="md"
             fullWidth
             leftIcon={requested ? Check : HandCoins}
-            disabled={requesting || requested || !isAuthed}
+            disabled={requesting || requested}
             text={
               requested
                 ? t("actions.requested")
@@ -80,8 +88,8 @@ export function ProductActions({ product, onProposeExchange }: Props) {
               size="md"
               fullWidth
               leftIcon={Repeat}
-              text={t("exchange.title")}
-              onPress={onProposeExchange}
+              text={isAuthed ? t("exchange.title") : t("actions.loginToExchange")}
+              onPress={handleProposeExchange}
             />
           )}
 
