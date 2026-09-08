@@ -114,13 +114,19 @@ export function ReviewStep({
     <dl className="flex flex-col divide-y divide-border-light rounded-xl border border-border-light bg-surface px-4">
       {rows.map((row) => (
         <div key={row.label} className="flex items-center justify-between gap-4 py-3">
-          <dt>
+          <dt className="shrink-0">
             <Text variant="small" color="tertiary">
               {row.label}
             </Text>
           </dt>
-          <dd className="text-right">
-            <Text variant="span" weight="medium" numberOfLines={1}>
+
+          <dd className="min-w-0 flex-1 text-right">
+            <Text
+              variant="span"
+              weight="medium"
+              numberOfLines={2}
+              className="wrap-break-word"
+            >
               {row.value || t("review.empty")}
             </Text>
           </dd>
