@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import { ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -9,7 +10,11 @@ import {
   tabsItemClass,
   tabsListClass,
   tabsScrollableClass,
+  tabsScrollButtonClass,
+  tabsScrollerClass,
 } from "@/design/tabs";
+import { useCardScroller } from "@/hooks/useCardScroller";
+import { useTranslation } from "@/i18n/context";
 
 export interface Tab {
   key: string;
@@ -32,6 +37,36 @@ export interface TabsProps {
   remeasureKey?: string | number;
   /** Let the row scroll horizontally when the tabs overflow (long category rows). */
   scrollable?: boolean;
+  /** Overrides the `common` labels on the desktop scroll arrows. */
+  scrollPreviousLabel?: string;
+  scrollNextLabel?: string;
+}
+
+function ScrollButton({
+  onPress,
+  ariaLabel,
+  disabled,
+  icon: Icon,
+}: {
+  onPress: () => void;
+  ariaLabel: string;
+  disabled: boolean;
+  icon: LucideIcon;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onPress}
+      aria-label={ariaLabel}
+      disabled={disabled}
+      className={clsx(
+        tabsScrollButtonClass,
+        disabled && "pointer-events-none opacity-40",
+      )}
+    >
+      <Icon size={16} strokeWidth={2} aria-hidden />
+    </button>
+  );
 }
 
 /**
@@ -48,8 +83,20 @@ export function Tabs({
   ariaLabel,
   remeasureKey,
   scrollable = false,
+  scrollPreviousLabel,
+  scrollNextLabel,
 }: TabsProps) {
+  const { t } = useTranslation("common");
   const tabRefs = useRef<Record<string, HTMLElement | null>>({});
+  // Same rail mechanics as the home card scrollers. A row that fits shows no
+  // arrows at all, so the short filter rows keep the layout they have today.
+  const { scrollRef, canScrollLeft, canScrollRight, handleScroll } = useCardScroller(
+    tabs.length,
+  );
+  const showArrows = scrollable && (canScrollLeft || canScrollRight);
+
+  /** Just under a full page of tabs, so the row always keeps a landmark. */
+  const step = () => (scrollRef.current?.clientWidth ?? 0) * 0.7 || 240;
   const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(
     null,
   );
@@ -77,11 +124,17 @@ export function Tabs({
     </>
   );
 
-  return (
+  const list = (
     <div
+      ref={scrollable ? scrollRef : undefined}
       role="tablist"
       aria-label={ariaLabel}
-      className={clsx(tabsListClass, scrollable && tabsScrollableClass)}
+      className={clsx(
+        tabsListClass,
+        // Inside the arrow row the list is the flex child that gives; without
+        // `min-w-0` it would size to its content and push the arrows off-screen.
+        scrollable && clsx(tabsScrollableClass, "min-w-0 flex-1"),
+      )}
     >
       {tabs.map((tab) => {
         const active = tab.key === activeKey;
@@ -125,6 +178,33 @@ export function Tabs({
           aria-hidden
           className={tabsIndicatorClass}
           style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }}
+        />
+      )}
+    </div>
+  );
+
+  if (!scrollable) return list;
+
+  // The wrapper is always here for a scrollable row, arrows or not: moving the
+  // list between two parents would remount it, and the scroll listener the
+  // measuring hook bound to the old node would go with it.
+  return (
+    <div className={tabsScrollerClass}>
+      {showArrows && (
+        <ScrollButton
+          icon={ChevronLeft}
+          onPress={() => handleScroll(-step())}
+          ariaLabel={scrollPreviousLabel ?? t("scrollPrevious")}
+          disabled={!canScrollLeft}
+        />
+      )}
+      {list}
+      {showArrows && (
+        <ScrollButton
+          icon={ChevronRight}
+          onPress={() => handleScroll(step())}
+          ariaLabel={scrollNextLabel ?? t("scrollNext")}
+          disabled={!canScrollRight}
         />
       )}
     </div>

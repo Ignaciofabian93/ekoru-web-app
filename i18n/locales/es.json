@@ -79,6 +79,8 @@
     "report": "Reportar",
     "noResults": "Sin resultados",
     "required": "Campo obligatorio",
+    "scrollPrevious": "Desplazar a la izquierda",
+    "scrollNext": "Desplazar a la derecha",
     "optional": "Opcional"
   },
   "profile": {

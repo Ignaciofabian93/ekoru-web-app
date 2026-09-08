@@ -79,6 +79,8 @@
     "report": "Signaler",
     "noResults": "Aucun résultat",
     "required": "Champ obligatoire",
+    "scrollPrevious": "Défiler vers la gauche",
+    "scrollNext": "Défiler vers la droite",
     "optional": "Optionnel"
   },
   "profile": {

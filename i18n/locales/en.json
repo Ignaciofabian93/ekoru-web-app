@@ -79,6 +79,8 @@
     "report": "Report",
     "noResults": "No results",
     "required": "Required field",
+    "scrollPrevious": "Scroll left",
+    "scrollNext": "Scroll right",
     "optional": "Optional"
   },
   "profile": {
