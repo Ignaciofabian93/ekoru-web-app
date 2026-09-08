@@ -18,7 +18,6 @@
   "filters": {
     "title": "Filtros",
     "search": "Buscar",
-    "searchPlaceholder": "Buscar productos...",
     "sortBy": "Ordenar por",
     "minPrice": "Precio mínimo",
     "maxPrice": "Precio máximo",

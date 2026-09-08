@@ -1,6 +1,6 @@
 "use client";
 import { Checkbox } from "@/components/Primitives/Checkbox";
-import { Input, SearchInput } from "@/components/Primitives/Inputs";
+import { Input } from "@/components/Primitives/Inputs";
 import { Button } from "@/components/Primitives/Button";
 import { Modal } from "@/components/Overlays/Modal";
 import { Select } from "@/components/Primitives/Select";
@@ -32,7 +32,8 @@ const CONDITION_VALUES: ProductCondition[] = [
 
 const SORT_VALUES: ProductSortValue[] = ["newest", "oldest", "priceAsc", "priceDesc"];
 
-/** The subset of filters edited inside the modal (search lives in the bar). */
+/** Everything the modal edits — held apart from the committed filters so the
+ *  edits stay discardable until Apply. */
 type FilterDraft = Pick<
   ProductFiltersState,
   "minPrice" | "maxPrice" | "condition" | "isExchangeable"
@@ -109,50 +110,43 @@ export function MarketplaceFilters({ filters, sort, setField, setSort }: Props) 
   const clear = () => setDraft(EMPTY_DRAFT);
 
   return (
-    <section className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
-      <div className="flex-1">
-        <SearchInput
+    // Sort + filters only: searching for a product is the navbar's job, and a
+    // second search box over the same catalog only raised the question of
+    // which one was in charge.
+    <section className="flex items-center justify-end gap-2 md:gap-3">
+      {/* Full width on a phone, a fixed control on desktop — the row no longer
+          has a search field to share the space with. */}
+      <div className="flex-1 md:w-56 md:flex-none">
+        <Select
           size="md"
           width="full"
-          value={filters.search}
-          onChangeText={(v) => setField("search", v)}
-          placeholder={t("filters.searchPlaceholder")}
+          searchEnabled={false}
+          value={sort}
+          options={sortOptions}
+          onChange={(v) => setSort(v as ProductSortValue)}
+          placeholder={t("filters.sortBy")}
         />
       </div>
 
-      <div className="flex items-center gap-2 md:gap-3">
-        <div className="w-full md:w-56">
-          <Select
-            size="md"
-            width="full"
-            searchEnabled={false}
-            value={sort}
-            options={sortOptions}
-            onChange={(v) => setSort(v as ProductSortValue)}
-            placeholder={t("filters.sortBy")}
-          />
-        </div>
-
-        <button
-          type="button"
-          onClick={openModal}
-          aria-haspopup="dialog"
-          aria-expanded={open}
-          className="group flex h-11 shrink-0 items-center gap-2 rounded-md border-2 border-solid border-input-border bg-input-bg px-3 text-base text-foreground outline-none transition-[border-color] duration-150 hover:border-input-border-focus focus-visible:border-input-border-focus"
-        >
-          <SlidersHorizontal
-            size={16}
-            strokeWidth={2}
-            className="text-foreground-tertiary transition-colors group-hover:text-primary"
-          />
-          <span className="hidden font-medium sm:inline">{t("filters.title")}</span>
-          {activeCount > 0 && (
-            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-on-primary tabular-nums">
-              {activeCount}
-            </span>
-          )}
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={openModal}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        className="group flex h-11 shrink-0 items-center gap-2 rounded-md border-2 border-solid border-input-border bg-input-bg px-3 text-base text-foreground outline-none transition-[border-color] duration-150 hover:border-input-border-focus focus-visible:border-input-border-focus"
+      >
+        <SlidersHorizontal
+          size={16}
+          strokeWidth={2}
+          className="text-foreground-tertiary transition-colors group-hover:text-primary"
+        />
+        <span className="hidden font-medium sm:inline">{t("filters.title")}</span>
+        {activeCount > 0 && (
+          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-on-primary tabular-nums">
+            {activeCount}
+          </span>
+        )}
+      </button>
 
       <Modal
         isOpen={open}

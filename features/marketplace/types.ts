@@ -44,8 +44,9 @@ export type ProductSortField = "createdAt" | "price" | "viewCount" | "updatedAt"
 
 export type SortDirection = "ASC" | "DESC";
 
+// No `search`: product search is the navbar's job, so the marketplace bar
+// only carries what the sort select and the filter modal own.
 export type ProductFilters = {
-  search: string;
   minPrice: string;
   maxPrice: string;
   condition: ProductCondition | "";
@@ -59,7 +60,6 @@ export const DEFAULT_PAGE_SIZE = 10;
 export const PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50];
 
 export const EMPTY_FILTERS: ProductFilters = {
-  search: "",
   minPrice: "",
   maxPrice: "",
   condition: "",

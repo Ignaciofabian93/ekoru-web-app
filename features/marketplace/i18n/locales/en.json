@@ -18,7 +18,6 @@
   "filters": {
     "title": "Filters",
     "search": "Search",
-    "searchPlaceholder": "Search products...",
     "sortBy": "Sort by",
     "minPrice": "Min price",
     "maxPrice": "Max price",
