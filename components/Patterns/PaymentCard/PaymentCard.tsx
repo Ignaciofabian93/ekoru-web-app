@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import { Lock } from "lucide-react";
 import { useState } from "react";
 import {
@@ -136,7 +137,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
       <div className={paymentCardStageClass}>
         {/* Front — gradient is theme-driven, transform/z-index depend on flip state */}
         <div
-          className={paymentCardFaceClass}
+          className={clsx(paymentCardFaceClass, isFlipped ? "invisible" : "visible")}
           style={{
             background: `linear-gradient(135deg, ${theme.front[0]}, ${theme.front[1]}, ${theme.front[2]})`,
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
@@ -164,7 +165,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
 
         {/* Back */}
         <div
-          className={paymentCardFaceClass}
+          className={clsx(paymentCardFaceClass, isFlipped ? "visible" : "invisible")}
           style={{
             background: `linear-gradient(135deg, ${theme.back[0]}, ${theme.back[1]}, ${theme.back[2]})`,
             transform: isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)",

@@ -47,7 +47,7 @@ export const paymentCardStageClass = "relative h-50 perspective-distant";
 export const paymentCardFaceClass = clsx(
   "absolute top-0 left-0 box-border flex h-50 w-full flex-col justify-between",
   "overflow-hidden rounded-2xl p-5.5",
-  "[backface-visibility:hidden] transition-transform duration-500",
+  "card-face",
 );
 
 export const paymentCardDecorTopClass =

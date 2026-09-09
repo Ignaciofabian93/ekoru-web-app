@@ -36,6 +36,8 @@ function Face({
         "shadow-sm shadow-slate-800/20 hover:shadow-md",
         FACE_CLASS[orientation],
         back ? "absolute inset-0 rotate-y-180" : "relative",
+        "card-face",
+        active ? "visible" : "invisible",
         className,
       )}
     >
