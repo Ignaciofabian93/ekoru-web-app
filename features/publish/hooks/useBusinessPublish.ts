@@ -100,14 +100,13 @@ export function useBusinessPublish() {
               color: sanitizeOnSubmit(form.color) || undefined,
               hasOffer: form.hasOffer,
               offerPrice:
-                form.hasOffer && form.offerPrice
-                  ? Number(form.offerPrice)
-                  : undefined,
+                form.hasOffer && form.offerPrice ? Number(form.offerPrice) : undefined,
               recycledContent: form.recycledContent
                 ? Number(form.recycledContent)
                 : undefined,
               weight: form.weight ? Number(form.weight) : undefined,
               weightUnit: form.weightUnit || undefined,
+              size: form.size || undefined,
               length: form.length ? Number(form.length) : undefined,
               width: form.width ? Number(form.width) : undefined,
               height: form.height ? Number(form.height) : undefined,
@@ -123,7 +122,7 @@ export function useBusinessPublish() {
                   : undefined,
               tags: form.tags.length ? form.tags : undefined,
               features: form.features.length ? form.features : undefined,
-              materials: materials.length ? materials : undefined,
+              materials,
             },
           },
         });

@@ -1,6 +1,7 @@
 import type {
   DimensionUnit,
   ProductCondition,
+  ProductSize,
   ServicePricing,
   WeightUnit,
 } from "@/types/enums";
@@ -65,6 +66,15 @@ export const SERVICE_PRICING_OPTIONS: { value: ServicePricing; labelKey: Publish
     { value: "HOURLY", labelKey: "servicePricingTypes.hourly" },
     { value: "PACKAGE", labelKey: "servicePricingTypes.package" },
   ];
+
+/** Size classes accepted by the stores subgraph (StoreProduct.size). */
+export const PRODUCT_SIZE_OPTIONS: { value: ProductSize; labelKey: PublishKey }[] = [
+  { value: "XS", labelKey: "productSizes.xs" },
+  { value: "S", labelKey: "productSizes.s" },
+  { value: "M", labelKey: "productSizes.m" },
+  { value: "L", labelKey: "productSizes.l" },
+  { value: "XL", labelKey: "productSizes.xl" },
+];
 
 /** Weight units accepted by the stores subgraph (StoreProduct.weightUnit). */
 export const WEIGHT_UNIT_OPTIONS: { value: WeightUnit; labelKey: PublishKey }[] = [

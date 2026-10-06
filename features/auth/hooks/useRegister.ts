@@ -15,6 +15,10 @@ import { useMutation } from "@apollo/client/react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
+/** Bounds of the message a business writes for EKORU's review (mirrors ekoru-users). */
+export const APPLICATION_MESSAGE_MIN = 50;
+export const APPLICATION_MESSAGE_MAX = 3000;
+
 /**
  * Read at submit time rather than via `useSearchParams`, which would opt the
  * statically prerendered register page out of SSG for a value only needed once
@@ -42,6 +46,10 @@ export function useRegister() {
   const [businessName, setBusinessName] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [businessType, setBusinessType] = useState<BusinessType>("RETAIL");
+  const [applicationMessage, setApplicationMessage] = useState("");
+  // Set once a business application is sent: the account waits for EKORU's
+  // review, so instead of the login page the form shows where we'll write.
+  const [applicationSentTo, setApplicationSentTo] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -83,12 +91,19 @@ export function useRegister() {
               businessType,
               businessName: sanitizeOnSubmit(businessName),
               displayName: sanitizeOnSubmit(displayName),
+              // Trim only: the line breaks are kept in the email to EKORU.
+              applicationMessage: applicationMessage.trim(),
               email: normalizedEmail,
               password: normalizedPassword,
             },
             language: storedLanguage?.toUpperCase() || "ES",
           },
         });
+
+        // A business can't sign in until EKORU approves it, so there is no
+        // login to send it to yet.
+        setApplicationSentTo(normalizedEmail);
+        return true;
       }
 
       toast.success(t("feedback.registerSuccess"));
@@ -121,6 +136,9 @@ export function useRegister() {
     setDisplayName,
     businessType,
     setBusinessType,
+    applicationMessage,
+    setApplicationMessage,
+    applicationSentTo,
     email,
     setEmail,
     password,

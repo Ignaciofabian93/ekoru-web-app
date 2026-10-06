@@ -1,4 +1,7 @@
 "use client";
+import { Text } from "@/components/Primitives/Text";
+import { useTranslation } from "@/i18n/context";
+
 import type { MaterialsState } from "../../hooks/useMaterials";
 import type { PublishForm } from "../../hooks/usePublishForm";
 import type { StoreCategoriesState } from "../../hooks/useStoreCategories";
@@ -12,6 +15,7 @@ import { MaterialCompositionField } from "../fields/MaterialCompositionField";
 import { NameField } from "../fields/NameField";
 import { OptionalDetailsSection } from "../fields/OptionalDetailsSection";
 import { RecycledContentField } from "../fields/RecycledContentField";
+import { SizeField } from "../fields/SizeField";
 import { StoreCategoryFields } from "../fields/StoreCategoryFields";
 import { TagsField } from "../fields/TagsField";
 import { WarrantyField } from "../fields/WarrantyField";
@@ -45,6 +49,8 @@ export function StoreDetailsStep({
   invalid,
   descriptionMinLength,
 }: StoreDetailsStepProps) {
+  const { t } = useTranslation("publish");
+
   return (
     <div className="flex flex-col gap-5">
       <NameField
@@ -78,6 +84,23 @@ export function StoreDetailsStep({
         />
       </div>
 
+      {/* Weight and size drive the impact figures and shipping, so they sit in
+          the main form rather than the optional section. */}
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-wrap items-start gap-3">
+          <WeightField
+            value={form.weight}
+            unit={form.weightUnit}
+            onChangeValue={(v) => setField("weight", v)}
+            onChangeUnit={(v) => setField("weightUnit", v)}
+          />
+          <SizeField value={form.size} onChange={(v) => setField("size", v)} />
+        </div>
+        <Text variant="small" color="tertiary">
+          {t("form.weightSizeHint")}
+        </Text>
+      </div>
+
       <DescriptionField
         value={form.description}
         onChange={(v) => setField("description", v)}
@@ -93,12 +116,6 @@ export function StoreDetailsStep({
       />
 
       <OptionalDetailsSection>
-        <WeightField
-          value={form.weight}
-          unit={form.weightUnit}
-          onChangeValue={(v) => setField("weight", v)}
-          onChangeUnit={(v) => setField("weightUnit", v)}
-        />
         <DimensionsField
           length={form.length}
           width={form.width}

@@ -5,6 +5,7 @@ import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
 
 import {
   CONDITION_OPTIONS,
+  PRODUCT_SIZE_OPTIONS,
   SERVICE_PRICING_OPTIONS,
   type PublishTarget,
 } from "../../constants/options";
@@ -38,6 +39,7 @@ export function ReviewStep({
     ? `${form.length} × ${form.width} × ${form.height} ${form.dimensionUnit}`.trim()
     : "";
   const weight = form.weight ? `${form.weight} ${form.weightUnit}`.trim() : "";
+  const sizeOption = PRODUCT_SIZE_OPTIONS.find((o) => o.value === form.size);
 
   const rows = [
     { label: t("review.target"), value: t(`targetNames.${target}`) },
@@ -73,6 +75,9 @@ export function ReviewStep({
       ? { label: t("review.recycledContent"), value: `${form.recycledContent}%` }
       : null,
     isStore && weight ? { label: t("review.weight"), value: weight } : null,
+    isStore && sizeOption
+      ? { label: t("review.size"), value: t(sizeOption.labelKey) }
+      : null,
     isStore && dimensions ? { label: t("review.dimensions"), value: dimensions } : null,
     isStore && form.warranty !== null
       ? {

@@ -70,18 +70,19 @@ export function BusinessPublishForm() {
   // Store products require at least one photo; services may have none.
   const imagesValid = !isStore || form.images.length >= MIN_PRODUCT_IMAGES;
 
-  // Material composition is optional, but once a seller declares any material
-  // the composition must be complete: every started row filled, no duplicate
-  // materials, and the percentages summing to exactly 100 (a single material
-  // means that one is 100%).
+  // Every store product declares what it is made of (the stores subgraph
+  // rejects it otherwise): at least one material, every started row filled, no
+  // duplicate materials, and the percentages summing to exactly 100 (a single
+  // material means that one is 100%).
   const filledMaterials = form.materials.filter((m) => m.materialTypeId || m.percentage);
   const materialIds = filledMaterials.map((m) => m.materialTypeId).filter(Boolean);
   const materialsValid =
     !isStore ||
-    filledMaterials.length === 0 ||
-    (filledMaterials.every(
-      (m) => m.materialTypeId && Number(m.percentage) > 0 && Number(m.percentage) <= 100,
-    ) &&
+    (filledMaterials.length > 0 &&
+      filledMaterials.every(
+        (m) =>
+          m.materialTypeId && Number(m.percentage) > 0 && Number(m.percentage) <= 100,
+      ) &&
       new Set(materialIds).size === materialIds.length &&
       filledMaterials.reduce((sum, m) => sum + (Number(m.percentage) || 0), 0) === 100);
 

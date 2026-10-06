@@ -2,6 +2,8 @@
 import clsx from "clsx";
 import { Button } from "@/components/Primitives/Button";
 import { Input } from "@/components/Primitives/Inputs";
+import { LinkButton } from "@/components/Primitives/LinkButton";
+import { TextArea } from "@/components/Primitives/TextArea";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
@@ -12,14 +14,21 @@ import {
   ArrowRight,
   Building2,
   Check,
+  Home,
   Lock,
   Mail,
+  MailCheck,
   Rocket,
   User,
   type LucideIcon,
 } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useState } from "react";
-import { useRegister } from "../hooks/useRegister";
+import {
+  APPLICATION_MESSAGE_MAX,
+  APPLICATION_MESSAGE_MIN,
+  useRegister,
+} from "../hooks/useRegister";
 
 const TOTAL_STEPS = 3;
 
@@ -46,6 +55,9 @@ export function RegisterForm() {
     setDisplayName,
     businessType,
     setBusinessType,
+    applicationMessage,
+    setApplicationMessage,
+    applicationSentTo,
     email,
     setEmail,
     password,
@@ -56,6 +68,7 @@ export function RegisterForm() {
     handleRegister,
   } = useRegister();
 
+  const params = useParams<{ lang?: string }>();
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
 
@@ -66,8 +79,13 @@ export function RegisterForm() {
   const isBusiness = sellerType !== "PERSON";
 
   const emailValid = isValidEmail(email);
+  const messageLength = applicationMessage.trim().length;
+  const messageValid = messageLength >= APPLICATION_MESSAGE_MIN;
   const detailsValid = isBusiness
-    ? businessName.trim().length > 0 && displayName.trim().length > 0 && emailValid
+    ? businessName.trim().length > 0 &&
+      displayName.trim().length > 0 &&
+      messageValid &&
+      emailValid
     : firstName.trim().length > 0 && lastName.trim().length > 0 && emailValid;
   const passwordValid = isMinLength(password, 8);
   const confirmValid = confirmPassword.length > 0 && password === confirmPassword;
@@ -110,6 +128,32 @@ export function RegisterForm() {
     1: { title: t("register.detailsTitle"), subtitle: t("register.detailsSubtitle") },
     2: { title: t("register.securityTitle"), subtitle: t("register.securitySubtitle") },
   }[step]!;
+
+  // A business application waits for EKORU's review before the account can
+  // sign in, so the wizard ends here instead of on the login page.
+  if (applicationSentTo) {
+    return (
+      <div className="flex flex-col items-center gap-5 py-6 text-center">
+        <span className="flex h-14 w-14 items-center justify-center rounded-full border border-secondary-dark/50 bg-linear-180 from-secondary-hover/15 to-secondary/5 text-secondary-dark">
+          <MailCheck size={28} color="currentColor" strokeWidth={2} />
+        </span>
+        <div className="flex flex-col gap-2">
+          <Title level="h2" size="h4" weight="semibold" color="primary" align="center">
+            {t("register.applicationSentTitle")}
+          </Title>
+          <Text variant="span" color="secondary" align="center">
+            {t("register.applicationSentBody", { email: applicationSentTo })}
+          </Text>
+        </div>
+        <LinkButton
+          href={`/${params.lang ?? "es"}`}
+          icon={Home}
+          label={t("register.applicationSentAction")}
+          variant="primary"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -259,6 +303,37 @@ export function RegisterForm() {
                           </button>
                         );
                       })}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <TextArea
+                      name="applicationMessage"
+                      label={t("form.applicationMessage")}
+                      placeholder={t("form.applicationMessagePlaceholder")}
+                      value={applicationMessage}
+                      onChangeText={setApplicationMessage}
+                      rows={5}
+                      maxLength={APPLICATION_MESSAGE_MAX}
+                      required
+                      isInvalid={submitted && !messageValid}
+                      errorMessage={t("feedback.applicationMessageTooShort", {
+                        min: String(APPLICATION_MESSAGE_MIN),
+                      })}
+                    />
+                    <div className="flex items-start justify-between gap-3">
+                      <Text variant="small" color="tertiary">
+                        {t("form.applicationMessageHint")}
+                      </Text>
+                      <Text
+                        variant="small"
+                        color={messageValid ? "tertiary" : "secondary"}
+                        className="shrink-0"
+                      >
+                        {t("form.applicationMessageCount", {
+                          count: String(messageLength),
+                          min: String(APPLICATION_MESSAGE_MIN),
+                        })}
+                      </Text>
                     </div>
                   </div>
                 </>

@@ -26,7 +26,11 @@
     "businessName": "Nom de l'entreprise",
     "businessNamePlaceholder": "Entrez le nom de votre entreprise",
     "accountType": "Type de compte",
-    "businessType": "Type d'entreprise"
+    "businessType": "Type d'entreprise",
+    "applicationMessage": "Message pour EKORU",
+    "applicationMessagePlaceholder": "Ex. : Nous fabriquons des emballages alimentaires réutilisables en coton bio et cire d'abeille d'apiculteurs locaux...",
+    "applicationMessageHint": "Nous examinons chaque entreprise avant d'activer son compte. Dites-nous ce que vous faites, quels produits ou services vous proposez et en quels matériaux ils sont faits.",
+    "applicationMessageCount": "{{count}} / min. {{min}}"
   },
   "actions": {
     "login": "Se connecter",
@@ -70,7 +74,10 @@
     "securitySubtitle": "Protégez votre compte avec un mot de passe sécurisé",
     "personDesc": "Un compte personnel",
     "startupDesc": "Pour les entreprises en croissance",
-    "companyDesc": "Pour les entreprises établies"
+    "companyDesc": "Pour les entreprises établies",
+    "applicationSentTitle": "Nous avons reçu votre demande !",
+    "applicationSentBody": "Nous allons examiner les informations de votre entreprise et vous écrirons à {{email}} une fois votre compte approuvé. D'ici là, vous ne pourrez pas vous connecter.",
+    "applicationSentAction": "Retour à l'accueil"
   },
   "businessTypes": {
     "retail": "Commerce de détail",
@@ -100,6 +107,7 @@
     "networkError": "Erreur réseau. Veuillez vérifier votre connexion et réessayer.",
     "registerSuccess": "Compte créé avec succès. Veuillez vous connecter.",
     "resetSuccess": "Mot de passe mis à jour. Connectez-vous avec le nouveau.",
-    "termsRequired": "Vous devez accepter les Termes et Politiques pour continuer"
+    "termsRequired": "Vous devez accepter les Termes et Politiques pour continuer",
+    "applicationMessageTooShort": "Parlez-nous un peu plus de votre entreprise (au moins {{min}} caractères)"
   }
 }

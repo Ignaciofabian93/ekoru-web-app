@@ -2,6 +2,7 @@
 import type {
   DimensionUnit,
   ProductCondition,
+  ProductSize,
   ServicePricing,
   WeightUnit,
 } from "@/types/enums";
@@ -30,8 +31,10 @@ export interface PublishForm {
   hasOffer: boolean;
   offerPrice: string;
   recycledContent: string; // percentage
+  // Weight and size fall back to the subcategory's averages when left empty.
   weight: string;
   weightUnit: WeightUnit | "";
+  size: ProductSize | "";
   length: string;
   width: string;
   height: string;
@@ -73,6 +76,7 @@ const INITIAL_FORM: PublishForm = {
   recycledContent: "",
   weight: "",
   weightUnit: "",
+  size: "",
   length: "",
   width: "",
   height: "",

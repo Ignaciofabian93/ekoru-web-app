@@ -26,7 +26,11 @@
     "businessName": "Business Name",
     "businessNamePlaceholder": "Enter your business name",
     "accountType": "Account Type",
-    "businessType": "Business Type"
+    "businessType": "Business Type",
+    "applicationMessage": "Message to EKORU",
+    "applicationMessagePlaceholder": "E.g. We make reusable beeswax food wraps from organic cotton and beeswax from local beekeepers...",
+    "applicationMessageHint": "We review every business before activating its account. Tell us what you do, which products or services you offer and what they are made of.",
+    "applicationMessageCount": "{{count}} / min. {{min}}"
   },
   "actions": {
     "login": "Log In",
@@ -70,7 +74,10 @@
     "securitySubtitle": "Protect your account with a secure password",
     "personDesc": "A personal account",
     "startupDesc": "For growing ventures",
-    "companyDesc": "For established businesses"
+    "companyDesc": "For established businesses",
+    "applicationSentTitle": "We received your application!",
+    "applicationSentBody": "We'll review your business details and email you at {{email}} once your account is approved. Until then you won't be able to sign in.",
+    "applicationSentAction": "Back to home"
   },
   "businessTypes": {
     "retail": "Retail",
@@ -100,6 +107,7 @@
     "networkError": "Network error. Please check your connection and try again.",
     "registerSuccess": "Account created successfully. Please sign in.",
     "resetSuccess": "Password updated. Sign in with your new password.",
-    "termsRequired": "You must accept the Terms and Policies to continue"
+    "termsRequired": "You must accept the Terms and Policies to continue",
+    "applicationMessageTooShort": "Tell us a bit more about your business (at least {{min}} characters)"
   }
 }

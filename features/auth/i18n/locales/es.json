@@ -26,7 +26,11 @@
     "businessName": "Nombre de la empresa",
     "businessNamePlaceholder": "Ingresa el nombre de tu empresa",
     "accountType": "Tipo de cuenta",
-    "businessType": "Tipo de negocio"
+    "businessType": "Tipo de negocio",
+    "applicationMessage": "Mensaje para EKORU",
+    "applicationMessagePlaceholder": "Ej: Fabricamos envoltorios reutilizables de cera de abeja con algodón orgánico y cera de apicultores locales...",
+    "applicationMessageHint": "Revisamos cada negocio antes de activar su cuenta. Cuéntanos a qué te dedicas, qué productos o servicios ofreces y de qué materiales están hechos.",
+    "applicationMessageCount": "{{count}} / mín. {{min}}"
   },
   "actions": {
     "login": "Iniciar sesión",
@@ -70,7 +74,10 @@
     "securitySubtitle": "Protege tu cuenta con una contraseña segura",
     "personDesc": "Una cuenta personal",
     "startupDesc": "Para emprendimientos en crecimiento",
-    "companyDesc": "Para empresas establecidas"
+    "companyDesc": "Para empresas establecidas",
+    "applicationSentTitle": "¡Recibimos tu solicitud!",
+    "applicationSentBody": "Revisaremos la información de tu negocio y te escribiremos a {{email}} cuando tu cuenta esté aprobada. Hasta entonces no podrás iniciar sesión.",
+    "applicationSentAction": "Volver al inicio"
   },
   "businessTypes": {
     "retail": "Retail",
@@ -100,6 +107,7 @@
     "networkError": "Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.",
     "registerSuccess": "Cuenta creada correctamente. Por favor, inicia sesión.",
     "resetSuccess": "Contraseña actualizada. Inicia sesión con tu nueva contraseña.",
-    "termsRequired": "Debes aceptar los Términos y Políticas para continuar"
+    "termsRequired": "Debes aceptar los Términos y Políticas para continuar",
+    "applicationMessageTooShort": "Cuéntanos un poco más sobre tu negocio (mínimo {{min}} caracteres)"
   }
 }
