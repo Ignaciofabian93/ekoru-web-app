@@ -3,7 +3,7 @@ import { AdBanner, type AdBannerVariant } from "@/components/Patterns/AdBanner/A
 import type { SupportedLanguage } from "@/constants/settings";
 import { NAMESPACE } from "../i18n";
 import { useTranslation } from "@/i18n/context";
-import { Package, Store, Toolbox, UsersRound } from "lucide-react";
+import { BookOpen, Package, Store, Toolbox, UsersRound } from "lucide-react";
 
 export function AdBannerSection({
   lang,
@@ -12,7 +12,7 @@ export function AdBannerSection({
 }: {
   lang: SupportedLanguage;
   variant?: AdBannerVariant;
-  domain?: "marketplace" | "services" | "stores" | "community";
+  domain?: "marketplace" | "services" | "stores" | "community" | "blog";
 }) {
   const { t } = useTranslation(NAMESPACE);
   const renderIcon = () => {
@@ -25,6 +25,8 @@ export function AdBannerSection({
         return <Store />;
       case "community":
         return <UsersRound />;
+      case "blog":
+        return <BookOpen />;
       default:
         return null;
     }

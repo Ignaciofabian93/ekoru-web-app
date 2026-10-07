@@ -14,13 +14,17 @@ const adBannerBaseClass = clsx(
   "shadow-sm ring-1 ring-black/5",
 );
 
-// Every variant is an eco gradient so banners feel part of the same family:
-// green = forest/brand green, teal = ocean teal, charcoal = satin graphite,
-// emerald = green→teal growth. All are dark enough to carry white content.
+// Every variant is an eco gradient so banners feel part of the same family.
+// The section variants reuse the home category card colours so a banner reads
+// as its section: green = marketplace, sky = stores, charcoal = services,
+// violet = community, teal = blog. Emerald (green→teal growth) is a neutral
+// extra. All are dark enough to carry white content.
 const adBannerVariantClass: Record<AdBannerVariant, string> = {
   green: "bg-linear-to-r from-primary-dark via-primary to-primary-dark",
-  teal: "bg-linear-to-r from-secondary-dark via-secondary to-secondary-dark",
+  sky: "bg-linear-to-r from-sky-700 via-sky-500 to-sky-700",
   charcoal: "bg-linear-to-r from-zinc-900 via-zinc-700 to-zinc-900",
+  violet: "bg-linear-to-r from-violet-800 via-violet-500 to-violet-800",
+  teal: "bg-linear-to-r from-teal-800 via-teal-500 to-teal-800",
   emerald: "bg-linear-to-br from-green-700 via-emerald-600 to-teal-600",
 };
 
@@ -37,8 +41,10 @@ const adBannerCtaBaseClass = clsx(
 // so it stays legible and on-brand against each background.
 const adBannerCtaAccentClass: Record<AdBannerVariant, string> = {
   green: "text-primary",
-  teal: "text-secondary-dark",
+  sky: "text-sky-700",
   charcoal: "text-zinc-800",
+  violet: "text-violet-700",
+  teal: "text-teal-700",
   emerald: "text-emerald-700",
 };
 

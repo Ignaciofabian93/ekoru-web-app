@@ -61,7 +61,7 @@
       },
       "blog": {
         "title": "Blog",
-        "description": "Tips, guías y experiencias compartidas por la comunidad"
+        "description": "Tips, guías y experiencias compartidas por nuestra comunidad"
       }
     }
   },
@@ -120,6 +120,15 @@
     "scrollPrevious": "Desplazar a la izquierda",
     "scrollNext": "Desplazar a la derecha"
   },
+  "blog": {
+    "title": "Desde el blog",
+    "subtitle": "Temas para aprender, compartir y vivir de forma más sostenible",
+    "seeAll": "Ver todos",
+    "explore": "Leer artículos",
+    "noTopics": "No hay temas disponibles",
+    "scrollPrevious": "Desplazar a la izquierda",
+    "scrollNext": "Desplazar a la derecha"
+  },
   "adSections": {
     "marketplace": {
       "title": "Únete a la economía circular",
@@ -140,6 +149,11 @@
       "title": "Intercambia y comparte",
       "description": "Participa en la economía colaborativa y reduce el desperdicio.",
       "cta": "Ver intercambios"
+    },
+    "blog": {
+      "title": "Ideas que vale la pena compartir",
+      "description": "Guías prácticas y consejos para un día a día más sostenible.",
+      "cta": "Ir al blog"
     }
   }
 }

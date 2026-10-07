@@ -13,6 +13,7 @@ import { MarketplaceHighlight } from "../ui/MarketplaceHighlight";
 import { ServicesHighlight } from "../ui/ServicesHighlight";
 import { AdBannerSection } from "../ui/AdBannerSection";
 import { StoreProductsHighlight } from "../ui/StoreProductsHighlight";
+import { BlogHighlight } from "../ui/BlogHighlight";
 import { PageLayout } from "@/components/Layout";
 
 export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
@@ -28,13 +29,15 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
       <PageLayout hero={<HomeHero lang={lang} />} width="default">
         <CategoriesSection lang={lang} />
         {/* <StatsSection /> */}
-        <AdBannerSection lang={lang} variant="teal" domain="stores" />
+        <AdBannerSection lang={lang} variant="sky" domain="stores" />
         <StoresHighlight lang={lang} />
         <StoreProductsHighlight lang={lang} />
         <AdBannerSection lang={lang} variant="charcoal" domain="services" />
         <ServicesHighlight lang={lang} />
         <AdBannerSection lang={lang} variant="green" domain="marketplace" />
         <MarketplaceHighlight lang={lang} />
+        <AdBannerSection lang={lang} variant="teal" domain="blog" />
+        <BlogHighlight lang={lang} />
       </PageLayout>
     </DictionaryProvider>
   );

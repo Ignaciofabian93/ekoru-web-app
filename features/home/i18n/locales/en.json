@@ -61,7 +61,7 @@
       },
       "blog": {
         "title": "Blog",
-        "description": "Tips, guides and experiences shared by the community"
+        "description": "Tips, guides and experiences shared by our community"
       }
     }
   },
@@ -120,6 +120,15 @@
     "scrollPrevious": "Scroll left",
     "scrollNext": "Scroll right"
   },
+  "blog": {
+    "title": "From the blog",
+    "subtitle": "Topics to learn, share and live more sustainably",
+    "seeAll": "See all",
+    "explore": "Read articles",
+    "noTopics": "No topics available",
+    "scrollPrevious": "Scroll left",
+    "scrollNext": "Scroll right"
+  },
   "adSections": {
     "marketplace": {
       "title": "Join the circular economy",
@@ -140,6 +149,11 @@
       "title": "Swap and share",
       "description": "Take part in the collaborative economy and reduce waste.",
       "cta": "See swaps"
+    },
+    "blog": {
+      "title": "Ideas worth sharing",
+      "description": "Practical guides and tips for a more sustainable everyday life.",
+      "cta": "Read the blog"
     }
   }
 }

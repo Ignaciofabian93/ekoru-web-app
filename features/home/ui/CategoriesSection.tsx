@@ -124,11 +124,17 @@ export function CategoriesSection({ lang }: { lang: SupportedLanguage }) {
             <Text variant="p" color="white" weight="bold" size="lg">
               {t(`categories.items.${id}.title`)}
             </Text>
-            <Text variant="p" color="white" weight="semibold" size="sm" className="mb-6">
+            <Text
+              variant="p"
+              color="white"
+              weight="semibold"
+              size="sm"
+              className="mb-6 line-clamp-2"
+            >
               {t(`categories.items.${id}.description`)}
             </Text>
 
-            <div className="relative flex flex-wrap gap-1.5 mt-auto">
+            <div className="relative flex flex-wrap gap-1.5 items-start">
               {loading && categories.length === 0
                 ? SKELETON_WIDTHS.map((width, i) => (
                     <span

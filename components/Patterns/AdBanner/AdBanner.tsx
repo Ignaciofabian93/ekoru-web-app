@@ -17,7 +17,13 @@ import {
   adBannerTitleClass,
 } from "@/design/ad-banner";
 
-export type AdBannerVariant = "green" | "teal" | "charcoal" | "emerald";
+export type AdBannerVariant =
+  | "green"
+  | "sky"
+  | "charcoal"
+  | "violet"
+  | "teal"
+  | "emerald";
 
 export interface AdBannerProps {
   icon?: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
