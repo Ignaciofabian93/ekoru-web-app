@@ -27,7 +27,7 @@ export function CommunityCatalogList({ lang, categories, loading }: Props) {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="h-52 animate-pulse rounded-2xl bg-background-secondary"
+              className="h-72 animate-pulse rounded-2xl bg-background-secondary"
             />
           ))}
         </div>
@@ -40,8 +40,13 @@ export function CommunityCatalogList({ lang, categories, loading }: Props) {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category) => (
-            <CommunityCategoryCard key={category.id} lang={lang} category={category} />
+          {categories.map((category, i) => (
+            <CommunityCategoryCard
+              key={category.id}
+              lang={lang}
+              category={category}
+              index={i}
+            />
           ))}
         </div>
       )}

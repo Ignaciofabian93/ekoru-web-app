@@ -1,45 +1,36 @@
-"use client";
 import clsx from "clsx";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { createElement } from "react";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
-import { resolveCategoryIcon } from "@/features/blog/constants/icons";
-import { useTranslation } from "@/i18n/context";
+import { topicToneAt } from "@/design/topic-tones";
 import type { BlogCatalog } from "@/types/blog";
-import { NAMESPACE } from "../i18n";
 
-/**
- * Soft eco tints cycled along the rail so neighbouring topics never share a
- * colour. Topics carry no imagery, so the tinted band and the oversized icon
- * are what give each card its own face.
- */
-const TONES = [
-  { band: "from-lime-100 via-emerald-50 to-white", accent: "text-emerald-700" },
-  { band: "from-cyan-100 via-sky-50 to-white", accent: "text-sky-700" },
-  { band: "from-amber-100 via-orange-50 to-white", accent: "text-amber-700" },
-  { band: "from-violet-100 via-fuchsia-50 to-white", accent: "text-violet-700" },
-  { band: "from-teal-100 via-emerald-50 to-white", accent: "text-teal-700" },
-  { band: "from-rose-100 via-orange-50 to-white", accent: "text-rose-700" },
-] as const;
-
-interface Props {
+export interface BlogTopicCardProps {
   lang: string;
   topic: BlogCatalog;
-  /** Position in the rail; picks the tint. */
+  /** Lucide icon for `topic.icon`, resolved by the caller so this card stays free of feature code. */
+  icon: LucideIcon;
+  ctaLabel: string;
+  /** Position in its list; picks the tint. */
   index: number;
 }
 
-export function BlogTopicCard({ lang, topic, index }: Props) {
-  const { t } = useTranslation(NAMESPACE);
-  const tone = TONES[index % TONES.length];
-  const icon = resolveCategoryIcon(topic.icon);
+/** A blog topic (catalog category). Fills its container's width; the parent sets the size. */
+export function BlogTopicCard({
+  lang,
+  topic,
+  icon,
+  ctaLabel,
+  index,
+}: BlogTopicCardProps) {
+  const tone = topicToneAt(index);
 
   return (
     <Link
       href={`/${lang}/blog/${topic.slug}`}
-      className="group flex h-full w-64 flex-col overflow-hidden rounded-2xl border border-border-light bg-surface shadow-sm outline-none transition duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary sm:w-72"
+      className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border-light bg-surface shadow-sm outline-none transition duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary"
     >
       <div className={clsx("relative h-28 overflow-hidden bg-linear-to-br", tone.band)}>
         {createElement(icon, {
@@ -70,7 +61,7 @@ export function BlogTopicCard({ lang, topic, index }: Props) {
           {topic.description}
         </Text>
         <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-semibold text-primary">
-          {t("blog.explore")}
+          {ctaLabel}
           <ArrowRight
             size={16}
             strokeWidth={2.5}

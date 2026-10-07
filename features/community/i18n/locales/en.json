@@ -13,7 +13,9 @@
   },
   "category": {
     "explore": "Explore",
-    "subcategories": "Topics"
+    "topicOne": "1 topic",
+    "topicOther": "{{count}} topics",
+    "moreTopics": "+{{count}} more"
   },
   "detail": {
     "backToList": "Community",

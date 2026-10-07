@@ -1,11 +1,12 @@
 "use client";
+import { BlogTopicCard } from "@/components/Cards";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 
+import { resolveCategoryIcon } from "../constants/icons";
 import { NAMESPACE } from "../i18n";
 import type { BlogCatalogCategory } from "../types";
-import { BlogCategoryCard } from "./BlogCategoryCard";
 
 interface Props {
   lang: string;
@@ -27,7 +28,7 @@ export function BlogCatalogList({ lang, categories, loading }: Props) {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="h-52 animate-pulse rounded-2xl bg-background-secondary"
+              className="h-60 animate-pulse rounded-2xl bg-background-secondary"
             />
           ))}
         </div>
@@ -40,8 +41,15 @@ export function BlogCatalogList({ lang, categories, loading }: Props) {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category) => (
-            <BlogCategoryCard key={category.id} lang={lang} category={category} />
+          {categories.map((category, i) => (
+            <BlogTopicCard
+              key={category.id}
+              lang={lang}
+              topic={category}
+              icon={resolveCategoryIcon(category.icon)}
+              ctaLabel={t("category.explore")}
+              index={i}
+            />
           ))}
         </div>
       )}

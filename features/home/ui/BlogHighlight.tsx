@@ -4,13 +4,14 @@ import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import { useCardScroller } from "@/hooks/useCardScroller";
 import { useBlogCatalog } from "@/features/blog/hooks/useBlogCatalog";
+import { resolveCategoryIcon } from "@/features/blog/constants/icons";
 import type { Language } from "@/features/blog/types";
 import { NAMESPACE } from "../i18n";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
 import { CardScroller } from "@/components/Cards/CardScroller";
+import { BlogTopicCard } from "@/components/Cards";
 import { Text } from "@/components/Primitives/Text";
-import { BlogTopicCard } from "./BlogTopicCard";
 
 const SKELETON_COUNT = 4;
 
@@ -21,9 +22,7 @@ const SKELETON_COUNT = 4;
  */
 export function BlogHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
-  const { categories: topics, loading } = useBlogCatalog(
-    lang.toUpperCase() as Language,
-  );
+  const { categories: topics, loading } = useBlogCatalog(lang.toUpperCase() as Language);
   const { scrollRef, canScrollLeft, canScrollRight, handleScroll } = useCardScroller(
     topics.length,
   );
@@ -63,8 +62,14 @@ export function BlogHighlight({ lang }: { lang: SupportedLanguage }) {
                 />
               ))
             : topics.map((topic, i) => (
-                <div key={topic.id} className="shrink-0 snap-start">
-                  <BlogTopicCard lang={lang} topic={topic} index={i} />
+                <div key={topic.id} className="w-64 shrink-0 snap-start sm:w-72">
+                  <BlogTopicCard
+                    lang={lang}
+                    topic={topic}
+                    icon={resolveCategoryIcon(topic.icon)}
+                    ctaLabel={t("blog.explore")}
+                    index={i}
+                  />
                 </div>
               ))}
         </CardScroller>

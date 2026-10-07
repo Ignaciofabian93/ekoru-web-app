@@ -13,7 +13,9 @@
   },
   "category": {
     "explore": "Explorar",
-    "subcategories": "Temas"
+    "topicOne": "1 tema",
+    "topicOther": "{{count}} temas",
+    "moreTopics": "+{{count}} más"
   },
   "detail": {
     "backToList": "Comunidad",
