@@ -64,13 +64,57 @@
       "capacity": "Places (optional)",
       "cover": "Cover image URL (optional)",
       "hint": "Leave places empty for an event with no limit.",
-      "submit": "Publish"
+      "submit": "Publish",
+      "category": "Category",
+      "subcategory": "Event type"
     },
     "errors": {
       "register": "We could not reserve your place. Try again.",
       "cancel": "We could not cancel your place.",
       "create": "We could not publish the event.",
-      "incomplete": "Add a name and describe the event."
+      "incomplete": "Add a name and describe the event.",
+      "cancelEvent": "We could not cancel the event.",
+      "report": "We could not send the report."
+    },
+    "location": {
+      "mode": "Format",
+      "modes": {
+        "IN_PERSON": "In person",
+        "ONLINE": "Online",
+        "HYBRID": "Hybrid"
+      },
+      "region": "Region",
+      "city": "City",
+      "county": "District",
+      "address": "Address",
+      "addressPlaceholder": "Street, number and directions",
+      "onlineUrl": "Join link",
+      "join": "Join online",
+      "online": "Online"
+    },
+    "organizer": {
+      "cancel": "Cancel event",
+      "cancelTitle": "Cancel the event",
+      "cancelIntro": "We will email the {{count}} people registered for “{{title}}”. The event will no longer show in the community.",
+      "cancelReason": "Reason (optional, included in the notice)",
+      "cancelConfirm": "Cancel and notify",
+      "cancelled": "Event cancelled; registrants were notified."
+    },
+    "report": {
+      "open": "Report",
+      "title": "Report event",
+      "intro": "Tell us what is wrong with “{{title}}”. The Ekoru team will review it.",
+      "reason": "Reason",
+      "details": "Details (optional)",
+      "submit": "Send report",
+      "sent": "Thanks, we will review the event.",
+      "reasons": {
+        "SPAM": "Spam or advertising",
+        "SCAM": "Possible scam",
+        "INAPPROPRIATE": "Inappropriate content",
+        "MISLEADING": "False or misleading information",
+        "OTHER": "Other"
+      }
     }
   }
 }

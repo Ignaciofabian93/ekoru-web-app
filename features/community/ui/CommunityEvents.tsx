@@ -1,11 +1,12 @@
 "use client";
-import { CalendarDays, CalendarPlus, Check, Users } from "lucide-react";
+import { CalendarDays, CalendarPlus, Check, Flag, MapPin, Users, Video } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
 import { Modal } from "@/components/Overlays";
 import { Button } from "@/components/Primitives/Button";
 import { Input } from "@/components/Primitives/Inputs";
+import { Select } from "@/components/Primitives/Select";
 import { Text } from "@/components/Primitives/Text";
 import { TextArea } from "@/components/Primitives/TextArea";
 import { Title } from "@/components/Primitives/Title";
@@ -13,8 +14,22 @@ import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import { useParams } from "next/navigation";
 
-import { useCommunityEvents, type CommunityEvent } from "../hooks/useCommunityEvents";
+import {
+  REPORT_REASONS,
+  useCommunityEvents,
+  type CommunityEvent,
+  type EventScope,
+  type ReportReason,
+} from "../hooks/useCommunityEvents";
 import { NAMESPACE } from "../i18n";
+import { EventCategoryFields } from "./EventCategoryFields";
+import { EventLocationFields } from "./EventLocationFields";
+
+/** "Address, comuna, city" for in-person events; null when nothing is set. */
+function placeLabel(event: CommunityEvent) {
+  const parts = [event.address, event.countyName, event.cityName].filter(Boolean);
+  return parts.length ? parts.join(", ") : null;
+}
 
 function formatDate(iso: string, locale: string) {
   try {
@@ -36,7 +51,7 @@ function formatDate(iso: string, locale: string) {
  * details prefilled and can cancel later; a guest simply leaves a name and an
  * email, which is all the organiser needs to expect them.
  */
-export function CommunityEvents() {
+export function CommunityEvents({ scope = {} }: { scope?: EventScope }) {
   const { t } = useTranslation(NAMESPACE);
   const params = useParams<{ lang?: SupportedLanguage }>();
   const lang = params.lang ?? DEFAULT_LANGUAGE;
@@ -50,14 +65,25 @@ export function CommunityEvents() {
     registering,
     cancel,
     cancelling,
+    cancelEvent,
+    cancellingEvent,
+    reportEvent,
+    reporting,
     draft,
     updateDraft,
     isDraftValid,
     createEvent,
     creating,
-  } = useCommunityEvents();
+  } = useCommunityEvents(scope);
 
   const [reserving, setReserving] = useState<CommunityEvent | null>(null);
+  const [eventToCancel, setEventToCancel] = useState<CommunityEvent | null>(null);
+  const [cancelReason, setCancelReason] = useState("");
+  const [eventToReport, setEventToReport] = useState<CommunityEvent | null>(null);
+  const [reportReason, setReportReason] = useState<ReportReason>("SPAM");
+  const [reportDetails, setReportDetails] = useState("");
+  const isOrganizer = (event: CommunityEvent) =>
+    Boolean(seller?.id && event.organizerId === seller.id);
   const [composerOpen, setComposerOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -143,6 +169,33 @@ export function CommunityEvents() {
                     </span>
                   )}
 
+                  {event.locationType !== "ONLINE" && placeLabel(event) && (
+                    <span className="flex items-center gap-1.5 text-xs text-foreground-secondary">
+                      <MapPin size={14} strokeWidth={2} />
+                      {placeLabel(event)}
+                    </span>
+                  )}
+
+                  {event.locationType !== "IN_PERSON" && (
+                    <span className="flex items-center gap-1.5 text-xs text-foreground-secondary">
+                      <Video size={14} strokeWidth={2} />
+                      {/* The join link is for people who reserved (and the
+                          organiser); everyone else just sees it is online. */}
+                      {event.onlineUrl && (registration || isOrganizer(event)) ? (
+                        <a
+                          href={event.onlineUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline underline-offset-2"
+                        >
+                          {t("events.location.join")}
+                        </a>
+                      ) : (
+                        t("events.location.online")
+                      )}
+                    </span>
+                  )}
+
                   <Text variant="p" size="sm" color="tertiary">
                     {event.content.length > 140
                       ? `${event.content.slice(0, 140)}…`
@@ -161,8 +214,34 @@ export function CommunityEvents() {
                         })}
                   </span>
 
+                  {seller && !isOrganizer(event) && (
+                    <button
+                      type="button"
+                      className="flex items-center gap-1 self-end text-xs text-foreground-tertiary hover:underline"
+                      onClick={() => {
+                        setReportReason("SPAM");
+                        setReportDetails("");
+                        setEventToReport(event);
+                      }}
+                    >
+                      <Flag size={12} strokeWidth={2} />
+                      {t("events.report.open")}
+                    </button>
+                  )}
+
                   <div className="mt-auto pt-2">
-                    {registration ? (
+                    {isOrganizer(event) ? (
+                      <Button
+                        text={t("events.organizer.cancel")}
+                        variant="outline"
+                        size="sm"
+                        fullWidth
+                        onClick={() => {
+                          setCancelReason("");
+                          setEventToCancel(event);
+                        }}
+                      />
+                    ) : registration ? (
                       <div className="flex flex-col gap-1.5">
                         <span className="flex items-center gap-1 text-xs font-semibold text-success">
                           <Check size={14} strokeWidth={2.5} />
@@ -238,6 +317,90 @@ export function CommunityEvents() {
         </form>
       </Modal>
 
+      {/* Cancel — the organiser's own events */}
+      <Modal
+        isOpen={eventToCancel !== null}
+        onClose={() => setEventToCancel(null)}
+        size="sm"
+        title={t("events.organizer.cancelTitle")}
+      >
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            if (!eventToCancel) return;
+            const ok = await cancelEvent(eventToCancel.id, cancelReason);
+            if (ok) setEventToCancel(null);
+          }}
+        >
+          <Text variant="p" color="tertiary">
+            {t("events.organizer.cancelIntro", {
+              title: eventToCancel?.title ?? "",
+              count: String(eventToCancel?.registrationCount ?? 0),
+            })}
+          </Text>
+          <TextArea
+            name="cancelReason"
+            label={t("events.organizer.cancelReason")}
+            value={cancelReason}
+            onChangeText={setCancelReason}
+            rows={3}
+            maxLength={500}
+          />
+          <Button
+            text={t("events.organizer.cancelConfirm")}
+            type="submit"
+            loading={cancellingEvent}
+            fullWidth
+          />
+        </form>
+      </Modal>
+
+      {/* Report — signed-in visitors, not the organiser */}
+      <Modal
+        isOpen={eventToReport !== null}
+        onClose={() => setEventToReport(null)}
+        size="sm"
+        title={t("events.report.title")}
+      >
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            if (!eventToReport) return;
+            const ok = await reportEvent(eventToReport.id, reportReason, reportDetails);
+            if (ok) setEventToReport(null);
+          }}
+        >
+          <Text variant="p" color="tertiary">
+            {t("events.report.intro", { title: eventToReport?.title ?? "" })}
+          </Text>
+          <Select
+            label={t("events.report.reason")}
+            options={REPORT_REASONS.map((r) => ({
+              value: r,
+              label: t(`events.report.reasons.${r}`),
+            }))}
+            value={reportReason}
+            onChange={(v) => setReportReason(v as ReportReason)}
+          />
+          <TextArea
+            name="reportDetails"
+            label={t("events.report.details")}
+            value={reportDetails}
+            onChangeText={setReportDetails}
+            rows={3}
+            maxLength={1000}
+          />
+          <Button
+            text={t("events.report.submit")}
+            type="submit"
+            loading={reporting}
+            fullWidth
+          />
+        </form>
+      </Modal>
+
       {/* Composer — business accounts only */}
       <Modal
         isOpen={composerOpen}
@@ -293,6 +456,8 @@ export function CommunityEvents() {
               min={1}
             />
           </div>
+          <EventCategoryFields draft={draft} onChange={updateDraft} />
+          <EventLocationFields draft={draft} onChange={updateDraft} />
           <Input
             name="eventCover"
             label={t("events.create.cover")}

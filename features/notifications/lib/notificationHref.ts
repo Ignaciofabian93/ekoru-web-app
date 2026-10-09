@@ -28,6 +28,10 @@ const ROUTE_BY_TYPE: Partial<Record<NotificationType, string>> = {
   PAYMENT_REFUNDED: "/profile/orders",
 
   SECURITY_LOGIN_ALERT: "/profile/settings",
+
+  EVENT_REGISTRATION_RECEIVED: "/community",
+  EVENT_REGISTRATION_CANCELLED: "/community",
+  EVENT_CANCELLED: "/community",
 };
 
 export function notificationHref(

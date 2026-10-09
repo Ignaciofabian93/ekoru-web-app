@@ -22,6 +22,27 @@ export const CANCEL_MY_EVENT_REGISTRATION = gql`
   }
 `;
 
+/**
+ * The organiser cancels their own event. Everyone registered is emailed
+ * (guests included) and members get an in-app notice; the event leaves the
+ * public lists.
+ */
+export const CANCEL_MY_COMMUNITY_EVENT = gql`
+  mutation CancelMyCommunityEvent($id: Int!, $reason: String) {
+    cancelMyCommunityEvent(id: $id, reason: $reason) {
+      id
+      status
+    }
+  }
+`;
+
+/** Flag an event for moderators. Needs an account; one report per event. */
+export const REPORT_COMMUNITY_EVENT = gql`
+  mutation ReportCommunityEvent($input: ReportCommunityEventInput!) {
+    reportCommunityEvent(input: $input)
+  }
+`;
+
 /** Business accounts only — the subgraph refuses a person account. */
 export const CREATE_MY_COMMUNITY_EVENT = gql`
   mutation CreateMyCommunityEvent($input: CreateCommunityEventInput!) {

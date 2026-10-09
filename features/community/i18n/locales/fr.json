@@ -64,13 +64,57 @@
       "capacity": "Places (facultatif)",
       "cover": "URL de l'image de couverture (facultatif)",
       "hint": "Laissez les places vides pour un événement sans limite.",
-      "submit": "Publier"
+      "submit": "Publier",
+      "category": "Catégorie",
+      "subcategory": "Type d’événement"
     },
     "errors": {
       "register": "Nous n'avons pas pu réserver votre place. Réessayez.",
       "cancel": "Nous n'avons pas pu annuler votre place.",
       "create": "Nous n'avons pas pu publier l'événement.",
-      "incomplete": "Ajoutez un nom et décrivez l'événement."
+      "incomplete": "Ajoutez un nom et décrivez l'événement.",
+      "cancelEvent": "Nous n'avons pas pu annuler l'événement.",
+      "report": "Nous n'avons pas pu envoyer le signalement."
+    },
+    "location": {
+      "mode": "Format",
+      "modes": {
+        "IN_PERSON": "En personne",
+        "ONLINE": "En ligne",
+        "HYBRID": "Hybride"
+      },
+      "region": "Région",
+      "city": "Ville",
+      "county": "Commune",
+      "address": "Adresse",
+      "addressPlaceholder": "Rue, numéro et indications",
+      "onlineUrl": "Lien pour rejoindre",
+      "join": "Rejoindre en ligne",
+      "online": "En ligne"
+    },
+    "organizer": {
+      "cancel": "Annuler l'événement",
+      "cancelTitle": "Annuler l'événement",
+      "cancelIntro": "Nous préviendrons par e-mail les {{count}} personnes inscrites à « {{title}} ». L'événement ne sera plus affiché dans la communauté.",
+      "cancelReason": "Motif (facultatif, inclus dans l'avis)",
+      "cancelConfirm": "Annuler et prévenir",
+      "cancelled": "Événement annulé ; les inscrits ont été prévenus."
+    },
+    "report": {
+      "open": "Signaler",
+      "title": "Signaler l'événement",
+      "intro": "Dites-nous ce qui ne va pas avec « {{title}} ». L'équipe Ekoru l'examinera.",
+      "reason": "Motif",
+      "details": "Détails (facultatif)",
+      "submit": "Envoyer le signalement",
+      "sent": "Merci, nous examinerons l'événement.",
+      "reasons": {
+        "SPAM": "Spam ou publicité",
+        "SCAM": "Arnaque possible",
+        "INAPPROPRIATE": "Contenu inapproprié",
+        "MISLEADING": "Information fausse ou trompeuse",
+        "OTHER": "Autre"
+      }
     }
   }
 }

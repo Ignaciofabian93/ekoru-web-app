@@ -1,12 +1,11 @@
 "use client";
 import { useTranslation } from "@/i18n/context";
-import { Title } from "@/components/Primitives/Title";
-import { MessagesSquare } from "lucide-react";
 import { Fragment } from "react";
 
 import { useCommunitySubcategory } from "../hooks/useCommunitySubcategory";
 import { NAMESPACE } from "../i18n";
 import type { Language } from "../types";
+import { CommunityEvents } from "./CommunityEvents";
 import { EmptyState } from "@/components/Feedback/EmptyState";
 import { BreadcrumbHero } from "@/components/Patterns/BreadcrumbHero";
 import { humanizeSlug } from "@/utils/formatters";
@@ -64,16 +63,10 @@ export function CommunitySubcategoryContent({
               description={t("detail.notFoundHint")}
             />
           ) : (
-            <section className="flex flex-col gap-4">
-              <Title level="h2" size="h5">
-                {t("detail.postsTitle")}
-              </Title>
-              <EmptyState
-                title={t("detail.noPosts")}
-                description={t("detail.noPostsHint")}
-                icon={MessagesSquare}
-              />
-            </section>
+            <CommunityEvents
+              key={subcategory?.id}
+              scope={{ communitySubCategoryId: subcategory?.id }}
+            />
           )}
         </Section>
       </Container>

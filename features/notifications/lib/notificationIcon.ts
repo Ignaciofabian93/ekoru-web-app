@@ -11,6 +11,8 @@ import {
   Truck,
   XCircle,
   RotateCcw,
+  UserMinus,
+  UserPlus,
   type LucideIcon,
 } from "lucide-react";
 
@@ -60,6 +62,10 @@ const SPEC_BY_TYPE: Partial<Record<NotificationType, IconSpec>> = {
   BOOKING_COMPLETED: { icon: BadgeCheck, accent: "text-primary" },
 
   SECURITY_LOGIN_ALERT: { icon: ShieldAlert, accent: "text-amber-500" },
+
+  EVENT_REGISTRATION_RECEIVED: { icon: UserPlus, accent: "text-primary" },
+  EVENT_REGISTRATION_CANCELLED: { icon: UserMinus, accent: "text-foreground-tertiary" },
+  EVENT_CANCELLED: { icon: CalendarX, accent: "text-red-500" },
 };
 
 export function notificationIcon(type: NotificationType): IconSpec {

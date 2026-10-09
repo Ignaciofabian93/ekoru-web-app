@@ -201,23 +201,6 @@ export type NotificationType =
   | "ACCOUNT_VERIFICATION"
   | "PROFILE_UPDATED";
 
-// Blog Related
-export type BlogType =
-  | "RECYCLING"
-  | "POLLUTION"
-  | "SUSTAINABILITY"
-  | "CIRCULAR_ECONOMY"
-  | "USED_PRODUCTS"
-  | "REUSE"
-  | "ENVIRONMENT"
-  | "UPCYCLING"
-  | "RESPONSIBLE_CONSUMPTION"
-  | "ECO_TIPS"
-  | "ENVIRONMENTAL_IMPACT"
-  | "SUSTAINABLE_LIVING"
-  | "OTHER"
-  | "SECURITY";
-
 export type BlogReactionType = "LIKE" | "DISLIKE";
 
 // Measurements

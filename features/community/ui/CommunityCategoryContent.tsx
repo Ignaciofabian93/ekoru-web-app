@@ -9,6 +9,7 @@ import { Fragment } from "react";
 import { useCommunityCategory } from "../hooks/useCommunityCategory";
 import { NAMESPACE } from "../i18n";
 import type { Language } from "../types";
+import { CommunityEvents } from "./CommunityEvents";
 import { EmptyState } from "@/components/Feedback/EmptyState";
 import { BreadcrumbHero } from "@/components/Patterns/BreadcrumbHero";
 import { humanizeSlug } from "@/utils/formatters";
@@ -103,6 +104,15 @@ export function CommunityCategoryContent({ lang, language, slug }: Props) {
             </section>
           )}
         </Section>
+
+        {category && (
+          <Section>
+            <CommunityEvents
+              key={category.id}
+              scope={{ communityCategoryId: category.id }}
+            />
+          </Section>
+        )}
       </Container>
     </Fragment>
   );

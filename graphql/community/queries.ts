@@ -73,13 +73,17 @@ export const GET_COMMUNITY_EVENTS = gql`
     $page: Int = 1
     $pageSize: Int = 12
     $includePast: Boolean = false
-    $authorId: String
+    $organizerId: String
+    $communityCategoryId: Int
+    $communitySubCategoryId: Int
   ) {
     communityEvents(
       page: $page
       pageSize: $pageSize
       includePast: $includePast
-      authorId: $authorId
+      organizerId: $organizerId
+      communityCategoryId: $communityCategoryId
+      communitySubCategoryId: $communitySubCategoryId
     ) {
       nodes {
         id
@@ -91,7 +95,15 @@ export const GET_COMMUNITY_EVENTS = gql`
         capacity
         registrationCount
         remainingCapacity
-        authorId
+        organizerId
+        communitySubCategoryId
+        communityCategoryId
+        locationType
+        address
+        countyName
+        cityName
+        regionName
+        onlineUrl
       }
       pageInfo {
         currentPage

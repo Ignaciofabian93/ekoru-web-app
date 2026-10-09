@@ -64,13 +64,57 @@
       "capacity": "Cupos (opcional)",
       "cover": "URL de imagen de portada (opcional)",
       "hint": "Deja los cupos vacíos si el evento no tiene límite.",
-      "submit": "Publicar"
+      "submit": "Publicar",
+      "category": "Categoría",
+      "subcategory": "Tipo de evento"
     },
     "errors": {
       "register": "No pudimos reservar tu cupo. Inténtalo nuevamente.",
       "cancel": "No pudimos cancelar tu cupo.",
       "create": "No pudimos publicar el evento.",
-      "incomplete": "Agrega un nombre y describe el evento."
+      "incomplete": "Agrega un nombre y describe el evento.",
+      "cancelEvent": "No pudimos cancelar el evento.",
+      "report": "No pudimos enviar el reporte."
+    },
+    "location": {
+      "mode": "Modalidad",
+      "modes": {
+        "IN_PERSON": "Presencial",
+        "ONLINE": "En línea",
+        "HYBRID": "Híbrido"
+      },
+      "region": "Región",
+      "city": "Ciudad",
+      "county": "Comuna",
+      "address": "Dirección",
+      "addressPlaceholder": "Calle, número y referencias",
+      "onlineUrl": "Enlace para unirse",
+      "join": "Unirse en línea",
+      "online": "En línea"
+    },
+    "organizer": {
+      "cancel": "Cancelar evento",
+      "cancelTitle": "Cancelar el evento",
+      "cancelIntro": "Avisaremos por correo a las {{count}} personas inscritas en «{{title}}». El evento dejará de aparecer en la comunidad.",
+      "cancelReason": "Motivo (opcional, se incluye en el aviso)",
+      "cancelConfirm": "Cancelar y avisar",
+      "cancelled": "Cancelamos el evento y avisamos a los inscritos."
+    },
+    "report": {
+      "open": "Reportar",
+      "title": "Reportar evento",
+      "intro": "Cuéntanos qué pasa con «{{title}}». El equipo de Ekoru lo revisará.",
+      "reason": "Motivo",
+      "details": "Detalles (opcional)",
+      "submit": "Enviar reporte",
+      "sent": "Gracias, revisaremos el evento.",
+      "reasons": {
+        "SPAM": "Spam o publicidad",
+        "SCAM": "Posible estafa",
+        "INAPPROPRIATE": "Contenido inapropiado",
+        "MISLEADING": "Información falsa o engañosa",
+        "OTHER": "Otro"
+      }
     }
   }
 }

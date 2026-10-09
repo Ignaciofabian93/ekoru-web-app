@@ -28,6 +28,9 @@ export type NotificationType =
   | "BOOKING_CANCELLED"
   | "BOOKING_COMPLETED"
   | "SECURITY_LOGIN_ALERT"
+  | "EVENT_REGISTRATION_RECEIVED"
+  | "EVENT_REGISTRATION_CANCELLED"
+  | "EVENT_CANCELLED"
   | (string & {});
 
 export type NotificationPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";

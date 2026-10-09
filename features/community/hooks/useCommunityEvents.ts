@@ -3,9 +3,11 @@ import { useMutation, useQuery } from "@apollo/client/react";
 import { useState } from "react";
 
 import {
+  CANCEL_MY_COMMUNITY_EVENT,
   CANCEL_MY_EVENT_REGISTRATION,
   CREATE_MY_COMMUNITY_EVENT,
   REGISTER_FOR_COMMUNITY_EVENT,
+  REPORT_COMMUNITY_EVENT,
 } from "@/graphql/community/mutations";
 import {
   GET_COMMUNITY_EVENTS,
@@ -27,8 +29,28 @@ export interface CommunityEvent {
   capacity?: number | null;
   registrationCount: number;
   remainingCapacity?: number | null;
-  authorId: string;
+  /** Seller id of the organising business; null for events EKORU runs. */
+  organizerId?: string | null;
+  communitySubCategoryId?: number | null;
+  communityCategoryId?: number | null;
+  locationType: EventLocationType;
+  address?: string | null;
+  countyName?: string | null;
+  cityName?: string | null;
+  regionName?: string | null;
+  onlineUrl?: string | null;
 }
+
+export type EventLocationType = "IN_PERSON" | "ONLINE" | "HYBRID";
+
+export const REPORT_REASONS = ["SPAM", "SCAM", "INAPPROPRIATE", "MISLEADING", "OTHER"] as const;
+export type ReportReason = (typeof REPORT_REASONS)[number];
+
+/** Narrows the list to one community category or subcategory page. */
+export type EventScope = {
+  communityCategoryId?: number;
+  communitySubCategoryId?: number;
+};
 
 export interface EventRegistration {
   id: number;
@@ -45,6 +67,15 @@ export interface EventDraft {
   startDate: string;
   endDate: string;
   capacity: string;
+  communityCategoryId?: number;
+  communitySubCategoryId?: number;
+  locationType: EventLocationType;
+  countryId?: number;
+  regionId?: number;
+  cityId?: number;
+  countyId?: number;
+  address: string;
+  onlineUrl: string;
 }
 
 const emptyDraft: EventDraft = {
@@ -54,7 +85,18 @@ const emptyDraft: EventDraft = {
   startDate: "",
   endDate: "",
   capacity: "",
+  locationType: "IN_PERSON",
+  address: "",
+  onlineUrl: "",
 };
+
+const isHttpUrl = (value: string) => /^https?:\/\/\S+\.\S+/.test(value.trim());
+
+/** Mirrors the subgraph rule: in person needs address + comuna, online a link. */
+const isLocationComplete = (draft: EventDraft) =>
+  (draft.locationType === "ONLINE" ||
+    (draft.address.trim().length > 3 && draft.countyId !== undefined)) &&
+  (draft.locationType === "IN_PERSON" || isHttpUrl(draft.onlineUrl));
 
 /**
  * Community events for the web app.
@@ -63,26 +105,37 @@ const emptyDraft: EventDraft = {
  * form is theirs alone — the subgraph refuses a person account, and hiding the
  * button keeps the UI honest about it) and **everyone attends**.
  */
-export function useCommunityEvents() {
+export function useCommunityEvents(scope: EventScope = {}) {
   const { t } = useTranslation(NAMESPACE);
   const toast = useToast();
   const seller = useSeller();
   const sellerType = useSellerType();
   const isBusiness = sellerType !== null && sellerType !== "PERSON";
 
-  const [draft, setDraft] = useState<EventDraft>(emptyDraft);
+  // On a subcategory page the composer starts in that subcategory.
+  const initialDraft: EventDraft = {
+    ...emptyDraft,
+    communityCategoryId: scope.communityCategoryId,
+    communitySubCategoryId: scope.communitySubCategoryId,
+  };
+  const [draft, setDraft] = useState<EventDraft>(initialDraft);
 
   const { data, loading, error } = useQuery<{
     communityEvents: { nodes: CommunityEvent[]; pageInfo: { totalCount: number } };
-  }>(GET_COMMUNITY_EVENTS, { fetchPolicy: "cache-and-network" });
+  }>(GET_COMMUNITY_EVENTS, {
+    variables: scope,
+    fetchPolicy: "cache-and-network",
+  });
 
   const { data: mine } = useQuery<{
     myCommunityEventRegistrations: { nodes: EventRegistration[] };
   }>(GET_MY_EVENT_REGISTRATIONS, { skip: !seller, fetchPolicy: "cache-and-network" });
 
+  // By operation name, so every event list on screen (home, category,
+  // subcategory) refreshes whatever its variables.
   const refetchQueries = [
-    { query: GET_COMMUNITY_EVENTS },
-    ...(seller ? [{ query: GET_MY_EVENT_REGISTRATIONS }] : []),
+    "CommunityEvents",
+    ...(seller ? ["MyCommunityEventRegistrations"] : []),
   ];
 
   const [registerMutation, { loading: registering }] = useMutation(
@@ -93,6 +146,11 @@ export function useCommunityEvents() {
     CANCEL_MY_EVENT_REGISTRATION,
     { refetchQueries },
   );
+  const [cancelEventMutation, { loading: cancellingEvent }] = useMutation(
+    CANCEL_MY_COMMUNITY_EVENT,
+    { refetchQueries },
+  );
+  const [reportMutation, { loading: reporting }] = useMutation(REPORT_COMMUNITY_EVENT);
   const [createMutation, { loading: creating }] = useMutation(
     CREATE_MY_COMMUNITY_EVENT,
     { refetchQueries },
@@ -127,10 +185,44 @@ export function useCommunityEvents() {
     }
   };
 
+  /** Organiser only: cancels the event and tells everyone registered. */
+  const cancelEvent = async (eventId: string, reason: string) => {
+    try {
+      await cancelEventMutation({
+        variables: { id: Number(eventId), reason: reason.trim() || null },
+      });
+      toast.success(t("events.organizer.cancelled"));
+      return true;
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : t("events.errors.cancelEvent"));
+      return false;
+    }
+  };
+
+  /** Signed-in visitors flag an event for moderators. */
+  const reportEvent = async (eventId: string, reason: ReportReason, details: string) => {
+    try {
+      await reportMutation({
+        variables: {
+          input: { eventId: Number(eventId), reason, details: details.trim() || null },
+        },
+      });
+      toast.success(t("events.report.sent"));
+      return true;
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : t("events.errors.report"));
+      return false;
+    }
+  };
+
   const updateDraft = <K extends keyof EventDraft>(key: K, value: EventDraft[K]) =>
     setDraft((prev) => ({ ...prev, [key]: value }));
 
-  const isDraftValid = draft.title.trim().length > 2 && draft.content.trim().length > 9;
+  const isDraftValid =
+    draft.title.trim().length > 2 &&
+    draft.content.trim().length > 9 &&
+    draft.communitySubCategoryId !== undefined &&
+    isLocationComplete(draft);
 
   const createEvent = async () => {
     if (!isDraftValid) {
@@ -153,10 +245,19 @@ export function useCommunityEvents() {
               ? new Date(`${draft.endDate}T12:00:00`).toISOString()
               : undefined,
             capacity: draft.capacity ? Number(draft.capacity) : undefined,
+            communitySubCategoryId: draft.communitySubCategoryId,
+            locationType: draft.locationType,
+            ...(draft.locationType !== "ONLINE" && {
+              address: draft.address.trim(),
+              countyId: draft.countyId,
+            }),
+            ...(draft.locationType !== "IN_PERSON" && {
+              onlineUrl: draft.onlineUrl.trim(),
+            }),
           },
         },
       });
-      setDraft(emptyDraft);
+      setDraft(initialDraft);
       toast.success(t("events.created"));
       return true;
     } catch (err) {
@@ -177,6 +278,10 @@ export function useCommunityEvents() {
     registering,
     cancel,
     cancelling,
+    cancelEvent,
+    cancellingEvent,
+    reportEvent,
+    reporting,
     draft,
     updateDraft,
     isDraftValid,
