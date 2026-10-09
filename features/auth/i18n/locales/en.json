@@ -7,7 +7,8 @@
     "registerCta": "Create your free account",
     "registerSubtitle": "Create your account",
     "forgotSubtitle": "Recover your account",
-    "resetSubtitle": "Choose a new password"
+    "resetSubtitle": "Choose a new password",
+    "reapplySubtitle": "Apply again with your business"
   },
   "form": {
     "email": "Email",
@@ -47,7 +48,9 @@
     "sendResetLink": "Send recovery link",
     "updatePassword": "Update password",
     "termsAcceptLabel": "I have read and accept the",
-    "termsAcceptLink": "Terms and Policies"
+    "termsAcceptLink": "Terms and Policies",
+    "reapply": "Send new application",
+    "reapplyLink": "Business not approved? Apply again"
   },
   "forgotPassword": {
     "intro": "Enter the email you signed up with and we'll send you a link to choose a new password.",
@@ -109,5 +112,12 @@
     "resetSuccess": "Password updated. Sign in with your new password.",
     "termsRequired": "You must accept the Terms and Policies to continue",
     "applicationMessageTooShort": "Tell us a bit more about your business (at least {{min}} characters)"
+  },
+  "reapply": {
+    "intro": "If we reviewed your business and didn't approve it, you can send us a new application. Enter the email and password you signed up with and tell us what changed.",
+    "messagePlaceholder": "E.g.: All our products now use certified organic cotton, and we list the composition of each one...",
+    "messageHint": "Explain how you addressed the reason for the rejection and what products or services you offer.",
+    "sentTitle": "We received your new application!",
+    "sentBody": "We'll review your business again and write to {{email}}. Until then you won't be able to sign in."
   }
 }

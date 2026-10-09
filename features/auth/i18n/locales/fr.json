@@ -7,7 +7,8 @@
     "registerCta": "Créez votre compte gratuitement",
     "registerSubtitle": "Créez votre compte",
     "forgotSubtitle": "Récupérez votre compte",
-    "resetSubtitle": "Choisissez un nouveau mot de passe"
+    "resetSubtitle": "Choisissez un nouveau mot de passe",
+    "reapplySubtitle": "Postulez à nouveau avec votre entreprise"
   },
   "form": {
     "email": "Courriel",
@@ -47,7 +48,9 @@
     "sendResetLink": "Envoyer le lien de récupération",
     "updatePassword": "Mettre à jour le mot de passe",
     "termsAcceptLabel": "J'ai lu et j'accepte les",
-    "termsAcceptLink": "Termes et Politiques"
+    "termsAcceptLink": "Termes et Politiques",
+    "reapply": "Envoyer une nouvelle demande",
+    "reapplyLink": "Entreprise non approuvée ? Postulez à nouveau"
   },
   "forgotPassword": {
     "intro": "Entrez le courriel utilisé lors de votre inscription et nous vous enverrons un lien pour choisir un nouveau mot de passe.",
@@ -109,5 +112,12 @@
     "resetSuccess": "Mot de passe mis à jour. Connectez-vous avec le nouveau.",
     "termsRequired": "Vous devez accepter les Termes et Politiques pour continuer",
     "applicationMessageTooShort": "Parlez-nous un peu plus de votre entreprise (au moins {{min}} caractères)"
+  },
+  "reapply": {
+    "intro": "Si nous avons examiné votre entreprise sans l'approuver, vous pouvez nous envoyer une nouvelle demande. Saisissez l'e-mail et le mot de passe de votre inscription et dites-nous ce qui a changé.",
+    "messagePlaceholder": "Ex. : Tous nos produits utilisent désormais du coton biologique certifié et nous indiquons la composition de chacun...",
+    "messageHint": "Expliquez comment vous avez résolu le motif du refus et quels produits ou services vous proposez.",
+    "sentTitle": "Nous avons reçu votre nouvelle demande !",
+    "sentBody": "Nous examinerons à nouveau votre entreprise et écrirons à {{email}}. D'ici là, vous ne pourrez pas vous connecter."
   }
 }

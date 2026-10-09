@@ -76,6 +76,17 @@ export const REQUEST_PASSWORD_RESET = gql`
 `;
 
 /**
+ * A rejected business sends a new application with its email and password
+ * (it cannot sign in until approved). Returns true; failures come back as
+ * errors with a message for the form.
+ */
+export const REAPPLY_BUSINESS = gql`
+  mutation ReapplyBusiness($input: ReapplyBusinessInput!, $language: Language = ES) {
+    reapplyBusiness(input: $input, language: $language)
+  }
+`;
+
+/**
  * Second half of the recovery flow. The token comes from the emailed link, so
  * this runs unauthenticated; the backend consumes the token and signs every
  * existing session out.

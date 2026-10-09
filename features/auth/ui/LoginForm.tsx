@@ -57,6 +57,12 @@ export function LoginForm() {
         fullWidth
         size="md"
       />
+      <Link
+        href={`/${lang}/reapply`}
+        className="self-center text-sm text-primary hover:underline"
+      >
+        {t("actions.reapplyLink")}
+      </Link>
     </form>
   );
 }

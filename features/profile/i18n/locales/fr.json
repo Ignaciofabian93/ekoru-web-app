@@ -557,7 +557,7 @@
     "notifications": "Notifications",
     "notificationsSubtitle": "Choisissez ce que nous vous envoyons",
     "emailNotifications": "Notifications par email",
-    "emailNotificationsDescription": "Recevez les mises à jour de commandes par email",
+    "emailNotificationsDescription": "Actualités et conseils d'Ekoru par email. Les avis sur vos achats, ventes, réservations et devis sont toujours envoyés.",
     "pushNotifications": "Notifications push",
     "pushNotificationsDescription": "Alertes en temps réel sur votre appareil",
     "marketingEmails": "Promotions et newsletters",

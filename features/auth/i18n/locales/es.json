@@ -7,7 +7,8 @@
     "registerCta": "Crea tu cuenta gratis",
     "registerSubtitle": "Crea tu cuenta",
     "forgotSubtitle": "Recupera tu cuenta",
-    "resetSubtitle": "Elige una nueva contraseña"
+    "resetSubtitle": "Elige una nueva contraseña",
+    "reapplySubtitle": "Vuelve a postular tu negocio"
   },
   "form": {
     "email": "Correo electrónico",
@@ -47,7 +48,9 @@
     "sendResetLink": "Enviar enlace de recuperación",
     "updatePassword": "Actualizar contraseña",
     "termsAcceptLabel": "He leído y acepto los",
-    "termsAcceptLink": "Términos y Políticas"
+    "termsAcceptLink": "Términos y Políticas",
+    "reapply": "Enviar nueva solicitud",
+    "reapplyLink": "¿Tu negocio no fue aprobado? Vuelve a postular"
   },
   "forgotPassword": {
     "intro": "Ingresa el correo con el que te registraste y te enviaremos un enlace para elegir una nueva contraseña.",
@@ -109,5 +112,12 @@
     "resetSuccess": "Contraseña actualizada. Inicia sesión con tu nueva contraseña.",
     "termsRequired": "Debes aceptar los Términos y Políticas para continuar",
     "applicationMessageTooShort": "Cuéntanos un poco más sobre tu negocio (mínimo {{min}} caracteres)"
+  },
+  "reapply": {
+    "intro": "Si revisamos tu negocio y no lo aprobamos, puedes enviarnos una nueva solicitud. Ingresa el correo y la contraseña con que te registraste y cuéntanos qué cambió.",
+    "messagePlaceholder": "Ej: Ahora todos nuestros productos usan algodón orgánico certificado y adjuntamos la composición de cada uno...",
+    "messageHint": "Explica cómo resolviste el motivo del rechazo y qué productos o servicios ofreces.",
+    "sentTitle": "¡Recibimos tu nueva solicitud!",
+    "sentBody": "Volveremos a revisar tu negocio y te escribiremos a {{email}}. Hasta entonces no podrás iniciar sesión."
   }
 }
