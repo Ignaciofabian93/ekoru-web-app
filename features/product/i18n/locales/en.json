@@ -141,7 +141,7 @@
     "notesLabel": "Message (optional)",
     "notesPlaceholder": "Add a note for the seller…",
     "notesHint": "The seller sees this in the notification and on the deal.",
-    "pointsHint": "When the exchange completes, you each earn {{points}} eco-points.",
+    "pointsHint": "When the exchange completes, you each earn at least {{points}} eco-points, plus points for the CO₂ and water the item you receive saves.",
     "send": "Send proposal",
     "sending": "Sending…",
     "cancel": "Cancel",

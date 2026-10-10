@@ -141,7 +141,7 @@
     "notesLabel": "Mensaje (opcional)",
     "notesPlaceholder": "Añade una nota para el vendedor…",
     "notesHint": "El vendedor lo verá en la notificación y en el detalle del trato.",
-    "pointsHint": "Al completar el intercambio, cada uno gana {{points}} eco-puntos.",
+    "pointsHint": "Al completar el intercambio, cada uno gana al menos {{points}} eco-puntos, más puntos por el CO₂ y el agua que ahorra el artículo que recibe.",
     "send": "Enviar propuesta",
     "sending": "Enviando…",
     "cancel": "Cancelar",

@@ -74,7 +74,8 @@
       "create": "No pudimos publicar el evento.",
       "incomplete": "Agrega un nombre y describe el evento.",
       "cancelEvent": "No pudimos cancelar el evento.",
-      "report": "No pudimos enviar el reporte."
+      "report": "No pudimos enviar el reporte.",
+      "attendance": "No pudimos guardar la asistencia."
     },
     "location": {
       "mode": "Modalidad",
@@ -98,7 +99,17 @@
       "cancelIntro": "Avisaremos por correo a las {{count}} personas inscritas en «{{title}}». El evento dejará de aparecer en la comunidad.",
       "cancelReason": "Motivo (opcional, se incluye en el aviso)",
       "cancelConfirm": "Cancelar y avisar",
-      "cancelled": "Cancelamos el evento y avisamos a los inscritos."
+      "cancelled": "Cancelamos el evento y avisamos a los inscritos.",
+      "attendance": "Tomar asistencia",
+      "attendanceTitle": "Asistencia",
+      "attendanceIntro": "Marca a quienes asistieron a «{{title}}». Cada persona confirmada con cuenta en Ekoru gana eco-puntos, y tú también como organizador.",
+      "attendanceLoading": "Cargando inscritos…",
+      "attendanceEmpty": "Nadie se inscribió en este evento.",
+      "attendanceCount": "{{confirmed}} de {{total}} confirmados",
+      "guestNoPoints": "sin cuenta, no suma puntos",
+      "attendedLabel": "Asistió {{name}}",
+      "showMine": "Mis eventos",
+      "showAll": "Todos los eventos"
     },
     "report": {
       "open": "Reportar",

@@ -74,7 +74,8 @@
       "create": "We could not publish the event.",
       "incomplete": "Add a name and describe the event.",
       "cancelEvent": "We could not cancel the event.",
-      "report": "We could not send the report."
+      "report": "We could not send the report.",
+      "attendance": "We couldn't save the attendance."
     },
     "location": {
       "mode": "Format",
@@ -98,7 +99,17 @@
       "cancelIntro": "We will email the {{count}} people registered for “{{title}}”. The event will no longer show in the community.",
       "cancelReason": "Reason (optional, included in the notice)",
       "cancelConfirm": "Cancel and notify",
-      "cancelled": "Event cancelled; registrants were notified."
+      "cancelled": "Event cancelled; registrants were notified.",
+      "attendance": "Take attendance",
+      "attendanceTitle": "Attendance",
+      "attendanceIntro": "Mark who came to \"{{title}}\". Each confirmed person with an Ekoru account earns eco-points, and so do you as the organiser.",
+      "attendanceLoading": "Loading registrations…",
+      "attendanceEmpty": "Nobody registered for this event.",
+      "attendanceCount": "{{confirmed}} of {{total}} confirmed",
+      "guestNoPoints": "no account, earns no points",
+      "attendedLabel": "{{name}} attended",
+      "showMine": "My events",
+      "showAll": "All events"
     },
     "report": {
       "open": "Report",

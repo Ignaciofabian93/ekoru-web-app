@@ -27,7 +27,7 @@
     "payerHint": "Remember to hand over the agreed {{amount}} — the other party has to confirm it to close the deal.",
     "settled": "Cash top-up confirmed"
   },
-  "pointsEarned": "You both earned {{points}} eco-points for this deal.",
+  "pointsEarned": "You both earned at least {{points}} eco-points for this deal, plus points for the CO₂ and water the item saves.",
   "acceptedBanner": "Request accepted!",
   "acceptedHint": "Arrange the handover with the other person and confirm once you receive the item.",
   "contact": "Call {{phone}}",

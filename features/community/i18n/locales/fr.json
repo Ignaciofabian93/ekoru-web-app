@@ -74,7 +74,8 @@
       "create": "Nous n'avons pas pu publier l'événement.",
       "incomplete": "Ajoutez un nom et décrivez l'événement.",
       "cancelEvent": "Nous n'avons pas pu annuler l'événement.",
-      "report": "Nous n'avons pas pu envoyer le signalement."
+      "report": "Nous n'avons pas pu envoyer le signalement.",
+      "attendance": "Nous n'avons pas pu enregistrer la présence."
     },
     "location": {
       "mode": "Format",
@@ -98,7 +99,17 @@
       "cancelIntro": "Nous préviendrons par e-mail les {{count}} personnes inscrites à « {{title}} ». L'événement ne sera plus affiché dans la communauté.",
       "cancelReason": "Motif (facultatif, inclus dans l'avis)",
       "cancelConfirm": "Annuler et prévenir",
-      "cancelled": "Événement annulé ; les inscrits ont été prévenus."
+      "cancelled": "Événement annulé ; les inscrits ont été prévenus.",
+      "attendance": "Faire l’appel",
+      "attendanceTitle": "Présence",
+      "attendanceIntro": "Indiquez qui est venu à « {{title}} ». Chaque personne confirmée avec un compte Ekoru gagne des éco-points, et vous aussi en tant qu’organisateur.",
+      "attendanceLoading": "Chargement des inscriptions…",
+      "attendanceEmpty": "Personne ne s’est inscrit à cet événement.",
+      "attendanceCount": "{{confirmed}} sur {{total}} confirmés",
+      "guestNoPoints": "sans compte, ne gagne pas de points",
+      "attendedLabel": "{{name}} est venu(e)",
+      "showMine": "Mes événements",
+      "showAll": "Tous les événements"
     },
     "report": {
       "open": "Signaler",

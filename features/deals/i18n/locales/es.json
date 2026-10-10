@@ -27,7 +27,7 @@
     "payerHint": "Recuerda entregar los {{amount}} acordados: la otra parte debe confirmarlo para cerrar el trato.",
     "settled": "Compensación en efectivo confirmada"
   },
-  "pointsEarned": "Ambos ganaron {{points}} eco-puntos por este trato.",
+  "pointsEarned": "Ambos ganaron al menos {{points}} eco-puntos por este trato, más puntos por el CO₂ y el agua que ahorra el artículo.",
   "acceptedBanner": "¡Solicitud aceptada!",
   "acceptedHint": "Ponte de acuerdo con la otra persona para la entrega y confirma cuando recibas el producto.",
   "contact": "Llamar al {{phone}}",

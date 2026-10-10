@@ -36,6 +36,19 @@ export const CANCEL_MY_COMMUNITY_EVENT = gql`
   }
 `;
 
+/**
+ * The organiser confirms (or clears) that a registered person came. Confirming
+ * earns eco-points for them and for the organiser, once.
+ */
+export const SET_EVENT_ATTENDANCE = gql`
+  mutation SetEventAttendance($registrationId: Int!, $attended: Boolean!) {
+    setEventAttendance(registrationId: $registrationId, attended: $attended) {
+      id
+      attendedAt
+    }
+  }
+`;
+
 /** Flag an event for moderators. Needs an account; one report per event. */
 export const REPORT_COMMUNITY_EVENT = gql`
   mutation ReportCommunityEvent($input: ReportCommunityEventInput!) {

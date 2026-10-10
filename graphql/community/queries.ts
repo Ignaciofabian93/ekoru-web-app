@@ -115,6 +115,20 @@ export const GET_COMMUNITY_EVENTS = gql`
   }
 `;
 
+/** Everyone registered for an event the signed-in business organises. */
+export const GET_MY_EVENT_ATTENDEES = gql`
+  query MyEventAttendees($eventId: Int!) {
+    myEventAttendees(eventId: $eventId) {
+      id
+      name
+      email
+      hasAccount
+      attendedAt
+      createdAt
+    }
+  }
+`;
+
 export const GET_MY_EVENT_REGISTRATIONS = gql`
   query MyCommunityEventRegistrations($page: Int = 1, $pageSize: Int = 20) {
     myCommunityEventRegistrations(page: $page, pageSize: $pageSize) {

@@ -46,10 +46,15 @@ export type EventLocationType = "IN_PERSON" | "ONLINE" | "HYBRID";
 export const REPORT_REASONS = ["SPAM", "SCAM", "INAPPROPRIATE", "MISLEADING", "OTHER"] as const;
 export type ReportReason = (typeof REPORT_REASONS)[number];
 
-/** Narrows the list to one community category or subcategory page. */
+/**
+ * Narrows the list to one community category or subcategory page, or to the
+ * signed-in organiser's own events (past ones included, to take attendance).
+ */
 export type EventScope = {
   communityCategoryId?: number;
   communitySubCategoryId?: number;
+  organizerId?: string;
+  includePast?: boolean;
 };
 
 export interface EventRegistration {

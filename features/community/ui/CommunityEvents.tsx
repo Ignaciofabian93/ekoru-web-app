@@ -24,11 +24,24 @@ import {
 import { NAMESPACE } from "../i18n";
 import { EventCategoryFields } from "./EventCategoryFields";
 import { EventLocationFields } from "./EventLocationFields";
+import { EventAttendanceModal } from "./EventAttendanceModal";
+import { useSeller } from "@/store/useAuthStore";
 
 /** "Address, comuna, city" for in-person events; null when nothing is set. */
 function placeLabel(event: CommunityEvent) {
   const parts = [event.address, event.countyName, event.cityName].filter(Boolean);
   return parts.length ? parts.join(", ") : null;
+}
+
+/** Attendance opens when the event starts (an undated event: any time). */
+function hasStarted(event: CommunityEvent) {
+  return !event.startDate || new Date(event.startDate).getTime() <= Date.now();
+}
+
+/** Past its end (or its start, for a single-date event). */
+function hasEnded(event: CommunityEvent) {
+  const last = event.endDate ?? event.startDate;
+  return !!last && new Date(last).getTime() < Date.now();
 }
 
 function formatDate(iso: string, locale: string) {
@@ -55,6 +68,15 @@ export function CommunityEvents({ scope = {} }: { scope?: EventScope }) {
   const { t } = useTranslation(NAMESPACE);
   const params = useParams<{ lang?: SupportedLanguage }>();
   const lang = params.lang ?? DEFAULT_LANGUAGE;
+  // A business can switch to its own events, past ones included, to take
+  // attendance after the date.
+  const [showMine, setShowMine] = useState(false);
+  const [attendanceFor, setAttendanceFor] = useState<CommunityEvent | null>(null);
+  const ownSellerId = useSeller()?.id;
+  const effectiveScope: EventScope =
+    showMine && ownSellerId
+      ? { ...scope, organizerId: ownSellerId, includePast: true }
+      : scope;
   const {
     events,
     loading,
@@ -74,7 +96,7 @@ export function CommunityEvents({ scope = {} }: { scope?: EventScope }) {
     isDraftValid,
     createEvent,
     creating,
-  } = useCommunityEvents(scope);
+  } = useCommunityEvents(effectiveScope);
 
   const [reserving, setReserving] = useState<CommunityEvent | null>(null);
   const [eventToCancel, setEventToCancel] = useState<CommunityEvent | null>(null);
@@ -109,12 +131,20 @@ export function CommunityEvents({ scope = {} }: { scope?: EventScope }) {
           </Text>
         </div>
         {isBusiness && (
-          <Button
-            text={t("events.create.open")}
-            leftIcon={CalendarPlus}
-            size="sm"
-            onClick={() => setComposerOpen(true)}
-          />
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              text={showMine ? t("events.organizer.showAll") : t("events.organizer.showMine")}
+              variant="outline"
+              size="sm"
+              onClick={() => setShowMine((v) => !v)}
+            />
+            <Button
+              text={t("events.create.open")}
+              leftIcon={CalendarPlus}
+              size="sm"
+              onClick={() => setComposerOpen(true)}
+            />
+          </div>
         )}
       </header>
 
@@ -231,16 +261,29 @@ export function CommunityEvents({ scope = {} }: { scope?: EventScope }) {
 
                   <div className="mt-auto pt-2">
                     {isOrganizer(event) ? (
-                      <Button
-                        text={t("events.organizer.cancel")}
-                        variant="outline"
-                        size="sm"
-                        fullWidth
-                        onClick={() => {
-                          setCancelReason("");
-                          setEventToCancel(event);
-                        }}
-                      />
+                      <div className="flex flex-col gap-1.5">
+                        {hasStarted(event) && (
+                          <Button
+                            text={t("events.organizer.attendance")}
+                            leftIcon={Users}
+                            size="sm"
+                            fullWidth
+                            onClick={() => setAttendanceFor(event)}
+                          />
+                        )}
+                        {!hasEnded(event) && (
+                          <Button
+                            text={t("events.organizer.cancel")}
+                            variant="outline"
+                            size="sm"
+                            fullWidth
+                            onClick={() => {
+                              setCancelReason("");
+                              setEventToCancel(event);
+                            }}
+                          />
+                        )}
+                      </div>
                     ) : registration ? (
                       <div className="flex flex-col gap-1.5">
                         <span className="flex items-center gap-1 text-xs font-semibold text-success">
@@ -316,6 +359,9 @@ export function CommunityEvents({ scope = {} }: { scope?: EventScope }) {
           />
         </form>
       </Modal>
+
+      {/* Attendance — the organiser's own events, once they started */}
+      <EventAttendanceModal event={attendanceFor} onClose={() => setAttendanceFor(null)} />
 
       {/* Cancel — the organiser's own events */}
       <Modal
