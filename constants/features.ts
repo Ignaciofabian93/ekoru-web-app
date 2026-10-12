@@ -27,7 +27,7 @@ export const FEATURES: Record<FeatureKey, FeatureFlag> = {
   cart: {
     available: false,
     surfaces:
-      "The /cart, /cart/checkout and /cart/confirmation routes (blocked in proxy.ts) and the navbar cart button.",
+      "The /cart, /cart/checkout and /cart/confirmation routes (blocked in proxy.ts), the navbar cart button, and the order history and sales links in the profile and drawer menus.",
   },
   storePurchase: {
     available: false,
@@ -41,7 +41,8 @@ export const FEATURES: Record<FeatureKey, FeatureFlag> = {
   },
   serviceQuotes: {
     available: false,
-    surfaces: "The 'Request a quote' button and quote dialog on a service.",
+    surfaces:
+      "The 'Request a quote' button and quote dialog on a service, the quotes inbox link, 'Pay' on accepted quotes, and /cart/confirmation for their payment return (opened in proxy.ts even while the cart is off).",
   },
 };
 

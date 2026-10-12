@@ -15,6 +15,7 @@ import {
   MapPin,
   PackagePlus,
   Phone,
+  Receipt,
   Pin,
   Repeat2,
   Settings,
@@ -103,14 +104,8 @@ export const SETTINGS_SECTIONS: SettingsSection[] = [
         icon: Mail,
         available: true,
       },
-      {
-        kind: "toggle",
-        field: "enablePushNotifications",
-        label: "settings.pushNotifications",
-        description: "settings.pushNotificationsDescription",
-        icon: BellRing,
-        available: false,
-      },
+      // Push notifications are mobile-only (Expo), so the web shows no row for
+      // them; the preference still round-trips untouched (WEB-13).
     ],
   },
   {
@@ -145,21 +140,14 @@ export const SETTINGS_SECTIONS: SettingsSection[] = [
     icon: ShieldCheck,
     tone: "success",
     items: [
-      {
-        kind: "toggle",
-        field: "enableTwoFactorAuth",
-        label: "settings.twoFactorAuth",
-        description: "settings.twoFactorAuthDescription",
-        icon: KeyRound,
-        available: false,
-      },
+      // Two-factor authentication has no backend yet (WEB-20): no row until it does.
       {
         kind: "toggle",
         field: "enableLoginAlerts",
         label: "settings.loginAlerts",
         description: "settings.loginAlertsDescription",
         icon: BellRing,
-        available: false,
+        available: true,
       },
     ],
   },
@@ -203,6 +191,7 @@ export type ProfileMenuField =
   | "editProfile"
   | "changePassword"
   | "orderHistory"
+  | "sales"
   | "exchanges"
   | "favorites"
   | "environmentalImpact"
@@ -213,6 +202,7 @@ export const PROFILE_MENU_FIELDS: ProfileMenuField[] = [
   "editProfile",
   "changePassword",
   "orderHistory",
+  "sales",
   "exchanges",
   "favorites",
   "environmentalImpact",
@@ -252,11 +242,19 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         icon: KeyRound,
         available: true,
       },
+      // Orders exist only once checkout is on, so both sides of them (what
+      // you bought, what you sold) follow the cart switch (WEB-1, WEB-3).
       {
         route: "/profile/orders",
         label: "account.orderHistory",
         icon: PackagePlus,
-        available: false,
+        available: FEATURES.cart.available,
+      },
+      {
+        route: "/profile/sales",
+        label: "account.sales",
+        icon: Receipt,
+        available: FEATURES.cart.available,
       },
       {
         route: "/profile/exchanges",

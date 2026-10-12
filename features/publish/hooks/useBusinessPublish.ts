@@ -142,12 +142,11 @@ export function useBusinessPublish() {
 
         const priceRange = sanitizeOnSubmit(form.priceRange);
 
-        // Unlike products, the services subgraph DOES require sellerId in the
-        // input (no @CurrentSeller decorator on the resolver).
+        // The publisher is the signed-in seller; the services subgraph takes it
+        // from the session and ignores any sellerId sent here (SRV-1).
         await addService({
           variables: {
             input: {
-              sellerId,
               name: sanitizeOnSubmit(form.name),
               description: sanitizeOnSubmit(form.description) || undefined,
               subcategoryId: Number(form.serviceSubcategoryId),

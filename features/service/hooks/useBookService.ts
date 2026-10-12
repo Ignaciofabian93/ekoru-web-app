@@ -23,10 +23,10 @@ const emptyDraft: BookingDraft = { date: "", timeSlot: "", notes: "" };
 /**
  * Books a service for the signed-in buyer.
  *
- * The price sent is the service's `basePrice`: it is what the buyer was shown,
- * and the booking records what both sides agreed to at that moment. Services
- * priced by quote have no base price and go through the quotation flow instead
- * — the dialog is not offered for them.
+ * The booking starts at the service's `basePrice`, which is what the buyer was
+ * shown; the services subgraph sets it, and the provider adjusts it before
+ * confirming. Services priced by quote have no base price and go through the
+ * quotation flow instead — the dialog is not offered for them.
  */
 export function useBookService(service: ServiceDetail) {
   const { t } = useTranslation(NAMESPACE);
@@ -53,13 +53,13 @@ export function useBookService(service: ServiceDetail) {
       await addBooking({
         variables: {
           input: {
+            // The provider (the service's seller) and the starting price (its
+            // base price) are set by the services subgraph, not sent from here.
             serviceId: Number(service.id),
-            providerId: service.sellerId,
             // The input is a DateTime; a bare `yyyy-mm-dd` would be read as UTC
             // midnight and can land on the previous day in Chile.
             scheduledDate: new Date(`${draft.date}T12:00:00`).toISOString(),
             scheduledTimeSlot: draft.timeSlot.trim() || undefined,
-            agreedPrice: service.basePrice ?? 0,
             clientNotes: draft.notes.trim() || undefined,
           },
         },

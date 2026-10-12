@@ -228,6 +228,7 @@ export const QUOTATION_FIELDS_FRAGMENT = gql`
     expiresAt
     acceptedAt
     declineReason
+    paidAt
     createdAt
     updatedAt
     service {

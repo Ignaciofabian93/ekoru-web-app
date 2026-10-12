@@ -35,28 +35,6 @@ export const GET_MATERIALS = gql`
   }
 `;
 
-export const GET_STORES_CATEGORIES = gql`
-  ${STORE_CATEGORY_FIELDS_FRAGMENT}
-  query GetStoreCategories($limit: Int = 20, $offset: Int = 0, $language: Language = ES) {
-    getStoreCategories(limit: $limit, offset: $offset, language: $language) {
-      ...StoreCategoryFields
-    }
-  }
-`;
-
-export const GET_STORE_SUBCATEGORIES = gql`
-  ${STORE_SUB_CATEGORY_FIELDS_FRAGMENT}
-  query GetStoreSubCategories(
-    $limit: Int = 20
-    $offset: Int = 0
-    $language: Language = ES
-  ) {
-    getStoreSubCategories(limit: $limit, offset: $offset, language: $language) {
-      ...StoreSubCategoryFields
-    }
-  }
-`;
-
 export const GET_STORE_CATEGORY_BY_SLUG = gql`
   ${STORE_CATEGORY_FIELDS_FRAGMENT}
   query GetStoreCategoryBySlug($slug: String!, $language: Language!) {

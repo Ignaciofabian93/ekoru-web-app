@@ -221,5 +221,17 @@
       "benefit2": "Buying second-hand cuts demand for new manufacturing and its emissions.",
       "benefit3": "Small, conscious choices add up to a real impact for the planet."
     }
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "body": "We couldn't load this page. It may be a brief connection problem; try again in a few seconds.",
+    "retry": "Try again",
+    "home": "Go to the home page",
+    "code": "Error code: {{code}}"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you're looking for doesn't exist or is no longer available.",
+    "home": "Go to the home page"
   }
 }

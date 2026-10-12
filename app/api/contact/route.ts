@@ -61,9 +61,21 @@ const acknowledgementHtml = (name: string) => `
 export async function POST(req: Request) {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.CONTACT_FROM_EMAIL;
-  const to = process.env.CONTACT_TO_EMAIL;
+  // The server env bundles were copied from informative-web, which names the
+  // inbox EMAIL_TO; accept it so the form works with either name (WEB-8).
+  const to = process.env.CONTACT_TO_EMAIL ?? process.env.EMAIL_TO;
 
   if (!apiKey || !from || !to) {
+    // Say which variable is missing in the log, never to the visitor.
+    console.error(
+      `Contact form not configured: ${[
+        !apiKey && "RESEND_API_KEY",
+        !from && "CONTACT_FROM_EMAIL",
+        !to && "CONTACT_TO_EMAIL (or EMAIL_TO)",
+      ]
+        .filter(Boolean)
+        .join(", ")} missing`,
+    );
     return NextResponse.json({ message: "Contact service is not configured" }, { status: 500 });
   }
 

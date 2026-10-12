@@ -145,6 +145,7 @@
     "editProfile": "Modifier le Profil",
     "changePassword": "Changer le Mot de Passe",
     "orderHistory": "Historique des Commandes",
+    "sales": "Mes ventes",
     "exchanges": "Échanges",
     "favorites": "Favoris",
     "environmentalImpact": "Impact Environnemental",
@@ -318,7 +319,7 @@
       "items": "{{count}} articles",
       "total": "Total",
       "viewDetails": "Voir les détails",
-      "track": "Suivre la livraison",
+      "hideDetails": "Masquer les détails",
       "rate": "Évaluer l'achat",
       "unavailableItem": "Article plus disponible"
     },
@@ -337,7 +338,78 @@
       "previous": "Précédent",
       "next": "Suivant",
       "position": "Page {{current}} sur {{total}}"
+    },
+    "details": {
+      "method": "Livraison",
+      "tracking": "Suivi",
+      "subtotal": "Sous-total",
+      "shipping": "Frais de port"
+    },
+    "method": {
+      "DELIVERED_TO_HOME": "Livraison à domicile",
+      "IN_HOUSE_PICKUP": "Retrait en boutique",
+      "IN_MID_POINT_PICKUP": "Retrait au point de rencontre",
+      "CARRIER": "Envoi par transporteur"
     }
+  },
+  "sales": {
+    "title": "Mes ventes",
+    "subtitle": "Les commandes que vous avez reçues. Indiquez quand elles sont expédiées ou livrées pour que l'acheteur sache où elles en sont.",
+    "stats": {
+      "label": "Ce mois-ci",
+      "revenue": "Ventes du mois",
+      "paidOrders": "Paiements reçus",
+      "average": "Vente moyenne",
+      "toShip": "À expédier"
+    },
+    "filter": {
+      "label": "Filtrer les ventes",
+      "all": "Toutes",
+      "toShip": "À expédier",
+      "shipped": "Expédiées",
+      "delivered": "Livrées",
+      "pending": "Paiement en attente",
+      "canceled": "Annulées"
+    },
+    "card": {
+      "receivedOn": "Reçue le"
+    },
+    "details": {
+      "buyer": "Acheteur",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "recipient": "Destinataire",
+      "address": "Adresse",
+      "reference": "Indications",
+      "zipCode": "Code postal"
+    },
+    "actions": {
+      "ship": "Marquer comme expédiée",
+      "deliver": "Marquer comme livrée"
+    },
+    "ship": {
+      "title": "Marquer comme expédiée",
+      "description": "L'acheteur sera prévenu. Si vous l'avez envoyée par transporteur, ajoutez la société et le numéro de suivi.",
+      "trackingLabel": "Suivi (facultatif)",
+      "trackingPlaceholder": "Ex. : Starken 123456789",
+      "confirm": "Confirmer l'envoi",
+      "cancel": "Annuler"
+    },
+    "deliver": {
+      "title": "La commande a-t-elle été livrée ?",
+      "description": "Ne confirmez qu'une fois que l'acheteur l'a reçue. Cela clôt la vente et le prévient.",
+      "confirm": "Oui, elle a été livrée"
+    },
+    "empty": {
+      "title": "Pas encore de ventes",
+      "filteredTitle": "Aucune vente dans cet état",
+      "description": "Quand quelqu'un achète un de vos produits, la commande apparaîtra ici."
+    },
+    "error": {
+      "title": "Impossible de charger vos ventes",
+      "description": "Un problème est survenu de notre côté. Réessayez dans un instant."
+    },
+    "pagination": "Pages des ventes"
   },
   "favorites": {
     "screenTitle": "Favoris",
@@ -652,7 +724,11 @@
       "providerNotes": "Notes du prestataire",
       "accept": "Accepter",
       "decline": "Refuser",
-      "awaitingProvider": "En attente du prix du prestataire."
+      "awaitingProvider": "En attente du prix du prestataire.",
+      "pay": "Payer {{amount}}",
+      "payHint": "Vous payez avec Webpay. Le prestataire est prévenu dès que le paiement est confirmé.",
+      "paid": "Payé",
+      "paidOn": "Payé le {{date}}"
     },
     "respond": {
       "price": "Prix (CLP)",

@@ -8,7 +8,7 @@ import { Title } from "@/components/Primitives/Title";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import clsx from "clsx";
-import { Check, FileText, X } from "lucide-react";
+import { Check, CreditCard, FileText, X } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -19,6 +19,7 @@ import {
   type Quotation,
   type QuotationStatus,
 } from "../hooks/useServiceRequests";
+import { isPayable, useQuotationPayment } from "../hooks/useQuotationPayment";
 
 const STATUS_TONE: Record<QuotationStatus, string> = {
   PENDING: "bg-warning/10 text-warning",
@@ -30,6 +31,18 @@ const STATUS_TONE: Record<QuotationStatus, string> = {
 };
 
 type Tab = "received" | "sent";
+
+function formatDate(iso: string, lang: string) {
+  try {
+    return new Intl.DateTimeFormat(lang, {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(new Date(iso));
+  } catch {
+    return iso;
+  }
+}
 
 function formatMoney(value: number, lang: string) {
   try {
@@ -140,6 +153,7 @@ export function QuotationsInbox() {
     declining,
     responding,
   } = useMyQuotations();
+  const { pay, payingId } = useQuotationPayment();
 
   const list = tab === "received" ? received : sent;
 
@@ -222,14 +236,21 @@ export function QuotationsInbox() {
                       </Link>
                     )}
                   </div>
-                  <span
-                    className={clsx(
-                      "rounded-full px-2.5 py-1 text-xs font-semibold",
-                      STATUS_TONE[quotation.status],
+                  <div className="flex flex-wrap gap-1.5">
+                    <span
+                      className={clsx(
+                        "rounded-full px-2.5 py-1 text-xs font-semibold",
+                        STATUS_TONE[quotation.status],
+                      )}
+                    >
+                      {t(`quotes.status.${quotation.status}`)}
+                    </span>
+                    {quotation.paidAt && (
+                      <span className="rounded-full bg-success/10 px-2.5 py-1 text-xs font-semibold text-success">
+                        {t("quotes.card.paid")}
+                      </span>
                     )}
-                  >
-                    {t(`quotes.status.${quotation.status}`)}
-                  </span>
+                  </div>
                 </header>
 
                 <Text variant="p" size="sm" color="tertiary">
@@ -273,6 +294,29 @@ export function QuotationsInbox() {
                       />
                     </div>
                   )}
+
+                {/* WEB-4: an accepted, unpaid quote is paid through Webpay. */}
+                {!isProviderView && hasPrice && isPayable(quotation) && (
+                  <div className="flex flex-wrap items-center gap-3 border-t border-border-light pt-3">
+                    <Button
+                      text={t("quotes.card.pay", { amount: formatMoney(price, lang) })}
+                      leftIcon={CreditCard}
+                      size="sm"
+                      loading={payingId === quotation.id}
+                      disabled={payingId !== null}
+                      onClick={() => void pay(quotation.id)}
+                    />
+                    <Text variant="small" color="tertiary">
+                      {t("quotes.card.payHint")}
+                    </Text>
+                  </div>
+                )}
+
+                {quotation.paidAt && (
+                  <Text variant="small" color="tertiary">
+                    {t("quotes.card.paidOn", { date: formatDate(quotation.paidAt, lang) })}
+                  </Text>
+                )}
 
                 {!isProviderView && quotation.status === "PENDING" && !hasPrice && (
                   <Text variant="small" color="tertiary">

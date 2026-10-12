@@ -143,6 +143,11 @@
       "retry": "Try again",
       "backToCart": "Back to cart"
     },
+    "quotation": {
+      "success": "You paid quote #{{quotationId}}. We let the provider know and emailed you the details.",
+      "viewQuotes": "View my quotes",
+      "retry": "Back to my quotes"
+    },
     "missingPayment": "We couldn't find the payment information. If you believe this is a mistake, contact us.",
     "supportLink": "I need help"
   },

@@ -50,8 +50,8 @@ export function useRequestQuote(service: ServiceDetail) {
       await addQuotation({
         variables: {
           input: {
+            // The provider is the service's seller, set by the services subgraph.
             serviceId: Number(service.id),
-            providerId: service.sellerId,
             title: draft.title.trim(),
             description: draft.description.trim(),
             clientNotes: draft.notes.trim() || undefined,

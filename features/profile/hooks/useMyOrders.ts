@@ -19,11 +19,18 @@ export interface OrderLine {
 export interface BuyerOrder {
   id: string;
   status: "PENDING_PAYMENT" | "PAID" | "CANCELED" | "REFUNDED";
+  subtotal: number;
+  shippingCost: number;
   total: number;
   currency: string;
   createdAt: string;
   shippingMethod: string;
-  shippingStatus?: { id: string; status: ShippingStage } | null;
+  shippingStatus?: {
+    id: string;
+    status: ShippingStage;
+    /** Carrier and tracking number the seller added when shipping. */
+    trackingInfo?: string | null;
+  } | null;
   orderItems?: OrderLine[] | null;
 }
 

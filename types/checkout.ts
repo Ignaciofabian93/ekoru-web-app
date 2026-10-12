@@ -83,6 +83,7 @@ export type PaymentStatusResponse = Pick<
   | "amount"
   | "currency"
   | "orderId"
+  | "quotationId"
   | "provider"
   | "providerTransactionId"
   | "paidAt"

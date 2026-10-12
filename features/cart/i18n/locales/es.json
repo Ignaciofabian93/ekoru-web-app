@@ -143,6 +143,11 @@
       "retry": "Intentar de nuevo",
       "backToCart": "Volver al carrito"
     },
+    "quotation": {
+      "success": "Pagaste la cotización #{{quotationId}}. Le avisamos al proveedor y recibirás un correo con el detalle.",
+      "viewQuotes": "Ver mis cotizaciones",
+      "retry": "Volver a mis cotizaciones"
+    },
     "missingPayment": "No encontramos la información del pago. Si crees que es un error, contáctanos.",
     "supportLink": "Necesito ayuda"
   },

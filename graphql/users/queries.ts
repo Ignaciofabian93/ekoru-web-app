@@ -182,11 +182,3 @@ export const GET_SELLER_LEVELS = gql`
   }
 `;
 
-export const GET_SELLER_LEVEL = gql`
-  ${SELLER_LEVEL_FIELDS_FRAGMENT}
-  query GetSellerLevel($id: String!) {
-    sellerLevel(id: $id) {
-      ...SellerLevelFields
-    }
-  }
-`;

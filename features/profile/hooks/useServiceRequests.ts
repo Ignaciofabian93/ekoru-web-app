@@ -71,6 +71,8 @@ export interface Quotation {
   expiresAt?: string | null;
   acceptedAt?: string | null;
   declineReason?: string | null;
+  /** Set once the client paid the accepted quote (WEB-4). */
+  paidAt?: string | null;
   createdAt: string;
   service?: ServiceRef | null;
 }

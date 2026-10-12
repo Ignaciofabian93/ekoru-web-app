@@ -221,5 +221,17 @@
       "benefit2": "Comprar de segunda mano reduce la demanda de nueva fabricación y sus emisiones.",
       "benefit3": "Las pequeñas decisiones conscientes suman un impacto real para el planeta."
     }
+  },
+  "errorPage": {
+    "title": "Algo salió mal",
+    "body": "No pudimos cargar esta página. Puede ser un problema momentáneo de conexión; vuelve a intentarlo en unos segundos.",
+    "retry": "Reintentar",
+    "home": "Ir al inicio",
+    "code": "Código del error: {{code}}"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "body": "La página que buscas no existe o ya no está disponible.",
+    "home": "Ir al inicio"
   }
 }

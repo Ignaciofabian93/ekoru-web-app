@@ -5,28 +5,19 @@ import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import clsx from "clsx";
-import Image from "next/image";
-import { PackageCheck, PackageSearch, Truck } from "lucide-react";
+import { ChevronDown, ChevronUp, PackageSearch } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { NAMESPACE } from "../i18n";
 import { EmptyState } from "@/components/Feedback/EmptyState";
+import { orderStage, useMyOrders, type OrderStage } from "../hooks/useMyOrders";
 import {
-  lineImage,
-  lineName,
-  orderStage,
-  useMyOrders,
-  type OrderStage,
-} from "../hooks/useMyOrders";
-
-const STATUS_TONE: Record<OrderStage, string> = {
-  PENDING_PAYMENT: "bg-warning/10 text-warning",
-  PREPARING: "bg-warning/10 text-warning",
-  SHIPPED: "bg-info/10 text-info",
-  DELIVERED: "bg-success/10 text-success",
-  RETURNED: "bg-foreground-tertiary/10 text-foreground-secondary",
-  CANCELED: "bg-danger/10 text-danger",
-};
+  formatDate,
+  formatMoney,
+  OrderBreakdown,
+  OrderLines,
+  OrderStageBadge,
+} from "./OrderParts";
 
 type FilterKey =
   | "all"
@@ -47,30 +38,6 @@ const FILTERS: { key: FilterKey; match?: OrderStage }[] = [
   { key: "canceled", match: "CANCELED" },
 ];
 
-function formatMoney(value: number, currency: string, lang: string) {
-  try {
-    return new Intl.NumberFormat(lang, {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 0,
-    }).format(value);
-  } catch {
-    return `${currency} ${value.toLocaleString(lang)}`;
-  }
-}
-
-function formatDate(iso: string, lang: string) {
-  try {
-    return new Intl.DateTimeFormat(lang, {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }).format(new Date(iso));
-  } catch {
-    return iso;
-  }
-}
-
 export function OrdersList() {
   const { t } = useTranslation(NAMESPACE);
   const params = useParams<{ lang?: SupportedLanguage }>();
@@ -78,6 +45,7 @@ export function OrdersList() {
   const lang = params.lang ?? DEFAULT_LANGUAGE;
 
   const [filter, setFilter] = useState<FilterKey>("all");
+  const [openId, setOpenId] = useState<string | null>(null);
   const { orders, pageInfo, page, initialLoading, loading, error, refetch, goToPage } =
     useMyOrders();
 
@@ -165,6 +133,7 @@ export function OrdersList() {
           {filtered.map((order) => {
             const stage = orderStage(order);
             const items = order.orderItems ?? [];
+            const open = openId === order.id;
             return (
               <article
                 key={order.id}
@@ -182,47 +151,20 @@ export function OrdersList() {
                       {t("orders.card.placedOn")} {formatDate(order.createdAt, lang)}
                     </Text>
                   </div>
-                  <span
-                    className={clsx(
-                      "rounded-full px-2.5 py-1 text-xs font-semibold",
-                      STATUS_TONE[stage],
-                    )}
-                  >
-                    {t(`orders.status.${stage}`)}
-                  </span>
+                  <OrderStageBadge stage={stage} />
                 </header>
 
-                <ul className="flex flex-col gap-2 border-y border-border-light py-3">
-                  {items.map((item) => {
-                    const image = lineImage(item);
-                    return (
-                      <li
-                        key={item.id}
-                        className="flex items-center gap-3 text-sm text-foreground"
-                      >
-                        <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-md bg-background-secondary text-foreground-tertiary">
-                          {image ? (
-                            <Image
-                              src={image}
-                              alt=""
-                              fill
-                              sizes="36px"
-                              className="object-cover"
-                            />
-                          ) : (
-                            <PackageCheck size={16} color="currentColor" strokeWidth={1.8} />
-                          )}
-                        </div>
-                        <span className="flex-1 truncate">
-                          {lineName(item) ?? t("orders.card.unavailableItem")}
-                        </span>
-                        <Text variant="span" size="sm" color="tertiary">
-                          ×{item.quantity}
-                        </Text>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <OrderLines items={items} />
+
+                {/* The shipped stage is where the buyer looks for the tracking
+                    note, so it shows without opening the details. */}
+                {stage === "SHIPPED" && order.shippingStatus?.trackingInfo && (
+                  <Text variant="p" size="sm">
+                    {t("orders.details.tracking")}: {order.shippingStatus.trackingInfo}
+                  </Text>
+                )}
+
+                {open && <OrderBreakdown order={order} lang={lang} />}
 
                 <footer className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex flex-col">
@@ -233,17 +175,14 @@ export function OrdersList() {
                       {formatMoney(order.total, order.currency, lang)}
                     </Text>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {stage === "SHIPPED" && (
-                      <Button
-                        text={t("orders.card.track")}
-                        variant="outline"
-                        size="sm"
-                        leftIcon={Truck}
-                      />
-                    )}
-                    <Button text={t("orders.card.viewDetails")} variant="ghost" size="sm" />
-                  </div>
+                  <Button
+                    text={t(open ? "orders.card.hideDetails" : "orders.card.viewDetails")}
+                    variant="ghost"
+                    size="sm"
+                    rightIcon={open ? ChevronUp : ChevronDown}
+                    ariaPressed={open}
+                    onClick={() => setOpenId(open ? null : order.id)}
+                  />
                 </footer>
               </article>
             );

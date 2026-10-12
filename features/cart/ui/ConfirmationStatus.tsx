@@ -47,6 +47,46 @@ export function ConfirmationStatus({ lang, payment, loading }: Props) {
   const status = payment.status;
   const orderId = payment.orderId ? String(payment.orderId) : "—";
 
+  // WEB-4: a service quote was paid, not an order. Every outcome leads back to
+  // the quotes inbox, where a failed payment can be retried.
+  if (payment.quotationId) {
+    const quotesLink = (label: string, variant?: "outline") => (
+      <Link href={`/${lang}/profile/quotes`}>
+        <Button text={label} variant={variant} fullWidth />
+      </Link>
+    );
+    if (status === "COMPLETED") {
+      return (
+        <StatusCard
+          icon={<CheckCircle2 size={36} className="text-success" />}
+          title={t("confirmation.success.title")}
+          subtitle={t("confirmation.quotation.success", {
+            quotationId: String(payment.quotationId),
+          })}
+          actions={quotesLink(t("confirmation.quotation.viewQuotes"))}
+        />
+      );
+    }
+    if (status === "PENDING" || status === "PROCESSING") {
+      return (
+        <StatusCard
+          icon={<Clock size={36} className="text-warning" />}
+          title={t("confirmation.pending.title")}
+          subtitle={t("confirmation.pending.subtitle", { provider: providerLabel })}
+          actions={quotesLink(t("confirmation.quotation.viewQuotes"), "outline")}
+        />
+      );
+    }
+    return (
+      <StatusCard
+        icon={<XCircle size={36} className="text-danger" />}
+        title={t("confirmation.failed.title")}
+        subtitle={t("confirmation.failed.subtitle", { provider: providerLabel })}
+        actions={quotesLink(t("confirmation.quotation.retry"))}
+      />
+    );
+  }
+
   if (status === "COMPLETED") {
     return (
       <StatusCard

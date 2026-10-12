@@ -143,6 +143,11 @@
       "retry": "Réessayer",
       "backToCart": "Retour au panier"
     },
+    "quotation": {
+      "success": "Vous avez payé le devis n° {{quotationId}}. Nous avons prévenu le prestataire et vous avez reçu le détail par e-mail.",
+      "viewQuotes": "Voir mes devis",
+      "retry": "Retour à mes devis"
+    },
     "missingPayment": "Nous n'avons pas trouvé d'informations de paiement. Si vous pensez qu'il s'agit d'une erreur, contactez-nous.",
     "supportLink": "J'ai besoin d'aide"
   },

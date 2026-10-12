@@ -6,10 +6,13 @@ import {
   Leaf,
   MessageCircle,
   Package,
+  Receipt,
   Settings,
   UserRound,
   type LucideIcon,
 } from "lucide-react";
+
+import { FEATURES } from "@/constants/features";
 
 /**
  * Config-driven drawer menu, same shape as the settings screen
@@ -26,6 +29,7 @@ export type MenuField =
   | "deals"
   | "settings"
   | "orders"
+  | "sales"
   | "environmentalImpact";
 
 export type SupportMenuField = "contact" | "termsAndConditions" | "aboutEKORU";
@@ -36,6 +40,7 @@ export const MENU_FIELDS: MenuField[] = [
   "deals",
   "settings",
   "orders",
+  "sales",
   "environmentalImpact",
 ];
 
@@ -86,11 +91,18 @@ export const ACCOUNT_MENU_SECTIONS: DrawerMenuSection[] = [
         icon: Settings,
         available: true,
       },
+      // Both follow the cart switch: no orders exist without checkout.
       {
         route: "/profile/orders",
         label: "orders",
         icon: Package,
-        available: false,
+        available: FEATURES.cart.available,
+      },
+      {
+        route: "/profile/sales",
+        label: "sales",
+        icon: Receipt,
+        available: FEATURES.cart.available,
       },
       {
         route: "/profile/environmental-impact",

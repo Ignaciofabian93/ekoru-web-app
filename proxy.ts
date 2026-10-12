@@ -17,7 +17,13 @@ import { COOKIE_MAX_AGE_SECONDS, SESSION_COOKIES } from "@/utils/cookies";
  * line to bring back when the flag flips. See `constants/features.ts`.
  */
 const DISABLED_PATTERNS: RegExp[] = [
-  ...(FEATURES.cart.available ? [] : [/^\/cart(\/|$)/]),
+  ...(FEATURES.cart.available
+    ? []
+    : FEATURES.serviceQuotes.available
+      ? // Quote payments return through /cart/confirmation (the gateway's one
+        // return page), so it stays open while the rest of the cart is off.
+        [/^\/cart\/?$/, /^\/cart\/checkout(\/|$)/]
+      : [/^\/cart(\/|$)/]),
 ];
 
 // Patterns evaluated AFTER the leading `/[lang]` segment is stripped.

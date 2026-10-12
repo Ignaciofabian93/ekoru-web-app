@@ -221,5 +221,17 @@
       "benefit2": "Acheter d'occasion réduit la demande de fabrication neuve et ses émissions.",
       "benefit3": "De petits choix conscients ont un impact réel pour la planète."
     }
+  },
+  "errorPage": {
+    "title": "Une erreur s'est produite",
+    "body": "Nous n'avons pas pu charger cette page. Il s'agit peut-être d'un problème de connexion passager ; réessayez dans quelques secondes.",
+    "retry": "Réessayer",
+    "home": "Aller à l'accueil",
+    "code": "Code de l'erreur : {{code}}"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "La page que vous cherchez n'existe pas ou n'est plus disponible.",
+    "home": "Aller à l'accueil"
   }
 }

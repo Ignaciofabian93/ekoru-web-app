@@ -145,6 +145,7 @@
     "editProfile": "Editar Perfil",
     "changePassword": "Cambiar Contraseña",
     "orderHistory": "Historial de Pedidos",
+    "sales": "Mis ventas",
     "exchanges": "Intercambios",
     "favorites": "Favoritos",
     "environmentalImpact": "Impacto Ambiental",
@@ -318,7 +319,7 @@
       "items": "{{count}} productos",
       "total": "Total",
       "viewDetails": "Ver detalles",
-      "track": "Seguir envío",
+      "hideDetails": "Ocultar detalles",
       "rate": "Calificar compra",
       "unavailableItem": "Producto ya no disponible"
     },
@@ -337,7 +338,78 @@
       "previous": "Anterior",
       "next": "Siguiente",
       "position": "Página {{current}} de {{total}}"
+    },
+    "details": {
+      "method": "Entrega",
+      "tracking": "Seguimiento",
+      "subtotal": "Subtotal",
+      "shipping": "Envío"
+    },
+    "method": {
+      "DELIVERED_TO_HOME": "Despacho a domicilio",
+      "IN_HOUSE_PICKUP": "Retiro en tienda",
+      "IN_MID_POINT_PICKUP": "Retiro en punto de encuentro",
+      "CARRIER": "Envío por courier"
     }
+  },
+  "sales": {
+    "title": "Mis ventas",
+    "subtitle": "Los pedidos que recibiste. Márcalos como enviados o entregados para que el comprador sepa en qué van.",
+    "stats": {
+      "label": "Resumen del mes",
+      "revenue": "Ventas del mes",
+      "paidOrders": "Pagos recibidos",
+      "average": "Venta promedio",
+      "toShip": "Por enviar"
+    },
+    "filter": {
+      "label": "Filtrar ventas",
+      "all": "Todas",
+      "toShip": "Por enviar",
+      "shipped": "Enviadas",
+      "delivered": "Entregadas",
+      "pending": "Pago pendiente",
+      "canceled": "Canceladas"
+    },
+    "card": {
+      "receivedOn": "Recibido el"
+    },
+    "details": {
+      "buyer": "Comprador",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "recipient": "Recibe",
+      "address": "Dirección",
+      "reference": "Referencia",
+      "zipCode": "Código postal"
+    },
+    "actions": {
+      "ship": "Marcar como enviado",
+      "deliver": "Marcar como entregado"
+    },
+    "ship": {
+      "title": "Marcar como enviado",
+      "description": "El comprador recibirá un aviso. Si lo despachaste por courier, agrega la empresa y el número de seguimiento.",
+      "trackingLabel": "Seguimiento (opcional)",
+      "trackingPlaceholder": "Ej.: Starken 123456789",
+      "confirm": "Confirmar envío",
+      "cancel": "Cancelar"
+    },
+    "deliver": {
+      "title": "¿El pedido ya fue entregado?",
+      "description": "Confírmalo solo cuando el comprador lo tenga. Esto cierra la venta y le avisa.",
+      "confirm": "Sí, fue entregado"
+    },
+    "empty": {
+      "title": "Aún no tienes ventas",
+      "filteredTitle": "No hay ventas en este estado",
+      "description": "Cuando alguien compre uno de tus productos, el pedido aparecerá aquí."
+    },
+    "error": {
+      "title": "No pudimos cargar tus ventas",
+      "description": "Algo falló de nuestro lado. Inténtalo de nuevo en un momento."
+    },
+    "pagination": "Páginas de ventas"
   },
   "favorites": {
     "screenTitle": "Favoritos",
@@ -652,7 +724,11 @@
       "providerNotes": "Notas del proveedor",
       "accept": "Aceptar",
       "decline": "Rechazar",
-      "awaitingProvider": "Esperando que el proveedor envíe un precio."
+      "awaitingProvider": "Esperando que el proveedor envíe un precio.",
+      "pay": "Pagar {{amount}}",
+      "payHint": "Pagas con Webpay. El proveedor recibe el aviso al confirmarse el pago.",
+      "paid": "Pagada",
+      "paidOn": "Pagada el {{date}}"
     },
     "respond": {
       "price": "Precio (CLP)",

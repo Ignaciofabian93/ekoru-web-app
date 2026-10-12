@@ -36,7 +36,8 @@
     "by": "por",
     "views": "{{count}} reseñas",
     "viewsPlural": "{{count}} reseñas",
-    "noBrand": "Sin marca"
+    "noBrand": "Sin marca",
+    "exchangeable": "Intercambiable"
   },
   "trust": {
     "onlinePayment": "Pago en línea",
