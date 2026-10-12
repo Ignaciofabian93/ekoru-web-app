@@ -64,14 +64,10 @@
     "interests": "Intérêts",
     "publishedOn": "Publié le"
   },
-  "impact": {
-    "title": "Impact environnemental",
-    "subtitle": "En donnant une seconde vie à ce produit, vous économisez",
-    "co2": "CO₂ économisé",
-    "water": "Eau économisée",
-    "materials": "Répartition des matériaux",
-    "kg": "kg",
-    "liters": "L"
+  "materials": {
+    "title": "Matériaux",
+    "subtitle": "De quoi ce produit est fait",
+    "caption": "Composition déclarée par la boutique"
   },
   "badges": {
     "POPULAR": "Populaire",

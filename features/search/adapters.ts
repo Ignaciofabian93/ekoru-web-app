@@ -89,7 +89,7 @@ export function toStoreProductCardProduct(
     stock: entity?.stock,
     isLowStock: entity?.isLowStock,
     isLiked: entity?.isLiked ?? false,
-    environmentalImpact: entity?.environmentalImpact,
+    materials: entity?.materials ?? null,
     seller: entity?.seller ?? null,
   };
 }

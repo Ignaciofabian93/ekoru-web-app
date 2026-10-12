@@ -103,18 +103,6 @@ export const GET_STORE_PRODUCT_BY_ID = gql`
         label
         percentage
       }
-      environmentalImpact {
-        totalCo2SavingsKG
-        totalWaterSavingsLT
-        materialBreakdown {
-          materialType
-          materialTypeLabel
-          quantity
-          unit
-          co2SavingsKG
-          waterSavingsLT
-        }
-      }
       seller {
         id
         email
@@ -294,18 +282,6 @@ export const GET_STORE_PRODUCTS = gql`
           materialType
           label
           percentage
-        }
-        environmentalImpact {
-          totalCo2SavingsKG
-          totalWaterSavingsLT
-          materialBreakdown {
-            materialType
-            materialTypeLabel
-            quantity
-            unit
-            co2SavingsKG
-            waterSavingsLT
-          }
         }
         seller {
           id

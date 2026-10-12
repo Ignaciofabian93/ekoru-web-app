@@ -148,7 +148,7 @@ export function StoreProductCard({
       </Card.FrontSide>
       <Card.BackSide>
         <Card.BackHeader itemType="STORE" itemName={product.name} />
-        <Card.BackBody itemType="STORE" impact={product.environmentalImpact} />
+        <Card.BackBody itemType="STORE" materials={product.materials} />
         <Card.BackFooter seller={product.seller} />
       </Card.BackSide>
     </Card>

@@ -1,4 +1,4 @@
-import type { EnvironmentalImpact } from "@/types/product";
+import type { StoreProductMaterialComposition } from "@/types/product";
 import type { Seller } from "@/types/user";
 
 export type Language = "ES" | "EN" | "FR";
@@ -40,8 +40,8 @@ export type StoreListProduct = {
   isActive?: boolean;
   description?: string | null;
   // The listing queries fetch the detail fragment, which already includes the
-  // environmental impact and seller — the card back side renders both.
-  environmentalImpact?: EnvironmentalImpact | null;
+  // materials and seller — the card back side renders both (decision D3).
+  materials?: StoreProductMaterialComposition[] | null;
   seller?: Seller | null;
 };
 

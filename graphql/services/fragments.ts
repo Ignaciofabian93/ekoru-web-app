@@ -195,7 +195,9 @@ export const SERVICE_BOOKING_FIELDS_FRAGMENT = gql`
     scheduledTimeSlot
     agreedPrice
     status
-    paymentStatus
+    # Always ON_SITE for the beta: paid to the provider, not through EKORU (D7).
+    paymentMode
+    serviceLocation
     clientNotes
     providerNotes
     cancellationReason

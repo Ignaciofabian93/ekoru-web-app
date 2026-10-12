@@ -32,6 +32,10 @@ export const GET_MY_SERVICE_BOOKINGS = gql`
   }
 `;
 
+/**
+ * Bookings the signed-in seller received as a provider (WEB-5). `client` is a
+ * users reference: who booked, and how to reach them about the appointment.
+ */
 export const GET_MY_PROVIDER_BOOKINGS = gql`
   ${SERVICE_BOOKING_FIELDS_FRAGMENT}
   ${SERVICE_PAGE_INFO_FIELDS_FRAGMENT}
@@ -39,6 +43,23 @@ export const GET_MY_PROVIDER_BOOKINGS = gql`
     myProviderBookings(page: $page, pageSize: $pageSize, status: $status) {
       nodes {
         ...ServiceBookingFields
+        client {
+          id
+          email
+          phone
+          profile {
+            ... on PersonProfile {
+              id
+              displayName
+              firstName
+              lastName
+            }
+            ... on BusinessProfile {
+              id
+              businessName
+            }
+          }
+        }
       }
       pageInfo {
         ...ServicePageInfoFields

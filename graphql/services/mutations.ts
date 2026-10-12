@@ -74,6 +74,29 @@ export const CANCEL_SERVICE_BOOKING = gql`
   }
 `;
 
+/**
+ * The provider moves a received booking: CONFIRMED, IN_PROGRESS or NO_SHOW
+ * (WEB-5). The services subgraph enforces who may move it where.
+ */
+export const UPDATE_SERVICE_BOOKING_STATUS = gql`
+  ${SERVICE_BOOKING_FIELDS_FRAGMENT}
+  mutation UpdateServiceBookingStatus($id: ID!, $status: String!) {
+    updateServiceBooking(input: { id: $id, status: $status }) {
+      ...ServiceBookingFields
+    }
+  }
+`;
+
+/** The provider closes the work; this is what awards the eco-points. */
+export const COMPLETE_SERVICE_BOOKING = gql`
+  ${SERVICE_BOOKING_FIELDS_FRAGMENT}
+  mutation CompleteServiceBooking($id: ID!) {
+    completeServiceBooking(id: $id) {
+      ...ServiceBookingFields
+    }
+  }
+`;
+
 // ─── Quotations (EK-12) ──────────────────────────────────────────────────────
 
 export const ADD_QUOTATION = gql`

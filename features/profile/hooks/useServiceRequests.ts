@@ -4,21 +4,26 @@ import { useMutation, useQuery } from "@apollo/client/react";
 import {
   ACCEPT_QUOTATION,
   CANCEL_SERVICE_BOOKING,
+  COMPLETE_SERVICE_BOOKING,
   DECLINE_QUOTATION,
   UPDATE_QUOTATION,
+  UPDATE_SERVICE_BOOKING_STATUS,
 } from "@/graphql/services/mutations";
 import {
+  GET_MY_PROVIDER_BOOKINGS,
   GET_MY_PROVIDER_QUOTATIONS,
   GET_MY_QUOTATIONS,
   GET_MY_SERVICE_BOOKINGS,
 } from "@/graphql/services/queries";
 import { useToast } from "@/hooks/useToast";
+import type { Seller } from "@/types/user";
 
 export type BookingStatus =
   | "PENDING"
   | "CONFIRMED"
   | "IN_PROGRESS"
   | "COMPLETED"
+  | "NO_SHOW"
   | "CANCELLED";
 
 export type QuotationStatus =
@@ -46,7 +51,9 @@ export interface ServiceBooking {
   scheduledTimeSlot?: string | null;
   agreedPrice: number;
   status: BookingStatus;
-  paymentStatus: string;
+  /** Always ON_SITE for the beta: paid to the provider, not through EKORU (D7). */
+  paymentMode: "ON_SITE";
+  serviceLocation?: Record<string, unknown> | null;
   clientNotes?: string | null;
   providerNotes?: string | null;
   cancellationReason?: string | null;
@@ -109,6 +116,72 @@ export function useMyBookings() {
     refetch,
     cancel,
     cancelling,
+  };
+}
+
+/** A booking the signed-in seller received, with who made it. */
+export interface ReceivedBooking extends ServiceBooking {
+  client?: Pick<Seller, "id" | "email" | "phone" | "profile"> | null;
+}
+
+/** Moves the provider may make, by current status (services' booking-rules.ts). */
+export type ProviderMove = "CONFIRMED" | "IN_PROGRESS" | "COMPLETED" | "NO_SHOW";
+
+export const PROVIDER_MOVES: Partial<Record<BookingStatus, ProviderMove[]>> = {
+  PENDING: ["CONFIRMED"],
+  CONFIRMED: ["IN_PROGRESS", "COMPLETED", "NO_SHOW"],
+  IN_PROGRESS: ["COMPLETED", "NO_SHOW"],
+};
+
+/**
+ * Bookings the signed-in seller received as a provider (WEB-5): confirm,
+ * start, complete, mark a no-show, or cancel with a reason. Completing goes
+ * through its own mutation, which is what awards the client's eco-points.
+ */
+export function useProviderBookings() {
+  const toast = useToast();
+  const { data, loading, error, refetch } = useQuery<{
+    myProviderBookings: Connection<ReceivedBooking>;
+  }>(GET_MY_PROVIDER_BOOKINGS, { fetchPolicy: "cache-and-network" });
+
+  const refetchQueries = [{ query: GET_MY_PROVIDER_BOOKINGS }];
+  const [updateStatus, { loading: moving }] = useMutation(
+    UPDATE_SERVICE_BOOKING_STATUS,
+    { refetchQueries },
+  );
+  const [completeBooking, { loading: completing }] = useMutation(
+    COMPLETE_SERVICE_BOOKING,
+    { refetchQueries },
+  );
+  const [cancelBooking, { loading: cancelling }] = useMutation(
+    CANCEL_SERVICE_BOOKING,
+    { refetchQueries },
+  );
+
+  const run = async (fn: () => Promise<unknown>) => {
+    try {
+      await fn();
+      return true;
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error");
+      return false;
+    }
+  };
+
+  return {
+    bookings: data?.myProviderBookings.nodes ?? [],
+    loading: loading && !data,
+    error,
+    refetch,
+    move: (id: string, to: ProviderMove) =>
+      run(() =>
+        to === "COMPLETED"
+          ? completeBooking({ variables: { id } })
+          : updateStatus({ variables: { id, status: to } }),
+      ),
+    cancel: (id: string, reason: string) =>
+      run(() => cancelBooking({ variables: { id, reason } })),
+    busy: moving || completing || cancelling,
   };
 }
 

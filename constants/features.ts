@@ -34,10 +34,11 @@ export const FEATURES: Record<FeatureKey, FeatureFlag> = {
     surfaces:
       "Add-to-cart on the store product page and the quantity stepper on store product cards, which fall back to a browse-only CTA.",
   },
+  // On since 2026-10-12 (WEB-5): booked here, paid to the provider on site (D7).
   serviceBooking: {
-    available: false,
+    available: true,
     surfaces:
-      "The 'Book' button and booking dialog on a service, and the service card's booking CTA.",
+      "The 'Book' button and booking dialog on a service, the service card's booking CTA, and the bookings link in the profile menu.",
   },
   serviceQuotes: {
     available: false,

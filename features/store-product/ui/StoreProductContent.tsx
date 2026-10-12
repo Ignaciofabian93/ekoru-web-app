@@ -3,7 +3,7 @@ import clsx from "clsx";
 import type { SupportedLanguage } from "@/constants/settings";
 import { StoreProductDescription } from "./StoreProductDescription";
 import { StoreProductDetails } from "./StoreProductDetails";
-import { StoreProductImpact } from "./StoreProductImpact";
+import { StoreProductMaterials } from "./StoreProductMaterials";
 import { StoreProductReviews } from "./StoreProductReviews";
 import {
   StoreProductError,
@@ -138,7 +138,8 @@ export function StoreProductContent({ id, lang }: Props) {
           </div>
         </div>
 
-        <StoreProductImpact impact={product.environmentalImpact} />
+        {/* Materials, not savings: a store product is new (decision D3). */}
+        <StoreProductMaterials materials={product.materials} />
 
         <StoreProductReviews
           storeProductId={String(product.id)}

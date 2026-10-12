@@ -70,7 +70,8 @@
     "co2Short": "CO₂",
     "waterShort": "Agua",
     "co2Unit": "kg",
-    "waterUnit": "L"
+    "waterUnit": "L",
+    "noMaterials": "Sin materiales declarados"
   },
   "exchange": {
     "trigger": "Ver intereses de intercambio",

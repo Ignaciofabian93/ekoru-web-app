@@ -17,7 +17,7 @@ import {
 } from "@/hooks/useSellerData";
 import { formatInitials } from "@/utils/formatters";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import type { EnvironmentalImpact } from "@/types/product";
+import type { EnvironmentalImpact, StoreProductMaterialComposition } from "@/types/product";
 import { useState } from "react";
 import Image from "next/image";
 import { ArrowRight, Droplets, Leaf, MapPin, type LucideIcon } from "lucide-react";
@@ -320,7 +320,9 @@ export function BackHeader({ itemType, itemName }: CardBackHeaderProps) {
                 numberOfLines={1}
                 className="block uppercase tracking-[0.9px]"
               >
-                {t("impact.saved")}
+                {/* A store product is new: it shows what it is made of, not a
+                    saving (decision D3). */}
+                {t(itemType === "STORE" ? "impact.composition" : "impact.saved")}
               </Text>
             )}
             {itemName && (
@@ -341,11 +343,55 @@ export function BackHeader({ itemType, itemName }: CardBackHeaderProps) {
   );
 }
 
-export function BackBody({ itemType, impact, description }: CardBackBodyProps) {
-  if (itemType === "MARKETPLACE" || itemType === "STORE") {
+export function BackBody({ itemType, impact, materials, description }: CardBackBodyProps) {
+  if (itemType === "MARKETPLACE") {
     return <ImpactInformation impact={impact ?? null} />;
   }
+  if (itemType === "STORE") {
+    return <MaterialsInformation materials={materials ?? null} />;
+  }
   return <Description description={description} />;
+}
+
+/**
+ * The store product back face (STO-4, decision D3): the materials it is made of
+ * and their shares, largest first. No savings and no impact modal: a new
+ * product saves nothing by reuse, so the card does not claim it did.
+ */
+function MaterialsInformation({
+  materials,
+}: {
+  materials: StoreProductMaterialComposition[] | null;
+}) {
+  const { t } = useTranslation(NAMESPACE);
+  const rows = [...(materials ?? [])].sort((a, b) => b.percentage - a.percentage);
+
+  return (
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-2.5 pt-2 @min-[12rem]:px-3">
+      {rows.length === 0 ? (
+        <Text variant="span" size="xs" color="secondary" className="m-auto text-center">
+          {t("impact.noMaterials")}
+        </Text>
+      ) : (
+        <ul className="m-0 flex list-none flex-col gap-1 p-0">
+          {rows.map((material) => (
+            <li key={material.materialType} className="flex items-baseline leading-tight">
+              <Text variant="span" size="xs" color="secondary" numberOfLines={1} className="min-w-0">
+                {material.label}
+              </Text>
+              <span
+                aria-hidden
+                className="mx-1.5 min-w-2 flex-1 self-center border-b border-dotted border-border-strong"
+              />
+              <Text variant="span" size="xs" weight="bold" className="shrink-0">
+                {`${Math.round(material.percentage)}%`}
+              </Text>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
 
 /**

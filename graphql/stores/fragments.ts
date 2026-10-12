@@ -86,18 +86,18 @@ export const STORE_CATALOG_ITEM_FIELDS_FRAGMENT = gql`
   }
 `;
 
-export const STORE_PRODUCT_ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT = gql`
-  fragment StoreProductEnvironmentalImpactFields on EnvironmentalImpact {
-    totalCo2SavingsKG
-    totalWaterSavingsLT
-    materialBreakdown {
-      materialType
-      materialTypeLabel
-      quantity
-      unit
-      co2SavingsKG
-      waterSavingsLT
-    }
+/**
+ * What a store product is made of (STO-4, decision D3). Store products are
+ * new, so they show their materials, never a "saved" figure; the stores
+ * subgraph returns null for their `environmentalImpact`.
+ */
+export const STORE_PRODUCT_MATERIALS_FIELDS_FRAGMENT = gql`
+  fragment StoreProductMaterialsFields on StoreProductMaterialComposition {
+    id
+    materialTypeId
+    materialType
+    label
+    percentage
   }
 `;
 
@@ -161,13 +161,13 @@ export const STORE_PRODUCT_FIELDS_FRAGMENT = gql`
 
 export const STORE_PRODUCT_DETAIL_FIELDS_FRAGMENT = gql`
   ${STORE_PRODUCT_FIELDS_FRAGMENT}
-  ${STORE_PRODUCT_ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT}
+  ${STORE_PRODUCT_MATERIALS_FIELDS_FRAGMENT}
   ${STORE_PRODUCT_SELLER_FIELDS_FRAGMENT}
   ${STORE_SUB_CATEGORY_FIELDS_FRAGMENT}
   fragment StoreProductDetailFields on StoreProduct {
     ...StoreProductFields
-    environmentalImpact {
-      ...StoreProductEnvironmentalImpactFields
+    materials {
+      ...StoreProductMaterialsFields
     }
     seller {
       ...StoreProductSellerFields

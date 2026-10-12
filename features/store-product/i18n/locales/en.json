@@ -64,14 +64,10 @@
     "interests": "Interests",
     "publishedOn": "Published on"
   },
-  "impact": {
-    "title": "Environmental impact",
-    "subtitle": "By giving this product a second life you save",
-    "co2": "CO₂ saved",
-    "water": "Water saved",
-    "materials": "Materials breakdown",
-    "kg": "kg",
-    "liters": "L"
+  "materials": {
+    "title": "Materials",
+    "subtitle": "What this product is made of",
+    "caption": "Composition declared by the store"
   },
   "badges": {
     "POPULAR": "Popular",

@@ -31,8 +31,9 @@ interface Props {
   service: ServiceDetail;
 }
 
-/** The primary button's look, for the anchors that stand in for one. */
+/** Button looks for the anchors that stand in for one. */
 const primaryLinkClass = clsx(buttonClass.primary.md, "gap-2");
+const outlineLinkClass = clsx(buttonClass.outline.md, "gap-2");
 
 export function ServiceActions({ lang, service }: Props) {
   const { t } = useTranslation(NAMESPACE);
@@ -52,18 +53,19 @@ export function ServiceActions({ lang, service }: Props) {
   // offered when the provider prices by package or by the hour, where a buyer
   // may want a tailored figure before committing.
   //
-  // Beta: both are switched off, so the panel is browse-and-contact only. The
-  // contact route below is unaffected — it was never transacted on Ekoru, and
-  // it's the whole point of a service listing. See `constants/features.ts`.
+  // Booking is on (WEB-5, paid on site); quotes still wait behind their switch.
+  // See `constants/features.ts`.
   const quoteOnly = service.pricingType === "QUOTATION";
   const canBook = !quoteOnly && FEATURES.serviceBooking.available;
   const canRequestQuote = FEATURES.serviceQuotes.available;
 
-  // Nothing is transacted on Ekoru for a service: the buyer has to reach the
-  // provider. A published phone number is the direct route; otherwise the
-  // provider's page is the only place to find their contact details.
+  // Contacting the provider directly skips EKORU: no booking, no points, no
+  // record. So when the service can be booked, booking is the main action and
+  // the contact route steps back to a secondary one. Without booking it stays
+  // primary: a published phone number, or else the provider's page.
   const phone = service.seller?.phone;
   const providerHref = `/${lang}/seller/${service.sellerId}`;
+  const contactLinkClass = clsx(canBook ? outlineLinkClass : primaryLinkClass, "w-full");
 
   return (
     <div className="flex flex-col gap-2.5">
@@ -74,30 +76,30 @@ export function ServiceActions({ lang, service }: Props) {
         </div>
       ) : (
         <>
-          {/* The contact route is a link, not a button — it gets the primary
-              button's footprint from the same design module so it sits flush
-              with the CTAs under it. */}
-          {phone ? (
-            <a href={`tel:${phone}`} className={clsx(primaryLinkClass, "w-full")}>
-              <Phone size={buttonIconSize.md} strokeWidth={2} aria-hidden />
-              {t("actions.contactProvider")}
-            </a>
-          ) : (
-            <Link href={providerHref} className={clsx(primaryLinkClass, "w-full")}>
-              <UserRound size={buttonIconSize.md} strokeWidth={2} aria-hidden />
-              {t("actions.viewProvider")}
-            </Link>
-          )}
-
           {canBook && (
             <Button
               text={t("actions.book")}
               leftIcon={CalendarPlus}
-              variant="outline"
+              variant="primary"
               size="md"
               fullWidth
               onClick={() => setBookingOpen(true)}
             />
+          )}
+
+          {/* The contact route is a link, not a button — it gets a button's
+              footprint from the same design module so it sits flush with the
+              CTAs around it. */}
+          {phone ? (
+            <a href={`tel:${phone}`} className={contactLinkClass}>
+              <Phone size={buttonIconSize.md} strokeWidth={2} aria-hidden />
+              {t("actions.contactProvider")}
+            </a>
+          ) : (
+            <Link href={providerHref} className={contactLinkClass}>
+              <UserRound size={buttonIconSize.md} strokeWidth={2} aria-hidden />
+              {t("actions.viewProvider")}
+            </Link>
           )}
 
           {canRequestQuote && (

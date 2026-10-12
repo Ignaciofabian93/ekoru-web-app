@@ -680,6 +680,7 @@
       "CONFIRMED": "Confirmada",
       "IN_PROGRESS": "En curso",
       "COMPLETED": "Completada",
+      "NO_SHOW": "No asistió",
       "CANCELLED": "Cancelada"
     },
     "card": {
@@ -687,7 +688,10 @@
       "agreedPrice": "Precio acordado",
       "cancel": "Cancelar reserva",
       "cancelReason": "Motivo",
-      "unknownService": "Servicio no disponible"
+      "unknownService": "Servicio no disponible",
+      "payOnSite": "Se paga en el local, directamente al proveedor",
+      "client": "Cliente",
+      "clientNotes": "Notas del cliente"
     },
     "cancelDialog": {
       "title": "¿Cancelar esta reserva?",
@@ -703,6 +707,40 @@
     "error": {
       "title": "No pudimos cargar tus reservas",
       "description": "Algo falló de nuestro lado. Inténtalo de nuevo en un momento."
+    },
+    "tabs": {
+      "label": "Tipo de reserva",
+      "made": "Mis reservas",
+      "received": "Recibidas"
+    },
+    "received": {
+      "emptyTitle": "Aún no recibes reservas",
+      "emptyDescription": "Cuando alguien reserve uno de tus servicios, aparecerá aquí para que lo confirmes.",
+      "defaultCancelReason": "Cancelada por el proveedor",
+      "actions": {
+        "CONFIRMED": "Confirmar",
+        "IN_PROGRESS": "Iniciar",
+        "COMPLETED": "Completar",
+        "NO_SHOW": "No asistió",
+        "CANCEL": "Cancelar"
+      },
+      "confirm": {
+        "COMPLETED": {
+          "title": "¿Marcar el servicio como completado?",
+          "description": "Cierra la reserva y le avisa al cliente para que deje su reseña. Hazlo cuando el servicio esté hecho y pagado.",
+          "confirm": "Sí, completado"
+        },
+        "NO_SHOW": {
+          "title": "¿El cliente no se presentó?",
+          "description": "Cierra la reserva sin completarla. No se puede deshacer.",
+          "confirm": "Marcar como no asistió"
+        },
+        "CANCEL": {
+          "title": "¿Cancelar esta reserva?",
+          "description": "Le avisaremos al cliente.",
+          "confirm": "Cancelar reserva"
+        }
+      }
     }
   },
   "quotes": {

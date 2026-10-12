@@ -81,9 +81,11 @@ export const SEARCH_PRODUCT_FIELDS_FRAGMENT = gql`
   }
 `;
 
-/** Store (business catalog) product behind a `STORE_PRODUCT` hit. */
+/**
+ * Store (business catalog) product behind a `STORE_PRODUCT` hit. Materials,
+ * not savings: store products are new (decision D3).
+ */
 export const SEARCH_STORE_PRODUCT_FIELDS_FRAGMENT = gql`
-  ${SEARCH_ENVIRONMENTAL_IMPACT_FIELDS_FRAGMENT}
   ${SEARCH_SELLER_FIELDS_FRAGMENT}
   fragment SearchStoreProductFields on StoreProduct {
     id
@@ -94,8 +96,12 @@ export const SEARCH_STORE_PRODUCT_FIELDS_FRAGMENT = gql`
     warranty
     warrantyDuration
     isLiked
-    environmentalImpact {
-      ...SearchEnvironmentalImpactFields
+    materials {
+      id
+      materialTypeId
+      materialType
+      label
+      percentage
     }
     seller {
       ...SearchSellerFields

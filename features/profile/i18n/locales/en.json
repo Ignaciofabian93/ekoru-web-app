@@ -680,6 +680,7 @@
       "CONFIRMED": "Confirmed",
       "IN_PROGRESS": "In progress",
       "COMPLETED": "Completed",
+      "NO_SHOW": "No-show",
       "CANCELLED": "Cancelled"
     },
     "card": {
@@ -687,7 +688,10 @@
       "agreedPrice": "Agreed price",
       "cancel": "Cancel booking",
       "cancelReason": "Reason",
-      "unknownService": "Service unavailable"
+      "unknownService": "Service unavailable",
+      "payOnSite": "Paid on site, directly to the provider",
+      "client": "Client",
+      "clientNotes": "Client's notes"
     },
     "cancelDialog": {
       "title": "Cancel this booking?",
@@ -703,6 +707,40 @@
     "error": {
       "title": "We couldn't load your bookings",
       "description": "Something went wrong on our side. Try again in a moment."
+    },
+    "tabs": {
+      "label": "Booking type",
+      "made": "My bookings",
+      "received": "Received"
+    },
+    "received": {
+      "emptyTitle": "No bookings received yet",
+      "emptyDescription": "When someone books one of your services, it shows up here for you to confirm.",
+      "defaultCancelReason": "Cancelled by the provider",
+      "actions": {
+        "CONFIRMED": "Confirm",
+        "IN_PROGRESS": "Start",
+        "COMPLETED": "Complete",
+        "NO_SHOW": "No-show",
+        "CANCEL": "Cancel"
+      },
+      "confirm": {
+        "COMPLETED": {
+          "title": "Mark the service as completed?",
+          "description": "This closes the booking and asks the client for a review. Do it once the service is done and paid.",
+          "confirm": "Yes, completed"
+        },
+        "NO_SHOW": {
+          "title": "The client didn't show up?",
+          "description": "This closes the booking without completing it. It can't be undone.",
+          "confirm": "Mark as no-show"
+        },
+        "CANCEL": {
+          "title": "Cancel this booking?",
+          "description": "We'll let the client know.",
+          "confirm": "Cancel booking"
+        }
+      }
     }
   },
   "quotes": {

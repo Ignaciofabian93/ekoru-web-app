@@ -340,18 +340,6 @@ export const SEARCH = gql`
             label
             percentage
           }
-          environmentalImpact {
-            totalCo2SavingsKG
-            totalWaterSavingsLT
-            materialBreakdown {
-              materialType
-              materialTypeLabel
-              quantity
-              unit
-              co2SavingsKG
-              waterSavingsLT
-            }
-          }
           seller {
             id
             email

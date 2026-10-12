@@ -1,5 +1,5 @@
 import type { BusinessType, ProductCondition } from "@/types/enums";
-import type { EnvironmentalImpact } from "@/types/product";
+import type { EnvironmentalImpact, StoreProductMaterialComposition } from "@/types/product";
 import type { Seller } from "@/types/user";
 import type { FavoriteSource } from "@/hooks/useToggleFavorite";
 
@@ -45,7 +45,8 @@ export type StoreProductCardProduct = {
   stock?: number | null;
   isLowStock?: boolean | null;
   isLiked?: boolean | null;
-  environmentalImpact?: EnvironmentalImpact | null;
+  /** What it is made of. Store products show this, never savings (D3). */
+  materials?: StoreProductMaterialComposition[] | null;
   seller?: Seller | null;
   sellerId?: string | null;
 };
@@ -129,8 +130,10 @@ export interface CardBackHeaderProps {
 
 export interface CardBackBodyProps {
   itemType: ItemType;
-  /** Products (`MARKETPLACE` / `STORE`) — drives the impact panel. */
+  /** Marketplace products — drives the savings panel. */
   impact?: EnvironmentalImpact | null;
+  /** Store products — the material list they show instead of savings (D3). */
+  materials?: StoreProductMaterialComposition[] | null;
   /**
    * Everything else — services show their blurb here instead. Falls back to
    * the dictionary's "no description yet" copy when empty.

@@ -680,6 +680,7 @@
       "CONFIRMED": "Confirmée",
       "IN_PROGRESS": "En cours",
       "COMPLETED": "Terminée",
+      "NO_SHOW": "Absent",
       "CANCELLED": "Annulée"
     },
     "card": {
@@ -687,7 +688,10 @@
       "agreedPrice": "Prix convenu",
       "cancel": "Annuler la réservation",
       "cancelReason": "Motif",
-      "unknownService": "Service indisponible"
+      "unknownService": "Service indisponible",
+      "payOnSite": "Payé sur place, directement au prestataire",
+      "client": "Client",
+      "clientNotes": "Notes du client"
     },
     "cancelDialog": {
       "title": "Annuler cette réservation ?",
@@ -703,6 +707,40 @@
     "error": {
       "title": "Impossible de charger vos réservations",
       "description": "Un problème est survenu de notre côté. Réessayez dans un instant."
+    },
+    "tabs": {
+      "label": "Type de réservation",
+      "made": "Mes réservations",
+      "received": "Reçues"
+    },
+    "received": {
+      "emptyTitle": "Aucune réservation reçue pour le moment",
+      "emptyDescription": "Quand quelqu'un réserve l'un de vos services, il apparaît ici pour que vous le confirmiez.",
+      "defaultCancelReason": "Annulée par le prestataire",
+      "actions": {
+        "CONFIRMED": "Confirmer",
+        "IN_PROGRESS": "Commencer",
+        "COMPLETED": "Terminer",
+        "NO_SHOW": "Absent",
+        "CANCEL": "Annuler"
+      },
+      "confirm": {
+        "COMPLETED": {
+          "title": "Marquer le service comme terminé ?",
+          "description": "Cela clôt la réservation et invite le client à laisser un avis. Faites-le une fois le service rendu et payé.",
+          "confirm": "Oui, terminé"
+        },
+        "NO_SHOW": {
+          "title": "Le client ne s'est pas présenté ?",
+          "description": "Cela clôt la réservation sans la terminer. Action irréversible.",
+          "confirm": "Marquer comme absent"
+        },
+        "CANCEL": {
+          "title": "Annuler cette réservation ?",
+          "description": "Nous préviendrons le client.",
+          "confirm": "Annuler la réservation"
+        }
+      }
     }
   },
   "quotes": {
