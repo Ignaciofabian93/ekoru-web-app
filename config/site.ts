@@ -1,8 +1,21 @@
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from "@/constants/settings";
 
-/** Canonical production origin. Override per-environment with NEXT_PUBLIC_SITE_URL. */
+import { ENVIRONMENT } from "./environment";
+
+/** The app's own origin per deployment, like the API origins in `endpoints.ts`. */
+const ORIGINS: Record<string, string> = {
+  production: "https://app.ekoru.cl",
+  staging: "https://staging-app.ekoru.cl",
+};
+
+/**
+ * Canonical origin for metadata, hreflang, the sitemap and robots. It follows
+ * NEXT_PUBLIC_ENVIRONMENT because NEXT_PUBLIC_* values are fixed at build time
+ * and the Docker build only receives that one. NEXT_PUBLIC_SITE_URL still
+ * overrides it where the build can see it (`.env.local` in development).
+ */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://app.ekoru.cl"
+  process.env.NEXT_PUBLIC_SITE_URL ?? ORIGINS[ENVIRONMENT] ?? ORIGINS.production
 ).replace(/\/$/, "");
 
 export const SITE_NAME = "Ekoru";

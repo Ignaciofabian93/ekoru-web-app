@@ -14,7 +14,8 @@ export const onRequestError: Instrumentation.onRequestError = (err, request, con
       level: "error",
       source: "web-server",
       env: process.env.NEXT_PUBLIC_ENVIRONMENT ?? process.env.NODE_ENV,
-      release: process.env.APP_RELEASE ?? "dev",
+      // `pnpm start` exports the package version; APP_RELEASE can override it.
+      release: process.env.APP_RELEASE ?? process.env.npm_package_version ?? "dev",
       time: new Date().toISOString(),
       message: String(error?.message ?? err).slice(0, 500),
       digest: error?.digest,

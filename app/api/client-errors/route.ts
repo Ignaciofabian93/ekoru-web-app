@@ -39,7 +39,8 @@ export async function POST(request: Request) {
       level: "error",
       source: "web-client",
       env: process.env.NEXT_PUBLIC_ENVIRONMENT ?? process.env.NODE_ENV,
-      release: process.env.APP_RELEASE ?? "dev",
+      // `pnpm start` exports the package version; APP_RELEASE can override it.
+      release: process.env.APP_RELEASE ?? process.env.npm_package_version ?? "dev",
       time: new Date(now).toISOString(),
       message: clip(report.message, 500),
       digest: clip(report.digest, 100),
