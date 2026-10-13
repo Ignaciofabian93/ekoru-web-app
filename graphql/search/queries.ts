@@ -313,7 +313,6 @@ export const SEARCH = gql`
           likesCount
           saleCount
           viewCount
-          materialComposition
           recycledContent
           weight
           weightUnit

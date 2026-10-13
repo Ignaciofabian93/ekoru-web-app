@@ -64,7 +64,11 @@ export type AdminActivityLog = {
 
 export type Seller = {
   id: string;
-  email: string;
+  /**
+   * Null when the API hides it (USR-10): a person's email reaches only
+   * themselves, admins and the other side of a deal, order or booking.
+   */
+  email: string | null;
   // Auth-only fields; never returned to the web client.
   password?: string;
   sellerType: SellerType;

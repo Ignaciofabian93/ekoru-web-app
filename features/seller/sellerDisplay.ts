@@ -15,15 +15,16 @@ export function resolveSellerKind(sellerType: SellerType | undefined): SellerKin
 
 export function getSellerName(seller: Seller): string {
   const profile = seller.profile;
-  if (!profile) return seller.email;
+  if (!profile) return seller.email ?? "";
   if (profile.__typename === "PersonProfile") {
     return (
       profile.displayName ||
       [profile.firstName, profile.lastName].filter(Boolean).join(" ") ||
-      seller.email
+      seller.email ||
+      ""
     );
   }
-  return profile.businessName ?? seller.email;
+  return profile.businessName ?? seller.email ?? "";
 }
 
 export function getSellerAvatar(seller: Seller): string | undefined {

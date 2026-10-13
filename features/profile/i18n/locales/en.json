@@ -25,26 +25,6 @@
     "country": "Country"
   },
   "dashboard": {
-    "actionCenter": {
-      "title": "Needs your attention",
-      "subtitle": "A few things waiting on you",
-      "ordersToShip": "Orders to ship",
-      "ordersToShipDescription": "Buyers are waiting for these to leave",
-      "unreadMessages": "Unread messages",
-      "unreadMessagesDescription": "Replies you haven't read yet",
-      "exchangeProposals": "Exchange proposals",
-      "exchangeProposalsDescription": "Open swap offers on your items",
-      "viewAll": "View all",
-      "empty": "You're all caught up"
-    },
-    "activity": {
-      "title": "Last 30 days",
-      "subtitle": "Your recent activity at a glance",
-      "views": "Views",
-      "favorites": "Favorites",
-      "sales": "Sales",
-      "pointsEarned": "Points earned"
-    },
     "impact": {
       "title": "Your impact",
       "subtitle": "A quick look at what you've saved",

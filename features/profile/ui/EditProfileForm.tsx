@@ -115,7 +115,7 @@ export function EditProfileForm() {
             onToggle={toggleTag}
             max={maxTags}
             loading={tagsLoading}
-            getLabel={(tag) => tag.label ?? t(`editProfile.tags.options.${tag.id}`)}
+            getLabel={(tag) => t(`editProfile.tags.options.${tag.id}`)}
           />
         </SectionCard>
       )}

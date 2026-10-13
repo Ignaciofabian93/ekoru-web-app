@@ -17,13 +17,16 @@ const getEndpoints = () => {
         images: "https://staging-images.ekoru.cl",
       };
     default: {
-      const devBase = "https://api.ekoru.cl";
+      // Local development talks to a local gateway (its development mode
+      // reflects any origin back, which the deployed gateways refuse) and never
+      // to production. NEXT_PUBLIC_API_URL points it elsewhere when needed.
+      const devBase = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
       return {
         base: devBase,
         graphql: `${devBase}/graphql`,
         rest: `${devBase}/session`,
         // In dev the browser still hits the staging CDN; only the gateway is local.
-        images: "https://images.ekoru.cl",
+        images: "https://staging-images.ekoru.cl",
       };
     }
   }

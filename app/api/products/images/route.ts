@@ -83,3 +83,26 @@ export async function POST(req: Request) {
 
   return NextResponse.json(data, { status: gatewayRes.status });
 }
+
+// Releases listing images an edit dropped (GW-3). Body: `{ keys: string[] }`.
+// The gateway deletes only the caller's own keys that no listing still uses.
+export async function DELETE(req: Request) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  if (!token) {
+    return NextResponse.json({ message: "Not signed in" }, { status: 401 });
+  }
+
+  const body = (await req.json().catch(() => null)) as { keys?: unknown } | null;
+  if (!Array.isArray(body?.keys)) {
+    return NextResponse.json({ message: "keys must be a list" }, { status: 400 });
+  }
+
+  const gatewayRes = await fetch(`${GATEWAY_BASE_URL}/api/images/release`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ keys: body.keys }),
+  });
+  const data = (await gatewayRes.json().catch(() => ({}))) as Record<string, unknown>;
+  return NextResponse.json(data, { status: gatewayRes.status });
+}

@@ -67,6 +67,7 @@ export const BUSINESS_PROFILE_FIELDS_FRAGMENT = gql`
     serviceArea
     yearsOfExperience
     certifications
+    tags
     travelRadius
     businessHours
     createdAt

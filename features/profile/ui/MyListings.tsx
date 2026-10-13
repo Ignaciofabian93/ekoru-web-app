@@ -15,6 +15,7 @@ import { useMyServiceListings } from "../hooks/useMyServiceListings";
 import { useProductActions } from "../hooks/useProductActions";
 import { useStoreProductActions } from "../hooks/useStoreProductActions";
 import { useServiceActions } from "../hooks/useServiceActions";
+import { releaseDroppedImages } from "../utils/releaseDroppedImages";
 import { NAMESPACE } from "../i18n";
 import { DeleteProductDialog } from "./DeleteProductDialog";
 import { EditProductDialog } from "./EditProductDialog";
@@ -445,7 +446,9 @@ export function MyListings() {
           onClose={() => setEditTarget(null)}
           onSave={async (patch) => {
             const ok = await productActions.update(editing.item.id, patch);
-            if (ok) setEditTarget(null);
+            if (!ok) return;
+            releaseDroppedImages(editing.item.images, patch.images);
+            setEditTarget(null);
           }}
         />
       )}
@@ -458,7 +461,9 @@ export function MyListings() {
           onClose={() => setEditTarget(null)}
           onSave={async (patch) => {
             const ok = await storeActions.update(editing.item.id, patch);
-            if (ok) setEditTarget(null);
+            if (!ok) return;
+            releaseDroppedImages(editing.item.images, patch.images);
+            setEditTarget(null);
           }}
         />
       )}
@@ -471,7 +476,9 @@ export function MyListings() {
           onClose={() => setEditTarget(null)}
           onSave={async (patch) => {
             const ok = await serviceActions.update(editing.item.id, patch);
-            if (ok) setEditTarget(null);
+            if (!ok) return;
+            releaseDroppedImages(editing.item.images, patch.images);
+            setEditTarget(null);
           }}
         />
       )}

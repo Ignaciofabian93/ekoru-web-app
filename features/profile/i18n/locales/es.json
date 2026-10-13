@@ -25,26 +25,6 @@
     "country": "País"
   },
   "dashboard": {
-    "actionCenter": {
-      "title": "Requiere tu atención",
-      "subtitle": "Algunas cosas esperan por ti",
-      "ordersToShip": "Pedidos por enviar",
-      "ordersToShipDescription": "Los compradores están esperando",
-      "unreadMessages": "Mensajes sin leer",
-      "unreadMessagesDescription": "Respuestas pendientes de revisar",
-      "exchangeProposals": "Propuestas de intercambio",
-      "exchangeProposalsDescription": "Ofertas de intercambio abiertas",
-      "viewAll": "Ver todo",
-      "empty": "Estás al día"
-    },
-    "activity": {
-      "title": "Últimos 30 días",
-      "subtitle": "Tu actividad reciente",
-      "views": "Vistas",
-      "favorites": "Favoritos",
-      "sales": "Ventas",
-      "pointsEarned": "Puntos ganados"
-    },
     "impact": {
       "title": "Tu impacto",
       "subtitle": "Un vistazo a lo que has ahorrado",

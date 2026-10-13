@@ -248,8 +248,7 @@ export function useEditProfile() {
             input: {
               businessName: form.businessName,
               description: form.description,
-              // TODO: enable once UpdateBusinessProfileInput exposes `tags`.
-              // tags: form.tags,
+              tags: form.tags,
             },
           },
         });

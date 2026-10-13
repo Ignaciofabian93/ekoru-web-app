@@ -33,17 +33,26 @@ export interface SellerVisibility {
  * A business is a different case: it trades from a place, and buyers need that
  * address, so it is always shown regardless of the preference.
  *
- * Social links follow `showMySocials` for everyone. Preferences may be absent
- * (an older account, or a viewer the subgraph doesn't expose them to); the
- * private-by-default reading is used then, so a missing record never leaks.
+ * Social links follow `showMySocials` for everyone.
+ *
+ * The API enforces the same rules (USR-10): only the seller sees their own
+ * preferences, and a visitor gets the street and the social links only when
+ * they may be shown. So with no preferences (a visitor), what the API sent is
+ * the answer; with them (the seller looking at their own page), the switches
+ * decide, and the page previews what visitors see.
  */
 export function useSellerVisibility(seller: Seller | null | undefined): SellerVisibility {
   const isBusiness = useIsBusinessProfile(seller);
 
   return useMemo(() => {
     const preferences = seller?.preferences;
-    const showsAddress = isBusiness || preferences?.showMyAddress === true;
-    const showsSocials = preferences?.showMySocials === true;
+    const links = seller?.socialMediaLinks ?? {};
+    const showsAddress =
+      isBusiness ||
+      (preferences ? preferences.showMyAddress === true : Boolean(seller?.address));
+    const showsSocials = preferences
+      ? preferences.showMySocials === true
+      : Object.keys(links).length > 0;
 
     const locationLine = [
       seller?.country?.country,
@@ -53,7 +62,6 @@ export function useSellerVisibility(seller: Seller | null | undefined): SellerVi
       .filter(Boolean)
       .join(" · ");
 
-    const links = seller?.socialMediaLinks ?? {};
     const socials = showsSocials
       ? SOCIAL_LINKS.flatMap((field) => {
           const url = links[field.key]?.trim();

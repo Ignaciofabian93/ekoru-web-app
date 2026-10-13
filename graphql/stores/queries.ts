@@ -76,7 +76,6 @@ export const GET_STORE_PRODUCT_BY_ID = gql`
       likesCount
       saleCount
       viewCount
-      materialComposition
       recycledContent
       weight
       weightUnit
@@ -256,7 +255,6 @@ export const GET_STORE_PRODUCTS = gql`
         likesCount
         saleCount
         viewCount
-        materialComposition
         recycledContent
         weight
         weightUnit
