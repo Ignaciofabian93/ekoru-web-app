@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { FaInstagram, FaLinkedin } from "react-icons/fa6";
+import { CookiePreferencesButton } from "@/features/consent/ui/ConsentBanner";
 import { FooterLinkModal } from "./FooterLinkModal";
 import { NAMESPACE } from "./i18n";
 import type { FooterLinkKey, SocialLink } from "./types";
@@ -229,6 +230,10 @@ export function Footer() {
                 {t(`legal.${key}`)}
               </Link>
             ))}
+            <CookiePreferencesButton
+              label={t("legal.cookiePreferences")}
+              className="cursor-pointer text-sm text-white/60 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+            />
           </div>
         </div>
       </div>

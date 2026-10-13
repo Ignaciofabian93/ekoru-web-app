@@ -33,6 +33,20 @@ pipeline {
       }
     }
 
+    // Vitest unit and component tests (WEB-16). A failure stops the pipeline
+    // before anything is built or deployed.
+    stage('Test') {
+      agent {
+        docker {
+          image 'node:22-alpine'
+          args '-u root'
+        }
+      }
+      steps {
+        sh 'corepack enable && pnpm test'
+      }
+    }
+
     stage('Build') {
       agent {
         docker {

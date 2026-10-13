@@ -18,6 +18,7 @@ import Drawer from "@/components/Drawer/Drawer";
 import { ToastProvider } from "@/components/Feedback/Toast";
 import { ErrorListener } from "@/components/Feedback/ErrorListener";
 import { LocaleDetector } from "@/components/Locale";
+import { ConsentBanner } from "@/features/consent/ui/ConsentBanner";
 import {
   getDrawerDictionary,
   NAMESPACE as DRAWER_NAMESPACE,
@@ -182,6 +183,8 @@ export default async function RootLayout({
                 {children}
                 <Drawer />
               </DrawerProvider>
+              {/* Shows only once an optional cookie category exists (WEB-15). */}
+              <ConsentBanner />
             </DictionaryProvider>
           </DictionaryProvider>
         </ApolloWrapper>

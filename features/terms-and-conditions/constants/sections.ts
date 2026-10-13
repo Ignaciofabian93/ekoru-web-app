@@ -30,7 +30,13 @@ export const TERMS_SECTIONS: readonly TermsSection[] = [
     kind: "subsections",
     items: ["s51", "s52", "s53", "s54", "s55"],
   },
-  { key: "s6", kind: "prose" },
+  // The privacy notice (WEB-15): data, visibility, recipients, cookies,
+  // rights and retention.
+  {
+    key: "s6",
+    kind: "subsections",
+    items: ["s61", "s62", "s63", "s64", "s65", "s66"],
+  },
   { key: "s7", kind: "prose" },
   { key: "s8", kind: "prose" },
   { key: "s9", kind: "prose" },
