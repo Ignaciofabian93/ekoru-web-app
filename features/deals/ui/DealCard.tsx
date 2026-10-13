@@ -31,6 +31,7 @@ import { NAMESPACE } from "../i18n";
 import type { Deal, DealPerspective, DealProduct } from "../types";
 import { useDealActions } from "../hooks/useDealActions";
 import { useDealSettings } from "../hooks/useDealSettings";
+import { ContactSellerButton } from "@/features/chat/ui/ContactSellerButton";
 
 const STATUS_STYLE: Record<string, string> = {
   PROPOSED: "bg-amber-50 text-amber-700",
@@ -115,6 +116,8 @@ export function DealCard({
 
   // The other party: on my seller tab it's the buyer; on my buyer tab, the seller.
   const counterparty = perspective === "seller" ? deal.buyer : deal.seller;
+  const dealItem = deal.product ?? deal.requestedProduct;
+  const { t: tRoot } = useTranslation();
   const partyName = useDisplayName(counterparty);
   const partyImage = useProfileImage(counterparty);
   const partyInitials = useInitials(counterparty);
@@ -267,6 +270,22 @@ export function DealCard({
           {deal.sellerEvidenceUrl && (
             <Evidence url={deal.sellerEvidenceUrl} label={t("evidence.seller")} />
           )}
+        </div>
+      )}
+
+      {/* The thread about the seller's item: `product` for a sale,
+          `requestedProduct` for an exchange (WEB-22). */}
+      {dealItem && (
+        <div className="flex justify-end">
+          <ContactSellerButton
+            itemType="PRODUCT"
+            itemId={dealItem.id}
+            counterpartId={perspective === "seller" ? deal.buyerId : deal.sellerId}
+            label={tRoot("chatActions.message")}
+            variant="ghost"
+            size="sm"
+            fullWidth={false}
+          />
         </div>
       )}
 
@@ -437,8 +456,7 @@ const clock = {
 /** The current time, or null before the client clock has started. */
 function useNow(): number | null {
   return (
-    useSyncExternalStore(clock.subscribe, clock.snapshot, clock.serverSnapshot) ||
-    null
+    useSyncExternalStore(clock.subscribe, clock.snapshot, clock.serverSnapshot) || null
   );
 }
 

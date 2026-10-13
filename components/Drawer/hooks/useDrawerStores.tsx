@@ -43,20 +43,16 @@ export function useDrawerStores(enabled: boolean) {
   const lang = typeof params?.lang === "string" ? params.lang : "es";
   const language = lang.toUpperCase() as "ES" | "EN" | "FR";
 
-  const { data } = useQuery<{ getStoreCatalog: StoreCatalogItem[] }>(
-    GET_STORES_CATALOG,
-    {
-      variables: { language },
-      fetchPolicy: "cache-first",
-      skip: !enabled,
-    },
-  );
+  const { data } = useQuery<{ getStoreCatalog: StoreCatalogItem[] }>(GET_STORES_CATALOG, {
+    variables: { language },
+    fetchPolicy: "cache-first",
+    skip: !enabled,
+  });
 
   // Memoize the mapped result so the array reference is stable between renders.
   // mapCatalogToAccordion is only re-run when the raw API data actually changes.
   const items = useMemo<L1Item[]>(
-    () =>
-      data?.getStoreCatalog ? mapCatalogToAccordion(data.getStoreCatalog) : [],
+    () => (data?.getStoreCatalog ? mapCatalogToAccordion(data.getStoreCatalog) : []),
     [data],
   );
 

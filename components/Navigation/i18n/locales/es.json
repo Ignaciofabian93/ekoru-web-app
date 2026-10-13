@@ -30,7 +30,8 @@
     "support": "Soporte",
     "contact": "Contacto",
     "termsAndConditions": "Términos y Condiciones",
-    "aboutEkoru": "Sobre EKORU"
+    "aboutEkoru": "Sobre EKORU",
+    "messages": "Mensajes"
   },
   "a11y": {
     "headerLabel": "Encabezado del sitio",

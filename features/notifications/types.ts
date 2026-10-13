@@ -31,6 +31,7 @@ export type NotificationType =
   | "EVENT_REGISTRATION_RECEIVED"
   | "EVENT_REGISTRATION_CANCELLED"
   | "EVENT_CANCELLED"
+  | "MESSAGE_RECEIVED"
   | (string & {});
 
 export type NotificationPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";

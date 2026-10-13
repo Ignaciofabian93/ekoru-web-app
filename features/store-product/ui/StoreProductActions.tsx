@@ -11,6 +11,7 @@ import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { useIsInCart } from "@/store/useCartStore";
 import { useTranslation } from "@/i18n/context";
 import type { StoreProduct } from "@/types/product";
+import { ContactSellerButton } from "@/features/chat/ui/ContactSellerButton";
 import { NAMESPACE } from "../i18n";
 import { useShareProduct } from "@/hooks/useShareProduct";
 
@@ -37,6 +38,7 @@ function ActionNotice({
 
 export function StoreProductActions({ product }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  const { t: tRoot } = useTranslation();
   const { addStoreProduct } = useAddToCart();
   const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
@@ -80,6 +82,16 @@ export function StoreProductActions({ product }: Props) {
           leftIcon={inCart ? Check : ShoppingCart}
           text={inCart ? t("actions.added") : t("actions.addToCart")}
           onPress={handleAddToCart}
+        />
+      )}
+
+      {/* Questions about the product go through EKORU's chat (WEB-22). */}
+      {!isOwnProduct && (
+        <ContactSellerButton
+          itemType="STORE_PRODUCT"
+          itemId={product.id}
+          label={tRoot("chatActions.contactBusiness")}
+          variant={canPurchase ? "ghost" : "outline"}
         />
       )}
 

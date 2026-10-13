@@ -26,14 +26,11 @@ export function useDrawerBlogs(enabled: boolean) {
   const lang = typeof params?.lang === "string" ? params.lang : "es";
   const language = lang.toUpperCase() as "ES" | "EN" | "FR";
 
-  const { data } = useQuery<{ getBlogCatalog: BlogCatalogItem[] }>(
-    GET_BLOG_CATALOG,
-    {
-      variables: { language },
-      fetchPolicy: "cache-first",
-      skip: !enabled,
-    },
-  );
+  const { data } = useQuery<{ getBlogCatalog: BlogCatalogItem[] }>(GET_BLOG_CATALOG, {
+    variables: { language },
+    fetchPolicy: "cache-first",
+    skip: !enabled,
+  });
 
   const items = useMemo<L1Item[]>(
     () => (data?.getBlogCatalog ? mapCatalogToAccordion(data.getBlogCatalog) : []),

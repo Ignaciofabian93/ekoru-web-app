@@ -13,6 +13,7 @@ import {
   Leaf,
   Mail,
   MapPin,
+  MessageCircle,
   PackagePlus,
   Phone,
   Receipt,
@@ -192,6 +193,7 @@ export type ProfileMenuField =
   | "changePassword"
   | "orderHistory"
   | "sales"
+  | "messages"
   | "exchanges"
   | "favorites"
   | "environmentalImpact"
@@ -203,6 +205,7 @@ export const PROFILE_MENU_FIELDS: ProfileMenuField[] = [
   "changePassword",
   "orderHistory",
   "sales",
+  "messages",
   "exchanges",
   "favorites",
   "environmentalImpact",
@@ -255,6 +258,12 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         label: "account.sales",
         icon: Receipt,
         available: FEATURES.cart.available,
+      },
+      {
+        route: "/profile/messages",
+        label: "account.messages",
+        icon: MessageCircle,
+        available: true,
       },
       {
         route: "/profile/exchanges",

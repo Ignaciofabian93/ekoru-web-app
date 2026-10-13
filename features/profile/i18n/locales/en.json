@@ -133,7 +133,8 @@
     "settings": "Settings",
     "comingSoon": "Coming soon",
     "bookings": "My bookings",
-    "quotes": "My quotes"
+    "quotes": "My quotes",
+    "messages": "Messages"
   },
   "editProfile": {
     "screenTitle": "Edit Profile",

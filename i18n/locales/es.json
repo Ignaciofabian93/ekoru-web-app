@@ -245,5 +245,15 @@
     "privacy": "Más información",
     "accept": "Aceptar",
     "reject": "Rechazar"
+  },
+  "chatActions": {
+    "contactSeller": "Escribir al vendedor",
+    "contactBusiness": "Escribir a la tienda",
+    "contactProvider": "Escribir al proveedor",
+    "message": "Escribir",
+    "opening": "Abriendo…",
+    "startFailed": "No pudimos abrir la conversación.",
+    "navLabel": "Mensajes",
+    "navUnread": "Mensajes, {{count}} sin leer"
   }
 }

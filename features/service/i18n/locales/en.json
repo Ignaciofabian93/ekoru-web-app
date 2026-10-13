@@ -18,7 +18,6 @@
     "thumbnailAlt": "Thumbnail {{index}}"
   },
   "actions": {
-    "contactProvider": "Contact the provider",
     "viewProvider": "View provider",
     "save": "Save",
     "saved": "Saved",

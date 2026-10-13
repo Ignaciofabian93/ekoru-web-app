@@ -81,11 +81,7 @@ export function NotificationItem({
         >
           {notification.message}
         </Text>
-        <Text
-          variant="span"
-          size="xs"
-          className="mt-0.5 block text-foreground-tertiary"
-        >
+        <Text variant="span" size="xs" className="mt-0.5 block text-foreground-tertiary">
           {relativeTime(notification.createdAt, t, lang)}
         </Text>
       </span>

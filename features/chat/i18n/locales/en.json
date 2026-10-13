@@ -1,0 +1,53 @@
+{
+  "title": "Messages",
+  "subtitle": "Talk with buyers, sellers and providers without leaving EKORU.",
+  "inbox": "Conversations",
+  "empty": {
+    "title": "No conversations yet",
+    "description": "When you message a seller, or someone messages you about a listing, the conversation shows up here."
+  },
+  "select": "Pick a conversation to read it.",
+  "back": "Back to conversations",
+  "you": "You",
+  "roles": {
+    "BUYER": "You're interested",
+    "SELLER": "Your listing"
+  },
+  "itemUnavailable": "Listing unavailable",
+  "loadOlder": "Show earlier messages",
+  "loading": "Loading messages…",
+  "composer": {
+    "label": "Message",
+    "placeholder": "Write a message…",
+    "send": "Send",
+    "sending": "Sending…",
+    "hint": "Enter to send · Shift + Enter for a new line"
+  },
+  "contactLocked": "For your safety, emails, phone numbers and messaging links are hidden until you have an accepted exchange, a paid order or a booking together.",
+  "masked": "We hid contact details in this message.",
+  "blocked": {
+    "byYou": "You blocked this conversation. Neither of you can send messages.",
+    "byThem": "This conversation is blocked."
+  },
+  "actions": {
+    "block": "Block",
+    "unblock": "Unblock",
+    "report": "Report",
+    "reportConfirm": "Report this message? The EKORU team will review it.",
+    "reportYes": "Yes, report",
+    "cancel": "Cancel",
+    "blockConfirm": "Block this conversation? Neither of you can send messages until you unblock it.",
+    "blockYes": "Yes, block"
+  },
+  "feedback": {
+    "reported": "Message reported. Thanks for letting us know.",
+    "blocked": "Conversation blocked.",
+    "unblocked": "Conversation unblocked.",
+    "sendFailed": "We couldn't send the message.",
+    "loadFailed": "We couldn't load the conversation."
+  },
+  "a11y": {
+    "unread": "{{count}} unread",
+    "thread": "Conversation with {{name}}"
+  }
+}

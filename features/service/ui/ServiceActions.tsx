@@ -1,21 +1,10 @@
 "use client";
-import {
-  CalendarPlus,
-  Check,
-  FileText,
-  Heart,
-  Phone,
-  Share2,
-  UserRound,
-} from "lucide-react";
-import Link from "next/link";
+import { CalendarPlus, Check, FileText, Heart, Share2, UserRound } from "lucide-react";
 import { useState } from "react";
-
-import clsx from "clsx";
 
 import { Button } from "@/components/Primitives/Button";
 import { FEATURES } from "@/constants/features";
-import { buttonClass, buttonIconSize } from "@/design/button";
+import { buttonIconSize } from "@/design/button";
 import { useIsOwnProduct } from "@/hooks/useIsOwnProduct";
 import { useShareProduct } from "@/hooks/useShareProduct";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
@@ -23,6 +12,7 @@ import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
 import type { ServiceDetail } from "../types";
+import { ContactSellerButton } from "@/features/chat/ui/ContactSellerButton";
 import { BookServiceDialog } from "./BookServiceDialog";
 import { RequestQuoteDialog } from "./RequestQuoteDialog";
 
@@ -31,11 +21,7 @@ interface Props {
   service: ServiceDetail;
 }
 
-/** Button looks for the anchors that stand in for one. */
-const primaryLinkClass = clsx(buttonClass.primary.md, "gap-2");
-const outlineLinkClass = clsx(buttonClass.outline.md, "gap-2");
-
-export function ServiceActions({ lang, service }: Props) {
+export function ServiceActions({ service }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const { toggleFavorite } = useToggleFavorite();
   const isOwnService = useIsOwnProduct(service.sellerId);
@@ -59,13 +45,11 @@ export function ServiceActions({ lang, service }: Props) {
   const canBook = !quoteOnly && FEATURES.serviceBooking.available;
   const canRequestQuote = FEATURES.serviceQuotes.available;
 
-  // Contacting the provider directly skips EKORU: no booking, no points, no
-  // record. So when the service can be booked, booking is the main action and
-  // the contact route steps back to a secondary one. Without booking it stays
-  // primary: a published phone number, or else the provider's page.
-  const phone = service.seller?.phone;
-  const providerHref = `/${lang}/seller/${service.sellerId}`;
-  const contactLinkClass = clsx(canBook ? outlineLinkClass : primaryLinkClass, "w-full");
+  // The provider is reached through EKORU's chat (WEB-22), never a phone
+  // number: their contact details stay private until there is a booking
+  // (USR-14), so the conversation happens where it can turn into one. When the
+  // service can be booked, booking stays the main action.
+  const { t: tRoot } = useTranslation();
 
   return (
     <div className="flex flex-col gap-2.5">
@@ -87,20 +71,12 @@ export function ServiceActions({ lang, service }: Props) {
             />
           )}
 
-          {/* The contact route is a link, not a button — it gets a button's
-              footprint from the same design module so it sits flush with the
-              CTAs around it. */}
-          {phone ? (
-            <a href={`tel:${phone}`} className={contactLinkClass}>
-              <Phone size={buttonIconSize.md} strokeWidth={2} aria-hidden />
-              {t("actions.contactProvider")}
-            </a>
-          ) : (
-            <Link href={providerHref} className={contactLinkClass}>
-              <UserRound size={buttonIconSize.md} strokeWidth={2} aria-hidden />
-              {t("actions.viewProvider")}
-            </Link>
-          )}
+          <ContactSellerButton
+            itemType="SERVICE"
+            itemId={Number(service.id)}
+            label={tRoot("chatActions.contactProvider")}
+            variant={canBook ? "outline" : "primary"}
+          />
 
           {canRequestQuote && (
             <Button

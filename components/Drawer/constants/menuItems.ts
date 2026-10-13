@@ -27,6 +27,7 @@ export type MenuField =
   | "profile"
   | "notifications"
   | "deals"
+  | "messages"
   | "settings"
   | "orders"
   | "sales"
@@ -38,6 +39,7 @@ export const MENU_FIELDS: MenuField[] = [
   "profile",
   "notifications",
   "deals",
+  "messages",
   "settings",
   "orders",
   "sales",
@@ -85,6 +87,12 @@ export const ACCOUNT_MENU_SECTIONS: DrawerMenuSection[] = [
         available: true,
       },
       { route: "/deals", label: "deals", icon: Handshake, available: true },
+      {
+        route: "/profile/messages",
+        label: "messages",
+        icon: MessageCircle,
+        available: true,
+      },
       {
         route: "/profile/settings",
         label: "settings",

@@ -80,9 +80,7 @@ export default function SubHeader() {
                   <Icon
                     size={16}
                     aria-hidden
-                    className={
-                      isActive ? "text-on-primary" : "text-foreground-secondary"
-                    }
+                    className={isActive ? "text-on-primary" : "text-foreground-secondary"}
                     strokeWidth={2}
                   />
                 </span>

@@ -44,6 +44,7 @@ import { useDrawerServices } from "./hooks/useDrawerServices";
 import { useDrawerStores } from "./hooks/useDrawerStores";
 import { useDealsBadge } from "@/features/deals/hooks/useDealsBadge";
 import { useNotificationsBadge } from "@/features/notifications/hooks/useNotificationsBadge";
+import { useUnreadConversations } from "@/features/chat/hooks/useUnreadConversations";
 import Image from "next/image";
 import { ComingSoonChip } from "../Primitives";
 
@@ -65,6 +66,7 @@ function MenuSection({
   onNavigate,
   dealsCount,
   notificationCount,
+  messagesCount,
 }: {
   section: DrawerMenuSection;
   onNavigate: (route: string) => void;
@@ -72,6 +74,8 @@ function MenuSection({
   dealsCount?: number;
   /** Unread notifications, for the row that shows it. */
   notificationCount?: number;
+  /** Conversations with unread messages (WEB-22). */
+  messagesCount?: number;
 }) {
   const { t } = useTranslation(NAMESPACE);
 
@@ -95,7 +99,9 @@ function MenuSection({
                 ? dealsCount
                 : item.label === "notifications"
                   ? notificationCount
-                  : undefined
+                  : item.label === "messages"
+                    ? messagesCount
+                    : undefined
             }
           />
         ))}
@@ -134,6 +140,7 @@ export default function Drawer() {
   // Deferred until first open for the same reason as the deals count: the
   // drawer is in the layout tree on every page.
   const notificationCount = useNotificationsBadge(hasOpened);
+  const messagesCount = useUnreadConversations(hasOpened);
 
   const accordionSections = useMemo((): AccordionSectionDef[] => {
     // Empty rows carry no route, so handleNavigate ignores them. The copy comes
@@ -309,6 +316,7 @@ export default function Drawer() {
                 onNavigate={handleNavigate}
                 dealsCount={dealsCount}
                 notificationCount={notificationCount}
+                messagesCount={messagesCount}
               />
             ))}
 

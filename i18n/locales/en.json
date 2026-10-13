@@ -245,5 +245,15 @@
     "privacy": "Learn more",
     "accept": "Accept",
     "reject": "Reject"
+  },
+  "chatActions": {
+    "contactSeller": "Message the seller",
+    "contactBusiness": "Message the store",
+    "contactProvider": "Message the provider",
+    "message": "Message",
+    "opening": "Opening…",
+    "startFailed": "We couldn't open the conversation.",
+    "navLabel": "Messages",
+    "navUnread": "Messages, {{count}} unread"
   }
 }

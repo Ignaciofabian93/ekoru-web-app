@@ -9,6 +9,7 @@ import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { useToggleFavorite } from "@/hooks/useToggleFavorite";
 import { useTranslation } from "@/i18n/context";
 import type { Product } from "@/types/product";
+import { ContactSellerButton } from "@/features/chat/ui/ContactSellerButton";
 import { NAMESPACE } from "../i18n";
 import { useShareProduct } from "../../../hooks/useShareProduct";
 
@@ -24,6 +25,7 @@ interface Props {
 
 export function ProductActions({ product, onProposeExchange }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  const { t: tRoot } = useTranslation();
   const { toggleFavorite } = useToggleFavorite();
   const isOwnProduct = useIsOwnProduct(product.sellerId);
   // Both CTAs are seller-to-seller actions, so both need an account. Anonymous
@@ -92,6 +94,15 @@ export function ProductActions({ product, onProposeExchange }: Props) {
               onPress={handleProposeExchange}
             />
           )}
+
+          {/* Questions go through EKORU's chat: the seller's phone and email
+              stay private until a deal is accepted (USR-10, WEB-22). */}
+          <ContactSellerButton
+            itemType="PRODUCT"
+            itemId={product.id}
+            label={tRoot("chatActions.contactSeller")}
+            variant="ghost"
+          />
 
           <p className="text-center text-xs text-foreground-tertiary">
             {t("actions.cashHint")}

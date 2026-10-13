@@ -32,19 +32,24 @@ const ROUTE_BY_TYPE: Partial<Record<NotificationType, string>> = {
   EVENT_REGISTRATION_RECEIVED: "/community",
   EVENT_REGISTRATION_CANCELLED: "/community",
   EVENT_CANCELLED: "/community",
+
+  MESSAGE_RECEIVED: "/profile/messages",
 };
 
 export function notificationHref(
-  notification: Pick<AppNotification, "type">,
+  notification: Pick<AppNotification, "type" | "relatedId">,
   lang: string,
 ): string {
+  // A message opens its own thread: transactions sends "conversation:<id>".
+  if (notification.type === "MESSAGE_RECEIVED") {
+    const id = notification.relatedId?.replace(/^conversation:/, "");
+    return `/${lang}/profile/messages${id ? `?c=${id}` : ""}`;
+  }
   const route = ROUTE_BY_TYPE[notification.type] ?? "/notifications";
   return `/${lang}${route}`;
 }
 
 /** True when following the notification would just reload the current list. */
-export function isSelfLink(
-  notification: Pick<AppNotification, "type">,
-): boolean {
+export function isSelfLink(notification: Pick<AppNotification, "type">): boolean {
   return !(notification.type in ROUTE_BY_TYPE);
 }

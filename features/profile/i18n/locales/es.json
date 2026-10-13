@@ -133,7 +133,8 @@
     "settings": "Configuración",
     "comingSoon": "Próximamente",
     "bookings": "Mis reservas",
-    "quotes": "Mis cotizaciones"
+    "quotes": "Mis cotizaciones",
+    "messages": "Mensajes"
   },
   "editProfile": {
     "screenTitle": "Editar Perfil",

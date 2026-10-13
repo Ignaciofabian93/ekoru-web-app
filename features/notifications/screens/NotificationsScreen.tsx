@@ -30,14 +30,8 @@ export function NotificationsScreen() {
   const [filter, setFilter] = useState<Filter>("all");
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
 
-  const {
-    notifications,
-    pageInfo,
-    loading,
-    markRead,
-    markAllRead,
-    markingAll,
-  } = useNotifications({ pageSize, onlyUnread: filter === "unread" });
+  const { notifications, pageInfo, loading, markRead, markAllRead, markingAll } =
+    useNotifications({ pageSize, onlyUnread: filter === "unread" });
 
   const hasUnread = notifications.some((n) => !n.isRead);
   const isEmpty = !loading && notifications.length === 0;
@@ -118,16 +112,8 @@ export function NotificationsScreen() {
           <Text variant="p" size="base" weight="bold">
             {t(filter === "unread" ? "emptyUnread.title" : "empty.title")}
           </Text>
-          <Text
-            variant="p"
-            size="sm"
-            className="max-w-sm text-foreground-secondary"
-          >
-            {t(
-              filter === "unread"
-                ? "emptyUnread.description"
-                : "empty.description",
-            )}
+          <Text variant="p" size="sm" className="max-w-sm text-foreground-secondary">
+            {t(filter === "unread" ? "emptyUnread.description" : "empty.description")}
           </Text>
         </div>
       )}

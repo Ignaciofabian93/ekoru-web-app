@@ -1,0 +1,53 @@
+{
+  "title": "Messages",
+  "subtitle": "Discutez avec acheteurs, vendeurs et prestataires sans quitter EKORU.",
+  "inbox": "Conversations",
+  "empty": {
+    "title": "Aucune conversation pour l'instant",
+    "description": "Quand vous écrivez à un vendeur, ou que quelqu'un vous écrit au sujet d'une annonce, la conversation apparaît ici."
+  },
+  "select": "Choisissez une conversation pour la lire.",
+  "back": "Retour aux conversations",
+  "you": "Vous",
+  "roles": {
+    "BUYER": "Vous êtes intéressé",
+    "SELLER": "Votre annonce"
+  },
+  "itemUnavailable": "Annonce indisponible",
+  "loadOlder": "Voir les messages précédents",
+  "loading": "Chargement des messages…",
+  "composer": {
+    "label": "Message",
+    "placeholder": "Écrivez un message…",
+    "send": "Envoyer",
+    "sending": "Envoi…",
+    "hint": "Entrée pour envoyer · Maj + Entrée pour une nouvelle ligne"
+  },
+  "contactLocked": "Pour votre sécurité, les e-mails, numéros de téléphone et liens de messagerie sont masqués tant qu'il n'existe pas entre vous d'échange accepté, de commande payée ou de réservation.",
+  "masked": "Nous avons masqué des coordonnées dans ce message.",
+  "blocked": {
+    "byYou": "Vous avez bloqué cette conversation. Aucun de vous deux ne peut envoyer de messages.",
+    "byThem": "Cette conversation est bloquée."
+  },
+  "actions": {
+    "block": "Bloquer",
+    "unblock": "Débloquer",
+    "report": "Signaler",
+    "reportConfirm": "Signaler ce message ? L'équipe EKORU l'examinera.",
+    "reportYes": "Oui, signaler",
+    "cancel": "Annuler",
+    "blockConfirm": "Bloquer cette conversation ? Aucun de vous deux ne pourra envoyer de messages tant que vous ne la débloquez pas.",
+    "blockYes": "Oui, bloquer"
+  },
+  "feedback": {
+    "reported": "Message signalé. Merci de nous avoir prévenus.",
+    "blocked": "Conversation bloquée.",
+    "unblocked": "Conversation débloquée.",
+    "sendFailed": "Impossible d'envoyer le message.",
+    "loadFailed": "Impossible de charger la conversation."
+  },
+  "a11y": {
+    "unread": "{{count}} non lus",
+    "thread": "Conversation avec {{name}}"
+  }
+}

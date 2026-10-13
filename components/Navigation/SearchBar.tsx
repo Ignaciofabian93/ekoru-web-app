@@ -61,7 +61,12 @@ export function SearchBar({
             "rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-primary",
           )}
         >
-          <Search size={20} className="text-input-placeholder" strokeWidth={2} aria-hidden />
+          <Search
+            size={20}
+            className="text-input-placeholder"
+            strokeWidth={2}
+            aria-hidden
+          />
         </button>
         <input
           id={inputId}

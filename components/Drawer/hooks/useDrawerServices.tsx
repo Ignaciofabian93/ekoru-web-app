@@ -50,8 +50,7 @@ export function useDrawerServices(enabled: boolean) {
   );
 
   const items = useMemo<L1Item[]>(
-    () =>
-      data?.getServiceCatalog ? mapCatalogToAccordion(data.getServiceCatalog) : [],
+    () => (data?.getServiceCatalog ? mapCatalogToAccordion(data.getServiceCatalog) : []),
 
     [data],
   );

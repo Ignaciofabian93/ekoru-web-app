@@ -32,6 +32,7 @@ import {
   type ReceivedBooking,
   type ServiceBooking,
 } from "../hooks/useServiceRequests";
+import { ContactSellerButton } from "@/features/chat/ui/ContactSellerButton";
 
 const STATUS_TONE: Record<BookingStatus, string> = {
   PENDING: "bg-warning/10 text-warning",
@@ -106,7 +107,10 @@ function BookingCard({
         <div className="flex flex-col gap-1">
           <Title level="h3" size="h6" weight="semibold">
             {booking.service ? (
-              <Link href={`/${lang}/service/${booking.service.id}`} className="hover:underline">
+              <Link
+                href={`/${lang}/service/${booking.service.id}`}
+                className="hover:underline"
+              >
                 {booking.service.name}
               </Link>
             ) : (
@@ -178,6 +182,7 @@ function ClientLine({ client }: { client: ReceivedBooking["client"] }) {
 
 function MadeTab({ lang }: { lang: string }) {
   const { t } = useTranslation(NAMESPACE);
+  const { t: tRoot } = useTranslation();
   const { bookings, loading, error, cancel, cancelling } = useMyBookings();
   const [toCancel, setToCancel] = useState<string | null>(null);
 
@@ -211,14 +216,25 @@ function MadeTab({ lang }: { lang: string }) {
           booking={booking}
           lang={lang}
           actions={
-            CANCELLABLE.includes(booking.status) && (
-              <Button
-                text={t("bookings.card.cancel")}
-                variant="outline"
+            <>
+              <ContactSellerButton
+                itemType="SERVICE"
+                itemId={booking.serviceId}
+                counterpartId={booking.providerId}
+                label={tRoot("chatActions.message")}
+                variant="ghost"
                 size="sm"
-                onClick={() => setToCancel(booking.id)}
+                fullWidth={false}
               />
-            )
+              {CANCELLABLE.includes(booking.status) && (
+                <Button
+                  text={t("bookings.card.cancel")}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setToCancel(booking.id)}
+                />
+              )}
+            </>
           }
         />
       ))}
@@ -251,8 +267,15 @@ const MOVE_ICON: Record<ProviderMove, typeof Play> = {
   NO_SHOW: UserX,
 };
 
-function ReceivedTab({ lang, received }: { lang: string; received: ReturnType<typeof useProviderBookings> }) {
+function ReceivedTab({
+  lang,
+  received,
+}: {
+  lang: string;
+  received: ReturnType<typeof useProviderBookings>;
+}) {
   const { t } = useTranslation(NAMESPACE);
+  const { t: tRoot } = useTranslation();
   const { bookings, loading, error, move, cancel, busy } = received;
   const [pending, setPending] = useState<Pending | null>(null);
 
@@ -299,13 +322,28 @@ function ReceivedTab({ lang, received }: { lang: string; received: ReturnType<ty
             extra={<ClientLine client={booking.client} />}
             actions={
               <>
+                <ContactSellerButton
+                  itemType="SERVICE"
+                  itemId={booking.serviceId}
+                  counterpartId={booking.clientId}
+                  label={tRoot("chatActions.message")}
+                  variant="ghost"
+                  size="sm"
+                  fullWidth={false}
+                />
                 {moves.map((to) => (
                   <Button
                     key={to}
                     text={t(`bookings.received.actions.${to}`)}
                     leftIcon={MOVE_ICON[to]}
                     size="sm"
-                    variant={to === "NO_SHOW" ? "ghost" : to === "IN_PROGRESS" ? "outline" : "primary"}
+                    variant={
+                      to === "NO_SHOW"
+                        ? "ghost"
+                        : to === "IN_PROGRESS"
+                          ? "outline"
+                          : "primary"
+                    }
                     disabled={busy}
                     onClick={() =>
                       to === "COMPLETED" || to === "NO_SHOW"
@@ -334,12 +372,22 @@ function ReceivedTab({ lang, received }: { lang: string; received: ReturnType<ty
         onClose={() => setPending(null)}
         onConfirm={() => void confirmPending()}
         title={pending ? t(`bookings.received.confirm.${pending.action}.title`) : ""}
-        description={pending ? t(`bookings.received.confirm.${pending.action}.description`) : ""}
-        confirmLabel={pending ? t(`bookings.received.confirm.${pending.action}.confirm`) : ""}
+        description={
+          pending ? t(`bookings.received.confirm.${pending.action}.description`) : ""
+        }
+        confirmLabel={
+          pending ? t(`bookings.received.confirm.${pending.action}.confirm`) : ""
+        }
         cancelLabel={t("bookings.cancelDialog.cancel")}
         loading={busy}
         tone={pending?.action === "COMPLETED" ? "primary" : "danger"}
-        icon={pending?.action === "COMPLETED" ? CheckCircle2 : pending?.action === "NO_SHOW" ? UserX : CalendarX}
+        icon={
+          pending?.action === "COMPLETED"
+            ? CheckCircle2
+            : pending?.action === "NO_SHOW"
+              ? UserX
+              : CalendarX
+        }
       />
     </div>
   );
@@ -381,7 +429,11 @@ export function BookingsList() {
         ))}
       </div>
 
-      {tab === "made" ? <MadeTab lang={lang} /> : <ReceivedTab lang={lang} received={received} />}
+      {tab === "made" ? (
+        <MadeTab lang={lang} />
+      ) : (
+        <ReceivedTab lang={lang} received={received} />
+      )}
     </div>
   );
 }

@@ -12,6 +12,7 @@ import { NotificationBanner } from "../Patterns/NotificationBanner";
 import { SearchBar } from "./SearchBar";
 import MenuButton from "./MenuButton";
 import { NotificationBell } from "@/features/notifications/ui/NotificationBell";
+import { MessagesNavButton } from "@/features/chat/ui/MessagesNavButton";
 import { FEATURES } from "@/constants/features";
 import { NAMESPACE } from "./i18n";
 
@@ -52,7 +53,8 @@ export function NavBar() {
               anchors to the navbar's own right edge instead. */}
           <div className="relative flex items-center justify-end gap-3">
             <LanguageSwitcher />
-            {/* Renders nothing for guests, so the row collapses cleanly. */}
+            {/* Both render nothing for guests, so the row collapses cleanly. */}
+            <MessagesNavButton />
             <NotificationBell />
             {FEATURES.cart.available && (
               <ShoppingCartButton

@@ -1,0 +1,53 @@
+{
+  "title": "Mensajes",
+  "subtitle": "Conversa con compradores, vendedores y proveedores sin salir de EKORU.",
+  "inbox": "Conversaciones",
+  "empty": {
+    "title": "Aún no tienes conversaciones",
+    "description": "Cuando escribas a un vendedor o alguien te escriba por una publicación, la conversación aparecerá aquí."
+  },
+  "select": "Elige una conversación para leerla.",
+  "back": "Volver a las conversaciones",
+  "you": "Tú",
+  "roles": {
+    "BUYER": "Te interesa",
+    "SELLER": "Tu publicación"
+  },
+  "itemUnavailable": "Publicación no disponible",
+  "loadOlder": "Ver mensajes anteriores",
+  "loading": "Cargando mensajes…",
+  "composer": {
+    "label": "Mensaje",
+    "placeholder": "Escribe un mensaje…",
+    "send": "Enviar",
+    "sending": "Enviando…",
+    "hint": "Enter para enviar · Shift + Enter para una línea nueva"
+  },
+  "contactLocked": "Por tu seguridad, los correos, teléfonos y enlaces de mensajería se ocultan hasta que exista un intercambio aceptado, un pedido pagado o una reserva entre ustedes.",
+  "masked": "Ocultamos datos de contacto de este mensaje.",
+  "blocked": {
+    "byYou": "Bloqueaste esta conversación. Ninguno de los dos puede enviar mensajes.",
+    "byThem": "Esta conversación está bloqueada."
+  },
+  "actions": {
+    "block": "Bloquear",
+    "unblock": "Desbloquear",
+    "report": "Reportar",
+    "reportConfirm": "¿Reportar este mensaje? El equipo de EKORU lo revisará.",
+    "reportYes": "Sí, reportar",
+    "cancel": "Cancelar",
+    "blockConfirm": "¿Bloquear la conversación? Ninguno de los dos podrá enviar mensajes hasta que la desbloquees.",
+    "blockYes": "Sí, bloquear"
+  },
+  "feedback": {
+    "reported": "Mensaje reportado. Gracias por avisarnos.",
+    "blocked": "Conversación bloqueada.",
+    "unblocked": "Conversación desbloqueada.",
+    "sendFailed": "No pudimos enviar el mensaje.",
+    "loadFailed": "No pudimos cargar la conversación."
+  },
+  "a11y": {
+    "unread": "{{count}} sin leer",
+    "thread": "Conversación con {{name}}"
+  }
+}

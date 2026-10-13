@@ -18,7 +18,6 @@
     "thumbnailAlt": "Miniatura {{index}}"
   },
   "actions": {
-    "contactProvider": "Contactar al prestador",
     "viewProvider": "Ver prestador",
     "save": "Guardar",
     "saved": "Guardado",

@@ -27,6 +27,7 @@ import {
 export type DropdownField =
   | "myProfile"
   | "deals"
+  | "messages"
   | "recycle"
   | "publish"
   | "notifications"
@@ -62,6 +63,12 @@ export const DROPDOWN_ACCOUNT_SECTION: DropdownMenuSection = {
       available: true,
     },
     { route: "/deals", label: "dropdown.deals", icon: Handshake, available: true },
+    {
+      route: "/profile/messages",
+      label: "dropdown.messages",
+      icon: MessageCircle,
+      available: true,
+    },
     { route: "/recycle", label: "dropdown.recycle", icon: Recycle, available: true },
     {
       route: "/publish",
