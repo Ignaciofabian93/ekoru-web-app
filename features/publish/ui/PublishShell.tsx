@@ -1,4 +1,5 @@
 "use client";
+import { LocationNotice } from "@/components/Feedback/LocationNotice";
 import { PageLayout } from "@/components/Layout";
 import { Title } from "@/components/Primitives/Title";
 import { useTranslation } from "@/i18n/context";
@@ -16,6 +17,8 @@ export function PublishShell({ children }: { children: React.ReactNode }) {
         <Title level="h1" size="h3" weight="semibold" color="primary">
           {t("page.title")}
         </Title>
+        {/* Before they list anything: without a location it won't be found. */}
+        <LocationNotice />
         {children}
       </section>
     </PageLayout>

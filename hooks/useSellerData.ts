@@ -12,6 +12,21 @@ export const useIsAuthenticated = (seller: SellerArg) =>
 
 export const useSeller = (seller: SellerArg) => seller ?? null;
 
+/**
+ * Whether the seller filled in their whole location: country, region, city and
+ * county. Search scopes every query to the visitor's country and indexes an
+ * item under its seller's country, so without one the seller's listings exist
+ * but are never found. The session carries the location as objects; the ids
+ * are the fallback for a seller object patched right after an edit.
+ */
+export const useHasCompleteLocation = (seller: SellerArg) =>
+  Boolean(
+    (seller?.country?.id ?? seller?.countryId) &&
+      (seller?.region?.id ?? seller?.regionId) &&
+      (seller?.city?.id ?? seller?.cityId) &&
+      (seller?.county?.id ?? seller?.countyId),
+  );
+
 export const useSellerType = (seller: SellerArg) => seller?.sellerType ?? null;
 
 export const useIsSellerType = (seller: SellerArg, type: SellerType) =>

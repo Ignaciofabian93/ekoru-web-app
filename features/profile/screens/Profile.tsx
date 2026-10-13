@@ -16,6 +16,7 @@ import { ImpactSnapshot } from "../ui/ImpactSnapshot";
 import { MyListings } from "../ui/MyListings";
 import { Logout } from "../ui/Logout";
 import { Grid, PageLayout, Stack } from "@/components/Layout";
+import { LocationNotice } from "@/components/Feedback/LocationNotice";
 
 export async function ProfileScreen({ lang }: { lang: SupportedLanguage }) {
   // MyListings reuses MarketplaceCard, which translates from the marketplace
@@ -39,6 +40,8 @@ export async function ProfileScreen({ lang }: { lang: SupportedLanguage }) {
       <PageLayout hero={<ProfileHeader />} width="default">
         <Grid cols={1} lg={5} gap={4}>
           <Stack gap={4} className="lg:col-span-3">
+            {/* Their listings stay out of search until the location is filled in. */}
+            <LocationNotice />
             <MyListings />
           </Stack>
           <Stack as="aside" gap={4} className="lg:col-span-2">

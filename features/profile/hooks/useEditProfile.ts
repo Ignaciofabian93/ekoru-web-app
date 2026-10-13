@@ -20,6 +20,7 @@ import useAuthStore, {
   useSeller,
 } from "@/store/useAuthStore";
 import type { City, Country, County, Region } from "@/types/location";
+import type { Seller } from "@/types/user";
 import {
   findPhoneCodeByCountryName,
   PHONE_CODES,
@@ -81,10 +82,13 @@ export function useEditProfile() {
       phoneLocal: local,
       website: seller?.website ?? "",
       socials: socialsFromLinks(seller?.socialMediaLinks),
-      countryId: seller?.countryId ?? null,
-      regionId: seller?.regionId ?? null,
-      cityId: seller?.cityId ?? null,
-      countyId: seller?.countyId ?? null,
+      // The session carries the location as objects (`country { id }`), not
+      // ids, so reading only the ids left the pickers empty for every seller
+      // who had already saved a location.
+      countryId: seller?.country?.id ?? seller?.countryId ?? null,
+      regionId: seller?.region?.id ?? seller?.regionId ?? null,
+      cityId: seller?.city?.id ?? seller?.cityId ?? null,
+      countyId: seller?.county?.id ?? seller?.countyId ?? null,
       address: seller?.address ?? "",
     };
   });
@@ -189,7 +193,9 @@ export function useEditProfile() {
   }, []);
 
   // ── Mutations ────────────────────────────────────────────────────
-  const [updateSeller, { loading: sellerLoading }] = useMutation(UPDATE_SELLER);
+  const [updateSeller, { loading: sellerLoading }] = useMutation<{ updateSeller: Seller }>(
+    UPDATE_SELLER,
+  );
   const [updatePersonProfile, { loading: personLoading }] =
     useMutation(UPDATE_PERSON_PROFILE);
   const [updateBusinessProfile, { loading: businessLoading }] = useMutation(
@@ -226,7 +232,15 @@ export function useEditProfile() {
         countyId: form.countyId ?? undefined,
       };
 
-      await updateSeller({ variables: { input: sellerInput } });
+      const { data: updated } = await updateSeller({ variables: { input: sellerInput } });
+      // The saved location as objects, so whatever reads `seller.country`
+      // (the location notice, the details card) updates without a reload.
+      const savedLocation = {
+        country: updated?.updateSeller?.country ?? seller.country,
+        region: updated?.updateSeller?.region ?? seller.region,
+        city: updated?.updateSeller?.city ?? seller.city,
+        county: updated?.updateSeller?.county ?? seller.county,
+      };
 
       if (isBusiness && businessProfile) {
         await updateBusinessProfile({
@@ -264,6 +278,7 @@ export function useEditProfile() {
           regionId: form.regionId ?? undefined,
           cityId: form.cityId ?? undefined,
           countyId: form.countyId ?? undefined,
+          ...savedLocation,
           profile: {
             ...personProfile,
             firstName: form.firstName,
@@ -283,6 +298,7 @@ export function useEditProfile() {
           regionId: form.regionId ?? undefined,
           cityId: form.cityId ?? undefined,
           countyId: form.countyId ?? undefined,
+          ...savedLocation,
           profile: {
             ...businessProfile,
             businessName: form.businessName,

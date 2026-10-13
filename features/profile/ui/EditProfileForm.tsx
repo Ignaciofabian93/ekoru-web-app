@@ -184,7 +184,10 @@ export function EditProfileForm() {
       </SectionCard>
 
       {/* Location */}
+      {/* `#location` is where the "complete your location" notice links to. */}
       <SectionCard
+        id="location"
+        className="scroll-mt-24"
         icon={MapPin}
         tone="success"
         title={t("editProfile.location.title")}

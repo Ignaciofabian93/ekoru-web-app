@@ -28,6 +28,8 @@ export interface SectionCardProps {
   tone?: SectionCardTone;
   /** Trailing node pushed to the far edge of the header — a "see all" link. */
   headerRight?: ReactNode;
+  /** Anchor target, so a link can land on this section (`#id`). */
+  id?: string;
   className?: string;
   children: ReactNode;
 }
@@ -44,11 +46,12 @@ export function SectionCard({
   chip,
   tone = "default",
   headerRight,
+  id,
   className,
   children,
 }: SectionCardProps) {
   return (
-    <section className={clsx(sectionCardClass, className)}>
+    <section id={id} className={clsx(sectionCardClass, className)}>
       <header className={sectionCardHeaderClass}>
         <div className={sectionCardHeadingClass}>
           {(Icon || chip) && (

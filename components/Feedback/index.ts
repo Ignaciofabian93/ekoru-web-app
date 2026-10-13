@@ -1,5 +1,6 @@
 export { EmptyState } from "./EmptyState";
 export { ErrorState } from "./ErrorState";
+export { LocationNotice } from "./LocationNotice";
 export { RouteSkeleton } from "./RouteSkeleton";
 export { SkeletonGrid } from "./SkeletonGrid";
 export { Toast, ToastProvider } from "./Toast";

@@ -233,5 +233,10 @@
     "title": "Page introuvable",
     "body": "La page que vous cherchez n'existe pas ou n'est plus disponible.",
     "home": "Aller à l'accueil"
+  },
+  "locationNotice": {
+    "title": "Indiquez votre localisation pour apparaître dans la recherche",
+    "body": "Tant que vous n'indiquez pas votre pays, région, ville et commune, vos produits et services n'apparaissent pas dans les résultats de recherche.",
+    "action": "Indiquer ma localisation"
   }
 }
