@@ -16,6 +16,13 @@ const SUBJECT_LABELS: Record<string, string> = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/**
+ * The landing site's sender. Both sites send through the same Resend account,
+ * and informative-web already delivers from this address, so the form works
+ * without CONTACT_FROM_EMAIL on the server (WEB-8).
+ */
+const DEFAULT_FROM = "Contacto EKORU <contacto@ekoru.cl>";
+
 type ContactPayload = {
   name?: unknown;
   email?: unknown;
@@ -60,17 +67,17 @@ const acknowledgementHtml = (name: string) => `
 
 export async function POST(req: Request) {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.CONTACT_FROM_EMAIL;
   // The server env bundles were copied from informative-web, which names the
   // inbox EMAIL_TO; accept it so the form works with either name (WEB-8).
-  const to = process.env.CONTACT_TO_EMAIL ?? process.env.EMAIL_TO;
+  // `||` rather than `??`: an empty `KEY=` line in an env file means unset.
+  const from = process.env.CONTACT_FROM_EMAIL || DEFAULT_FROM;
+  const to = process.env.CONTACT_TO_EMAIL || process.env.EMAIL_TO;
 
-  if (!apiKey || !from || !to) {
+  if (!apiKey || !to) {
     // Say which variable is missing in the log, never to the visitor.
     console.error(
       `Contact form not configured: ${[
         !apiKey && "RESEND_API_KEY",
-        !from && "CONTACT_FROM_EMAIL",
         !to && "CONTACT_TO_EMAIL (or EMAIL_TO)",
       ]
         .filter(Boolean)
@@ -111,6 +118,9 @@ export async function POST(req: Request) {
   });
 
   if (error) {
+    // Resend reports why (unverified sender domain, revoked key, rate limit);
+    // without this line a refused send is a bare 502 and an empty log.
+    console.error(`Contact message refused by Resend: ${error.name}: ${error.message}`);
     return NextResponse.json({ message: "Failed to send message" }, { status: 502 });
   }
 
@@ -124,6 +134,14 @@ export async function POST(req: Request) {
       subject: "Gracias por contactarnos — EKORU",
       text: ACKNOWLEDGEMENT_TEXT(name),
       html: acknowledgementHtml(name),
+    })
+    // The SDK resolves with `error` rather than rejecting when Resend refuses.
+    .then(({ error: ackError }) => {
+      if (ackError) {
+        console.error(
+          `Contact acknowledgement refused by Resend: ${ackError.name}: ${ackError.message}`,
+        );
+      }
     })
     .catch((err) => {
       console.error("Contact acknowledgement failed to send", err);
