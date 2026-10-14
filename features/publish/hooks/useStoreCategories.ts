@@ -7,12 +7,11 @@ import { useCallback, useMemo, useState } from "react";
 
 // Shape mirrors StoreCatalogItemFields (pre-translated by the stores subgraph
 // based on the `language` variable).
-type CatalogStoreSubCategory = { id: number; name: string; slug: string; href: string };
+type CatalogStoreSubCategory = { id: number; name: string; slug: string };
 type CatalogStoreCategory = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   subCategoryItems: CatalogStoreSubCategory[];
 };
 

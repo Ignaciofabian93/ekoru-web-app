@@ -15,6 +15,7 @@ import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/Produ
 import { SellerCard } from "@/components/Patterns/SellerCard/SellerCard";
 import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
 import { useNavigation } from "@/hooks/useNavigation";
+import { catalogPath } from "@/utils/catalogPath";
 import { Section } from "@/components/Layout";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
@@ -62,25 +63,25 @@ export function ProductContent({ id, lang }: Props) {
   const { productCategory, isExchangeable } = product;
 
   const categoryName = productCategory?.translation?.name;
-  const categoryHref = productCategory?.translation?.href;
+  const categorySlug = productCategory?.translation?.slug;
   const depCategoryName = productCategory?.departmentCategory?.translation.name;
-  const depCategoryHref = productCategory?.departmentCategory?.translation.href;
+  const depCategorySlug = productCategory?.departmentCategory?.translation.slug;
   const departmentName = productCategory?.departmentCategory?.department.translation.name;
-  const departmentHref = productCategory?.departmentCategory?.department.translation.href;
+  const departmentSlug = productCategory?.departmentCategory?.department.translation.slug;
 
   const breadCrumbs: Crumb[] = [
     { label: "Marketplace", href: `/${lang}/marketplace` },
     {
       label: departmentName,
-      href: `/${lang}/marketplace/${departmentHref}`,
+      href: catalogPath(lang, "marketplace", departmentSlug),
     },
     {
       label: depCategoryName,
-      href: `/${lang}/marketplace/${departmentHref}/${depCategoryHref}`,
+      href: catalogPath(lang, "marketplace", departmentSlug, depCategorySlug),
     },
     {
       label: categoryName,
-      href: `/${lang}/marketplace/${departmentHref}/${depCategoryHref}/${categoryHref}`,
+      href: catalogPath(lang, "marketplace", departmentSlug, depCategorySlug, categorySlug),
     },
     { label: product.name },
   ];

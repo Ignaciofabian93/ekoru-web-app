@@ -21,7 +21,6 @@ export type BlogCategories = {
   name: string;
   icon: string;
   description: string;
-  href: string;
 };
 
 export type BlogCatalog = {
@@ -30,5 +29,4 @@ export type BlogCatalog = {
   name: string;
   description: string;
   slug: string;
-  href: string;
 };

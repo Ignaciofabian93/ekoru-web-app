@@ -19,7 +19,7 @@ export type SellerStorefrontPayload = {
 export type CategoryGroup = {
   id: string;
   name: string;
-  href?: string;
+  slug?: string;
   products: SellerStorefrontProduct[];
 };
 
@@ -29,13 +29,13 @@ export type CategoryGroup = {
 export type SellerStoreProduct = StoreListProduct & {
   storeSubCategory?: {
     id: number | null;
-    translation?: { name?: string | null; href?: string | null } | null;
+    translation?: { name?: string | null; slug?: string | null } | null;
   } | null;
 };
 
 export type StoreCategoryGroup = {
   id: string;
   name: string;
-  href?: string;
+  slug?: string;
   products: SellerStoreProduct[];
 };

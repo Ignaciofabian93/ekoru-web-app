@@ -54,9 +54,9 @@ export function useStoreCatalog({ sellerId, enabled = true, pageSize = 100 }: Pa
       const rawId = cat?.id;
       const id = rawId !== null && rawId !== undefined ? String(rawId) : "uncategorized";
       const name = cat?.translation?.name ?? t("catalog.uncategorized");
-      const href = cat?.translation?.href ?? undefined;
+      const slug = cat?.translation?.slug ?? undefined;
       if (!map.has(id)) {
-        map.set(id, { id, name, href, products: [] });
+        map.set(id, { id, name, slug, products: [] });
       }
       map.get(id)!.products.push(product);
     }

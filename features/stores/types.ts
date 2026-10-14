@@ -7,14 +7,12 @@ export type StoreCatalogSubItem = {
   id: number;
   name: string;
   slug: string;
-  href: string;
 };
 
 export type StoreCatalogCategory = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   subCategoryItems: StoreCatalogSubItem[];
 };
 
@@ -69,12 +67,12 @@ export type StoreSortValue = "newest" | "oldest" | "priceAsc" | "priceDesc";
 
 export type StoreSubCategoryDetail = {
   id: number;
-  translation: { id: number; name: string; slug: string; href: string } | null;
+  translation: { id: number; name: string; slug: string } | null;
 };
 
 export type StoreCategoryDetail = {
   id: number;
-  translation: { id: number; name: string; slug: string; href: string } | null;
+  translation: { id: number; name: string; slug: string } | null;
   storeSubCategory: StoreSubCategoryDetail[];
 };
 

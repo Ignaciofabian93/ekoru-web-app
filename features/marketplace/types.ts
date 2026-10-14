@@ -7,14 +7,12 @@ export type CatalogProductCategory = {
   id: number;
   name: string;
   slug: string;
-  href: string;
 };
 
 export type CatalogDepartmentCategory = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   productCategories: CatalogProductCategory[];
 };
 
@@ -22,7 +20,6 @@ export type CatalogDepartment = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   categories: CatalogDepartmentCategory[];
 };
 

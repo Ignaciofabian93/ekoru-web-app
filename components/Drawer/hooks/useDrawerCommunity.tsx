@@ -7,7 +7,6 @@ type CommunitySubCategoryItem = {
   id: number;
   subcategory: string;
   slug: string;
-  href: string;
   description?: string;
 };
 
@@ -15,7 +14,6 @@ type CommunityCatalogItem = {
   id: number;
   category: string;
   slug: string;
-  href: string;
   description?: string;
   subcategories: CommunitySubCategoryItem[];
 };

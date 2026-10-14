@@ -65,7 +65,6 @@ export const SEARCH = gql`
               name
               slug
               keywords
-              href
               metaTitle
               metaDescription
               metaKeywords
@@ -79,7 +78,6 @@ export const SEARCH = gql`
                 language
                 name
                 slug
-                href
                 metaTitle
                 metaDescription
                 metaKeywords
@@ -94,7 +92,6 @@ export const SEARCH = gql`
                   language
                   name
                   slug
-                  href
                   metaTitle
                   metaDescription
                   metaKeywords
@@ -278,14 +275,12 @@ export const SEARCH = gql`
             sortOrder
             subCategory
             serviceCount
-            href
             translation {
               id
               serviceSubCategoryId
               language
               subCategory
               slug
-              href
               metaTitle
               metaDescription
               metaKeywords
@@ -393,7 +388,6 @@ export const SEARCH = gql`
               name
               slug
               keywords
-              href
               metaTitle
               metaDescription
             }
@@ -407,7 +401,6 @@ export const SEARCH = gql`
                 language
                 name
                 slug
-                href
                 metaTitle
                 metaDescription
                 metaKeywords

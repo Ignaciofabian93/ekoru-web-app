@@ -45,12 +45,10 @@ export function DepartmentContent({ lang, slug }: Props) {
         id: cat.id,
         name: cat.translation?.name ?? "",
         slug: cat.translation?.slug ?? "",
-        href: cat.translation?.href ?? "",
         productCategories: (cat.productCategory ?? []).map((pc) => ({
           id: pc.id,
           name: pc.translation?.name ?? "",
           slug: pc.translation?.slug ?? "",
-          href: pc.translation?.href ?? "",
         })),
       })),
     [department],

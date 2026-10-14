@@ -57,9 +57,9 @@ export function useMarketplaceCatalog({
       const cat = product.productCategory;
       const id = cat?.id !== undefined ? String(cat.id) : "uncategorized";
       const name = cat?.translation?.name ?? t("catalog.uncategorized");
-      const href = cat?.translation?.href;
+      const slug = cat?.translation?.slug;
       if (!map.has(id)) {
-        map.set(id, { id, name, href, products: [] });
+        map.set(id, { id, name, slug, products: [] });
       }
       map.get(id)!.products.push(product);
     }

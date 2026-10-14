@@ -3,12 +3,10 @@ import type { Seller } from "./user";
 export type ServiceCatalog = {
   id: number;
   name: string;
-  href: string;
   slug: string;
   subCategoryItems: {
     id: number;
     name: string;
-    href: string;
     slug: string;
   }[];
 };
@@ -48,14 +46,12 @@ export type Service = {
     sortOrder: number;
     subCategory: null;
     serviceCount: null;
-    href: null;
     translation: {
       id: string;
       serviceSubCategoryId: number;
       language: string;
       subCategory: string;
       slug: string;
-      href: string;
       metaTitle: null;
       metaDescription: null;
       metaKeywords: [];

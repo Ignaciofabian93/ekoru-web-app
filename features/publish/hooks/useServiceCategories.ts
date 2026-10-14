@@ -7,12 +7,11 @@ import { useCallback, useMemo, useState } from "react";
 
 // Shape mirrors ServiceCatalogItemFields (pre-translated by the services
 // subgraph based on the `language` variable).
-type CatalogServiceSubCategory = { id: number; name: string; slug: string; href: string };
+type CatalogServiceSubCategory = { id: number; name: string; slug: string };
 type CatalogServiceCategory = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   subCategoryItems: CatalogServiceSubCategory[];
 };
 

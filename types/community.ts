@@ -22,7 +22,6 @@ export interface CommunityEvent {
 export interface CommunityCategory {
   id: number;
   category: string;
-  href: string;
   subcategories: CommunitySubCategory[];
 }
 
@@ -31,7 +30,6 @@ export interface CommunitySubCategory {
   subCategory: string;
   communityCategoryId: number;
   communityCategory: CommunityCategory;
-  href: string;
 }
 
 export interface CommunityPost {
@@ -63,13 +61,11 @@ export type CommunityCatalog = {
   id: number;
   category: string;
   slug: string;
-  href: string;
   description: string;
   subcategories: {
     id: number;
     subcategory: string;
     slug: string;
-    href: string;
     description: string;
   };
 };

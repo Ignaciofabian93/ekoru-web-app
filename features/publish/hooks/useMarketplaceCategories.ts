@@ -7,19 +7,17 @@ import { useCallback, useMemo, useState } from "react";
 
 // Shape mirrors CATALOG_ITEM_FIELDS_FRAGMENT (already pre-translated by the
 // marketplace subgraph based on the `language` variable).
-type CatalogProductCategory = { id: number; name: string; slug: string; href: string };
+type CatalogProductCategory = { id: number; name: string; slug: string };
 type CatalogDepartmentCategory = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   productCategories: CatalogProductCategory[];
 };
 type CatalogDepartment = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   categories: CatalogDepartmentCategory[];
 };
 

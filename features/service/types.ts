@@ -10,11 +10,9 @@ export type ServiceSubCategoryRef = {
   id: number;
   serviceCategoryId: number | null;
   subCategory: string | null;
-  href: string | null;
   translation: {
     subCategory: string;
     slug: string;
-    href: string | null;
   } | null;
 };
 

@@ -18,6 +18,7 @@ import { Section } from "@/components/Layout";
 import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
 import { useTranslation } from "@/i18n/context";
 import { useNavigation } from "@/hooks/useNavigation";
+import { catalogPath } from "@/utils/catalogPath";
 import { NAMESPACE } from "../i18n";
 import { ProductGallery } from "@/components/Patterns/ProductGallery";
 import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/ProductTrust";
@@ -61,19 +62,19 @@ export function StoreProductContent({ id, lang }: Props) {
   ];
 
   const subcategoryName = product.storeSubCategory?.translation.name;
-  const subcategoryHref = product.storeSubCategory?.translation.href;
+  const subcategorySlug = product.storeSubCategory?.translation.slug;
   const categoryName = product.storeSubCategory?.storeCategory?.translation.name;
-  const categoryHref = product.storeSubCategory?.storeCategory?.translation.href;
+  const categorySlug = product.storeSubCategory?.storeCategory?.translation.slug;
 
   const breadCrumbs: Crumb[] = [
     { label: t("breadcrumbs.stores"), href: `/${lang}/stores` },
     {
       label: categoryName,
-      href: `/${lang}/stores/${categoryHref}`,
+      href: catalogPath(lang, "stores", categorySlug),
     },
     {
       label: subcategoryName,
-      href: `/${lang}/stores/${categoryHref}/${subcategoryHref}`,
+      href: catalogPath(lang, "stores", categorySlug, subcategorySlug),
     },
     { label: product.name },
   ];

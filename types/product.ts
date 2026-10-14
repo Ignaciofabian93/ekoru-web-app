@@ -148,13 +148,12 @@ export type StoreCategory = {
   id: number;
   category: string;
   subcategories: StoreSubCategory[];
-  href: string;
   translation: {
     id: number;
     storeCategoryId: number;
     language: string;
     name: string;
-    href: string;
+    slug: string;
   };
 };
 
@@ -176,7 +175,6 @@ export type StoreSubCategory = {
     name: string;
     slug: string;
     keywords: string[];
-    href: string;
     metaTitle: string;
     metaDescription: string;
     createdAt: string;
@@ -202,7 +200,6 @@ export type ProductCategoryTranslation = {
   productCategoryId: number;
   name: string;
   slug: string;
-  href: string;
   language: string;
   createdAt: string;
   updatedAt: string;
@@ -234,7 +231,6 @@ export type DepartmentCategoryTranslation = {
   departmentCategoryId: number;
   name: string;
   slug: string;
-  href: string;
   language: string;
   createdAt: string;
   updatedAt: string;
@@ -260,7 +256,6 @@ export type DepartmentTranslation = {
   departmentId: number;
   name: string;
   slug: string;
-  href: string;
   language: string;
   createdAt: string;
   updatedAt: string;

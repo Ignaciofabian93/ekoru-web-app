@@ -65,7 +65,6 @@ export const HOME_PRODUCT_CATEGORY_FIELDS_FRAGMENT = gql`
     translation {
       name
       slug
-      href
     }
   }
 `;
@@ -114,14 +113,12 @@ export const HOME_SERVICE_CATEGORY_FIELDS_FRAGMENT = gql`
     sortOrder
     subCategory
     serviceCount
-    href
     translation {
       id
       serviceSubCategoryId
       language
       subCategory
       slug
-      href
       metaTitle
       metaDescription
       metaKeywords

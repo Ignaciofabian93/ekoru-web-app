@@ -18,17 +18,14 @@ export const GET_MARKETPLACE_CATALOG = gql`
     getMarketplaceCatalog(language: $language) {
       id
       name
-      href
       slug
       categories @include(if: $enableCategories) {
         id
         name
-        href
         slug
         productCategories @include(if: $enableSubCategories) {
           id
           name
-          href
           slug
         }
       }
@@ -181,7 +178,6 @@ export const GET_PRODUCT_BY_ID = gql`
           language
           name
           slug
-          href
         }
         departmentCategory {
           id
@@ -191,7 +187,6 @@ export const GET_PRODUCT_BY_ID = gql`
             language
             name
             slug
-            href
             metaTitle
             metaDescription
             metaKeywords
@@ -205,7 +200,6 @@ export const GET_PRODUCT_BY_ID = gql`
               language
               name
               slug
-              href
             }
           }
         }
@@ -232,7 +226,6 @@ export const GET_PRODUCTS = gql`
           translation {
             name
             slug
-            href
           }
         }
         environmentalImpact {
@@ -338,7 +331,6 @@ export const GET_SELLER_STOREFRONT = gql`
           translation {
             name
             slug
-            href
           }
         }
         seller {
@@ -493,7 +485,6 @@ export const GET_MY_FAVORITES = gql`
           translation {
             name
             slug
-            href
           }
         }
         environmentalImpact {
@@ -703,7 +694,6 @@ export const GET_DEPARTMENT_PRODUCTS_BY_SLUG = gql`
               name
               slug
               keywords
-              href
               metaTitle
               metaDescription
               metaKeywords
@@ -723,7 +713,6 @@ export const GET_DEPARTMENT_PRODUCTS_BY_SLUG = gql`
           language
           name
           slug
-          href
           metaTitle
           metaDescription
           metaKeywords
@@ -741,7 +730,6 @@ export const GET_DEPARTMENT_PRODUCTS_BY_SLUG = gql`
             language
             name
             slug
-            href
             metaTitle
             metaDescription
             metaKeywords
@@ -765,7 +753,6 @@ export const GET_DEPARTMENT_PRODUCTS_BY_SLUG = gql`
               name
               slug
               keywords
-              href
               metaTitle
               metaDescription
               metaKeywords
@@ -915,7 +902,6 @@ export const GET_DEPARTMENT_CATEGORY_PRODUCTS_BY_SLUG = gql`
               name
               slug
               keywords
-              href
               metaTitle
               metaDescription
               metaKeywords
@@ -946,7 +932,6 @@ export const GET_DEPARTMENT_CATEGORY_PRODUCTS_BY_SLUG = gql`
           language
           name
           slug
-          href
           metaTitle
           metaDescription
           metaKeywords
@@ -970,7 +955,6 @@ export const GET_DEPARTMENT_CATEGORY_PRODUCTS_BY_SLUG = gql`
             name
             slug
             keywords
-            href
             metaTitle
             metaDescription
             metaKeywords
@@ -1119,7 +1103,6 @@ export const GET_PRODUCT_CATEGORY_PRODUCTS_BY_SLUG = gql`
               name
               slug
               keywords
-              href
               metaTitle
               metaDescription
               metaKeywords
@@ -1156,7 +1139,6 @@ export const GET_PRODUCT_CATEGORY_PRODUCTS_BY_SLUG = gql`
           name
           slug
           keywords
-          href
           metaTitle
           metaDescription
           metaKeywords

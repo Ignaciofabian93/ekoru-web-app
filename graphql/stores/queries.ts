@@ -13,12 +13,10 @@ export const GET_STORES_CATALOG = gql`
     getStoreCatalog(language: $language) {
       id
       name
-      href
       slug
       subCategoryItems @include(if: $enableSubCategories) {
         id
         name
-        href
         slug
       }
     }
@@ -188,7 +186,6 @@ export const GET_STORE_PRODUCT_BY_ID = gql`
           name
           slug
           keywords
-          href
           metaTitle
           metaDescription
           createdAt
@@ -202,7 +199,6 @@ export const GET_STORE_PRODUCT_BY_ID = gql`
             language
             name
             slug
-            href
           }
         }
       }
@@ -360,7 +356,6 @@ export const GET_STORE_PRODUCTS = gql`
             name
             slug
             keywords
-            href
             metaTitle
             metaDescription
             createdAt

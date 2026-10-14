@@ -44,7 +44,6 @@ export function StoreCategoryContent({ lang, slug }: Props) {
         id: sub.id,
         name: sub.translation?.name ?? "",
         slug: sub.translation?.slug ?? "",
-        href: sub.translation?.href ?? "",
       })),
     [storeCategory],
   );
