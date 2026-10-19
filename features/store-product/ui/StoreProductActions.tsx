@@ -56,6 +56,9 @@ export function StoreProductActions({ product }: Props) {
   // the CTA's place rather than a disabled button — there is nothing to retry,
   // so an inert button would only look broken. See `constants/features.ts`.
   const canPurchase = FEATURES.storePurchase.available;
+  // TRX-4: a store that has not connected Mercado Pago cannot be paid yet;
+  // its buyers can still write to it.
+  const sellerCanBePaid = product.seller?.canReceivePayments !== false;
 
   function handleAddToCart(): boolean {
     const result = addStoreProduct(product);
@@ -72,6 +75,8 @@ export function StoreProductActions({ product }: Props) {
         <ActionNotice icon={PackageCheck}>{t("actions.ownListing")}</ActionNotice>
       ) : !canPurchase ? (
         <ActionNotice icon={Info}>{t("actions.browsingOnly")}</ActionNotice>
+      ) : !sellerCanBePaid ? (
+        <ActionNotice icon={Info}>{t("actions.sellerNotPayable")}</ActionNotice>
       ) : (
         <Button
           variant="primary"
@@ -91,7 +96,7 @@ export function StoreProductActions({ product }: Props) {
           itemType="STORE_PRODUCT"
           itemId={product.id}
           label={tRoot("chatActions.contactBusiness")}
-          variant={canPurchase ? "ghost" : "outline"}
+          variant={canPurchase && sellerCanBePaid ? "ghost" : "outline"}
         />
       )}
 

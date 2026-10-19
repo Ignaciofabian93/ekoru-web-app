@@ -63,7 +63,11 @@ export function StoreProductCard({
   // Beta: the store is browsable but not transactable, so a shopper's card
   // keeps its footer and turns it into "view details". Own and managed cards
   // are unaffected — they never had a buy CTA. See `constants/features.ts`.
-  const canBuy = isShopper && FEATURES.storePurchase.available;
+  // TRX-4: nor for a store that cannot be paid yet (no Mercado Pago account).
+  const canBuy =
+    isShopper &&
+    FEATURES.storePurchase.available &&
+    product.seller?.canReceivePayments !== false;
   const browseOnly = isShopper && !canBuy;
 
   // A sold-out card keeps its "Out of stock" CTA even when units are already in

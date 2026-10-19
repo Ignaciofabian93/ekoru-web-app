@@ -27,7 +27,7 @@ export function NavBar() {
     >
       {/* Above everything, including the skip link — it carries no focusable
           controls, so it can't get between a keyboard user and that link. */}
-      <NotificationBanner message={t("banner.beta")} icon={FlaskConical} />
+      <NotificationBanner message={t("banner.beta")} icon={FlaskConical} variant="info" />
 
       {/* Visible only once focused; the target is the <main> that PageLayout
           renders. Must be the first focusable thing on the page. */}

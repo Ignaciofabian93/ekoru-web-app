@@ -72,6 +72,12 @@ export type Seller = {
   // Auth-only fields; never returned to the web client.
   password?: string;
   sellerType: SellerType;
+  /**
+   * Buyers can pay this seller online now: it has an active Mercado Pago
+   * connection (TRX-4). Undefined when a query does not ask; createOrder
+   * refuses the order either way.
+   */
+  canReceivePayments?: boolean;
   isActive?: boolean;
   isVerified?: boolean;
   createdAt?: string;

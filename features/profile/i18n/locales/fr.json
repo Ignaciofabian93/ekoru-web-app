@@ -134,7 +134,8 @@
     "comingSoon": "Bientôt disponible",
     "bookings": "Mes réservations",
     "quotes": "Mes devis",
-    "messages": "Messages"
+    "messages": "Messages",
+    "payouts": "Encaissements"
   },
   "editProfile": {
     "screenTitle": "Modifier le Profil",
@@ -769,6 +770,51 @@
     "error": {
       "title": "Impossible de charger vos devis",
       "description": "Un problème est survenu de notre côté. Réessayez dans un instant."
+    }
+  },
+  "payouts": {
+    "title": "Encaissements",
+    "subtitle": "Le compte Mercado Pago sur lequel vous recevez l'argent de vos ventes sur EKORU.",
+    "businessOnly": "Les encaissements sont réservés aux comptes entreprise. Les ventes entre particuliers se paient en espèces lors du rendez-vous.",
+    "account": "Compte Mercado Pago n° {{id}}",
+    "finishing": "Finalisation de la connexion avec Mercado Pago…",
+    "status": {
+      "connected": "Connecté",
+      "reconnect": "Reconnexion nécessaire",
+      "disconnected": "Non connecté"
+    },
+    "explain": {
+      "connected": "Vos acheteurs peuvent désormais payer vos produits et services. L'argent arrive directement sur ce compte.",
+      "reconnect": "L'autorisation Mercado Pago a expiré ou a été révoquée. Tant que vous ne la renouvelez pas, personne ne peut vous payer sur EKORU.",
+      "disconnected": "Connectez votre compte Mercado Pago pour commencer à vendre. C'est gratuit. D'ici là, vos produits et services ne peuvent pas être payés sur EKORU."
+    },
+    "fields": {
+      "environment": "Mode",
+      "connectedAt": "Connecté le",
+      "renewsBefore": "Renouvelé avant le"
+    },
+    "environments": {
+      "SANDBOX": "Test",
+      "PRODUCTION": "Production"
+    },
+    "actions": {
+      "connect": "Connecter Mercado Pago",
+      "reconnect": "Reconnecter",
+      "disconnect": "Déconnecter"
+    },
+    "disconnectConfirm": "Déconnecter ce compte ? Vos acheteurs ne pourront plus vous payer tant que vous n'en connectez pas un autre. Les remboursements des ventes passées continuent de fonctionner.",
+    "how": {
+      "title": "Comment ça marche",
+      "direct": "Vos acheteurs paient directement sur votre compte Mercado Pago. EKORU ne reçoit ni ne conserve jamais l'argent de vos ventes.",
+      "commission": "La commission d'EKORU ({{percent}} de chaque vente) est prélevée automatiquement par Mercado Pago au moment du paiement.",
+      "providerFee": "Mercado Pago prélève aussi sa propre commission, selon les conditions de votre compte.",
+      "refunds": "Si une vente est remboursée, Mercado Pago rend l'argent à l'acheteur et la commission d'EKORU est rendue dans la même proportion."
+    },
+    "feedback": {
+      "connected": "Compte Mercado Pago connecté",
+      "disconnected": "Compte déconnecté",
+      "declined": "L'autorisation Mercado Pago n'a pas été finalisée",
+      "error": "L'action n'a pas pu être effectuée"
     }
   }
 }

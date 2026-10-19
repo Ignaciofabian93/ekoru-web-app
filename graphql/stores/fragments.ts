@@ -102,6 +102,7 @@ export const STORE_PRODUCT_SELLER_FIELDS_FRAGMENT = gql`
   ${BUSINESS_PROFILE_FIELDS_FRAGMENT}
   fragment StoreProductSellerFields on Seller {
     ...SellerFields
+    canReceivePayments
     profile {
       ... on BusinessProfile {
         ...BusinessProfileFields

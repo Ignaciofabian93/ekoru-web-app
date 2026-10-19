@@ -88,3 +88,18 @@ export type PaymentStatusResponse = Pick<
   | "providerTransactionId"
   | "paidAt"
 >;
+
+/** A business's Mercado Pago connection: where its buyers' payments land (TRX-5, WEB-2). */
+export type StorePaymentSetup = {
+  provider: PaymentProviderId;
+  connected: boolean;
+  /** It was connected, but the authorization expired or was revoked. */
+  needsReconnect: boolean;
+  /** The Mercado Pago user id of the connected account. */
+  accountId: string | null;
+  environment: "SANDBOX" | "PRODUCTION" | null;
+  connectedAt: string | null;
+  tokenExpiresAt: string | null;
+  /** EKORU's commission as a fraction (0.05 = 5%). */
+  commissionRate: number;
+};

@@ -26,7 +26,7 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
     <DictionaryProvider
       dictionary={{ [NAMESPACE]: dict, [MARKETPLACE_NAMESPACE]: marketplaceDict }}
     >
-      <PageLayout hero={<HomeHero lang={lang} />} width="default">
+      <PageLayout hero={<HomeHero lang={lang} />} width="wide">
         <CategoriesSection lang={lang} />
         {/* <StatsSection /> */}
         <AdBannerSection lang={lang} variant="sky" domain="stores" />

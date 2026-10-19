@@ -15,6 +15,7 @@ import {
   MapPin,
   MessageCircle,
   PackagePlus,
+  Wallet,
   Phone,
   Receipt,
   Pin,
@@ -193,6 +194,7 @@ export type ProfileMenuField =
   | "changePassword"
   | "orderHistory"
   | "sales"
+  | "payouts"
   | "messages"
   | "exchanges"
   | "favorites"
@@ -205,6 +207,7 @@ export const PROFILE_MENU_FIELDS: ProfileMenuField[] = [
   "changePassword",
   "orderHistory",
   "sales",
+  "payouts",
   "messages",
   "exchanges",
   "favorites",
@@ -218,6 +221,8 @@ export type ProfileMenuItem = {
   label: string;
   icon: LucideIcon;
   available: boolean;
+  /** Shown only to business accounts (STARTUP, COMPANY). */
+  businessOnly?: boolean;
 };
 
 export type ProfileMenuSection = {
@@ -258,6 +263,14 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         label: "account.sales",
         icon: Receipt,
         available: FEATURES.cart.available,
+      },
+      // Free for every approved business: where buyers' payments land (WEB-2).
+      {
+        route: "/profile/payments",
+        label: "account.payouts",
+        icon: Wallet,
+        available: true,
+        businessOnly: true,
       },
       {
         route: "/profile/messages",

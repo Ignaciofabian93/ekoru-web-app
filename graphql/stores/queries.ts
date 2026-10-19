@@ -102,6 +102,7 @@ export const GET_STORE_PRODUCT_BY_ID = gql`
       }
       seller {
         id
+        canReceivePayments
         email
         sellerType
         isActive
@@ -279,6 +280,7 @@ export const GET_STORE_PRODUCTS = gql`
         }
         seller {
           id
+          canReceivePayments
           email
           sellerType
           isActive

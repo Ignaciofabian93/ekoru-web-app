@@ -30,7 +30,8 @@
     "viewSeller": "Ver vendedor",
     "viewAll": "Ver todos",
     "ownListing": "Esta es tu publicación — no puedes comprar tus propios productos.",
-    "browsingOnly": "Por ahora solo exploración: las compras estarán disponibles pronto."
+    "browsingOnly": "Por ahora solo exploración: las compras estarán disponibles pronto.",
+    "sellerNotPayable": "Este negocio todavía no recibe pagos en EKORU. Puedes escribirle mientras tanto."
   },
   "summary": {
     "by": "por",

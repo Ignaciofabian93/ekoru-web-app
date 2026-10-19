@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { PROFILE_MENU_SECTIONS, type ProfileMenuItem } from "../constants/menuItems";
 import { NAMESPACE } from "../i18n";
+import { useHasSellerType } from "@/store/useAuthStore";
 import { SectionCard } from "@/components/Patterns/SectionCard";
 
 const ROW_CLASS = "flex items-center gap-3 rounded-lg p-2.5";
@@ -17,6 +18,7 @@ export function Account() {
   const { t } = useTranslation(NAMESPACE);
   const params = useParams<{ lang?: SupportedLanguage }>();
   const lang = params.lang ?? DEFAULT_LANGUAGE;
+  const isBusiness = useHasSellerType("STARTUP", "COMPANY");
 
   return (
     <>
@@ -31,15 +33,17 @@ export function Account() {
           {/* Single column inside the desktop sidebar, two columns when the card
               spans the full width on tablets. */}
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1">
-            {section.items.map((item) => (
-              <AccountRow
-                key={item.route}
-                item={item}
-                label={t(item.label)}
-                href={`/${lang}${item.route}`}
-                comingSoonLabel={t("account.comingSoon")}
-              />
-            ))}
+            {section.items
+              .filter((item) => !item.businessOnly || isBusiness)
+              .map((item) => (
+                <AccountRow
+                  key={item.route}
+                  item={item}
+                  label={t(item.label)}
+                  href={`/${lang}${item.route}`}
+                  comingSoonLabel={t("account.comingSoon")}
+                />
+              ))}
           </div>
         </SectionCard>
       ))}
