@@ -21,6 +21,7 @@ import type {
 
 import { submitWebpayForm } from "@/lib/webpay";
 
+import { availableProvidersFor, paymentReturnUrl } from "../constants/paymentProviders";
 import { shippingMethodById } from "../constants/shippingMethods";
 import { useShippingQuote } from "./useShippingQuote";
 
@@ -58,12 +59,17 @@ export function useCheckout() {
   const [step, setStep] = useState<CheckoutStep>("shipping");
   const [shippingMethod, setShippingMethod] = useState<ShippingMethod | null>(null);
   const [address, setAddress] = useState<Partial<ShippingAddressInput>>(emptyAddress);
-  const [provider, setProvider] = useState<PaymentProviderId | null>(null);
+  // With a single provider on offer (Mercado Pago today) it is chosen for the buyer.
+  const [provider, setProvider] = useState<PaymentProviderId | null>(() => {
+    const offered = availableProvidersFor(currency);
+    return offered.length === 1 ? offered[0].id : null;
+  });
   const [loading, setLoading] = useState(false);
 
-  const [createOrder] = useMutation<{ createOrder: CreateOrderResponse }, { input: CreateOrderInput }>(
-    CREATE_ORDER,
-  );
+  const [createOrder] = useMutation<
+    { createOrder: CreateOrderResponse },
+    { input: CreateOrderInput }
+  >(CREATE_ORDER);
   const [createPayment] = useMutation<
     { createPayment: CreatePaymentResponse },
     { input: CreatePaymentInput }
@@ -78,12 +84,12 @@ export function useCheckout() {
     if (!meta.requiresAddress) return true;
     return Boolean(
       address.recipientName &&
-        address.countryId &&
-        address.regionId &&
-        address.cityId &&
-        address.countyId &&
-        address.street &&
-        address.phone,
+      address.countryId &&
+      address.regionId &&
+      address.cityId &&
+      address.countyId &&
+      address.street &&
+      address.phone,
     );
   }, [shippingMethod, address]);
 
@@ -158,12 +164,10 @@ export function useCheckout() {
       const order = orderRes.data?.createOrder;
       if (!order) throw new Error("createOrder returned no data");
 
-      const origin = typeof window === "undefined" ? "" : window.location.origin;
-      // Route the provider return through the Next proxy → gateway, which commits
-      // the payment (e.g. Webpay tx.commit) and only then 303s the buyer to
-      // /{lang}/cart/confirmation?paymentId=…. Lowercase so it matches the
-      // gateway's /payments/return/<provider> routes.
-      const returnUrl = `${origin}/api/checkout/return/${provider.toLowerCase()}`;
+      // Route the provider return through the Next proxy → gateway, which
+      // confirms the payment with the provider and only then 303s the buyer to
+      // /{lang}/cart/confirmation?paymentId=….
+      const returnUrl = paymentReturnUrl(provider);
 
       const paymentRes = await createPayment({
         variables: {

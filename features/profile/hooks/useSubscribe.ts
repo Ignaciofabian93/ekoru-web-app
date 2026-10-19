@@ -8,6 +8,10 @@ import {
   PERSON_MEMBERSHIPS,
 } from "@/graphql/subscription/queries";
 import { CREATE_MEMBERSHIP_PAYMENT } from "@/graphql/subscription/mutations";
+import {
+  DEFAULT_PAYMENT_PROVIDER,
+  paymentReturnUrl,
+} from "@/features/cart/constants/paymentProviders";
 import { submitWebpayForm } from "@/lib/webpay";
 import { useSeller, useSellerType } from "@/store/useAuthStore";
 import type { CreatePaymentResponse } from "@/types/checkout";
@@ -35,7 +39,8 @@ export type MySubscription = {
 /**
  * Wires the subscription plan cards to the platform-payment rail. Given a plan
  * key (the card's membershipType), it resolves the real DB membership id and
- * starts a Webpay payment to EKORU, then hands off exactly like cart checkout.
+ * starts a payment to EKORU (Mercado Pago), then hands off exactly like cart
+ * checkout.
  * The buyer returns to /cart/confirmation and the membership activates on the
  * completed payment.
  */
@@ -69,7 +74,7 @@ export function useSubscribe() {
 
   const [createMembershipPayment] = useMutation<
     { createMembershipPayment: CreatePaymentResponse },
-    { membershipId: number; returnUrl: string }
+    { membershipId: number; returnUrl: string; provider: string }
   >(CREATE_MEMBERSHIP_PAYMENT);
 
   /** Start the payment for the plan whose membershipType === `planKey`. */
@@ -79,12 +84,12 @@ export function useSubscribe() {
 
     setPendingKey(planKey);
     try {
-      const origin =
-        typeof window === "undefined" ? "" : window.location.origin;
-      const returnUrl = `${origin}/api/checkout/return/webpay`;
-
       const res = await createMembershipPayment({
-        variables: { membershipId: Number(membership.id), returnUrl },
+        variables: {
+          membershipId: Number(membership.id),
+          returnUrl: paymentReturnUrl(DEFAULT_PAYMENT_PROVIDER),
+          provider: DEFAULT_PAYMENT_PROVIDER,
+        },
       });
       const redirect = res.data?.createMembershipPayment.redirect;
       if (!redirect) throw new Error("createMembershipPayment returned no redirect");

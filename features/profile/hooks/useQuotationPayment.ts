@@ -2,6 +2,10 @@
 import { useMutation } from "@apollo/client/react";
 import { useState } from "react";
 
+import {
+  DEFAULT_PAYMENT_PROVIDER,
+  paymentReturnUrl,
+} from "@/features/cart/constants/paymentProviders";
 import { CREATE_QUOTATION_PAYMENT } from "@/graphql/checkout/mutations";
 import { useToast } from "@/hooks/useToast";
 import { submitWebpayForm } from "@/lib/webpay";
@@ -29,7 +33,10 @@ export function useQuotationPayment() {
   // The id being paid, so only that card's button spins.
   const [payingId, setPayingId] = useState<string | null>(null);
   const [createQuotationPayment] = useMutation<{
-    createQuotationPayment: Pick<CreatePaymentResponse, "paymentId" | "status" | "redirect">;
+    createQuotationPayment: Pick<
+      CreatePaymentResponse,
+      "paymentId" | "status" | "redirect"
+    >;
   }>(CREATE_QUOTATION_PAYMENT);
 
   const pay = async (quotationId: string) => {
@@ -38,8 +45,8 @@ export function useQuotationPayment() {
       const { data } = await createQuotationPayment({
         variables: {
           quotationId: Number(quotationId),
-          returnUrl: `${window.location.origin}/api/checkout/return/webpay`,
-          provider: "WEBPAY",
+          returnUrl: paymentReturnUrl(DEFAULT_PAYMENT_PROVIDER),
+          provider: DEFAULT_PAYMENT_PROVIDER,
         },
       });
       const redirect = data?.createQuotationPayment.redirect;

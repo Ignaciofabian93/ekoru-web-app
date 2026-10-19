@@ -43,9 +43,13 @@ export const CREATE_QUOTATION_PAYMENT = gql`
   mutation CreateQuotationPayment(
     $quotationId: Int!
     $returnUrl: String!
-    $provider: ChileanPaymentProvider! = WEBPAY
+    $provider: ChileanPaymentProvider! = MERCADOPAGO
   ) {
-    createQuotationPayment(quotationId: $quotationId, returnUrl: $returnUrl, provider: $provider) {
+    createQuotationPayment(
+      quotationId: $quotationId
+      returnUrl: $returnUrl
+      provider: $provider
+    ) {
       paymentId
       status
       redirect {
