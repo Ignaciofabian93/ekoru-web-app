@@ -4,3 +4,7 @@ allowBuilds:
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+# Security floor for a transitive dependency Next pulls in through styled-jsx
+# and Babel (GHSA advisories fixed in 4.28.7). Drop once Next ships it.
+overrides:
+  browserslist: ~4.28.9

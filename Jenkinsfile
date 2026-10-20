@@ -32,6 +32,8 @@ pipeline {
 
   environment {
     SERVICE_NAME = 'ekoru-web-app'
+    // Schema the GraphQL document check validates against (INF-6).
+    GRAPHQL_SCHEMA_URL = 'https://staging-api.ekoru.cl/graphql'
   }
 
   // Build records and logs are kept for the last 20 runs only (INF-15).
@@ -69,6 +71,24 @@ pipeline {
 
     // Vitest unit and component tests (WEB-16). A failure stops the pipeline
     // before anything is built or deployed.
+    // Lint without --fix, the dependency audit and, where there is one, the
+    // GraphQL document check (INF-6). Types are checked by `next build`.
+    stage('Checks') {
+      agent {
+        docker {
+          image 'node:22-alpine'
+          args '-u root'
+        }
+      }
+      steps {
+        sh 'corepack enable && pnpm exec eslint .'
+        sh 'corepack enable && node scripts/audit-gate.cjs'
+        // Every query and mutation against the staging API's schema: one it no
+        // longer accepts fails here, not on screen. Deploy API changes first.
+        sh 'node scripts/check-graphql.mjs "$GRAPHQL_SCHEMA_URL"'
+      }
+    }
+
     stage('Test') {
       agent {
         docker {
@@ -105,8 +125,9 @@ pipeline {
           docker compose -f compose.staging.yml up -d --force-recreate
           docker image prune -f
           # --no-cache builds never reuse the build cache, but it still grows on
-          # every deploy until the disk fills (INF-15). Keep the last day only.
-          docker builder prune -f --filter until=24h
+          # every deploy until the disk fills (INF-15). Keep the last day only;
+          # -a, because without it prune only removes dangling records.
+          docker builder prune -af --filter until=24h
         '''
         sshagent(['github-deploy-key-web-app']) {
           sh '''
@@ -142,8 +163,9 @@ pipeline {
           docker compose -f compose.prod.yml up -d --force-recreate
           docker image prune -f
           # --no-cache builds never reuse the build cache, but it still grows on
-          # every deploy until the disk fills (INF-15). Keep the last day only.
-          docker builder prune -f --filter until=24h
+          # every deploy until the disk fills (INF-15). Keep the last day only;
+          # -a, because without it prune only removes dangling records.
+          docker builder prune -af --filter until=24h
         '''
         sshagent(['github-deploy-key-web-app']) {
           sh '''

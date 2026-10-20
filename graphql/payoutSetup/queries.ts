@@ -4,21 +4,24 @@ import { gql } from "@apollo/client";
 // MercadoPagoConnectResolver). Free for every approved business; never
 // carries a token.
 
-export const STORE_PAYMENT_SETUP_FIELDS = `
-  provider
-  connected
-  needsReconnect
-  accountId
-  environment
-  connectedAt
-  tokenExpiresAt
-  commissionRate
+export const STORE_PAYMENT_SETUP_FIELDS = gql`
+  fragment StorePaymentSetupFields on StorePaymentSetup {
+    provider
+    connected
+    needsReconnect
+    accountId
+    environment
+    connectedAt
+    tokenExpiresAt
+    commissionRate
+  }
 `;
 
 export const MY_STORE_PAYMENT_SETUP = gql`
+  ${STORE_PAYMENT_SETUP_FIELDS}
   query MyStorePaymentSetup {
     myStorePaymentSetup {
-      ${STORE_PAYMENT_SETUP_FIELDS}
+      ...StorePaymentSetupFields
     }
   }
 `;

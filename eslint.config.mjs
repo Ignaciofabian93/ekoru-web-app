@@ -16,6 +16,7 @@ const eslintConfig = defineConfig([
   ]),
 
   {
+    files: ["**/*.{js,jsx,mjs,ts,tsx}"],
     rules: {
       // ── TypeScript ──────────────────────────────────────────────
       "@typescript-eslint/no-explicit-any": "warn",
@@ -111,6 +112,13 @@ const eslintConfig = defineConfig([
         { ignoreMiddleExtensions: true },
       ],
     },
+  },
+
+  // scripts/audit-gate.cjs (INF-6) is the same Node CommonJS script in every
+  // repo, run by the pipeline; require() is the only way to load modules there.
+  {
+    files: ["scripts/**/*.cjs"],
+    rules: { "@typescript-eslint/no-require-imports": "off" },
   },
 ]);
 
