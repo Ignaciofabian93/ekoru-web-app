@@ -25,6 +25,7 @@ import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/Produ
 import { SellerCard } from "@/components/Patterns/SellerCard/SellerCard";
 import { ReceiptText, ShieldCheck, Truck } from "lucide-react";
 import { RAIL_MAIN, RAIL_SIDE, RAILS } from "@/design/detail-rails";
+import { useTrackItemView } from "@/features/tracking/hooks/useTrackItemView";
 
 interface Props {
   id: string;
@@ -33,6 +34,11 @@ interface Props {
 
 export function StoreProductContent({ id, lang }: Props) {
   const { product, loading, error } = useStoreProduct(id);
+  useTrackItemView({
+    itemType: "STORE_PRODUCT",
+    itemId: product?.id,
+    sellerId: product?.sellerId,
+  });
   const { t } = useTranslation(NAMESPACE);
   const { navigateTo } = useNavigation();
 

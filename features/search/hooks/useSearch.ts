@@ -21,14 +21,7 @@ interface Params {
  * is skipped while the term is empty so an empty search bar costs nothing, and
  * the previous page is kept on screen while the next one loads.
  */
-export function useSearch({
-  query,
-  language,
-  country,
-  page,
-  pageSize,
-  filters,
-}: Params) {
+export function useSearch({ query, language, country, page, pageSize, filters }: Params) {
   const trimmed = query.trim();
 
   const { data, previousData, loading, error } = useQuery<{
@@ -64,6 +57,8 @@ export function useSearch({
   const payload = data?.search ?? previousData?.search;
 
   return {
+    /** Ties a result click to this search, for the search analytics. */
+    searchId: payload?.searchId ?? null,
     items: payload?.items ?? [],
     pageInfo: payload?.pageInfo,
     facets: payload?.facets,

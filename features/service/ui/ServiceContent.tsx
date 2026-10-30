@@ -22,6 +22,7 @@ import { ServicePackages } from "./ServicePackages";
 import { ServiceReviews } from "./ServiceReviews";
 import { ServiceError, ServiceLoading, ServiceNotFound } from "./ServiceStatus";
 import { ServiceSummary } from "./ServiceSummary";
+import { useTrackItemView } from "@/features/tracking/hooks/useTrackItemView";
 
 interface Props {
   id: string;
@@ -30,6 +31,11 @@ interface Props {
 
 export function ServiceContent({ id, lang }: Props) {
   const { service, loading, error } = useService(id);
+  useTrackItemView({
+    itemType: "SERVICE",
+    itemId: service?.id,
+    sellerId: service?.sellerId,
+  });
   const { t } = useTranslation(NAMESPACE);
   const { navigateTo } = useNavigation();
 

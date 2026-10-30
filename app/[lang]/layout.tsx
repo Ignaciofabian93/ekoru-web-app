@@ -19,6 +19,7 @@ import { ToastProvider } from "@/components/Feedback/Toast";
 import { ErrorListener } from "@/components/Feedback/ErrorListener";
 import { LocaleDetector } from "@/components/Locale";
 import { ConsentBanner } from "@/features/consent/ui/ConsentBanner";
+import { NavigationTracker } from "@/features/tracking/ui/NavigationTracker";
 import {
   getDrawerDictionary,
   NAMESPACE as DRAWER_NAMESPACE,
@@ -146,21 +147,15 @@ export default async function RootLayout({
 
   if (!hasLocale(lang)) notFound();
 
-  const [
-    dict,
-    drawerDict,
-    navigationDict,
-    cardsDict,
-    footerDict,
-    notificationsDict,
-  ] = await Promise.all([
-    getDictionary(lang),
-    getDrawerDictionary(lang),
-    getNavigationDictionary(lang),
-    getCardsDictionary(lang),
-    getFooterDictionary(lang),
-    getNotificationsDictionary(lang),
-  ]);
+  const [dict, drawerDict, navigationDict, cardsDict, footerDict, notificationsDict] =
+    await Promise.all([
+      getDictionary(lang),
+      getDrawerDictionary(lang),
+      getNavigationDictionary(lang),
+      getCardsDictionary(lang),
+      getFooterDictionary(lang),
+      getNotificationsDictionary(lang),
+    ]);
 
   return (
     <html
@@ -190,6 +185,8 @@ export default async function RootLayout({
         </ApolloWrapper>
         <ToastProvider />
         <ErrorListener />
+        {/* Remembers the previous page, for where an item view came from. */}
+        <NavigationTracker />
         {/* Asks for the location permission once, on a visitor's first page. */}
         <LocaleDetector />
       </body>

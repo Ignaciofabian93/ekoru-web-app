@@ -15,6 +15,7 @@ import { ProductTrust, type ProductTrustItem } from "@/components/Patterns/Produ
 import { SellerCard } from "@/components/Patterns/SellerCard/SellerCard";
 import { Breadcrumb, type Crumb } from "@/components/Patterns/Breadcrumb";
 import { useNavigation } from "@/hooks/useNavigation";
+import { useTrackItemView } from "@/features/tracking/hooks/useTrackItemView";
 import { catalogPath } from "@/utils/catalogPath";
 import { Section } from "@/components/Layout";
 import { useTranslation } from "@/i18n/context";
@@ -30,6 +31,11 @@ interface Props {
 
 export function ProductContent({ id, lang }: Props) {
   const { product, loading, error } = useProduct(id);
+  useTrackItemView({
+    itemType: "PRODUCT",
+    itemId: product?.id,
+    sellerId: product?.sellerId,
+  });
   const { navigateTo } = useNavigation();
   const { t } = useTranslation(NAMESPACE);
   // Opt-in, from the panel's exchange CTA — an exchangeable listing still
@@ -81,7 +87,13 @@ export function ProductContent({ id, lang }: Props) {
     },
     {
       label: categoryName,
-      href: catalogPath(lang, "marketplace", departmentSlug, depCategorySlug, categorySlug),
+      href: catalogPath(
+        lang,
+        "marketplace",
+        departmentSlug,
+        depCategorySlug,
+        categorySlug,
+      ),
     },
     { label: product.name },
   ];

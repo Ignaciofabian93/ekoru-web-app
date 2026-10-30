@@ -94,6 +94,7 @@ export function SearchContent({ lang, language, query }: Props) {
   } = useSearchFilters(chipLabels);
 
   const {
+    searchId,
     items,
     pageInfo,
     facets,
@@ -257,6 +258,8 @@ export function SearchContent({ lang, language, query }: Props) {
                 lang={lang}
                 loading={loading}
                 filtered={activeCount > 0}
+                searchId={searchId}
+                positionOffset={(page - 1) * SEARCH_PAGE_SIZE}
               />
 
               {pageInfo && pageInfo.totalPages > 1 && (
