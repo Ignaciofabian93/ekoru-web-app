@@ -398,11 +398,12 @@ function ReceivedTab({
  * as a provider, receives bookings to confirm and complete, so the page splits
  * them into tabs like the quotes inbox. Bookings are paid on site (D7).
  */
-export function BookingsList() {
+/** `initialTab`: "received" when a provider comes from "Servicios prestados". */
+export function BookingsList({ initialTab = "made" }: { initialTab?: Tab }) {
   const { t } = useTranslation(NAMESPACE);
   const params = useParams<{ lang?: SupportedLanguage }>();
   const lang = params.lang ?? DEFAULT_LANGUAGE;
-  const [tab, setTab] = useState<Tab>("made");
+  const [tab, setTab] = useState<Tab>(initialTab);
   // Loaded up front so the tab can show how many bookings wait for an answer.
   const received = useProviderBookings();
   const waiting = received.bookings.filter((b) => b.status === "PENDING").length;

@@ -8,6 +8,7 @@ import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
 import type { ServiceDetail } from "../types";
+import { formatDuration } from "@/utils/formatters";
 
 const LOCALE_MAP: Record<SupportedLanguage, string> = {
   es: "es-CL",
@@ -65,9 +66,7 @@ export function ServiceDetails({
     { label: t("details.priceRange"), value: priceRangeLabel() },
     {
       label: t("details.duration"),
-      value: service.duration
-        ? t("details.durationValue", { minutes: service.duration })
-        : "",
+      value: service.duration ? formatDuration(service.duration) : "",
     },
     {
       label: t("details.remote"),

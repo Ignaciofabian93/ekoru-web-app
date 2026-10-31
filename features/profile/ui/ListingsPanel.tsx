@@ -31,6 +31,12 @@ interface Props<T> {
   ariaLabel?: string;
   /** Bump so the status underline remeasures when labels change (e.g. language). */
   remeasureKey?: string | number;
+  /**
+   * The tabs to offer. Only marketplace listings are ever sold (a P2P deal
+   * closes them); store products and services stay listed, so they leave out
+   * "sold".
+   */
+  statuses?: ListingStatus[];
 }
 
 /**
@@ -50,6 +56,7 @@ export function ListingsPanel<T>({
   emptyDrafts,
   ariaLabel,
   remeasureKey,
+  statuses = STATUSES,
 }: Props<T>) {
   const [page, setPage] = useState(1);
   // Reset to the first page whenever the status filter changes — done during
@@ -64,7 +71,7 @@ export function ListingsPanel<T>({
   const clampedPage = Math.min(page, totalPages);
   const visible = items.slice((clampedPage - 1) * PAGE_SIZE, clampedPage * PAGE_SIZE);
 
-  const tabs = STATUSES.map((s) => ({ key: s, label: statusLabel(s), count: counts[s] }));
+  const tabs = statuses.map((s) => ({ key: s, label: statusLabel(s), count: counts[s] }));
   const empty = status === "drafts" ? emptyDrafts : emptyActive;
 
   return (

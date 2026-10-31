@@ -176,7 +176,6 @@
     "offerPrice": "Prix promotionnel",
     "priceRange": "Fourchette de prix",
     "duration": "Durée",
-    "durationValue": "{{minutes}} min",
     "category": "Catégorie",
     "condition": "État",
     "stock": "Stock",

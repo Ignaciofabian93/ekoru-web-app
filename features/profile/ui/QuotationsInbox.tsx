@@ -81,7 +81,8 @@ function RespondForm({
   const [notes, setNotes] = useState(quotation.providerNotes ?? "");
 
   const priceValue = Number(price);
-  const isValid = price.trim().length > 0 && Number.isFinite(priceValue) && priceValue > 0;
+  const isValid =
+    price.trim().length > 0 && Number.isFinite(priceValue) && priceValue > 0;
 
   return (
     <form
@@ -136,11 +137,12 @@ function RespondForm({
   );
 }
 
-export function QuotationsInbox() {
+/** `initialTab`: "received" when a provider comes from "Cotizaciones recibidas". */
+export function QuotationsInbox({ initialTab = "sent" }: { initialTab?: Tab }) {
   const { t } = useTranslation(NAMESPACE);
   const params = useParams<{ lang?: SupportedLanguage }>();
   const lang = params.lang ?? DEFAULT_LANGUAGE;
-  const [tab, setTab] = useState<Tab>("sent");
+  const [tab, setTab] = useState<Tab>(initialTab);
   const {
     received,
     sent,
@@ -276,24 +278,24 @@ export function QuotationsInbox() {
 
                 {/* The client decides only once there is a price to decide on. */}
                 {!isProviderView && quotation.status === "PENDING" && hasPrice && (
-                    <div className="flex flex-wrap gap-2 border-t border-border-light pt-3">
-                      <Button
-                        text={t("quotes.card.accept")}
-                        leftIcon={Check}
-                        size="sm"
-                        loading={accepting}
-                        onClick={() => void accept(quotation.id)}
-                      />
-                      <Button
-                        text={t("quotes.card.decline")}
-                        leftIcon={X}
-                        variant="outline"
-                        size="sm"
-                        loading={declining}
-                        onClick={() => void decline(quotation.id)}
-                      />
-                    </div>
-                  )}
+                  <div className="flex flex-wrap gap-2 border-t border-border-light pt-3">
+                    <Button
+                      text={t("quotes.card.accept")}
+                      leftIcon={Check}
+                      size="sm"
+                      loading={accepting}
+                      onClick={() => void accept(quotation.id)}
+                    />
+                    <Button
+                      text={t("quotes.card.decline")}
+                      leftIcon={X}
+                      variant="outline"
+                      size="sm"
+                      loading={declining}
+                      onClick={() => void decline(quotation.id)}
+                    />
+                  </div>
+                )}
 
                 {/* WEB-4: an accepted, unpaid quote is paid through Webpay. */}
                 {!isProviderView && hasPrice && isPayable(quotation) && (
@@ -314,7 +316,9 @@ export function QuotationsInbox() {
 
                 {quotation.paidAt && (
                   <Text variant="small" color="tertiary">
-                    {t("quotes.card.paidOn", { date: formatDate(quotation.paidAt, lang) })}
+                    {t("quotes.card.paidOn", {
+                      date: formatDate(quotation.paidAt, lang),
+                    })}
                   </Text>
                 )}
 

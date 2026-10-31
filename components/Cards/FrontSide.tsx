@@ -22,6 +22,7 @@ import { useNavigation } from "@/hooks/useNavigation";
 import { QuantityStepper } from "../Patterns";
 import { useIsAuthenticated } from "@/store/useAuthStore";
 import { LikeButton } from "./LikeButton";
+import { formatDuration } from "@/utils/formatters";
 
 const HEADER_CLASS: Record<Orientation, string> = {
   vertical: "w-full aspect-4/3",
@@ -259,6 +260,7 @@ export function Header({
 export function Body({
   isProduct = true,
   brand,
+  showNoBrand = true,
   name,
   price,
   hasOffer = false,
@@ -335,7 +337,8 @@ export function Body({
           color="secondary"
           className="uppercase"
         >
-          {brand ? brand : t("meta.noBrand")}
+          {/* A non-breaking space keeps the line, so cards stay aligned. */}
+          {brand || (showNoBrand ? t("meta.noBrand") : " ")}
         </Text>
         <Text
           variant="span"
@@ -383,7 +386,7 @@ export function Body({
                 className="text-foreground-secondary shrink-0"
               />
               <Text variant="span" size="xs" color="secondary" numberOfLines={1}>
-                {duration}
+                {formatDuration(duration)}
               </Text>
             </span>
           )}

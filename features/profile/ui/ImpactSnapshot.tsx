@@ -9,6 +9,8 @@ import { useImpactYear } from "../hooks/useImpactYear";
 import { formatCo2KG, formatCount, formatWaterLT } from "../constants/impactFormat";
 import { SectionCard } from "@/components/Patterns/SectionCard";
 import { LinkButton } from "@/components/Primitives/LinkButton";
+import { Text } from "@/components/Primitives/Text";
+import { useAccountKind } from "@/store/useAuthStore";
 
 /** Stands in for each figure until the query resolves. */
 const PENDING = "—";
@@ -54,6 +56,20 @@ export function ImpactSnapshot() {
   // case that greys the tiles out behind an em dash.
   const resolved = Boolean(impact);
 
+  // Savings are measured for second-hand items changing hands. A store's new
+  // products and a provider's services have no measure yet, so a business
+  // with nothing recorded gets that explanation instead of zeros that read as
+  // "you saved nothing". Once it has marketplace savings, it sees them.
+  const accountKind = useAccountKind();
+  const unmeasuredBusiness =
+    accountKind !== null &&
+    accountKind !== "PERSON" &&
+    impact !== undefined &&
+    impact !== null &&
+    impact.totalCo2SavingsKG === 0 &&
+    impact.totalWaterSavingsLT === 0 &&
+    impact.totalItems === 0;
+
   return (
     <SectionCard
       icon={TrendingUp}
@@ -73,19 +89,25 @@ export function ImpactSnapshot() {
         </div>
       }
     >
-      <div className="flex flex-col sm:flex-wrap items-center justify-evenly gap-3">
-        {stats.map((s) => (
-          <StatTile
-            key={s.key}
-            icon={s.icon}
-            value={s.value}
-            label={t(`dashboard.impact.${s.key}`)}
-            orientation="horizontal"
-            tone={s.tone}
-            disabled={loading || !resolved}
-          />
-        ))}
-      </div>
+      {unmeasuredBusiness ? (
+        <Text variant="p" size="sm" color="secondary">
+          {t("dashboard.impact.businessPending")}
+        </Text>
+      ) : (
+        <div className="flex flex-col sm:flex-wrap items-center justify-evenly gap-3">
+          {stats.map((s) => (
+            <StatTile
+              key={s.key}
+              icon={s.icon}
+              value={s.value}
+              label={t(`dashboard.impact.${s.key}`)}
+              orientation="horizontal"
+              tone={s.tone}
+              disabled={loading || !resolved}
+            />
+          ))}
+        </div>
+      )}
       {/* Same control as the header's, shown only where that one is hidden. */}
       <div className="mt-3 inline-flex sm:hidden">
         <LinkButton

@@ -20,6 +20,7 @@ import { DEFAULT_LANGUAGE } from "@/constants/settings";
 import { useDrawer } from "@/context/DrawerContext";
 import { useTranslation } from "@/i18n/context";
 import useAuthStore, {
+  useAccountKind,
   useDisplayName,
   useInitials,
   useProfileImage,
@@ -118,6 +119,7 @@ export default function Drawer() {
   const { t } = useTranslation(NAMESPACE);
   const profileImage = useProfileImage();
   const seller = useAuthStore((s) => s.seller);
+  const accountKind = useAccountKind();
   const logout = useAuthStore((s) => s.logout);
   const displayName = useDisplayName();
   const initials = useInitials();
@@ -312,7 +314,16 @@ export default function Drawer() {
             ACCOUNT_MENU_SECTIONS.map((section) => (
               <MenuSection
                 key={section.key}
-                section={section}
+                section={{
+                  ...section,
+                  // Rows meant for other kinds of account (sales for stores).
+                  items: section.items.filter(
+                    (item) =>
+                      !("accounts" in item) ||
+                      !item.accounts ||
+                      (accountKind !== null && item.accounts.includes(accountKind)),
+                  ),
+                }}
                 onNavigate={handleNavigate}
                 dealsCount={dealsCount}
                 notificationCount={notificationCount}

@@ -107,6 +107,26 @@ export const useBusinessProfile = () =>
 export const useIsBusinessProfile = () =>
   useAuthStore((s) => s.seller?.profile?.__typename === "BusinessProfile");
 
+/**
+ * What the account does on EKORU, which decides its menus: a person, or a
+ * business that runs a store (RETAIL), offers services (SERVICES) or both
+ * (MIXED). A business whose type hasn't loaded counts as MIXED, so it sees
+ * everything a business may need, as My listings does. Null when signed out.
+ */
+export type AccountKind = "PERSON" | "RETAIL" | "SERVICES" | "MIXED";
+
+export const useAccountKind = (): AccountKind | null =>
+  useAuthStore((s) => {
+    const seller = s.seller;
+    if (!seller) return null;
+    if (seller.sellerType === "PERSON") return "PERSON";
+    const profile = seller.profile;
+    return (
+      (profile?.__typename === "BusinessProfile" ? profile.businessType : undefined) ??
+      "MIXED"
+    );
+  });
+
 export const useDisplayName = () =>
   useAuthStore((s) => {
     const profile = s.seller?.profile;

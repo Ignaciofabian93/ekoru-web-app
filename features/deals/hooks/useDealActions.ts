@@ -1,5 +1,5 @@
 "use client";
-import { useMutation } from "@apollo/client/react";
+import { useApolloClient, useMutation } from "@apollo/client/react";
 import { useState } from "react";
 
 import {
@@ -11,19 +11,15 @@ import {
   PROPOSE_EXCHANGE_DEAL,
   PROPOSE_SALE_DEAL,
 } from "@/graphql/deals/mutations";
-import {
-  MY_DEALS_AS_BUYER,
-  MY_DEALS_AS_SELLER,
-} from "@/graphql/deals/queries";
+import { MY_DEALS_AS_BUYER, MY_DEALS_AS_SELLER } from "@/graphql/deals/queries";
 import { uploadProductImage } from "@/lib/api/products";
-import { useCurrentSellerId } from "@/store/useAuthStore";
+import { GET_ME } from "@/graphql/auth/login";
+import useAuthStore, { useCurrentSellerId } from "@/store/useAuthStore";
+import type { Seller } from "@/types/user";
 import { useToast } from "@/hooks/useToast";
 import type { Deal } from "../types";
 
-const REFETCH = [
-  { query: MY_DEALS_AS_BUYER },
-  { query: MY_DEALS_AS_SELLER },
-];
+const REFETCH = [{ query: MY_DEALS_AS_BUYER }, { query: MY_DEALS_AS_SELLER }];
 
 /**
  * All the deal state transitions, plus the evidence-photo upload (reusing the
@@ -33,6 +29,20 @@ const REFETCH = [
 export function useDealActions() {
   const toast = useToast();
   const sellerId = useCurrentSellerId();
+  const client = useApolloClient();
+  const setSeller = useAuthStore((s) => s.setSeller);
+
+  /**
+   * Reloads the signed-in seller, so the points badge shows what a completed
+   * deal just credited. The session is otherwise read once per page load.
+   */
+  const refreshSession = () =>
+    client
+      .query<{ me: Seller }>({ query: GET_ME, fetchPolicy: "network-only" })
+      .then(({ data }) => {
+        if (data?.me) setSeller(data.me);
+      })
+      .catch(() => undefined);
   const [busyId, setBusyId] = useState<number | null>(null);
 
   const opts = { refetchQueries: REFETCH, awaitRefetchQueries: false };
@@ -46,7 +56,7 @@ export function useDealActions() {
   >(PROPOSE_EXCHANGE_DEAL, opts);
   const [accept] = useMutation(ACCEPT_DEAL, opts);
   const [decline] = useMutation(DECLINE_DEAL, opts);
-  const [confirm] = useMutation(CONFIRM_DEAL, opts);
+  const [confirm] = useMutation<{ confirmDeal: Deal }>(CONFIRM_DEAL, opts);
   const [dispute] = useMutation(DISPUTE_DEAL, opts);
   const [cancel] = useMutation(CANCEL_DEAL, opts);
 
@@ -85,8 +95,7 @@ export function useDealActions() {
         return res.data?.proposeExchangeDeal as Deal | undefined;
       }),
 
-    acceptDeal: (id: number) =>
-      run(id, () => accept({ variables: { id } })),
+    acceptDeal: (id: number) => run(id, () => accept({ variables: { id } })),
     declineDeal: (id: number, reason?: string) =>
       run(id, () => decline({ variables: { id, reason } })),
     disputeDeal: (id: number, reason: string) =>
@@ -108,7 +117,11 @@ export function useDealActions() {
           const { imageUrl } = await uploadProductImage(photo, sellerId ?? "deal");
           evidenceUrl = imageUrl;
         }
-        await confirm({ variables: { id, evidenceUrl, compensationSettled } });
+        const { data } = await confirm({
+          variables: { id, evidenceUrl, compensationSettled },
+        });
+        // The second confirmation completes the deal and credits the points.
+        if (data?.confirmDeal?.status === "COMPLETED") void refreshSession();
       }),
   };
 }

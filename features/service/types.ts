@@ -43,7 +43,8 @@ export type ServiceDetail = {
    */
   priceRange: string | number[] | null;
   /** Minutes, stored as a string by the subgraph. */
-  duration: string | null;
+  /** Minutes. */
+  duration: number | null;
   isActive: boolean | null;
   images: string[] | null;
   tags: string[] | null;

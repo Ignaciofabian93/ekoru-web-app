@@ -176,7 +176,6 @@
     "offerPrice": "Precio de oferta",
     "priceRange": "Rango de precio",
     "duration": "Duración",
-    "durationValue": "{{minutes}} min",
     "category": "Categoría",
     "condition": "Estado",
     "stock": "Stock",

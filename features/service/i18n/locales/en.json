@@ -57,7 +57,6 @@
     "pricingType": "Pricing model",
     "priceRange": "Price range",
     "duration": "Estimated duration",
-    "durationValue": "{{minutes}} min",
     "coverage": "Coverage",
     "remote": "Remote service",
     "radius": "Service radius",

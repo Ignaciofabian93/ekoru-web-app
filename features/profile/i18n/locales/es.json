@@ -31,7 +31,8 @@
       "co2": "CO₂ ahorrado",
       "water": "Agua ahorrada",
       "products": "Productos reusados",
-      "viewFull": "Ver detalles"
+      "viewFull": "Ver detalles",
+      "businessPending": "Medimos el ahorro de los artículos de segunda mano que cambian de dueño. La medición para tiendas y servicios está en camino."
     },
     "listings": {
       "title": "Mis publicaciones",
@@ -124,8 +125,10 @@
     "subtitle": "Gestiona tu cuenta y preferencias",
     "editProfile": "Editar Perfil",
     "changePassword": "Cambiar Contraseña",
-    "orderHistory": "Historial de Pedidos",
+    "orderHistory": "Mis compras",
     "sales": "Mis ventas",
+    "servicesProvided": "Servicios prestados",
+    "quotesReceived": "Cotizaciones recibidas",
     "exchanges": "Intercambios",
     "favorites": "Favoritos",
     "environmentalImpact": "Impacto Ambiental",

@@ -10,6 +10,7 @@ import {
   type PublishTarget,
 } from "../../constants/options";
 import type { PublishForm } from "../../hooks/usePublishForm";
+import { formatDuration } from "@/utils/formatters";
 
 interface ReviewStepProps {
   target: PublishTarget;
@@ -62,7 +63,7 @@ export function ReviewStep({
     isService && form.duration
       ? {
           label: t("review.duration"),
-          value: t("review.durationValue", { minutes: form.duration }),
+          value: formatDuration(Number(form.duration)),
         }
       : null,
     isStore ? { label: t("review.stock"), value: form.stock } : null,

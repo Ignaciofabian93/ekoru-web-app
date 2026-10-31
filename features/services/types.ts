@@ -53,7 +53,8 @@ export type ServiceNode = {
   name: string;
   description: string | null;
   basePrice: number | null;
-  duration: string | null;
+  /** Minutes. */
+  duration: number | null;
   images: string[] | null;
   averageRating: number | null;
   reviewCount: number | null;
@@ -65,7 +66,10 @@ export type ServiceNode = {
     isVerified: boolean;
     profile: { businessName?: string | null; logo?: string | null } | null;
   } | null;
-  serviceCategory: { subCategory: string } | null;
+  serviceCategory: {
+    subCategory?: string | null;
+    translation?: { subCategory?: string | null } | null;
+  } | null;
 };
 
 export type ServicesConnection = {

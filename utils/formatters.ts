@@ -20,6 +20,19 @@ export const formatInitials = (displayName: string): string => {
   return formatted;
 };
 
+/**
+ * A service's duration, stored in minutes, as "45 min", "4 h" or "1 h 30 min".
+ * The units read the same in Spanish, English and French. A bare "240" was
+ * read as hours.
+ */
+export function formatDuration(minutes: number): string {
+  const total = Math.round(minutes);
+  if (total < 60) return `${total} min`;
+  const hours = Math.floor(total / 60);
+  const rest = total % 60;
+  return rest ? `${hours} h ${rest} min` : `${hours} h`;
+}
+
 export function humanizeSlug(slug: string) {
   return slug
     .split("-")

@@ -57,7 +57,6 @@
     "pricingType": "Mode de tarification",
     "priceRange": "Fourchette de prix",
     "duration": "Durée estimée",
-    "durationValue": "{{minutes}} min",
     "coverage": "Couverture",
     "remote": "Service à distance",
     "radius": "Rayon d'intervention",

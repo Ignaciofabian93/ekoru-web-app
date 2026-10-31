@@ -39,6 +39,8 @@ export interface Deal {
   disputeReason?: string | null;
   cancelReason?: string | null;
   completedAt?: string | null;
+  /** Eco-points this deal credited to the viewer; null before it completes. */
+  myPoints?: number | null;
   createdAt: string;
   product?: DealProduct | null;
   requestedProduct?: DealProduct | null;

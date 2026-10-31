@@ -3,6 +3,7 @@ import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import type { SellerStorefrontProduct } from "@/features/seller/types";
 import type { StoreListProduct } from "@/features/stores/types";
 import type { ServiceNode } from "@/features/services/types";
+import { serviceCategoryName } from "@/features/services/categoryName";
 import { useTranslation } from "@/i18n/context";
 import { FileText, Layers, Package, Plus, Wrench } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
@@ -52,13 +53,16 @@ type EditTarget =
 
 type DeleteTarget = { kind: ListingKind; id: string | number; name: string };
 
+/** Store products and services are never sold out of the list: no "sold" tab. */
+const LISTED_STATUSES: ListingStatus[] = ["active", "drafts"];
+
 function serviceToCardService(service: ServiceNode): ServiceCardService {
   return {
     id: service.id,
     name: service.name,
     description: service.description,
     image: service.images?.[0],
-    category: service.serviceCategory?.subCategory,
+    category: serviceCategoryName(service.serviceCategory),
     price: service.basePrice,
     duration: service.duration,
     averageRating: service.averageRating,
@@ -350,6 +354,7 @@ export function MyListings() {
             items={store.products}
             loading={store.loading}
             remeasureKey={lang}
+            statuses={LISTED_STATUSES}
             renderItem={(p) => {
               const isActive = p.isActive !== false;
               return (
@@ -397,6 +402,7 @@ export function MyListings() {
             items={service.services}
             loading={service.loading}
             remeasureKey={lang}
+            statuses={LISTED_STATUSES}
             renderItem={(s) => {
               const isActive = s.isActive !== false;
               return (

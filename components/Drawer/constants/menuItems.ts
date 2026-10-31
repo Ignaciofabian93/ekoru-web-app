@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { FEATURES } from "@/constants/features";
+import type { AccountKind } from "@/store/useAuthStore";
 
 /**
  * Config-driven drawer menu, same shape as the settings screen
@@ -57,6 +58,8 @@ export type MenuItem = {
   label: MenuField;
   icon: LucideIcon;
   available: boolean;
+  /** The accounts that see the row; every account when omitted. */
+  accounts?: AccountKind[];
 };
 
 export type SupportMenuItem = {
@@ -106,11 +109,13 @@ export const ACCOUNT_MENU_SECTIONS: DrawerMenuSection[] = [
         icon: Package,
         available: FEATURES.cart.available,
       },
+      // Orders received: only businesses with a store get them.
       {
         route: "/profile/sales",
         label: "sales",
         icon: Receipt,
         available: FEATURES.cart.available,
+        accounts: ["RETAIL", "MIXED"],
       },
       {
         route: "/profile/environmental-impact",

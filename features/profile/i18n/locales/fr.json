@@ -31,7 +31,8 @@
       "co2": "CO₂ économisé",
       "water": "Eau économisée",
       "products": "Produits réutilisés",
-      "viewFull": "Voir l'impact complet"
+      "viewFull": "Voir l'impact complet",
+      "businessPending": "Nous mesurons les économies des articles d'occasion qui changent de main. La mesure pour les boutiques et les services arrive."
     },
     "listings": {
       "title": "Mes annonces",
@@ -124,8 +125,10 @@
     "subtitle": "Gérez votre compte et vos préférences",
     "editProfile": "Modifier le Profil",
     "changePassword": "Changer le Mot de Passe",
-    "orderHistory": "Historique des Commandes",
+    "orderHistory": "Mes achats",
     "sales": "Mes ventes",
+    "servicesProvided": "Services rendus",
+    "quotesReceived": "Devis reçus",
     "exchanges": "Échanges",
     "favorites": "Favoris",
     "environmentalImpact": "Impact Environnemental",

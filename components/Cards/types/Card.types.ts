@@ -1,5 +1,8 @@
 import type { BusinessType, ProductCondition } from "@/types/enums";
-import type { EnvironmentalImpact, StoreProductMaterialComposition } from "@/types/product";
+import type {
+  EnvironmentalImpact,
+  StoreProductMaterialComposition,
+} from "@/types/product";
 import type { Seller } from "@/types/user";
 import type { FavoriteSource } from "@/hooks/useToggleFavorite";
 
@@ -66,8 +69,8 @@ export type ServiceCardService = {
   category?: string | null;
   /** Starting price. Services are quoted "from", not at a fixed price. */
   price?: number | null;
-  /** Free-text as returned by the backend, e.g. "45 min" — rendered verbatim. */
-  duration?: string | null;
+  /** Minutes, as the services subgraph stores them; the card formats them. */
+  duration?: number | null;
   averageRating?: number | null;
   reviewsNumber?: number | null;
   isLiked?: boolean;
@@ -202,6 +205,11 @@ export interface CardHeaderProps {
 export interface CardBodyProps {
   isProduct?: boolean;
   brand?: string;
+  /**
+   * Say "no brand" when `brand` is missing. Off for services, where that line
+   * holds the sub-category and "no brand" means nothing.
+   */
+  showNoBrand?: boolean;
   name?: string;
   description?: string;
   price?: number;
@@ -215,11 +223,8 @@ export interface CardBodyProps {
   /** 0–5. Omit (or pass 0) to hide the rating row entirely. */
   averageRating?: number;
   reviewsNumber?: number;
-  /**
-   * Service duration, rendered verbatim beside a clock. Free text from the
-   * backend ("45 min", "2 h"), so the card formats nothing.
-   */
-  duration?: string;
+  /** Service duration in minutes, shown beside a clock as "45 min" or "4 h". */
+  duration?: number;
   /** Prefixes the price with "From" — services are quoted, not priced. */
   isPriceFrom?: boolean;
   /** Drives the stock line: sold out at 0, low when `isLowStock`. */

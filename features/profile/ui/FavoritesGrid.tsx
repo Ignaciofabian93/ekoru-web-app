@@ -10,6 +10,7 @@ import { useTranslation } from "@/i18n/context";
 import { useFavorites, type FavoritesTab } from "../hooks/useFavorites";
 import { NAMESPACE } from "../i18n";
 import { EmptyState } from "@/components/Feedback/EmptyState";
+import { serviceCategoryName } from "@/features/services/categoryName";
 import {
   MarketplaceCard,
   ServiceCard,
@@ -31,7 +32,7 @@ function toServiceCardService(service: ServiceNode): ServiceCardService {
     name: service.name,
     description: service.description,
     image: service.images?.[0],
-    category: service.serviceCategory?.subCategory,
+    category: serviceCategoryName(service.serviceCategory),
     price: service.basePrice,
     duration: service.duration,
     averageRating: service.averageRating,

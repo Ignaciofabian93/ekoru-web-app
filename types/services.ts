@@ -20,7 +20,8 @@ export type Service = {
   pricingType: string;
   basePrice: number | null;
   priceRange: number[] | null;
-  duration: string | null;
+  /** Minutes (GraphQL Int). */
+  duration: number | null;
   isActive: boolean;
   images: string[];
   tags: string[];

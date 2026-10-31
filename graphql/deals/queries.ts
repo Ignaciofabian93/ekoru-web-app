@@ -58,6 +58,7 @@ export const DEAL_FIELDS = gql`
     disputeReason
     cancelReason
     completedAt
+    myPoints
     createdAt
     buyer {
       ...DealPartyFields

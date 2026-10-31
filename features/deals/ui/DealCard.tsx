@@ -30,7 +30,6 @@ import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import type { Deal, DealPerspective, DealProduct } from "../types";
 import { useDealActions } from "../hooks/useDealActions";
-import { useDealSettings } from "../hooks/useDealSettings";
 import { ContactSellerButton } from "@/features/chat/ui/ContactSellerButton";
 
 const STATUS_STYLE: Record<string, string> = {
@@ -75,7 +74,6 @@ export function DealCard({
   const formatPrice = useFormatPrice();
   const myId = useCurrentSellerId();
   const a = useDealActions();
-  const settings = useDealSettings();
   const [photo, setPhoto] = useState<File | null>(null);
   const [cashReceived, setCashReceived] = useState(false);
   const busy = a.busyId === deal.id;
@@ -238,10 +236,13 @@ export function DealCard({
           )}
         </div>
       )}
+      {/* What was actually credited, from the ledger, never what the rules promise. */}
       {deal.status === "COMPLETED" && (
         <p className="flex items-center gap-1.5 text-xs font-medium text-success">
           <Leaf size={13} className="shrink-0" />
-          {t("pointsEarned", { points: String(settings.completionPoints) })}
+          {deal.myPoints
+            ? t("pointsEarned", { points: String(deal.myPoints) })
+            : t("pointsPending")}
         </p>
       )}
       {deal.status === "DISPUTED" && deal.disputeReason && (

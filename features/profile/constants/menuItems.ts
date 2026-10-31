@@ -7,6 +7,7 @@ import {
   FileText,
   Flag,
   Gem,
+  Handshake,
   Globe,
   Heart,
   KeyRound,
@@ -29,6 +30,7 @@ import {
 } from "lucide-react";
 
 import { FEATURES } from "@/constants/features";
+import type { AccountKind } from "@/store/useAuthStore";
 import type { Seller } from "@/types/user";
 
 /**
@@ -194,6 +196,8 @@ export type ProfileMenuField =
   | "changePassword"
   | "orderHistory"
   | "sales"
+  | "servicesProvided"
+  | "quotesReceived"
   | "payouts"
   | "messages"
   | "exchanges"
@@ -207,6 +211,8 @@ export const PROFILE_MENU_FIELDS: ProfileMenuField[] = [
   "changePassword",
   "orderHistory",
   "sales",
+  "servicesProvided",
+  "quotesReceived",
   "payouts",
   "messages",
   "exchanges",
@@ -221,9 +227,23 @@ export type ProfileMenuItem = {
   label: string;
   icon: LucideIcon;
   available: boolean;
-  /** Shown only to business accounts (STARTUP, COMPANY). */
-  businessOnly?: boolean;
+  /** The accounts that see the item; every account when omitted. */
+  accounts?: AccountKind[];
 };
+
+const BUSINESSES: AccountKind[] = ["RETAIL", "SERVICES", "MIXED"];
+/** Businesses that sell in a store, so they receive orders. */
+const SELLS_PRODUCTS: AccountKind[] = ["RETAIL", "MIXED"];
+/** Businesses that offer services, so they receive bookings and quotes. */
+const PROVIDES_SERVICES: AccountKind[] = ["SERVICES", "MIXED"];
+
+/** Whether an account sees a menu item. Nothing account-specific before the session loads. */
+export function isMenuItemFor(
+  item: { accounts?: AccountKind[] },
+  kind: AccountKind | null,
+) {
+  return !item.accounts || (kind !== null && item.accounts.includes(kind));
+}
 
 export type ProfileMenuSection = {
   key: string;
@@ -263,6 +283,23 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         label: "account.sales",
         icon: Receipt,
         available: FEATURES.cart.available,
+        accounts: SELLS_PRODUCTS,
+      },
+      // A provider's side of bookings and quotes. Persons and stores book and
+      // ask for quotes as clients only, through the two rows below.
+      {
+        route: "/profile/bookings?tab=received",
+        label: "account.servicesProvided",
+        icon: Handshake,
+        available: FEATURES.serviceBooking.available,
+        accounts: PROVIDES_SERVICES,
+      },
+      {
+        route: "/profile/quotes?tab=received",
+        label: "account.quotesReceived",
+        icon: FileText,
+        available: FEATURES.serviceQuotes.available,
+        accounts: PROVIDES_SERVICES,
       },
       // Free for every approved business: where buyers' payments land (WEB-2).
       {
@@ -270,7 +307,7 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         label: "account.payouts",
         icon: Wallet,
         available: true,
-        businessOnly: true,
+        accounts: BUSINESSES,
       },
       {
         route: "/profile/messages",
@@ -278,17 +315,19 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         icon: MessageCircle,
         available: true,
       },
+      // Exchanges trade marketplace items, which only persons publish.
       {
         route: "/profile/exchanges",
         label: "account.exchanges",
         icon: Repeat2,
         available: true,
+        accounts: ["PERSON"],
       },
       // Nothing can be booked or quoted while those capabilities are off, so
       // these two inboxes are guaranteed empty — they follow the same switch
       // that brings the requests back. See `constants/features.ts`.
       {
-        route: "/profile/bookings",
+        route: "/profile/bookings?tab=made",
         label: "account.bookings",
         icon: CalendarClock,
         available: FEATURES.serviceBooking.available,

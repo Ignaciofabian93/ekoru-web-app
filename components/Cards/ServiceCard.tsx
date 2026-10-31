@@ -57,6 +57,7 @@ export function ServiceCard({
           // The sub-category sits where a product shows its brand — it's the
           // same "what kind of thing is this" line.
           brand={service.category ?? undefined}
+          showNoBrand={false}
           price={service.price ?? undefined}
           isPriceFrom
           duration={service.duration ?? undefined}

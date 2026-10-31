@@ -31,7 +31,8 @@
       "co2": "CO₂ saved",
       "water": "Water saved",
       "products": "Products reused",
-      "viewFull": "See full impact"
+      "viewFull": "See full impact",
+      "businessPending": "We measure the savings of second-hand items changing hands. Measurement for stores and services is on its way."
     },
     "listings": {
       "title": "My listings",
@@ -124,8 +125,10 @@
     "subtitle": "Manage your account and preferences",
     "editProfile": "Edit Profile",
     "changePassword": "Change Password",
-    "orderHistory": "Order History",
+    "orderHistory": "My purchases",
     "sales": "My sales",
+    "servicesProvided": "Services provided",
+    "quotesReceived": "Quotes received",
     "exchanges": "Exchanges",
     "favorites": "Favorites",
     "environmentalImpact": "Environmental Impact",

@@ -2,6 +2,7 @@
 import { ServiceCard, type ServiceCardService } from "@/components/Cards";
 
 import type { ServiceNode } from "../types";
+import { serviceCategoryName } from "../categoryName";
 
 function toCardService(service: ServiceNode): ServiceCardService {
   return {
@@ -9,7 +10,7 @@ function toCardService(service: ServiceNode): ServiceCardService {
     name: service.name,
     description: service.description,
     image: service.images?.[0],
-    category: service.serviceCategory?.subCategory,
+    category: serviceCategoryName(service.serviceCategory),
     price: service.basePrice,
     duration: service.duration,
     averageRating: service.averageRating,
