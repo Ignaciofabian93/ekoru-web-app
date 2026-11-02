@@ -8,6 +8,7 @@ import { ADD_SERVICE } from "@/graphql/services/mutations";
 import { ADD_STORE_PRODUCT } from "@/graphql/stores/mutations";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useToast } from "@/hooks/useToast";
+import { useImageUploadMessage } from "@/hooks/useImageUploadMessage";
 import { useTranslation } from "@/i18n/context";
 import useAuthStore, { useBusinessProfile } from "@/store/useAuthStore";
 import { getCookie } from "@/utils/cookies";
@@ -29,6 +30,7 @@ export function useBusinessPublish() {
   const { navigateTo } = useNavigation();
   const params = useParams<{ lang?: SupportedLanguage }>();
   const toast = useToast();
+  const imageUploadMessage = useImageUploadMessage();
   const { t } = useTranslation("publish");
   const sellerId = useAuthStore((s) => s.seller?.id);
   const businessProfile = useBusinessProfile();
@@ -167,13 +169,17 @@ export function useBusinessPublish() {
 
       return false;
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Unexpected error");
+      toast.error(
+        imageUploadMessage(err) ??
+          (err instanceof Error ? err.message : "Unexpected error"),
+      );
       return false;
     }
   }, [
     addService,
     addStoreProduct,
     form,
+    imageUploadMessage,
     navigateTo,
     params.lang,
     sellerId,

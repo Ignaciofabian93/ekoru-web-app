@@ -2,6 +2,7 @@
 import { useCallback, useState } from "react";
 import { uploadCoverImage, uploadProfileImage } from "@/lib/api/profile";
 import { useToast } from "@/hooks/useToast";
+import { useImageUploadMessage } from "@/hooks/useImageUploadMessage";
 import { useTranslation } from "@/i18n/context";
 import useAuthStore from "@/store/useAuthStore";
 import { NAMESPACE } from "../i18n";
@@ -11,6 +12,7 @@ type ImageKind = "avatar" | "cover";
 export function useProfileImageUpload() {
   const { t } = useTranslation(NAMESPACE);
   const toast = useToast();
+  const imageUploadMessage = useImageUploadMessage();
   const updateProfileImage = useAuthStore((s) => s.updateProfileImage);
   const updateCoverImage = useAuthStore((s) => s.updateCoverImage);
 
@@ -18,11 +20,6 @@ export function useProfileImageUpload() {
 
   const upload = useCallback(
     async (file: File, kind: ImageKind) => {
-      if (!file.type.startsWith("image/")) {
-        toast.error(t("header.upload.invalidType"));
-        return;
-      }
-
       setUploadingKind(kind);
       try {
         const { key } =
@@ -34,13 +31,13 @@ export function useProfileImageUpload() {
         else updateCoverImage(key);
 
         toast.success(t("header.upload.success"));
-      } catch {
-        toast.error(t("header.upload.error"));
+      } catch (error) {
+        toast.error(imageUploadMessage(error) ?? t("header.upload.error"));
       } finally {
         setUploadingKind(null);
       }
     },
-    [t, toast, updateCoverImage, updateProfileImage],
+    [imageUploadMessage, t, toast, updateCoverImage, updateProfileImage],
   );
 
   return {

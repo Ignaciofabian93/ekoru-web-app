@@ -9,8 +9,7 @@
       "changeAvatar": "Change profile photo",
       "changeCover": "Change cover photo",
       "success": "Image updated",
-      "error": "Could not upload the image",
-      "invalidType": "Please choose an image file"
+      "error": "Could not upload the image"
     },
     "points": "{{count}} pts"
   },

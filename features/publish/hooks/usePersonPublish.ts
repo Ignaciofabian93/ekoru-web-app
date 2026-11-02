@@ -7,6 +7,7 @@ import {
 import { ADD_PRODUCT } from "@/graphql/marketplace/mutations";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useToast } from "@/hooks/useToast";
+import { useImageUploadMessage } from "@/hooks/useImageUploadMessage";
 import { useTranslation } from "@/i18n/context";
 import useAuthStore from "@/store/useAuthStore";
 import { getCookie } from "@/utils/cookies";
@@ -24,6 +25,7 @@ export function usePersonPublish() {
   const { navigateTo } = useNavigation();
   const params = useParams<{ lang?: SupportedLanguage }>();
   const toast = useToast();
+  const imageUploadMessage = useImageUploadMessage();
   const { t } = useTranslation("publish");
   const sellerId = useAuthStore((s) => s.seller?.id);
 
@@ -75,10 +77,23 @@ export function usePersonPublish() {
       navigateTo({ route: `/${lang}/marketplace` });
       return true;
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Unexpected error");
+      toast.error(
+        imageUploadMessage(err) ??
+          (err instanceof Error ? err.message : "Unexpected error"),
+      );
       return false;
     }
-  }, [addProduct, form, navigateTo, params.lang, sellerId, t, toast, uploadImages]);
+  }, [
+    addProduct,
+    form,
+    imageUploadMessage,
+    navigateTo,
+    params.lang,
+    sellerId,
+    t,
+    toast,
+    uploadImages,
+  ]);
 
   return {
     form,

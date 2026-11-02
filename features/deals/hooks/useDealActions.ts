@@ -17,6 +17,7 @@ import { GET_ME } from "@/graphql/auth/login";
 import useAuthStore, { useCurrentSellerId } from "@/store/useAuthStore";
 import type { Seller } from "@/types/user";
 import { useToast } from "@/hooks/useToast";
+import { useImageUploadMessage } from "@/hooks/useImageUploadMessage";
 import type { Deal } from "../types";
 
 const REFETCH = [{ query: MY_DEALS_AS_BUYER }, { query: MY_DEALS_AS_SELLER }];
@@ -28,6 +29,7 @@ const REFETCH = [{ query: MY_DEALS_AS_BUYER }, { query: MY_DEALS_AS_SELLER }];
  */
 export function useDealActions() {
   const toast = useToast();
+  const imageUploadMessage = useImageUploadMessage();
   const sellerId = useCurrentSellerId();
   const client = useApolloClient();
   const setSeller = useAuthStore((s) => s.setSeller);
@@ -65,7 +67,10 @@ export function useDealActions() {
     try {
       return await fn();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Algo salió mal");
+      toast.error(
+        imageUploadMessage(err) ??
+          (err instanceof Error ? err.message : "Algo salió mal"),
+      );
       return null;
     } finally {
       setBusyId(null);

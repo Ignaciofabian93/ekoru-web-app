@@ -9,8 +9,7 @@
       "changeAvatar": "Cambiar foto de perfil",
       "changeCover": "Cambiar foto de portada",
       "success": "Imagen actualizada",
-      "error": "No se pudo subir la imagen",
-      "invalidType": "Por favor selecciona un archivo de imagen"
+      "error": "No se pudo subir la imagen"
     },
     "points": "{{count}} pts"
   },

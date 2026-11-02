@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { ImagePlus, X } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useMemo, useRef } from "react";
+import { useImagePick } from "@/hooks/useImagePick";
 
 /**
  * One slot in the editor. A listing being edited holds a mix: images already
@@ -12,9 +13,7 @@ import { useEffect, useMemo, useRef } from "react";
  * Keeping them in one ordered list is what lets the seller reorder or remove
  * across both without the two kinds drifting apart.
  */
-export type EditableImage =
-  | { kind: "stored"; key: string }
-  | { kind: "new"; file: File };
+export type EditableImage = { kind: "stored"; key: string } | { kind: "new"; file: File };
 
 interface EditImagesFieldProps {
   images: EditableImage[];
@@ -68,13 +67,9 @@ export function EditImagesField({
 
   const canAddMore = images.length < max;
 
-  const handleFiles = (files: FileList | null) => {
-    if (!files) return;
-    Array.from(files)
-      .filter((file) => file.type.startsWith("image/"))
-      .slice(0, max - images.length)
-      .forEach(onAdd);
-  };
+  const { pickError, addFiles } = useImagePick(onAdd);
+  // A refused photo is the more recent news than the form's own check.
+  const shownError = pickError ?? error;
 
   return (
     <div className="flex flex-col gap-2">
@@ -142,22 +137,22 @@ export function EditImagesField({
             onClick={() => inputRef.current?.click()}
             className={clsx(
               "flex aspect-square flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed transition-colors",
-              error
+              shownError
                 ? "border-danger text-danger"
                 : "border-input-border text-foreground-tertiary hover:border-primary hover:text-primary",
             )}
           >
             <ImagePlus size={22} color="currentColor" strokeWidth={2} />
-            <Text variant="small" color={error ? "error" : "tertiary"}>
+            <Text variant="small" color={shownError ? "error" : "tertiary"}>
               {addLabel}
             </Text>
           </button>
         )}
       </div>
 
-      {error ? (
+      {shownError ? (
         <Text variant="small" color="error">
-          {error}
+          {shownError}
         </Text>
       ) : (
         <Text variant="small" color="tertiary">
@@ -172,9 +167,11 @@ export function EditImagesField({
         multiple
         hidden
         onChange={(e) => {
-          handleFiles(e.target.files);
+          // Copied first: the reset below empties the input's file list.
+          const picked = Array.from(e.target.files ?? []).slice(0, max - images.length);
           // Reset so picking the same file again still fires onChange.
           e.target.value = "";
+          void addFiles(picked);
         }}
       />
     </div>

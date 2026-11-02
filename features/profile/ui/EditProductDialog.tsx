@@ -21,6 +21,7 @@ import { InterestsField } from "@/features/publish/ui/fields/InterestsField";
 import { MarketplaceCategoryFields } from "@/features/publish/ui/fields/MarketplaceCategoryFields";
 import { useSeller } from "@/store/useAuthStore";
 import { useToast } from "@/hooks/useToast";
+import { useImageUploadMessage } from "@/hooks/useImageUploadMessage";
 import type { ProductCondition } from "@/types/enums";
 import { NAMESPACE } from "../i18n";
 import type { UpdateProductPatch } from "../hooks/useProductActions";
@@ -52,6 +53,7 @@ export function EditProductDialog({
 }: EditProductDialogProps) {
   const { t } = useTranslation(NAMESPACE);
   const toast = useToast();
+  const imageUploadMessage = useImageUploadMessage();
   const seller = useSeller();
   const { uploading, uploadImages } = useImageUpload();
 
@@ -66,9 +68,7 @@ export function EditProductDialog({
   const [conditionDescription, setConditionDescription] = useState(
     product.conditionDescription ?? "",
   );
-  const [isExchangeable, setIsExchangeable] = useState(
-    Boolean(product.isExchangeable),
-  );
+  const [isExchangeable, setIsExchangeable] = useState(Boolean(product.isExchangeable));
   const [interests, setInterests] = useState<string[]>(product.interests ?? []);
   const [productCategoryId, setProductCategoryId] = useState<string>(
     product.productCategory?.id ? String(product.productCategory.id) : "",
@@ -137,7 +137,10 @@ export function EditProductDialog({
         image.kind === "stored" ? image.key : uploaded[next++],
       );
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : t("dashboard.listings.edit.error"));
+      toast.error(
+        imageUploadMessage(err) ??
+          (err instanceof Error ? err.message : t("dashboard.listings.edit.error")),
+      );
       return;
     }
 
@@ -267,9 +270,7 @@ export function EditProductDialog({
         />
 
         <ExchangeableField value={isExchangeable} onChange={setIsExchangeable} />
-        {isExchangeable && (
-          <InterestsField value={interests} onChange={setInterests} />
-        )}
+        {isExchangeable && <InterestsField value={interests} onChange={setInterests} />}
 
         <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Button

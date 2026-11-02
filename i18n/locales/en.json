@@ -81,7 +81,15 @@
     "required": "Required field",
     "scrollPrevious": "Scroll left",
     "scrollNext": "Scroll right",
-    "optional": "Optional"
+    "optional": "Optional",
+    "imageUpload": {
+      "format": "We can't read this image format (for example, HEIC). Choose a JPG, PNG or WebP photo.",
+      "tooHeavy": "The image is larger than 10 MB. Choose a smaller one.",
+      "tooLarge": "The image is too large: at most 10,000 pixels per side.",
+      "unreadable": "We couldn't read this image; it may be damaged. Try another one.",
+      "session": "Your session expired. Sign in again and upload the image once more.",
+      "failed": "We couldn't upload the image. Check your connection and try again in a few minutes."
+    }
   },
   "profile": {
     "profile": "Profile",

@@ -81,7 +81,15 @@
     "required": "Champ obligatoire",
     "scrollPrevious": "Défiler vers la gauche",
     "scrollNext": "Défiler vers la droite",
-    "optional": "Optionnel"
+    "optional": "Optionnel",
+    "imageUpload": {
+      "format": "Nous ne pouvons pas lire ce format d'image (par exemple HEIC). Choisissez une photo JPG, PNG ou WebP.",
+      "tooHeavy": "L'image dépasse 10 Mo. Choisissez-en une plus légère.",
+      "tooLarge": "L'image est trop grande : 10 000 pixels maximum par côté.",
+      "unreadable": "Nous n'avons pas pu lire cette image ; elle est peut-être endommagée. Essayez-en une autre.",
+      "session": "Votre session a expiré. Reconnectez-vous et envoyez l'image à nouveau.",
+      "failed": "Nous n'avons pas pu envoyer l'image. Vérifiez votre connexion et réessayez dans quelques minutes."
+    }
   },
   "profile": {
     "profile": "Profil",

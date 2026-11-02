@@ -16,6 +16,7 @@ import { useImageUpload } from "@/features/publish/hooks/useImageUpload";
 import { Toggle } from "@/components/Primitives/Toggle";
 import { useSeller } from "@/store/useAuthStore";
 import { useToast } from "@/hooks/useToast";
+import { useImageUploadMessage } from "@/hooks/useImageUploadMessage";
 import { NAMESPACE } from "../i18n";
 import type { UpdateStoreProductPatch } from "../hooks/useStoreProductActions";
 import { EditImagesField, type EditableImage } from "./EditImagesField";
@@ -39,6 +40,7 @@ export function EditStoreProductDialog({
 }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const toast = useToast();
+  const imageUploadMessage = useImageUploadMessage();
   const seller = useSeller();
   const { uploading, uploadImages } = useImageUpload();
 
@@ -78,7 +80,8 @@ export function EditStoreProductDialog({
   // An offer that doesn't undercut the price would render as a nonsense
   // struck-through original on the card.
   const offerValid =
-    !hasOffer || (!Number.isNaN(numericOffer) && numericOffer > 0 && numericOffer < numericPrice);
+    !hasOffer ||
+    (!Number.isNaN(numericOffer) && numericOffer > 0 && numericOffer < numericPrice);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,7 +107,8 @@ export function EditStoreProductDialog({
       );
     } catch (err) {
       toast.error(
-        err instanceof Error ? err.message : t("dashboard.listings.edit.error"),
+        imageUploadMessage(err) ??
+          (err instanceof Error ? err.message : t("dashboard.listings.edit.error")),
       );
       return;
     }

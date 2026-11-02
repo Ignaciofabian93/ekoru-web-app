@@ -12,6 +12,7 @@ import { MAX_PRODUCT_IMAGES } from "@/features/publish/constants/options";
 import { useImageUpload } from "@/features/publish/hooks/useImageUpload";
 import { useSeller } from "@/store/useAuthStore";
 import { useToast } from "@/hooks/useToast";
+import { useImageUploadMessage } from "@/hooks/useImageUploadMessage";
 import { NAMESPACE } from "../i18n";
 import type { UpdateServicePatch } from "../hooks/useServiceActions";
 import { EditImagesField, type EditableImage } from "./EditImagesField";
@@ -29,6 +30,7 @@ interface Props {
 export function EditServiceDialog({ isOpen, service, loading, onClose, onSave }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const toast = useToast();
+  const imageUploadMessage = useImageUploadMessage();
   const seller = useSeller();
   const { uploading, uploadImages } = useImageUpload();
 
@@ -83,7 +85,8 @@ export function EditServiceDialog({ isOpen, service, loading, onClose, onSave }:
       );
     } catch (err) {
       toast.error(
-        err instanceof Error ? err.message : t("dashboard.listings.edit.error"),
+        imageUploadMessage(err) ??
+          (err instanceof Error ? err.message : t("dashboard.listings.edit.error")),
       );
       return;
     }

@@ -1,4 +1,5 @@
 import api from "./client";
+import { prepareImage, toImageUploadError } from "@/utils/imageUpload";
 
 interface ProfileImageUploadResponse {
   message: string;
@@ -10,20 +11,26 @@ interface ProfileImageUploadResponse {
   height: number;
 }
 
-export async function uploadProfileImage(file: File): Promise<{ key: string; imageUrl: string }> {
+/** Throws `ImageUploadError`, which says what was wrong with the image. */
+async function uploadImage(
+  route: "/profile/avatar" | "/profile/cover",
+  file: File,
+): Promise<{ key: string; imageUrl: string }> {
   const formData = new FormData();
-  formData.append("file", file);
+  formData.append("file", await prepareImage(file));
 
-  const { data } = await api.post<ProfileImageUploadResponse>("/profile/avatar", formData);
-
-  return { key: data.key, imageUrl: data.imageUrl };
+  try {
+    const { data } = await api.post<ProfileImageUploadResponse>(route, formData);
+    return { key: data.key, imageUrl: data.imageUrl };
+  } catch (error) {
+    throw toImageUploadError(error);
+  }
 }
 
-export async function uploadCoverImage(file: File): Promise<{ key: string; imageUrl: string }> {
-  const formData = new FormData();
-  formData.append("file", file);
+export function uploadProfileImage(file: File) {
+  return uploadImage("/profile/avatar", file);
+}
 
-  const { data } = await api.post<ProfileImageUploadResponse>("/profile/cover", formData);
-
-  return { key: data.key, imageUrl: data.imageUrl };
+export function uploadCoverImage(file: File) {
+  return uploadImage("/profile/cover", file);
 }
