@@ -305,7 +305,9 @@
       "viewDetails": "Voir les détails",
       "hideDetails": "Masquer les détails",
       "rate": "Évaluer l'achat",
-      "unavailableItem": "Article plus disponible"
+      "unavailableItem": "Article plus disponible",
+      "pay": "Payer {{amount}}",
+      "payHint": "Vous payez avec Mercado Pago. Une commande non payée est annulée au bout d'une heure."
     },
     "empty": {
       "title": "Aucune commande pour l'instant",
@@ -748,7 +750,7 @@
       "decline": "Refuser",
       "awaitingProvider": "En attente du prix du prestataire.",
       "pay": "Payer {{amount}}",
-      "payHint": "Vous payez avec Webpay. Le prestataire est prévenu dès que le paiement est confirmé.",
+      "payHint": "Vous payez avec Mercado Pago. Le prestataire est prévenu dès que le paiement est confirmé.",
       "paid": "Payé",
       "paidOn": "Payé le {{date}}"
     },

@@ -10,6 +10,7 @@ import { Button } from "@/components/Primitives/Button";
 import { Input } from "@/components/Primitives/Inputs";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import { useDisplayName } from "@/hooks/useSellerData";
 import { useTranslation } from "@/i18n/context";
@@ -27,7 +28,6 @@ import {
 import {
   DetailRow,
   formatDate,
-  formatMoney,
   OrderBreakdown,
   OrderLines,
   OrderStageBadge,
@@ -54,7 +54,7 @@ function StatTile({ label, value }: { label: string; value: string }) {
 }
 
 /** Who bought and where it goes. Loads location names only once opened. */
-function SaleDetails({ order, lang }: { order: SaleOrder; lang: string }) {
+function SaleDetails({ order }: { order: SaleOrder }) {
   const { t } = useTranslation(NAMESPACE);
   const buyerName = useDisplayName(order.buyer as Seller | null | undefined);
   const address = order.shippingAddress;
@@ -91,7 +91,7 @@ function SaleDetails({ order, lang }: { order: SaleOrder; lang: string }) {
         </div>
       )}
 
-      <OrderBreakdown order={order} lang={lang} />
+      <OrderBreakdown order={order} />
     </div>
   );
 }
@@ -136,7 +136,8 @@ export function SalesList() {
     if (await moveTo(delivering.id, "DELIVERED")) setDelivering(null);
   };
 
-  const money = (value: number) => formatMoney(value, STATS_CURRENCY, lang);
+  const formatPrice = useFormatPrice();
+  const money = (value: number) => formatPrice(value, STATS_CURRENCY);
 
   return (
     <div className="flex flex-col gap-5">
@@ -162,7 +163,11 @@ export function SalesList() {
         </section>
       )}
 
-      <div className="flex gap-2 overflow-x-auto pb-1" role="group" aria-label={t("sales.filter.label")}>
+      <div
+        className="flex gap-2 overflow-x-auto pb-1"
+        role="group"
+        aria-label={t("sales.filter.label")}
+      >
         {FILTER_KEYS.map((key) => (
           <button
             key={key}
@@ -235,7 +240,7 @@ export function SalesList() {
 
                 <OrderLines items={items} />
 
-                {open && <SaleDetails order={order} lang={lang} />}
+                {open && <SaleDetails order={order} />}
 
                 <footer className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex flex-col">
@@ -243,7 +248,7 @@ export function SalesList() {
                       {t("orders.card.total")}
                     </Text>
                     <Text variant="span" weight="bold" size="lg">
-                      {formatMoney(order.total, order.currency, lang)}
+                      {formatPrice(order.total, order.currency)}
                     </Text>
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -266,7 +271,9 @@ export function SalesList() {
                       />
                     )}
                     <Button
-                      text={t(open ? "orders.card.hideDetails" : "orders.card.viewDetails")}
+                      text={t(
+                        open ? "orders.card.hideDetails" : "orders.card.viewDetails",
+                      )}
                       variant="ghost"
                       size="sm"
                       rightIcon={open ? ChevronUp : ChevronDown}
@@ -282,7 +289,10 @@ export function SalesList() {
       )}
 
       {pageInfo && pageInfo.totalPages > 1 && (
-        <nav className="flex items-center justify-between gap-3" aria-label={t("sales.pagination")}>
+        <nav
+          className="flex items-center justify-between gap-3"
+          aria-label={t("sales.pagination")}
+        >
           <Button
             text={t("orders.pagination.previous")}
             variant="outline"

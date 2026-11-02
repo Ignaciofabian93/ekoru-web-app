@@ -305,7 +305,9 @@
       "viewDetails": "View details",
       "hideDetails": "Hide details",
       "rate": "Rate purchase",
-      "unavailableItem": "Item no longer available"
+      "unavailableItem": "Item no longer available",
+      "pay": "Pay {{amount}}",
+      "payHint": "You pay with Mercado Pago. Orders left unpaid for an hour are canceled."
     },
     "empty": {
       "title": "No orders yet",
@@ -748,7 +750,7 @@
       "decline": "Decline",
       "awaitingProvider": "Waiting for the provider to send a price.",
       "pay": "Pay {{amount}}",
-      "payHint": "You pay with Webpay. The provider is notified once the payment is confirmed.",
+      "payHint": "You pay with Mercado Pago. The provider is notified once the payment is confirmed.",
       "paid": "Paid",
       "paidOn": "Paid on {{date}}"
     },

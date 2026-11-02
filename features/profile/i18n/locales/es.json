@@ -305,7 +305,9 @@
       "viewDetails": "Ver detalles",
       "hideDetails": "Ocultar detalles",
       "rate": "Calificar compra",
-      "unavailableItem": "Producto ya no disponible"
+      "unavailableItem": "Producto ya no disponible",
+      "pay": "Pagar {{amount}}",
+      "payHint": "Pagas con Mercado Pago. Si no se paga en una hora, el pedido se cancela."
     },
     "empty": {
       "title": "Aún no tienes pedidos",
@@ -748,7 +750,7 @@
       "decline": "Rechazar",
       "awaitingProvider": "Esperando que el proveedor envíe un precio.",
       "pay": "Pagar {{amount}}",
-      "payHint": "Pagas con Webpay. El proveedor recibe el aviso al confirmarse el pago.",
+      "payHint": "Pagas con Mercado Pago. El proveedor recibe el aviso al confirmarse el pago.",
       "paid": "Pagada",
       "paidOn": "Pagada el {{date}}"
     },

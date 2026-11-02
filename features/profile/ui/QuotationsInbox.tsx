@@ -6,6 +6,7 @@ import { Text } from "@/components/Primitives/Text";
 import { TextArea } from "@/components/Primitives/TextArea";
 import { Title } from "@/components/Primitives/Title";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 import clsx from "clsx";
 import { Check, CreditCard, FileText, X } from "lucide-react";
@@ -41,18 +42,6 @@ function formatDate(iso: string, lang: string) {
     }).format(new Date(iso));
   } catch {
     return iso;
-  }
-}
-
-function formatMoney(value: number, lang: string) {
-  try {
-    return new Intl.NumberFormat(lang, {
-      style: "currency",
-      currency: "CLP",
-      maximumFractionDigits: 0,
-    }).format(value);
-  } catch {
-    return `CLP ${value}`;
   }
 }
 
@@ -156,6 +145,7 @@ export function QuotationsInbox({ initialTab = "sent" }: { initialTab?: Tab }) {
     responding,
   } = useMyQuotations();
   const { pay, payingId } = useQuotationPayment();
+  const formatPrice = useFormatPrice();
 
   const list = tab === "received" ? received : sent;
 
@@ -265,7 +255,7 @@ export function QuotationsInbox({ initialTab = "sent" }: { initialTab?: Tab }) {
                       {t("quotes.card.quotedPrice")}
                     </Text>
                     <Text variant="span" weight="bold" size="lg">
-                      {formatMoney(price, lang)}
+                      {formatPrice(price, "CLP")}
                     </Text>
                   </div>
                 )}
@@ -297,11 +287,11 @@ export function QuotationsInbox({ initialTab = "sent" }: { initialTab?: Tab }) {
                   </div>
                 )}
 
-                {/* WEB-4: an accepted, unpaid quote is paid through Webpay. */}
+                {/* WEB-4: an accepted, unpaid quote is paid through Mercado Pago. */}
                 {!isProviderView && hasPrice && isPayable(quotation) && (
                   <div className="flex flex-wrap items-center gap-3 border-t border-border-light pt-3">
                     <Button
-                      text={t("quotes.card.pay", { amount: formatMoney(price, lang) })}
+                      text={t("quotes.card.pay", { amount: formatPrice(price, "CLP") })}
                       leftIcon={CreditCard}
                       size="sm"
                       loading={payingId === quotation.id}

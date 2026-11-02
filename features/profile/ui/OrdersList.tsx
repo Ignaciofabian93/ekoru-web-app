@@ -2,22 +2,18 @@
 import { Button } from "@/components/Primitives/Button";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import clsx from "clsx";
-import { ChevronDown, ChevronUp, PackageSearch } from "lucide-react";
+import { ChevronDown, ChevronUp, CreditCard, PackageSearch } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { NAMESPACE } from "../i18n";
 import { EmptyState } from "@/components/Feedback/EmptyState";
 import { orderStage, useMyOrders, type OrderStage } from "../hooks/useMyOrders";
-import {
-  formatDate,
-  formatMoney,
-  OrderBreakdown,
-  OrderLines,
-  OrderStageBadge,
-} from "./OrderParts";
+import { useOrderPayment } from "../hooks/useOrderPayment";
+import { formatDate, OrderBreakdown, OrderLines, OrderStageBadge } from "./OrderParts";
 
 type FilterKey =
   | "all"
@@ -48,6 +44,8 @@ export function OrdersList() {
   const [openId, setOpenId] = useState<string | null>(null);
   const { orders, pageInfo, page, initialLoading, loading, error, refetch, goToPage } =
     useMyOrders();
+  const { pay, payingId } = useOrderPayment();
+  const formatPrice = useFormatPrice();
 
   // Filtering is client-side over the current page: the backend paginates but
   // does not filter by stage, so a filter narrows what this page shows rather
@@ -164,7 +162,27 @@ export function OrdersList() {
                   </Text>
                 )}
 
-                {open && <OrderBreakdown order={order} lang={lang} />}
+                {open && <OrderBreakdown order={order} />}
+
+                {/* A buyer who left the provider's page pays the same order
+                    from here: checkout already emptied their cart. */}
+                {stage === "PENDING_PAYMENT" && (
+                  <div className="flex flex-wrap items-center gap-3 border-t border-border-light pt-3">
+                    <Button
+                      text={t("orders.card.pay", {
+                        amount: formatPrice(order.total, order.currency),
+                      })}
+                      leftIcon={CreditCard}
+                      size="sm"
+                      loading={payingId === order.id}
+                      disabled={payingId !== null}
+                      onClick={() => void pay(order.id)}
+                    />
+                    <Text variant="small" color="tertiary">
+                      {t("orders.card.payHint")}
+                    </Text>
+                  </div>
+                )}
 
                 <footer className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex flex-col">
@@ -172,7 +190,7 @@ export function OrdersList() {
                       {t("orders.card.total")}
                     </Text>
                     <Text variant="span" weight="bold" size="lg">
-                      {formatMoney(order.total, order.currency, lang)}
+                      {formatPrice(order.total, order.currency)}
                     </Text>
                   </div>
                   <Button
@@ -191,7 +209,10 @@ export function OrdersList() {
       )}
 
       {pageInfo && pageInfo.totalPages > 1 && (
-        <nav className="flex items-center justify-between gap-3" aria-label={t("orders.pagination.label")}>
+        <nav
+          className="flex items-center justify-between gap-3"
+          aria-label={t("orders.pagination.label")}
+        >
           <Button
             text={t("orders.pagination.previous")}
             variant="outline"

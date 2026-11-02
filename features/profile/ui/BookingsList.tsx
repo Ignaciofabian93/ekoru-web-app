@@ -5,6 +5,7 @@ import { Title } from "@/components/Primitives/Title";
 import { EmptyState } from "@/components/Feedback/EmptyState";
 import { ConfirmDialog } from "@/components/Overlays";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useDisplayName } from "@/hooks/useSellerData";
 import { useTranslation } from "@/i18n/context";
 import type { Seller } from "@/types/user";
@@ -60,18 +61,6 @@ function formatDate(iso: string, lang: string) {
   }
 }
 
-function formatMoney(value: number, lang: string) {
-  try {
-    return new Intl.NumberFormat(lang, {
-      style: "currency",
-      currency: "CLP",
-      maximumFractionDigits: 0,
-    }).format(value);
-  } catch {
-    return `CLP ${value}`;
-  }
-}
-
 function Skeletons() {
   return (
     <div className="flex flex-col gap-4" aria-busy="true">
@@ -101,6 +90,7 @@ function BookingCard({
   actions?: ReactNode;
 }) {
   const { t } = useTranslation(NAMESPACE);
+  const formatPrice = useFormatPrice();
   return (
     <article className="flex flex-col gap-3 rounded-2xl border border-border-light bg-surface p-5">
       <header className="flex flex-wrap items-start justify-between gap-3">
@@ -152,7 +142,7 @@ function BookingCard({
             {t("bookings.card.agreedPrice")}
           </Text>
           <Text variant="span" weight="bold">
-            {formatMoney(booking.agreedPrice, lang)}
+            {formatPrice(booking.agreedPrice, "CLP")}
           </Text>
           {/* D7: nothing is charged on EKORU; the client pays on site. */}
           <span className="inline-flex items-center gap-1 text-xs text-foreground-secondary">

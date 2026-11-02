@@ -4,6 +4,8 @@ import { PackageCheck } from "lucide-react";
 import Image from "next/image";
 
 import { Text } from "@/components/Primitives/Text";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
+import { resolveImageUrl } from "@/utils/resolveImage";
 import { useTranslation } from "@/i18n/context";
 
 import { NAMESPACE } from "../i18n";
@@ -29,18 +31,6 @@ const STAGE_TONE: Record<OrderStage, string> = {
   CANCELED: "bg-danger/10 text-danger",
 };
 
-export function formatMoney(value: number, currency: string, lang: string) {
-  try {
-    return new Intl.NumberFormat(lang, {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 0,
-    }).format(value);
-  } catch {
-    return `${currency} ${value.toLocaleString(lang)}`;
-  }
-}
-
 export function formatDate(iso: string, lang: string) {
   try {
     return new Intl.DateTimeFormat(lang, {
@@ -56,7 +46,12 @@ export function formatDate(iso: string, lang: string) {
 export function OrderStageBadge({ stage }: { stage: OrderStage }) {
   const { t } = useTranslation(NAMESPACE);
   return (
-    <span className={clsx("rounded-full px-2.5 py-1 text-xs font-semibold", STAGE_TONE[stage])}>
+    <span
+      className={clsx(
+        "rounded-full px-2.5 py-1 text-xs font-semibold",
+        STAGE_TONE[stage],
+      )}
+    >
       {t(`orders.status.${stage}`)}
     </span>
   );
@@ -67,7 +62,7 @@ export function OrderLines({ items }: { items: OrderLine[] }) {
   return (
     <ul className="flex flex-col gap-2 border-y border-border-light py-3">
       {items.map((item) => {
-        const image = lineImage(item);
+        const image = resolveImageUrl(lineImage(item));
         return (
           <li key={item.id} className="flex items-center gap-3 text-sm text-foreground">
             <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-md bg-background-secondary text-foreground-tertiary">
@@ -103,8 +98,9 @@ export function DetailRow({ label, value }: { label: string; value: React.ReactN
 }
 
 /** Subtotal, shipping, method and tracking: what both sides want to check. */
-export function OrderBreakdown({ order, lang }: { order: BuyerOrder; lang: string }) {
+export function OrderBreakdown({ order }: { order: BuyerOrder }) {
   const { t } = useTranslation(NAMESPACE);
+  const formatPrice = useFormatPrice();
   const tracking = order.shippingStatus?.trackingInfo;
   return (
     <div className="flex flex-col gap-1.5 rounded-xl bg-background-secondary/60 p-3">
@@ -115,11 +111,11 @@ export function OrderBreakdown({ order, lang }: { order: BuyerOrder; lang: strin
       {tracking && <DetailRow label={t("orders.details.tracking")} value={tracking} />}
       <DetailRow
         label={t("orders.details.subtotal")}
-        value={formatMoney(order.subtotal, order.currency, lang)}
+        value={formatPrice(order.subtotal, order.currency)}
       />
       <DetailRow
         label={t("orders.details.shipping")}
-        value={formatMoney(order.shippingCost, order.currency, lang)}
+        value={formatPrice(order.shippingCost, order.currency)}
       />
     </div>
   );

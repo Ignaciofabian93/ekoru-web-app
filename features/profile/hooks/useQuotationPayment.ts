@@ -23,9 +23,9 @@ export function isPayable(quotation: {
 }
 
 /**
- * Pays an accepted quote through Webpay (WEB-4). Same hand-off as checkout:
- * the provider returns through `/api/checkout/return/webpay`, the gateway
- * commits the payment and lands the client on `/cart/confirmation`, which
+ * Pays an accepted quote (WEB-4), with the same hand-off as checkout:
+ * the provider returns through `/api/checkout/return/<provider>`, the gateway
+ * confirms the payment and lands the client on `/cart/confirmation`, which
  * recognizes a quote payment and links back to the quotes inbox.
  */
 export function useQuotationPayment() {
