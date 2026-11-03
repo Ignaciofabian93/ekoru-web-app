@@ -30,6 +30,15 @@ export type NavigationDictionary = {
     /** Heading above the list of languages in the popover. */
     heading: string;
   };
+  /** The desktop dropdown each subheader section opens. */
+  megaMenu: {
+    /** Link to a section's or category's landing page. Interpolates `{{section}}`. */
+    seeAll: string;
+    /** A section whose catalog came back empty. */
+    empty: string;
+    /** Screen-reader announcement while a catalog loads. */
+    loading: string;
+  };
   dropdown: {
     myProfile: string;
     recycle: string;

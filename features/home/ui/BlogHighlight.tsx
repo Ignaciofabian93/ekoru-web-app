@@ -15,11 +15,6 @@ import { Text } from "@/components/Primitives/Text";
 
 const SKELETON_COUNT = 4;
 
-/**
- * Blog topics (the blog catalog categories) as a horizontal rail. Same query
- * and variables as `useCategories`, so Apollo serves it from the cache the
- * categories grid already filled.
- */
 export function BlogHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
   const { categories: topics, loading } = useBlogCatalog(lang.toUpperCase() as Language);

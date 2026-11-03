@@ -5,9 +5,7 @@ import {
   NAMESPACE as MARKETPLACE_NAMESPACE,
 } from "@/features/marketplace/i18n";
 import { getHomeDictionary, NAMESPACE } from "../i18n";
-import { CategoriesSection } from "../ui/CategoriesSection";
 import { HomeHero } from "../ui/HomeHero";
-// import { StatsSection } from "../ui/StatsSection";
 import { StoresHighlight } from "../ui/StoresHighlight";
 import { MarketplaceHighlight } from "../ui/MarketplaceHighlight";
 import { ServicesHighlight } from "../ui/ServicesHighlight";
@@ -27,15 +25,13 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
       dictionary={{ [NAMESPACE]: dict, [MARKETPLACE_NAMESPACE]: marketplaceDict }}
     >
       <PageLayout hero={<HomeHero lang={lang} />} width="wide">
-        <CategoriesSection lang={lang} />
-        {/* <StatsSection /> */}
+        <AdBannerSection lang={lang} variant="green" domain="marketplace" />
+        <MarketplaceHighlight lang={lang} />
         <AdBannerSection lang={lang} variant="sky" domain="stores" />
         <StoresHighlight lang={lang} />
         <StoreProductsHighlight lang={lang} />
         <AdBannerSection lang={lang} variant="charcoal" domain="services" />
         <ServicesHighlight lang={lang} />
-        <AdBannerSection lang={lang} variant="green" domain="marketplace" />
-        <MarketplaceHighlight lang={lang} />
         <AdBannerSection lang={lang} variant="teal" domain="blog" />
         <BlogHighlight lang={lang} />
       </PageLayout>

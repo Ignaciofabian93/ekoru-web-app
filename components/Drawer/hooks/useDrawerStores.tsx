@@ -22,13 +22,15 @@ export type L1Item = { label: string; route: string; children?: L2Item[] };
 
 // Maps the catalog response into the L1 > L2 accordion structure:
 //   StoreCatalogItem > StoreSubCategoryItem
-function mapCatalogToAccordion(items: StoreCatalogItem[]): L1Item[] {
+// Routes match app/[lang]/stores/[storeId]/[subcategory], where the first
+// segment carries the category slug.
+export function mapCatalogToAccordion(items: StoreCatalogItem[]): L1Item[] {
   return items.map((cat) => ({
     label: cat.name,
-    route: `/stores?cat=${cat.slug}`,
+    route: `/stores/${cat.slug}`,
     children: cat.subCategoryItems.map((sub) => ({
       label: sub.name,
-      route: `/stores?sub=${sub.slug}`,
+      route: `/stores/${cat.slug}/${sub.slug}`,
     })),
   }));
 }
@@ -41,7 +43,7 @@ export function useDrawerStores(enabled: boolean) {
   const lang = typeof params?.lang === "string" ? params.lang : "es";
   const language = lang.toUpperCase() as "ES" | "EN" | "FR";
 
-  const { data } = useQuery<{ getStoreCatalog: StoreCatalogItem[] }>(GET_STORES_CATALOG, {
+  const { data, loading } = useQuery<{ getStoreCatalog: StoreCatalogItem[] }>(GET_STORES_CATALOG, {
     variables: { language },
     fetchPolicy: "cache-first",
     skip: !enabled,
@@ -54,5 +56,5 @@ export function useDrawerStores(enabled: boolean) {
     [data],
   );
 
-  return { items };
+  return { items, loading };
 }

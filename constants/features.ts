@@ -24,8 +24,6 @@ export type FeatureFlag = {
 };
 
 export const FEATURES: Record<FeatureKey, FeatureFlag> = {
-  // On since 2026-11-02 (WEB-3), paid with Mercado Pago (TRX-7). A store's
-  // products stay browse-only until it connects Cobros (`canReceivePayments`).
   cart: {
     available: true,
     surfaces:
@@ -36,14 +34,11 @@ export const FEATURES: Record<FeatureKey, FeatureFlag> = {
     surfaces:
       "Add-to-cart on the store product page and the quantity stepper on store product cards, which fall back to a browse-only CTA.",
   },
-  // On since 2026-10-12 (WEB-5): booked here, paid to the provider on site (D7).
   serviceBooking: {
     available: true,
     surfaces:
       "The 'Book' button and booking dialog on a service, the service card's booking CTA, and the bookings link in the profile menu.",
   },
-  // On since 2026-11-02 (WEB-4): only providers connected in Cobros take
-  // requests, since an accepted quote is paid to them through Mercado Pago.
   serviceQuotes: {
     available: true,
     surfaces:

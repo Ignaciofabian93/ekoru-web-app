@@ -39,32 +39,6 @@
       }
     }
   },
-  "categories": {
-    "title": "Explora nuestras categorías",
-    "subtitle": "Encuentra lo que te impulsa.",
-    "items": {
-      "marketplace": {
-        "title": "Marketplace",
-        "description": "Compra y vende artículos sostenibles de segunda mano"
-      },
-      "stores": {
-        "title": "Eco Tiendas",
-        "description": "Descubre tiendas sostenibles verificadas cerca de ti"
-      },
-      "services": {
-        "title": "Servicios",
-        "description": "Repara, arrienda e intercambia — dale una segunda vida a las cosas"
-      },
-      "community": {
-        "title": "Comunidad",
-        "description": "Eventos, charlas e iniciativas para ser más sustentables juntos"
-      },
-      "blog": {
-        "title": "Blog",
-        "description": "Tips, guías y experiencias compartidas por nuestra comunidad"
-      }
-    }
-  },
   "stats": {
     "title": "Esto ya está pasando",
     "subtitle": "Una comunidad activa cambiando la forma en que consumimos.",

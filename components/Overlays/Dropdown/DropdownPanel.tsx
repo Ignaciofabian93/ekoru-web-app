@@ -19,6 +19,7 @@ export interface DropdownPanelProps {
    */
   keepMounted?: boolean;
   className?: string;
+  ref?: React.Ref<HTMLDivElement>;
 }
 
 /**
@@ -33,16 +34,18 @@ export function DropdownPanel({
   width = "min-w-44",
   keepMounted = false,
   className,
+  ref,
 }: DropdownPanelProps) {
   if (!keepMounted && !isOpen) return null;
 
   return (
     <div
+      ref={ref}
       id={id}
       inert={keepMounted ? !isOpen : undefined}
       aria-hidden={keepMounted ? !isOpen : undefined}
       className={clsx(
-        "absolute top-[calc(100%+6px)] z-49 flex flex-col overflow-hidden rounded-xl",
+        "absolute top-[calc(100%+6px)] z-999 flex flex-col overflow-hidden rounded-xl",
         "bg-surface shadow-xl ring-1 ring-border-light",
         "transition-all duration-200",
         align === "right" ? "right-0 origin-top-right" : "left-0 origin-top-left",

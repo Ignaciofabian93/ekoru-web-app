@@ -16,6 +16,11 @@
   "languageSwitcher": {
     "heading": "Idioma"
   },
+  "megaMenu": {
+    "seeAll": "Ver todo en {{section}}",
+    "empty": "Aún no hay nada aquí.",
+    "loading": "Cargando categorías…"
+  },
   "dropdown": {
     "account": "Cuenta",
     "comingSoon": "Próximamente",

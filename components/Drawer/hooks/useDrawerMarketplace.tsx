@@ -30,19 +30,27 @@ export type L1Item = { label: string; route: string; children?: L2Item[] };
 
 // Maps the flat catalog response into the L1 > L2 > L3 accordion structure:
 //   Department > DepartmentCategory > ProductCategory
-function mapCatalogToAccordion(items: CatalogItem[]): L1Item[] {
-  return items.map((dept) => ({
-    label: dept.name,
-    route: `/marketplace?dept=${dept.slug}`,
-    children: dept.categories.map((cat) => ({
-      label: cat.name,
-      route: `/marketplace?deptCat=${cat.slug}`,
-      children: cat.productCategories.map((pc) => ({
-        label: pc.name,
-        route: `/marketplace?cat=${pc.slug}`,
-      })),
-    })),
-  }));
+// Routes nest each slug under its parent's, matching
+// app/[lang]/marketplace/[department]/[category]/[productCategory].
+export function mapCatalogToAccordion(items: CatalogItem[]): L1Item[] {
+  return items.map((dept) => {
+    const deptRoute = `/marketplace/${dept.slug}`;
+    return {
+      label: dept.name,
+      route: deptRoute,
+      children: dept.categories.map((cat) => {
+        const catRoute = `${deptRoute}/${cat.slug}`;
+        return {
+          label: cat.name,
+          route: catRoute,
+          children: cat.productCategories.map((pc) => ({
+            label: pc.name,
+            route: `${catRoute}/${pc.slug}`,
+          })),
+        };
+      }),
+    };
+  });
 }
 
 // `enabled` should be false until the drawer has been opened at least once.
@@ -53,7 +61,7 @@ export function useDrawerMarketplace(enabled: boolean) {
   const lang = typeof params?.lang === "string" ? params.lang : "es";
   const language = lang.toUpperCase() as "ES" | "EN" | "FR";
 
-  const { data } = useQuery<{ getMarketplaceCatalog: CatalogItem[] }>(
+  const { data, loading } = useQuery<{ getMarketplaceCatalog: CatalogItem[] }>(
     GET_MARKETPLACE_CATALOG,
     {
       variables: { language },
@@ -72,5 +80,5 @@ export function useDrawerMarketplace(enabled: boolean) {
     [data],
   );
 
-  return { items };
+  return { items, loading };
 }

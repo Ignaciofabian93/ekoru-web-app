@@ -38,7 +38,7 @@ export function useDrawerServices(enabled: boolean) {
   const lang = typeof params?.lang === "string" ? params.lang : "es";
   const language = lang.toUpperCase() as "ES" | "EN" | "FR";
 
-  const { data } = useQuery<{ getServiceCatalog: ServiceCatalogItem[] }>(
+  const { data, loading } = useQuery<{ getServiceCatalog: ServiceCatalogItem[] }>(
     GET_SERVICES_CATALOG,
     {
       variables: { language },
@@ -53,5 +53,5 @@ export function useDrawerServices(enabled: boolean) {
     [data],
   );
 
-  return { items };
+  return { items, loading };
 }

@@ -127,7 +127,9 @@ export default function RecycleMap({
   }
 
   return (
-    <div className="relative h-full w-full">
+    // `isolate` keeps Leaflet's pane z-indexes (400–1000) and the z-1000
+    // overlays inside the map, instead of competing with the navbar dropdowns.
+    <div className="relative isolate h-full w-full">
       <div ref={containerRef} className="h-full w-full" />
 
       {/* Center-on-me button */}

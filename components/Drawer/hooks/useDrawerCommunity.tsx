@@ -40,7 +40,7 @@ export function useDrawerCommunity(enabled: boolean) {
   const lang = typeof params?.lang === "string" ? params.lang : "es";
   const language = lang.toUpperCase() as "ES" | "EN" | "FR";
 
-  const { data } = useQuery<{ getCommunityCatalog: CommunityCatalogItem[] }>(
+  const { data, loading } = useQuery<{ getCommunityCatalog: CommunityCatalogItem[] }>(
     GET_COMMUNITY_CATALOG,
     {
       variables: { language },
@@ -55,5 +55,5 @@ export function useDrawerCommunity(enabled: boolean) {
     [data],
   );
 
-  return { items };
+  return { items, loading };
 }

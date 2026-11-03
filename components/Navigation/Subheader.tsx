@@ -1,12 +1,23 @@
 "use client";
-import { Newspaper, Package, ScanBarcode, Store, UsersRound } from "lucide-react";
-import { useEffect, useRef } from "react";
+import {
+  ChevronDown,
+  Newspaper,
+  Package,
+  ScanBarcode,
+  Store,
+  UsersRound,
+  type LucideIcon,
+} from "lucide-react";
+import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import { useDropdown } from "@/components/Overlays/Dropdown";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "@/i18n/context";
-import { NAMESPACE } from "./i18n";
+import { NAMESPACE, type NavigationSection } from "./i18n";
+import { MegaMenuPanel } from "./MegaMenu";
+import { useMegaMenuCatalog } from "./hooks/useMegaMenuCatalog";
 import type { SubHeaderLink } from "./types";
 
 const SUBHEADER_LINKS: SubHeaderLink[] = [
@@ -17,12 +28,101 @@ const SUBHEADER_LINKS: SubHeaderLink[] = [
   { key: "blog", path: "/blog", icon: Newspaper },
 ];
 
+const pillClass = (isActive: boolean, isExpanded: boolean, isLast: boolean) =>
+  clsx(
+    "flex-row items-center px-3 py-1.5 rounded-2xl border-0 cursor-pointer shrink-0",
+    "outline-none transition-colors duration-100 ease-linear",
+    "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1",
+    isLast ? "mr-0" : "mr-1.5",
+    isActive
+      ? "bg-primary"
+      : isExpanded
+        ? "bg-primary-light-bg"
+        : "bg-white hover:bg-background-tertiary",
+  );
+
+const pillTextClass = (isActive: boolean, isExpanded: boolean) =>
+  isActive
+    ? "text-on-primary"
+    : isExpanded
+      ? "text-primary-dark"
+      : "text-foreground-secondary";
+
+function PillContent({
+  icon: Icon,
+  label,
+  isActive,
+  isExpanded = false,
+}: {
+  icon: LucideIcon;
+  label: string;
+  isActive: boolean;
+  isExpanded?: boolean;
+}) {
+  const tone = pillTextClass(isActive, isExpanded);
+  return (
+    <>
+      <span className="mr-1.25">
+        <Icon size={16} aria-hidden className={tone} strokeWidth={2} />
+      </span>
+      <span
+        className={clsx(
+          "text-sm font-sans whitespace-nowrap",
+          isActive || isExpanded ? "font-semibold" : "font-normal",
+          tone,
+        )}
+      >
+        {label}
+      </span>
+    </>
+  );
+}
+
+/**
+ * The row of site sections under the navbar.
+ *
+ * Below `md` each pill is a plain link — the drawer's accordions carry the
+ * catalog trees there. From `md` up each pill is a disclosure button instead:
+ * clicking it opens that section's megamenu, and the panel's "See all" link
+ * takes over the pill's old job of reaching the section's landing page.
+ */
 export default function SubHeader() {
   const pathname = usePathname();
   const [language] = useLanguage();
   const scrollRef = useRef<HTMLUListElement>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const { t } = useTranslation(NAMESPACE);
+  const menuId = useId();
+
+  // Outside click, Escape (focus back to the pill) and focus leaving the row
+  // all close the megamenu; `openKey` only says which section is showing.
+  const { isOpen, setIsOpen, close, containerRef, triggerRef } =
+    useDropdown<HTMLButtonElement>();
+  const [openKey, setOpenKey] = useState<NavigationSection | null>(null);
+  const expandedKey = isOpen ? openKey : null;
+
+  // Sections whose catalog may be fetched. A section joins on first hover or
+  // focus of its pill, so the tree is usually loaded by the time it's clicked.
+  const [requested, setRequested] = useState<ReadonlySet<NavigationSection>>(
+    () => new Set(),
+  );
+  const catalogs = useMegaMenuCatalog(requested);
+
+  const request = (key: NavigationSection) => {
+    if (requested.has(key)) return;
+    setRequested((prev) => new Set(prev).add(key));
+  };
+
+  const toggleSection = (key: NavigationSection, trigger: HTMLButtonElement) => {
+    triggerRef.current = trigger;
+    request(key);
+    if (expandedKey === key) {
+      close();
+      return;
+    }
+    setOpenKey(key);
+    setIsOpen(true);
+  };
 
   // Routes live under `/[lang]`, so the locale prefix is what makes both the
   // link and the active-section check line up with the real pathname.
@@ -48,53 +148,75 @@ export default function SubHeader() {
 
   return (
     <nav
+      ref={containerRef}
       aria-label={t("a11y.sectionsNav")}
       className="w-full flex items-center justify-center bg-white shadow-md py-1"
     >
+      {/* Scrolls sideways on small screens; from `md` it must not clip, or the
+          dropdown hanging off each pill gets cut off. */}
       <ul
         ref={scrollRef}
-        className="flex flex-row items-center gap-3 px-3 overflow-x-auto scrollbar-none list-none"
+        className="flex flex-row items-center gap-3 px-3 overflow-x-auto md:overflow-visible scrollbar-none list-none"
       >
         {links.map((item, index) => {
           const isActive = index === activeIndex;
-          const Icon = item.icon;
+          const isExpanded = expandedKey === item.key;
           const isLast = index === links.length - 1;
+          const panelId = `${menuId}-${item.key}`;
 
           return (
-            <li key={item.key} className="shrink-0">
+            <li key={item.key} className="shrink-0 md:relative">
               <Link
                 ref={(el) => {
                   itemRefs.current[index] = el;
                 }}
                 href={item.route}
                 aria-current={isActive ? "page" : undefined}
-                className={clsx(
-                  "flex flex-row items-center px-3 py-1.5 rounded-2xl border-0 cursor-pointer shrink-0",
-                  "outline-none transition-opacity duration-100 ease-linear",
-                  "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1",
-                  isLast ? "mr-0" : "mr-1.5",
-                  isActive ? "bg-primary" : "bg-white",
-                )}
+                className={clsx(pillClass(isActive, false, isLast), "flex md:hidden")}
               >
-                <span className="mr-1.25">
-                  <Icon
-                    size={16}
-                    aria-hidden
-                    className={isActive ? "text-on-primary" : "text-foreground-secondary"}
-                    strokeWidth={2}
-                  />
-                </span>
-                <span
-                  className={clsx(
-                    "text-sm font-sans whitespace-nowrap",
-                    isActive
-                      ? "font-semibold text-on-primary"
-                      : "font-normal text-foreground-secondary",
-                  )}
-                >
-                  {item.label}
-                </span>
+                <PillContent icon={item.icon} label={item.label} isActive={isActive} />
               </Link>
+
+              <button
+                type="button"
+                aria-expanded={isExpanded}
+                aria-controls={isExpanded ? panelId : undefined}
+                aria-current={isActive ? "page" : undefined}
+                onClick={(e) => toggleSection(item.key, e.currentTarget)}
+                onPointerEnter={() => request(item.key)}
+                onFocus={() => request(item.key)}
+                className={clsx(pillClass(isActive, isExpanded, isLast), "hidden md:flex")}
+              >
+                <PillContent
+                  icon={item.icon}
+                  label={item.label}
+                  isActive={isActive}
+                  isExpanded={isExpanded}
+                />
+                <ChevronDown
+                  size={14}
+                  aria-hidden
+                  strokeWidth={2}
+                  className={clsx(
+                    "ml-1 transition-transform duration-200",
+                    isExpanded && "rotate-180",
+                    pillTextClass(isActive, isExpanded),
+                  )}
+                />
+              </button>
+
+              {/* Right after its trigger, so Tab moves from the pill into the
+                  panel (disclosure navigation pattern). */}
+              {isExpanded && (
+                <MegaMenuPanel
+                  id={panelId}
+                  label={item.label}
+                  href={item.route}
+                  lang={language}
+                  tree={catalogs[item.key]}
+                  onNavigate={close}
+                />
+              )}
             </li>
           );
         })}

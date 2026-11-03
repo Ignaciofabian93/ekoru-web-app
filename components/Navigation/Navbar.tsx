@@ -12,25 +12,22 @@ import { NotificationBanner } from "../Patterns/NotificationBanner";
 import { SearchBar } from "./SearchBar";
 import MenuButton from "./MenuButton";
 import { NotificationBell } from "@/features/notifications/ui/NotificationBell";
-import { MessagesNavButton } from "@/features/chat/ui/MessagesNavButton";
 import { FEATURES } from "@/constants/features";
 import { NAMESPACE } from "./i18n";
+import { useIsAuthenticated } from "@/store/useAuthStore";
 
 export function NavBar() {
   const { t } = useTranslation(NAMESPACE);
+  const isAuthenticated = useIsAuthenticated();
 
   return (
     <header
       id="header"
       aria-label={t("a11y.headerLabel")}
-      className="w-screen bg-linear-to-r from-primary via-secondary-dark to-primary"
+      className="w-screen bg-linear-to-r from-primary/90 via-secondary-dark/90 to-primary/90"
     >
-      {/* Above everything, including the skip link — it carries no focusable
-          controls, so it can't get between a keyboard user and that link. */}
       <NotificationBanner message={t("banner.beta")} icon={FlaskConical} variant="info" />
 
-      {/* Visible only once focused; the target is the <main> that PageLayout
-          renders. Must be the first focusable thing on the page. */}
       <a
         href={`#${MAIN_CONTENT_ID}`}
         className={clsx(
@@ -48,23 +45,16 @@ export function NavBar() {
       >
         <div className="flex items-center justify-between px-2 mb-2">
           <EkoruLogo label={t("a11y.homeLink")} />
-          {/* Positioning context for the notification panel: anchored to the
-              bell it would hang off the left edge of a phone screen, so it
-              anchors to the navbar's own right edge instead. */}
           <div className="relative flex items-center justify-end gap-3">
             <LanguageSwitcher />
-            {/* Both render nothing for guests, so the row collapses cleanly. */}
-            <MessagesNavButton />
             <NotificationBell />
-            {FEATURES.cart.available && (
+            {FEATURES.cart.available && isAuthenticated && (
               <ShoppingCartButton
                 label={t("a11y.cart")}
                 labelWithOneItem={t("a11y.cartWithOneItem")}
                 labelWithItems={t("a11y.cartWithItems")}
               />
             )}
-            {/* Below md the drawer carries the account links, so the dropdown
-                gives way to the menu button that opens it. */}
             <div className="hidden md:flex">
               <ProfileDropdown />
             </div>

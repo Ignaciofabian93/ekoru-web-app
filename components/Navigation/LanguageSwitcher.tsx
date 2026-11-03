@@ -13,14 +13,6 @@ import {
 } from "@/components/Overlays/Dropdown";
 import { Text } from "@/components/Primitives/Text";
 
-/**
- * Language control for the navbar. Every supported language is always on offer
- * — the visitor's country is detected separately (see `useLocaleDetection`) and
- * no longer narrows the list, since where someone is says little about what
- * they read.
- *
- * Options carry their own native name, so they need no translating.
- */
 export default function LanguageSwitcher() {
   const menuId = useId();
   const [language, changeLanguage] = useLanguage();

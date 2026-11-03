@@ -39,32 +39,6 @@
       }
     }
   },
-  "categories": {
-    "title": "Explore our categories",
-    "subtitle": "Find what moves you forward.",
-    "items": {
-      "marketplace": {
-        "title": "Marketplace",
-        "description": "Buy & sell pre-loved sustainable items"
-      },
-      "stores": {
-        "title": "Eco Stores",
-        "description": "Discover verified sustainable shops near you"
-      },
-      "services": {
-        "title": "Services",
-        "description": "Repair, rent & swap — give things a second life"
-      },
-      "community": {
-        "title": "Community",
-        "description": "Events, talks and initiatives to be more sustainable together"
-      },
-      "blog": {
-        "title": "Blog",
-        "description": "Tips, guides and experiences shared by our community"
-      }
-    }
-  },
   "stats": {
     "title": "This is already happening",
     "subtitle": "An active community changing the way we consume.",
