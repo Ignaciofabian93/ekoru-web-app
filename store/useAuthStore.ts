@@ -1,11 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import type {
-  PersonSubscriptionPlan,
-  BusinessSubscriptionPlan,
-  SellerType,
-} from "@/types/enums";
+import type { SellerType } from "@/types/enums";
 import type { Seller } from "@/types/user";
 import { resolveImageUrl } from "@/utils/resolveImage";
 import { formatInitials } from "@/utils/formatters";
@@ -21,7 +17,6 @@ interface AuthState {
   setSeller: (seller: Seller | null) => void;
   updateProfileImage: (imageUrl: string) => void;
   updateCoverImage: (imageUrl: string) => void;
-  updateSubscriptionPlan: (plan: string) => void;
   logout: () => void;
   setHydrated: (value: boolean) => void;
 }
@@ -51,22 +46,6 @@ const useAuthStore = create<AuthState>()((set) => ({
           profile: { ...state.seller.profile, coverImage: imageUrl },
         },
       };
-    }),
-
-  updateSubscriptionPlan: (plan) =>
-    set((state) => {
-      if (!state.seller?.profile) return state;
-      const updatedProfile =
-        state.seller.profile.__typename === "PersonProfile"
-          ? {
-              ...state.seller.profile,
-              personSubscriptionPlan: plan as PersonSubscriptionPlan,
-            }
-          : {
-              ...state.seller.profile,
-              businessSubscriptionPlan: plan as BusinessSubscriptionPlan,
-            };
-      return { seller: { ...state.seller, profile: updatedProfile } };
     }),
 
   logout: () => set({ seller: null }),

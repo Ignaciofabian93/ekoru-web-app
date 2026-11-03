@@ -20,6 +20,8 @@ export const PAYMENT_FIELDS_FRAGMENT = gql`
     orderId
     # Set instead of orderId when the payment settles a service quote (WEB-4).
     quotationId
+    # MEMBERSHIP has neither: it pays EKORU for a plan (WEB-12).
+    paymentType
     # The transactions subgraph names these differently. Alias them back to the
     # web-app's Payment vocabulary so types/transaction.ts and the UI are unchanged.
     provider: paymentProvider

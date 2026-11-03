@@ -508,14 +508,14 @@
     },
     "plans": {
       "title": "Planes disponibles",
-      "subtitle": "Cambia cuando quieras — paga mensual, cancela cuando quieras",
-      "month": "por mes",
+      "subtitle": "Pagas un período a la vez. No se renueva solo: cuando termina, eliges si sigues.",
+      "month": "1 mes",
       "year": "por año",
       "select": "Elegir plan",
       "active": "Actual",
       "popular": "Más popular",
       "unavailable": "Aún no disponible en tu país",
-      "perMonths": "cada {{count}} meses"
+      "perMonths": "{{count}} meses"
     },
     "person": {
       "FREEMIUM": {

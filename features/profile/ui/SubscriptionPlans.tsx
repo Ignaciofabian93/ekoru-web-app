@@ -5,11 +5,7 @@ import { Title } from "@/components/Primitives/Title";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 import { useParams } from "next/navigation";
-import {
-  useBusinessProfile,
-  usePersonProfile,
-  useSellerType,
-} from "@/store/useAuthStore";
+import { useSellerType } from "@/store/useAuthStore";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import clsx from "clsx";
 import { Check, Crown, Gem, Sparkles, type LucideIcon } from "lucide-react";
@@ -73,19 +69,23 @@ export function SubscriptionPlans() {
   const params = useParams<{ lang?: SupportedLanguage }>();
   const lang = params.lang ?? DEFAULT_LANGUAGE;
   const sellerType: SellerType | null = useSellerType();
-  const personProfile = usePersonProfile();
-  const businessProfile = useBusinessProfile();
   const formatPrice = useFormatPrice();
 
   const isBusiness = sellerType !== null && sellerType !== "PERSON";
   const plans = isBusiness ? BUSINESS_PLANS : PERSON_PLANS;
-  const currentPlan: PlanKey | null = isBusiness
-    ? (businessProfile?.businessSubscriptionPlan ?? null)
-    : (personProfile?.personSubscriptionPlan ?? null);
+  const { subscribe, pendingKey, isSubscribable, priceFor, current, currentLoaded } =
+    useSubscribe();
+  // The plan comes from the active subscription itself: the profile carries no
+  // plan field, so reading one there always came back empty. No subscription
+  // means the free tier.
+  const currentPlan: PlanKey | null = current
+    ? (current.plan as PlanKey)
+    : currentLoaded
+      ? FREE_PLAN
+      : null;
 
   const groupKey = isBusiness ? "business" : "person";
   const currentConfig = plans.find((p) => p.key === currentPlan);
-  const { subscribe, pendingKey, isSubscribable, priceFor, current } = useSubscribe();
   const currentPrice = currentConfig ? priceFor(currentConfig.key) : null;
 
   return (

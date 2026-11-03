@@ -126,5 +126,7 @@ export function useSubscribe() {
     },
     /** The seller's active membership, or null on the free tier. */
     current: currentData?.mySubscription ?? null,
+    /** False until `current` has been asked, so the free tier isn't assumed early. */
+    currentLoaded: currentData !== undefined,
   };
 }

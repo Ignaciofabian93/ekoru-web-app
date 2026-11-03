@@ -508,14 +508,14 @@
     },
     "plans": {
       "title": "Available plans",
-      "subtitle": "Switch anytime — pay monthly, cancel whenever",
-      "month": "per month",
+      "subtitle": "You pay one term at a time. It doesn't renew by itself: when it ends, you choose whether to continue.",
+      "month": "1 month",
       "year": "per year",
       "select": "Choose plan",
       "active": "Current",
       "popular": "Most popular",
       "unavailable": "Not available in your country yet",
-      "perMonths": "every {{count}} months"
+      "perMonths": "{{count}} months"
     },
     "person": {
       "FREEMIUM": {

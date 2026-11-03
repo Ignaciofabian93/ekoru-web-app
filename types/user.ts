@@ -131,7 +131,6 @@ export type PersonProfile = {
   profileImage?: string | null;
   coverImage?: string | null;
   allowExchanges?: boolean;
-  personSubscriptionPlan?: PersonSubscriptionPlan;
 };
 
 export type BusinessAddress = {
@@ -190,7 +189,6 @@ export type BusinessProfile = {
   // Operating Hours
   businessHours?: Record<string, unknown> | null;
 
-  businessSubscriptionPlan?: BusinessSubscriptionPlan;
   createdAt?: string;
   updatedAt?: string;
 };

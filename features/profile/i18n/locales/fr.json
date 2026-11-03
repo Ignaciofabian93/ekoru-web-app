@@ -508,14 +508,14 @@
     },
     "plans": {
       "title": "Plans disponibles",
-      "subtitle": "Changez à tout moment — paiement mensuel, annulez quand vous voulez",
-      "month": "par mois",
+      "subtitle": "Vous payez une période à la fois. Elle ne se renouvelle pas toute seule : à la fin, vous choisissez de continuer.",
+      "month": "1 mois",
       "year": "par an",
       "select": "Choisir ce plan",
       "active": "Actuel",
       "popular": "Le plus populaire",
       "unavailable": "Pas encore disponible dans votre pays",
-      "perMonths": "tous les {{count}} mois"
+      "perMonths": "{{count}} mois"
     },
     "person": {
       "FREEMIUM": {

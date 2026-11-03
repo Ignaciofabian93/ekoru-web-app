@@ -148,6 +148,11 @@
       "viewQuotes": "View my quotes",
       "retry": "Back to my quotes"
     },
+    "membership": {
+      "success": "Your plan is active. Your subscription shows when it ends.",
+      "viewPlan": "View my subscription",
+      "retry": "Back to the plans"
+    },
     "missingPayment": "We couldn't find the payment information. If you believe this is a mistake, contact us.",
     "supportLink": "I need help"
   },

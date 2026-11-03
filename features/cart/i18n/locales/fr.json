@@ -148,6 +148,11 @@
       "viewQuotes": "Voir mes devis",
       "retry": "Retour à mes devis"
     },
+    "membership": {
+      "success": "Votre plan est actif. Votre abonnement indique sa date de fin.",
+      "viewPlan": "Voir mon abonnement",
+      "retry": "Retour aux plans"
+    },
     "missingPayment": "Nous n'avons pas trouvé d'informations de paiement. Si vous pensez qu'il s'agit d'une erreur, contactez-nous.",
     "supportLink": "J'ai besoin d'aide"
   },

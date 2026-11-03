@@ -47,6 +47,44 @@ export function ConfirmationStatus({ lang, payment, loading }: Props) {
   const status = payment.status;
   const orderId = payment.orderId ? String(payment.orderId) : "—";
 
+  // WEB-12: a plan was paid to EKORU, with no order behind it. Every outcome
+  // leads back to the subscription page, which shows the term or the plans.
+  if (payment.paymentType === "MEMBERSHIP") {
+    const planLink = (label: string, variant?: "outline") => (
+      <Link href={`/${lang}/profile/subscription`}>
+        <Button text={label} variant={variant} fullWidth />
+      </Link>
+    );
+    if (status === "COMPLETED") {
+      return (
+        <StatusCard
+          icon={<CheckCircle2 size={36} className="text-success" />}
+          title={t("confirmation.success.title")}
+          subtitle={t("confirmation.membership.success")}
+          actions={planLink(t("confirmation.membership.viewPlan"))}
+        />
+      );
+    }
+    if (status === "PENDING" || status === "PROCESSING") {
+      return (
+        <StatusCard
+          icon={<Clock size={36} className="text-warning" />}
+          title={t("confirmation.pending.title")}
+          subtitle={t("confirmation.pending.subtitle", { provider: providerLabel })}
+          actions={planLink(t("confirmation.membership.viewPlan"), "outline")}
+        />
+      );
+    }
+    return (
+      <StatusCard
+        icon={<XCircle size={36} className="text-danger" />}
+        title={t("confirmation.failed.title")}
+        subtitle={t("confirmation.failed.subtitle", { provider: providerLabel })}
+        actions={planLink(t("confirmation.membership.retry"))}
+      />
+    );
+  }
+
   // WEB-4: a service quote was paid, not an order. Every outcome leads back to
   // the quotes inbox, where a failed payment can be retried.
   if (payment.quotationId) {
