@@ -39,11 +39,13 @@ export function ServiceActions({ service }: Props) {
   // offered when the provider prices by package or by the hour, where a buyer
   // may want a tailored figure before committing.
   //
-  // Booking is on (WEB-5, paid on site); quotes still wait behind their switch.
+  // Booking is paid on site (WEB-5). An accepted quote is paid to the provider
+  // through Mercado Pago, so it is only offered once they connected Cobros.
   // See `constants/features.ts`.
   const quoteOnly = service.pricingType === "QUOTATION";
   const canBook = !quoteOnly && FEATURES.serviceBooking.available;
-  const canRequestQuote = FEATURES.serviceQuotes.available;
+  const canRequestQuote =
+    FEATURES.serviceQuotes.available && service.seller?.canReceivePayments !== false;
 
   // The provider is reached through EKORU's chat (WEB-22), never a phone
   // number: their contact details stay private until there is a booking

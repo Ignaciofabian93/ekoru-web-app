@@ -354,7 +354,9 @@ export const PROFILE_MENU_SECTIONS: ProfileMenuSection[] = [
         route: "/profile/subscription",
         label: "account.subscription",
         icon: Gem,
-        available: false,
+        // On since 2026-11-02 (WEB-12). A plan without a price for the
+        // seller's country shows as unavailable and can't be bought.
+        available: true,
       },
       {
         route: "/profile/settings",

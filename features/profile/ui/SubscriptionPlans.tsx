@@ -2,6 +2,7 @@
 import { Button } from "@/components/Primitives/Button";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
+import { useFormatPrice } from "@/hooks/useFormatPrice";
 import { useTranslation } from "@/i18n/context";
 import { useParams } from "next/navigation";
 import {
@@ -55,19 +56,6 @@ const BUSINESS_PLANS: PlanConfig[] = [
 /** The free tier is the one plan with no payment behind it. */
 const FREE_PLAN: PlanKey = "FREEMIUM";
 
-function formatPrice(price: number, currency: string, locale: string) {
-  if (price === 0) return "$0";
-  try {
-    return new Intl.NumberFormat(locale, {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 2,
-    }).format(price);
-  } catch {
-    return `${currency} ${price}`;
-  }
-}
-
 function formatDate(iso: string, locale: string) {
   try {
     return new Intl.DateTimeFormat(locale, {
@@ -87,6 +75,7 @@ export function SubscriptionPlans() {
   const sellerType: SellerType | null = useSellerType();
   const personProfile = usePersonProfile();
   const businessProfile = useBusinessProfile();
+  const formatPrice = useFormatPrice();
 
   const isBusiness = sellerType !== null && sellerType !== "PERSON";
   const plans = isBusiness ? BUSINESS_PLANS : PERSON_PLANS;
@@ -115,7 +104,7 @@ export function SubscriptionPlans() {
           currentPrice ? (
             <div className="hidden sm:block">
               <Text variant="span" size="sm" color="tertiary">
-                {`${formatPrice(currentPrice.price, currentPrice.currency, lang)} / ${
+                {`${formatPrice(currentPrice.price, currentPrice.currency)} / ${
                   currentPrice.months === 1
                     ? t("subscription.plans.month")
                     : t("subscription.plans.perMonths", {
@@ -227,7 +216,7 @@ export function SubscriptionPlans() {
                     weight="bold"
                     color={isActive ? "primary" : "default"}
                   >
-                    {formatPrice(0, "USD", lang)}
+                    {formatPrice(0)}
                   </Title>
                 ) : price ? (
                   <>
@@ -237,7 +226,7 @@ export function SubscriptionPlans() {
                       weight="bold"
                       color={isActive ? "primary" : "default"}
                     >
-                      {formatPrice(price.price, price.currency, lang)}
+                      {formatPrice(price.price, price.currency)}
                     </Title>
                     <Text variant="span" size="sm" color="tertiary">
                       /

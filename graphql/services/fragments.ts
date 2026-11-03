@@ -129,6 +129,11 @@ export const SERVICE_FIELDS_FRAGMENT = gql`
 
 export const SERVICE_EXTRAS_FIELDS_FRAGMENT = gql`
   fragment ServiceExtrasFields on Service {
+    # Resolved by transactions: a provider without Cobros takes no quote
+    # requests. Detail page only, so grids don't pay for the lookup.
+    seller {
+      canReceivePayments
+    }
     faqs {
       id
       question
