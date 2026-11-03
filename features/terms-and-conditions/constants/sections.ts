@@ -2,7 +2,7 @@
  * The document, described as data. Every clause resolves its copy from the
  * `termsAndConditions` dictionary by convention: `<key>Title` and `<key>Body`.
  *
- * The keys are the flat `s1`…`s12` scheme used by the informative site
+ * The keys are the flat `s1`…`s13` scheme used by the informative site
  * (`informative-web/features/terms-and-policies`), which is where this text is
  * maintained — keeping them identical is what makes the two dictionaries
  * diffable when the legal copy changes. Adding a clause is one entry here plus
@@ -43,4 +43,6 @@ export const TERMS_SECTIONS: readonly TermsSection[] = [
   { key: "s10", kind: "prose" },
   { key: "s11", kind: "prose" },
   { key: "s12", kind: "prose" },
+  // Paid plans: terms, extensions, upgrades and no refunds (USR-16).
+  { key: "s13", kind: "prose" },
 ] as const;

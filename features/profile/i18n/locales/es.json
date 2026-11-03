@@ -515,7 +515,17 @@
       "active": "Actual",
       "popular": "Más popular",
       "unavailable": "Aún no disponible en tu país",
-      "perMonths": "{{count}} meses"
+      "perMonths": "{{count}} meses",
+      "termLabel": "Duración",
+      "perMonthEquivalent": "Equivale a {{price}} al mes",
+      "saving": "Ahorras {{percent}}%",
+      "extend": "Sumar {{months}}",
+      "extendHint": "Se suma después del {{date}}.",
+      "upgrade": "Mejorar a este plan",
+      "upgradeHint": "Empieza hoy, y lo que te queda de tu plan actual se suma en días.",
+      "lowerHint": "Disponible cuando termine tu plan actual.",
+      "noRefunds": "Pagas el período completo por adelantado y no se reembolsa. Puedes extenderlo o mejorar tu plan cuando quieras.",
+      "termsLink": "Ver los términos"
     },
     "person": {
       "FREEMIUM": {

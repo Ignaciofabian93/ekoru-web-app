@@ -515,7 +515,17 @@
       "active": "Actuel",
       "popular": "Le plus populaire",
       "unavailable": "Pas encore disponible dans votre pays",
-      "perMonths": "{{count}} mois"
+      "perMonths": "{{count}} mois",
+      "termLabel": "Durée",
+      "perMonthEquivalent": "Soit {{price}} par mois",
+      "saving": "Vous économisez {{percent}} %",
+      "extend": "Ajouter {{months}}",
+      "extendHint": "S'ajoute après le {{date}}.",
+      "upgrade": "Passer à ce forfait",
+      "upgradeHint": "Commence aujourd'hui, et ce qu'il reste de votre forfait actuel s'ajoute en jours.",
+      "lowerHint": "Disponible à la fin de votre forfait actuel.",
+      "noRefunds": "Vous payez toute la période à l'avance, sans remboursement. Vous pouvez la prolonger ou passer à un forfait supérieur quand vous voulez.",
+      "termsLink": "Lire les conditions"
     },
     "person": {
       "FREEMIUM": {
