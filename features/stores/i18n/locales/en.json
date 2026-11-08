@@ -9,7 +9,10 @@
     "categories": "Categories",
     "subcategories": "Subcategories",
     "products": "Products",
-    "allCategories": "All categories"
+    "allCategories": "All categories",
+    "stores": "Stores",
+    "storesIn": "Stores in {{name}}",
+    "unnamedStore": "Store"
   },
   "filters": {
     "title": "Filters",

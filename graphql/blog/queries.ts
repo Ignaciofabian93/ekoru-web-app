@@ -27,6 +27,45 @@ export const GET_BLOG_CATEGORY_BY_SLUG = gql`
   }
 `;
 
+/** The post list on /blog: every category, or one by its translated slug. */
+export const GET_BLOG_POSTS = gql`
+  query GetBlogPosts(
+    $language: Language!
+    $categorySlug: String
+    $page: Int = 1
+    $pageSize: Int = 12
+  ) {
+    getBlogPosts(
+      language: $language
+      categorySlug: $categorySlug
+      page: $page
+      pageSize: $pageSize
+    ) {
+      nodes {
+        id
+        blogCategoryId
+        coverImage
+        likes
+        publishedAt
+        translation {
+          id
+          title
+          slug
+          excerpt
+        }
+      }
+      pageInfo {
+        currentPage
+        totalPages
+        totalCount
+        pageSize
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+`;
+
 export const GET_BLOG_POSTS_BY_CATEGORY = gql`
   query GetBlogPostsByCategory(
     $categorySlug: String!

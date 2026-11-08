@@ -575,3 +575,23 @@ export const GET_STORE_PRODUCT_REVIEWS = gql`
     }
   }
 `;
+
+/** The stores row on /stores: businesses with visible products, most first. */
+export const GET_STORE_SELLERS = gql`
+  query GetStoreSellers($categoryId: ID, $limit: Int = 24) {
+    getStoreSellers(categoryId: $categoryId, limit: $limit) {
+      sellerId
+      productCount
+      seller {
+        id
+        profile {
+          ... on BusinessProfile {
+            id
+            businessName
+            logo
+          }
+        }
+      }
+    }
+  }
+`;

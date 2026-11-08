@@ -9,7 +9,10 @@
     "blog": "Blog"
   },
   "sections": {
-    "categories": "Catégories"
+    "categories": "Catégories",
+    "allCategories": "Toutes les catégories",
+    "latestPosts": "Derniers articles",
+    "postsIn": "Articles : {{name}}"
   },
   "category": {
     "explore": "Lire les articles"

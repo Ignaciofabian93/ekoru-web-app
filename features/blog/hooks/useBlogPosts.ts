@@ -1,38 +1,38 @@
 "use client";
 import { useQuery } from "@apollo/client/react";
 
-import { GET_BLOG_POSTS_BY_CATEGORY } from "@/graphql/blog/queries";
+import { GET_BLOG_POSTS } from "@/graphql/blog/queries";
 
 import type { BlogPost, Language, PageInfo } from "../types";
 
+/** Published posts, newest first: every category, or one by its slug. */
 export function useBlogPosts({
   categorySlug,
   language,
   page,
   pageSize = 12,
+  skip = false,
 }: {
-  categorySlug: string;
+  categorySlug?: string;
   language: Language;
   page: number;
   pageSize?: number;
+  /** Hold the request, e.g. while a ?category= link waits for the catalog. */
+  skip?: boolean;
 }) {
   const { data, loading, error, previousData } = useQuery<{
-    getBlogPostsByCategory: { nodes: BlogPost[]; pageInfo: PageInfo };
-  }>(GET_BLOG_POSTS_BY_CATEGORY, {
-    variables: { categorySlug, language, page, pageSize },
+    getBlogPosts: { nodes: BlogPost[]; pageInfo: PageInfo };
+  }>(GET_BLOG_POSTS, {
+    variables: { categorySlug: categorySlug ?? null, language, page, pageSize },
+    skip,
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });
 
   return {
-    posts:
-      data?.getBlogPostsByCategory.nodes ??
-      previousData?.getBlogPostsByCategory.nodes ??
-      [],
-    pageInfo:
-      data?.getBlogPostsByCategory.pageInfo ??
-      previousData?.getBlogPostsByCategory.pageInfo,
-    loading,
+    posts: data?.getBlogPosts.nodes ?? previousData?.getBlogPosts.nodes ?? [],
+    pageInfo: data?.getBlogPosts.pageInfo ?? previousData?.getBlogPosts.pageInfo,
+    loading: skip || loading,
     error,
   };
 }

@@ -346,3 +346,23 @@ export const GET_SERVICE_REVIEWS = gql`
     }
   }
 `;
+
+/** The providers row on /services: businesses with active services, most first. */
+export const GET_SERVICE_PROVIDERS = gql`
+  query GetServiceProviders($categoryId: ID, $limit: Int = 24) {
+    getServiceProviders(categoryId: $categoryId, limit: $limit) {
+      sellerId
+      serviceCount
+      seller {
+        id
+        profile {
+          ... on BusinessProfile {
+            id
+            businessName
+            logo
+          }
+        }
+      }
+    }
+  }
+`;

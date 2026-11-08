@@ -9,7 +9,8 @@
     "community": "Communauté"
   },
   "sections": {
-    "categories": "Catégories"
+    "categories": "Catégories",
+    "allCategories": "Toutes les catégories"
   },
   "category": {
     "explore": "Explorer",

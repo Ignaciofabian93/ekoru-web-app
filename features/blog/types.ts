@@ -38,6 +38,8 @@ export type BlogPostTranslation = {
 /** A published blog post, carrying its translation for the requested language. */
 export type BlogPost = {
   id: number;
+  /** Maps to a catalog category, whose slug builds the post's URL. */
+  blogCategoryId?: number;
   coverImage: string | null;
   type: string;
   likes: number;

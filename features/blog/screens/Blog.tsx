@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { type SupportedLanguage } from "@/constants/settings";
 import { DictionaryProvider } from "@/i18n/context";
 
@@ -13,7 +14,11 @@ export async function Blog({ lang }: { lang: SupportedLanguage }) {
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
       <PageLayout hero={<PageHero title={dict.page.title} subtitle={dict.page.subtitle} />} width="default">
-        <BlogContent lang={lang} language={language} />
+        {/* The category filter reads useSearchParams, which needs a Suspense
+            boundary on a statically rendered page. */}
+        <Suspense fallback={null}>
+          <BlogContent lang={lang} language={language} />
+        </Suspense>
       </PageLayout>
     </DictionaryProvider>
   );

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { type SupportedLanguage } from "@/constants/settings";
 import { DictionaryProvider } from "@/i18n/context";
 import { getStoresDictionary, NAMESPACE } from "../i18n";
@@ -12,7 +13,11 @@ export async function Stores({ lang }: { lang: SupportedLanguage }) {
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
       <PageLayout hero={<PageHero title={dict.page.title} subtitle={dict.page.subtitle} />} width="default">
-        <StoresContent lang={lang} language={language} />
+        {/* The category filter reads useSearchParams, which needs a Suspense
+            boundary on a statically rendered page. */}
+        <Suspense fallback={null}>
+          <StoresContent lang={lang} language={language} />
+        </Suspense>
       </PageLayout>
     </DictionaryProvider>
   );

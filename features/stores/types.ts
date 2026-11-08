@@ -43,6 +43,16 @@ export type StoreListProduct = {
   seller?: Seller | null;
 };
 
+/** One business in the stores row (getStoreSellers). */
+export type StoreSellerRow = {
+  sellerId: string;
+  productCount: number;
+  seller: {
+    id: string;
+    profile: { businessName?: string | null; logo?: string | null } | null;
+  } | null;
+};
+
 export type PageInfo = {
   totalCount: number;
   totalPages: number;

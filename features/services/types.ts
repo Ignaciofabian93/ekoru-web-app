@@ -72,6 +72,16 @@ export type ServiceNode = {
   } | null;
 };
 
+/** One business in the providers row (getServiceProviders). */
+export type ServiceProviderRow = {
+  sellerId: string;
+  serviceCount: number;
+  seller: {
+    id: string;
+    profile: { businessName?: string | null; logo?: string | null } | null;
+  } | null;
+};
+
 export type ServicesConnection = {
   pageInfo: {
     currentPage: number;

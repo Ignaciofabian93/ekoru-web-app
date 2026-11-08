@@ -11,7 +11,13 @@
   "sections": {
     "categories": "Categories",
     "allCategories": "All categories",
-    "services": "Featured services"
+    "services": "All services",
+    "servicesIn": "Services in {{name}}",
+    "providers": "Providers",
+    "providersIn": "Providers in {{name}}",
+    "unnamedProvider": "Provider",
+    "serviceCount": "{{count}} service",
+    "serviceCountPlural": "{{count}} services"
   },
   "scroll": {
     "previous": "Scroll left",
