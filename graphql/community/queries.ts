@@ -140,3 +140,13 @@ export const GET_MY_EVENT_REGISTRATIONS = gql`
     }
   }
 `;
+
+/** Upcoming public events per category, for the category tiles on /community. */
+export const GET_COMMUNITY_EVENT_COUNTS = gql`
+  query GetCommunityEventCounts {
+    communityEventCountsByCategory {
+      communityCategoryId
+      count
+    }
+  }
+`;

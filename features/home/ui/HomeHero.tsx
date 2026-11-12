@@ -1,6 +1,7 @@
 "use client";
 import { Book, Leaf, Map, Store, UsersRound, Wrench } from "lucide-react";
 import HeroCarousel, { type HeroSlide } from "@/features/home/ui/HeroCarousel";
+import { heroFrameClass } from "@/design/hero";
 import { gradients } from "@/design/tokens";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
@@ -36,7 +37,7 @@ export function HomeHero({ lang }: { lang: string }) {
   }));
 
   return (
-    <div className="mx-auto w-[95%] max-w-6xl mt-4 rounded-lg overflow-hidden">
+    <div className={heroFrameClass}>
       <HeroCarousel slides={slides} />
     </div>
   );

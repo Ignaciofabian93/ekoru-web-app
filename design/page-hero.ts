@@ -5,9 +5,13 @@
  */
 
 import clsx from "clsx";
+import { heroFrameClass, heroHeightClass } from "./hero";
 
-export const pageHeroSectionClass =
-  "w-full mx-auto h-[40vh] min-h-60 bg-cover bg-center relative";
+export const pageHeroSectionClass = clsx(
+  heroFrameClass,
+  heroHeightClass,
+  "relative bg-cover bg-center",
+);
 
 /** Scrim that keeps white type legible over an arbitrary wallpaper. */
 export const pageHeroOverlayClass = "absolute inset-0 bg-black/70";

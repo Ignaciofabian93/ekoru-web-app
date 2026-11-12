@@ -2,13 +2,16 @@
 import { useState } from "react";
 import { useTranslation } from "@/i18n/context";
 import { useCategoryParam } from "@/hooks/useCategoryParam";
+import { resolveCategoryIcon } from "../constants/icons";
 import { useBlogCatalog } from "../hooks/useBlogCatalog";
+import { useBlogPostCounts } from "../hooks/useBlogPostCounts";
 import { useBlogPosts } from "../hooks/useBlogPosts";
 import { NAMESPACE } from "../i18n";
 import type { BlogPost, Language } from "../types";
 import { BlogPostList } from "./BlogPostList";
 import { Section } from "@/components/Layout";
 import { CategoryFilter } from "@/components/Patterns/CategoryFilter";
+import { CategoryRow, type CategoryRowItem } from "@/components/Patterns/CategoryRow";
 
 interface Props {
   lang: string;
@@ -33,6 +36,25 @@ export function BlogContent({ lang, language }: Props) {
     skip: waiting,
   });
 
+  // The tiles only show on the root page, with every category.
+  const isRoot = !categorySlug;
+  const { counts, loading: countsLoading } = useBlogPostCounts(language, {
+    skip: !isRoot,
+  });
+  const postCountLabel = (count: number) =>
+    count === 0
+      ? t("sections.postCountNone")
+      : t(count === 1 ? "sections.postCount" : "sections.postCountPlural", {
+          count: String(count),
+        });
+  const categoryItems: CategoryRowItem[] = categories.map((cat) => ({
+    id: cat.id,
+    name: cat.name,
+    href: `/${lang}/blog/${cat.slug}`,
+    Icon: resolveCategoryIcon(cat.icon),
+    caption: counts ? postCountLabel(counts.get(cat.id) ?? 0) : undefined,
+  }));
+
   // Posts carry their category id; the URL needs that category's slug.
   const getCategorySlug = (post: BlogPost) =>
     categories.find((cat) => cat.id === post.blogCategoryId)?.slug;
@@ -53,6 +75,16 @@ export function BlogContent({ lang, language }: Props) {
         loading={catalogLoading}
         remeasureKey={lang}
       />
+
+      {isRoot && (
+        <CategoryRow
+          title={t("sections.browse")}
+          items={categoryItems}
+          loading={catalogLoading || countsLoading}
+          scrollPreviousLabel={t("scroll.previous")}
+          scrollNextLabel={t("scroll.next")}
+        />
+      )}
 
       <BlogPostList
         lang={lang}

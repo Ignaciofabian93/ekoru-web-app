@@ -22,8 +22,8 @@ export interface BreadcrumbHeroProps {
 }
 
 /**
- * Hero for an inner page: same full-bleed treatment as `Patterns/PageHero`
- * plus a breadcrumb trail. Crumbs carrying an `href` become navigable.
+ * Hero for an inner page: same frame as `Patterns/PageHero` and the home
+ * carousel (`design/hero`), plus a breadcrumb trail. Crumbs carrying an `href` become navigable.
  */
 export function BreadcrumbHero({
   title,

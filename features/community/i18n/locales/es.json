@@ -10,7 +10,15 @@
   },
   "sections": {
     "categories": "Categorías",
-    "allCategories": "Todas las categorías"
+    "allCategories": "Todas las categorías",
+    "browse": "Explora por categoría",
+    "eventCount": "{{count}} evento",
+    "eventCountPlural": "{{count}} eventos",
+    "eventCountNone": "Sin eventos"
+  },
+  "scroll": {
+    "previous": "Desplazar a la izquierda",
+    "next": "Desplazar a la derecha"
   },
   "category": {
     "explore": "Explorar",

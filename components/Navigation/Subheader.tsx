@@ -43,7 +43,7 @@ const pillClass = (isActive: boolean, isExpanded: boolean, isLast: boolean) =>
 
 const pillTextClass = (isActive: boolean, isExpanded: boolean) =>
   isActive
-    ? "text-foreground"
+    ? "text-secondary-dark"
     : isExpanded
       ? "text-secondary-dark"
       : "text-foreground-secondary";

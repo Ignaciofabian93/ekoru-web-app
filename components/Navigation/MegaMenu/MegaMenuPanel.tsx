@@ -214,7 +214,7 @@ export function MegaMenuPanel({
                           data-node
                           className={clsx(
                             rowClass,
-                            "text-foreground-secondary hover:bg-surface-hover hover:text-primary",
+                            "text-foreground-secondary hover:bg-surface-hover hover:text-secondary-dark",
                           )}
                         >
                           {node.label}
@@ -261,8 +261,8 @@ function NodeButton({
       className={clsx(
         rowClass,
         isOpen
-          ? "bg-primary-light-bg font-semibold text-primary-dark"
-          : "text-foreground-secondary hover:bg-surface-hover",
+          ? "bg-surface-hover font-semibold text-secondary-dark"
+          : "text-foreground-secondary hover:bg-surface-hover hover:text-secondary-dark",
       )}
     >
       <span className="flex-1 truncate">{node.label}</span>

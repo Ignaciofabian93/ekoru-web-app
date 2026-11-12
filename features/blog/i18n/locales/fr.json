@@ -12,7 +12,15 @@
     "categories": "Catégories",
     "allCategories": "Toutes les catégories",
     "latestPosts": "Derniers articles",
-    "postsIn": "Articles : {{name}}"
+    "postsIn": "Articles : {{name}}",
+    "browse": "Explorer par catégorie",
+    "postCount": "{{count}} article",
+    "postCountPlural": "{{count}} articles",
+    "postCountNone": "Aucun article"
+  },
+  "scroll": {
+    "previous": "Défiler vers la gauche",
+    "next": "Défiler vers la droite"
   },
   "category": {
     "explore": "Lire les articles"

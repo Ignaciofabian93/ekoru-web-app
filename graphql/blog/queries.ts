@@ -122,3 +122,13 @@ export const GET_BLOG_POST_BY_SLUG = gql`
     }
   }
 `;
+
+/** Published posts per category, for the category tiles on /blog. */
+export const GET_BLOG_POST_COUNTS = gql`
+  query GetBlogPostCounts($language: Language!) {
+    blogPostCountsByCategory(language: $language) {
+      blogCategoryId
+      count
+    }
+  }
+`;

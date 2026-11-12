@@ -17,8 +17,9 @@ export interface PageHeroProps {
 }
 
 /**
- * Full-bleed hero for a section landing page (marketplace, stores, services,
- * blog, community). For inner pages that also need a breadcrumb trail, use
+ * Hero for a section landing page (marketplace, stores, services, blog,
+ * community), in the same rounded frame as the home carousel (`design/hero`).
+ * For inner pages that also need a breadcrumb trail, use
  * `Patterns/BreadcrumbHero`.
  */
 export function PageHero({

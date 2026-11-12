@@ -12,6 +12,7 @@ import {
 } from "@/design/tokens";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
+import { heroHeightClass } from "@/design/hero";
 
 const AUTO_PLAY_INTERVAL = 4500;
 
@@ -147,7 +148,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   };
 
   return (
-    <div className="relative h-[40vh] min-h-60 overflow-hidden">
+    <div className={clsx("relative overflow-hidden", heroHeightClass)}>
       <div
         ref={trackRef}
         onScroll={handleScroll}

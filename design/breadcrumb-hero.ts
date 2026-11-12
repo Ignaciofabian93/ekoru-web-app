@@ -5,9 +5,13 @@
  */
 
 import clsx from "clsx";
+import { heroFrameClass, heroHeightClass } from "./hero";
 
-export const breadcrumbHeroSectionClass =
-  "w-full mx-auto h-[40vh] bg-cover bg-center relative";
+export const breadcrumbHeroSectionClass = clsx(
+  heroFrameClass,
+  heroHeightClass,
+  "relative bg-cover bg-center",
+);
 
 /** Scrim that keeps white type legible over an arbitrary wallpaper. */
 export const breadcrumbHeroOverlayClass = "absolute inset-0 bg-black/70";
