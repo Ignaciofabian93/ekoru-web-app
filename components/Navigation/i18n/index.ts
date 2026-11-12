@@ -68,6 +68,8 @@ export type NavigationDictionary = {
     myProfile: string;
     recycle: string;
     publish: string;
+    /** Visible label of the header's cart button, e.g. "Mi carro". */
+    cart: string;
     notifications: string;
     signIn: string;
     signUp: string;

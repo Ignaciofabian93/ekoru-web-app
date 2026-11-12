@@ -95,8 +95,7 @@ export function MegaMenuPanel({
     if (!el) return;
     el.style.translate = "";
     const { left, right } = el.getBoundingClientRect();
-    const overflow =
-      right - (document.documentElement.clientWidth - VIEWPORT_MARGIN);
+    const overflow = right - (document.documentElement.clientWidth - VIEWPORT_MARGIN);
     if (overflow > 0) {
       el.style.translate = `${-Math.min(overflow, Math.max(0, left - VIEWPORT_MARGIN))}px`;
     }
@@ -291,10 +290,7 @@ function SeeAllLink({
       prefetch={false}
       onClick={onNavigate}
       data-row
-      className={clsx(
-        rowClass,
-        "font-semibold text-primary hover:bg-primary-light-bg hover:text-primary-active",
-      )}
+      className={clsx(rowClass, "font-semibold text-secondary-dark hover:bg-secondary/5")}
     >
       <span className="flex-1 truncate">{label}</span>
       <ArrowRight size={14} aria-hidden className="shrink-0" />

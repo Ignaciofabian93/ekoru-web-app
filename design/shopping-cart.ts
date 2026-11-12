@@ -6,24 +6,27 @@
 
 import clsx from "clsx";
 
-export const shoppingCartButtonClass = clsx(
-  "relative flex w-10 h-10 shrink-0 cursor-pointer items-center justify-center",
-  "rounded-full border border-white/25 bg-white/10 outline-none",
-  "transition-all duration-150 hover:border-white/50 hover:bg-white/20",
-  "focus-visible:border-white focus-visible:ring-2 focus-visible:ring-white/80",
-);
+/**
+ * Same button as the header's "Cuenta"; `relative` anchors the count badge.
+ * Icon-only below `sm`, where it is a square like "Publicar" and the menu.
+ */
+export const shoppingCartButtonClass = clsx("btn btn-secondary relative px-2 sm:px-4");
 
 export const shoppingCartBadgeClass = clsx(
-  "absolute -right-2 -top-1 flex h-5 min-w-5 items-center justify-center",
-  "rounded-full border border-white/40 bg-secondary-dark font-bold leading-none",
+  "absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center",
+  "rounded-full border border-secondary/40 bg-linear-90 from-primary-dark to-primary font-bold leading-none",
 );
 
-/** Two digits need breathing room the single-digit pill doesn't. */
 export const shoppingCartBadgePadClass = {
   wide: "px-1",
   narrow: "px-0",
 };
 
+/**
+ * Same as "Publicar"'s icon. On mobile the label is hidden, so the icon alone
+ * sets the button's height: 18 keeps it level with "Publicar" and the menu
+ * button. From `sm` up the label's line sets the height anyway.
+ */
 export const shoppingCartIconSize = 18;
 
-export const shoppingCartIconStroke = 1.6;
+export const shoppingCartIconStroke = 1.8;

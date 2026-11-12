@@ -24,11 +24,7 @@ export function NavBar() {
     <header
       id="header"
       aria-label={t("a11y.headerLabel")}
-      className={clsx(
-        "w-full",
-        // "bg-linear-to-r from-primary/90 via-secondary-dark/90 to-primary/90",
-        "bg-white",
-      )}
+      className={clsx("w-full", "bg-white", "shadow-md shadow-gray-800/40")}
     >
       <NotificationBanner message={t("banner.beta")} icon={FlaskConical} variant="info" />
 
@@ -45,20 +41,21 @@ export function NavBar() {
       </a>
       <nav
         aria-label={t("a11y.primaryNav")}
-        className="w-full max-w-6xl flex flex-col mx-auto pt-4 pb-1 px-2"
+        className="w-full max-w-6xl flex flex-col mx-auto pt-4 pb-1 px-2 border-b border-border-strong md:border-0"
       >
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-3 px-2 pb-3 md:flex-nowrap lg:gap-x-8">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-3 px-2 pb-3 lg:flex-nowrap lg:gap-x-8">
           <EkoruLogo label={t("a11y.homeLink")} />
-          <SearchBar className="order-last w-full md:order-0 md:w-full" />
+          <SearchBar className="order-last w-full lg:order-0 lg:w-[60%]" />
           <div className="relative ml-auto flex shrink-0 items-center justify-end gap-2 lg:gap-3">
+            <PublishButton />
             {FEATURES.cart.available && isAuthenticated && (
               <ShoppingCartButton
+                text={t("dropdown.cart")}
                 label={t("a11y.cart")}
                 labelWithOneItem={t("a11y.cartWithOneItem")}
                 labelWithItems={t("a11y.cartWithItems")}
               />
             )}
-            <PublishButton />
             <div className="hidden md:flex">
               <ProfileDropdown />
             </div>
@@ -67,7 +64,9 @@ export function NavBar() {
         </div>
       </nav>
       <SubHeader
-        trailing={<LocationPicker className="ml-3 self-start md:ml-0 lg:self-auto" />}
+        trailing={
+          <LocationPicker className="ml-3 mt-3 self-start md:ml-0 md:mt-0 lg:self-auto" />
+        }
       />
     </header>
   );

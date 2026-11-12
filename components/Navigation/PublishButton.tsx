@@ -11,7 +11,11 @@ export function PublishButton({ className }: { className?: string }) {
   const { t } = useTranslation(NAMESPACE);
 
   return (
-    <Link href={`/${language}/publish`} className={clsx("btn btn-primary", className)}>
+    // Icon-only below `sm`: square, like the cart and menu buttons beside it.
+    <Link
+      href={`/${language}/publish`}
+      className={clsx("btn btn-primary px-2 sm:px-4", className)}
+    >
       <PackagePlus size={18} strokeWidth={2} aria-hidden className="shrink-0" />
       <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
         {t("dropdown.publish")}

@@ -36,7 +36,7 @@ export function HomeHero({ lang }: { lang: string }) {
   }));
 
   return (
-    <div className="mx-auto w-11/12 max-w-6xl mt-4 rounded-lg overflow-hidden">
+    <div className="mx-auto w-[95%] max-w-6xl mt-4 rounded-lg overflow-hidden">
       <HeroCarousel slides={slides} />
     </div>
   );

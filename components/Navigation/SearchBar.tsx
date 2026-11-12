@@ -43,7 +43,7 @@ export function SearchBar({
         <div
           className={clsx(
             "flex min-w-0 flex-1 flex-row items-center rounded-l-md border-2 border-r-0 bg-white",
-            "border-primary-dark/10 transition-colors duration-200 focus-within:border-primary",
+            "border-border-strong transition-colors duration-200 focus-within:border-primary",
           )}
         >
           <Search

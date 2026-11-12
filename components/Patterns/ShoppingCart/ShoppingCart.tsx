@@ -31,6 +31,12 @@ function Badge({ itemCount }: { itemCount: number }) {
 }
 
 interface ShoppingCartButtonProps {
+  /**
+   * Visible label, e.g. "Mi carro". Shown from `sm` up; below that the button
+   * is icon-only, like "Publicar". The accessible names below should start
+   * with it, so speech users can say what they see.
+   */
+  text?: string;
   /** Accessible name used when the cart is empty. */
   label?: string;
   /** Accessible name used when the cart holds exactly one item. */
@@ -40,9 +46,10 @@ interface ShoppingCartButtonProps {
 }
 
 export function ShoppingCartButton({
-  label = "Shopping cart, empty",
-  labelWithOneItem = "Shopping cart, 1 item",
-  labelWithItems = "Shopping cart, {{count}} items",
+  text = "My cart",
+  label = "My cart, empty",
+  labelWithOneItem = "My cart, 1 item",
+  labelWithItems = "My cart, {{count}} items",
 }: ShoppingCartButtonProps = {}) {
   const params = useParams();
   const lang = (params?.lang as string) ?? "es";
@@ -66,10 +73,14 @@ export function ShoppingCartButton({
     >
       <ShoppingCart
         size={shoppingCartIconSize}
-        color="#fff"
         strokeWidth={shoppingCartIconStroke}
         aria-hidden
+        className="shrink-0"
       />
+      {/* Visual only: the link's aria-label already names it, count included. */}
+      <span aria-hidden className="hidden whitespace-nowrap sm:inline">
+        {text}
+      </span>
       {itemCount > 0 && <Badge itemCount={itemCount} />}
     </Link>
   );

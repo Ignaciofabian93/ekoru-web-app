@@ -49,11 +49,11 @@ export const buttonSizeClass: Record<ButtonSize, string> = {
 /** The look itself: gradient, border and text color per variant. */
 export const buttonVariantClass: Record<ButtonVariant, string> = {
   primary: clsx(
-    "border-primary bg-linear-180 from-primary to-primary/60 text-on-primary",
+    "border-primary bg-linear-90 from-primary-dark via-primary to-primary-light text-on-primary",
     "hover:from-primary/90 hover:to-primary/80",
   ),
   secondary: clsx(
-    "border-secondary-dark bg-linear-180 from-secondary-dark to-secondary-dark/60 text-white",
+    "border-secondary-dark bg-linear-90 from-secondary-dark to-secondary-dark/60 text-white",
     "hover:from-secondary-dark/90 hover:to-secondary-dark/80",
   ),
   outline: clsx(
@@ -62,15 +62,15 @@ export const buttonVariantClass: Record<ButtonVariant, string> = {
   ),
   ghost: "border-transparent bg-transparent text-foreground hover:bg-slate-50",
   success: clsx(
-    "border-success bg-linear-180 from-success to-success/60 text-white",
+    "border-success bg-linear-90 from-success to-success/60 text-white",
     "hover:from-success/90 hover:to-success/80",
   ),
   warning: clsx(
-    "border-warning bg-linear-180 from-warning to-warning/60 text-white",
+    "border-warning bg-linear-90 from-warning to-warning/60 text-white",
     "hover:from-warning/90 hover:to-warning/80",
   ),
   error: clsx(
-    "border-red-600 bg-linear-180 from-red-600 to-red-600/60 text-white",
+    "border-red-600 bg-linear-90 from-red-600 to-red-600/60 text-white",
     "hover:from-red-600/90 hover:to-red-600/80",
   ),
 };

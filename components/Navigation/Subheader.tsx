@@ -35,17 +35,17 @@ const pillClass = (isActive: boolean, isExpanded: boolean, isLast: boolean) =>
     "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1",
     isLast ? "mr-0" : "mr-1.5",
     isActive
-      ? "bg-primary"
+      ? "bg-secondary/10 hover:bg-secondary/20"
       : isExpanded
-        ? "bg-primary-light-bg"
+        ? "bg-secondary/10 hover:bg-secondary/20"
         : "bg-white hover:bg-background-tertiary",
   );
 
 const pillTextClass = (isActive: boolean, isExpanded: boolean) =>
   isActive
-    ? "text-on-primary"
+    ? "text-foreground"
     : isExpanded
-      ? "text-primary-dark"
+      ? "text-secondary-dark"
       : "text-foreground-secondary";
 
 function PillContent({
@@ -151,15 +151,12 @@ export default function SubHeader({ trailing }: { trailing?: React.ReactNode }) 
   }, [activeIndex]);
 
   return (
-    <div className="w-full bg-white shadow-md py-1">
-      {/* Side by side only from `lg`: at `md` the pills (no longer scrolling)
-          plus the trailing slot don't fit one line, so the slot drops below.
-          The pills never shrink; the slot is what gives way (it truncates). */}
+    <div className="w-full bg-white py-2">
       <div className="mx-auto flex w-full max-w-6xl flex-col md:px-1 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
         <nav
           ref={containerRef}
           aria-label={t("a11y.sectionsNav")}
-          className="min-w-0 lg:shrink-0"
+          className="min-w-0 lg:shrink-0 mb-0 md:mb-2 lg:mb-0"
         >
           {/* Scrolls sideways on small screens; from `md` it must not clip, or the
           dropdown hanging off each pill gets cut off. */}
