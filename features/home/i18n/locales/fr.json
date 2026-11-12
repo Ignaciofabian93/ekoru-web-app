@@ -39,6 +39,35 @@
       }
     }
   },
+  "nearby": {
+    "title": "Près de chez vous",
+    "subtitle": "Ce qui se trouve à {{radius}} km de {{county}}.",
+    "change": "Changer de commune",
+    "radiusLabel": "Distance",
+    "radiusOption": "{{km}} km",
+    "prompt": {
+      "title": "Découvrez ce qui se trouve près de chez vous",
+      "text": "Partagez votre position ou choisissez votre commune pour voir les produits, boutiques et services de votre quartier.",
+      "useLocation": "Utiliser ma position",
+      "choose": "Choisir une commune"
+    },
+    "rails": {
+      "marketplace": "Marketplace",
+      "stores": "Boutiques",
+      "storeProducts": "Produits des boutiques",
+      "services": "Services"
+    },
+    "railEmpty": "Rien à {{radius}} km pour l'instant.",
+    "empty": {
+      "title": "Rien à {{radius}} km de {{county}} pour l'instant",
+      "text": "Essayez une distance plus grande pour en voir davantage.",
+      "textAtMax": "Revenez bientôt : de nouveaux produits, boutiques et services arrivent chaque jour.",
+      "widen": "Élargir à {{radius}} km"
+    },
+    "error": "Impossible de charger ce qui se trouve près de chez vous. Réessayez plus tard.",
+    "scrollPrevious": "Défiler vers la gauche",
+    "scrollNext": "Défiler vers la droite"
+  },
   "stats": {
     "title": "C'est déjà en cours",
     "subtitle": "Une communauté active qui change notre façon de consommer.",

@@ -8,7 +8,30 @@
     "blog": "Blog"
   },
   "search": {
-    "placeholder": "Buscar en EKORU"
+    "placeholder": "Buscar en EKORU",
+    "submit": "Buscar"
+  },
+  "location": {
+    "exploring": "Explorando en:",
+    "choose": "Elegir comuna",
+    "locating": "Ubicando…",
+    "dialogTitle": "¿Dónde estás explorando?",
+    "useMyLocation": "Usar mi ubicación actual",
+    "orChoose": "O elige tu comuna",
+    "region": "Región",
+    "city": "Ciudad",
+    "county": "Comuna",
+    "selectPlaceholder": "Selecciona…",
+    "searchOptions": "Buscar…",
+    "noResults": "Sin resultados",
+    "close": "Cerrar",
+    "status": {
+      "locating": "Buscando tu ubicación…",
+      "detected": "Te ubicamos en {{county}}. Si no es correcto, elige otra comuna abajo.",
+      "denied": "No tenemos permiso para ver tu ubicación. Actívalo en tu navegador o elige tu comuna abajo.",
+      "unsupported": "Tu navegador no puede compartir tu ubicación. Elige tu comuna abajo.",
+      "error": "No pudimos detectar tu comuna. Inténtalo de nuevo o elígela abajo."
+    }
   },
   "banner": {
     "beta": "Versión beta: algunas funciones aún están en desarrollo."
@@ -45,14 +68,11 @@
     "sectionsNav": "Secciones del sitio",
     "homeLink": "EKORU, ir a la página de inicio",
     "searchLabel": "Buscar en EKORU",
-    "searchSubmit": "Buscar",
     "cart": "Carrito de compras, vacío",
     "cartWithOneItem": "Carrito de compras, 1 producto",
     "cartWithItems": "Carrito de compras, {{count}} productos",
     "openMenu": "Abrir el menú",
     "accountMenu": "Menú de la cuenta",
-    "openAccountMenu": "Abrir el menú de la cuenta",
-    "closeAccountMenu": "Cerrar el menú de la cuenta",
     "languageTrigger": "Cambiar idioma",
     "languageSelect": "Selecciona tu idioma"
   }

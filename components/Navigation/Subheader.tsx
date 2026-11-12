@@ -85,8 +85,12 @@ function PillContent({
  * catalog trees there. From `md` up each pill is a disclosure button instead:
  * clicking it opens that section's megamenu, and the panel's "See all" link
  * takes over the pill's old job of reaching the section's landing page.
+ *
+ * `trailing` sits at the row's far end (below the pills under `lg`). It
+ * is kept outside the `<nav>`, so the megamenu treats it as outside the menu:
+ * clicking or tabbing into it closes an open panel.
  */
-export default function SubHeader() {
+export default function SubHeader({ trailing }: { trailing?: React.ReactNode }) {
   const pathname = usePathname();
   const [language] = useLanguage();
   const scrollRef = useRef<HTMLUListElement>(null);
@@ -147,80 +151,95 @@ export default function SubHeader() {
   }, [activeIndex]);
 
   return (
-    <nav
-      ref={containerRef}
-      aria-label={t("a11y.sectionsNav")}
-      className="w-full flex items-center justify-center bg-white shadow-md py-1"
-    >
-      {/* Scrolls sideways on small screens; from `md` it must not clip, or the
+    <div className="w-full bg-white shadow-md py-1">
+      {/* Side by side only from `lg`: at `md` the pills (no longer scrolling)
+          plus the trailing slot don't fit one line, so the slot drops below.
+          The pills never shrink; the slot is what gives way (it truncates). */}
+      <div className="mx-auto flex w-full max-w-6xl flex-col md:px-1 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+        <nav
+          ref={containerRef}
+          aria-label={t("a11y.sectionsNav")}
+          className="min-w-0 lg:shrink-0"
+        >
+          {/* Scrolls sideways on small screens; from `md` it must not clip, or the
           dropdown hanging off each pill gets cut off. */}
-      <ul
-        ref={scrollRef}
-        className="flex flex-row items-center gap-3 px-3 overflow-x-auto md:overflow-visible scrollbar-none list-none"
-      >
-        {links.map((item, index) => {
-          const isActive = index === activeIndex;
-          const isExpanded = expandedKey === item.key;
-          const isLast = index === links.length - 1;
-          const panelId = `${menuId}-${item.key}`;
+          <ul
+            ref={scrollRef}
+            className="flex flex-row items-center gap-3 px-3 md:px-0 overflow-x-auto md:overflow-visible scrollbar-none list-none"
+          >
+            {links.map((item, index) => {
+              const isActive = index === activeIndex;
+              const isExpanded = expandedKey === item.key;
+              const isLast = index === links.length - 1;
+              const panelId = `${menuId}-${item.key}`;
 
-          return (
-            <li key={item.key} className="shrink-0 md:relative">
-              <Link
-                ref={(el) => {
-                  itemRefs.current[index] = el;
-                }}
-                href={item.route}
-                aria-current={isActive ? "page" : undefined}
-                className={clsx(pillClass(isActive, false, isLast), "flex md:hidden")}
-              >
-                <PillContent icon={item.icon} label={item.label} isActive={isActive} />
-              </Link>
+              return (
+                <li key={item.key} className="shrink-0 md:relative">
+                  <Link
+                    ref={(el) => {
+                      itemRefs.current[index] = el;
+                    }}
+                    href={item.route}
+                    aria-current={isActive ? "page" : undefined}
+                    className={clsx(pillClass(isActive, false, isLast), "flex md:hidden")}
+                  >
+                    <PillContent
+                      icon={item.icon}
+                      label={item.label}
+                      isActive={isActive}
+                    />
+                  </Link>
 
-              <button
-                type="button"
-                aria-expanded={isExpanded}
-                aria-controls={isExpanded ? panelId : undefined}
-                aria-current={isActive ? "page" : undefined}
-                onClick={(e) => toggleSection(item.key, e.currentTarget)}
-                onPointerEnter={() => request(item.key)}
-                onFocus={() => request(item.key)}
-                className={clsx(pillClass(isActive, isExpanded, isLast), "hidden md:flex")}
-              >
-                <PillContent
-                  icon={item.icon}
-                  label={item.label}
-                  isActive={isActive}
-                  isExpanded={isExpanded}
-                />
-                <ChevronDown
-                  size={14}
-                  aria-hidden
-                  strokeWidth={2}
-                  className={clsx(
-                    "ml-1 transition-transform duration-200",
-                    isExpanded && "rotate-180",
-                    pillTextClass(isActive, isExpanded),
-                  )}
-                />
-              </button>
+                  <button
+                    type="button"
+                    aria-expanded={isExpanded}
+                    aria-controls={isExpanded ? panelId : undefined}
+                    aria-current={isActive ? "page" : undefined}
+                    onClick={(e) => toggleSection(item.key, e.currentTarget)}
+                    onPointerEnter={() => request(item.key)}
+                    onFocus={() => request(item.key)}
+                    className={clsx(
+                      pillClass(isActive, isExpanded, isLast),
+                      "hidden md:flex",
+                    )}
+                  >
+                    <PillContent
+                      icon={item.icon}
+                      label={item.label}
+                      isActive={isActive}
+                      isExpanded={isExpanded}
+                    />
+                    <ChevronDown
+                      size={14}
+                      aria-hidden
+                      strokeWidth={2}
+                      className={clsx(
+                        "ml-1 transition-transform duration-200",
+                        isExpanded && "rotate-180",
+                        pillTextClass(isActive, isExpanded),
+                      )}
+                    />
+                  </button>
 
-              {/* Right after its trigger, so Tab moves from the pill into the
+                  {/* Right after its trigger, so Tab moves from the pill into the
                   panel (disclosure navigation pattern). */}
-              {isExpanded && (
-                <MegaMenuPanel
-                  id={panelId}
-                  label={item.label}
-                  href={item.route}
-                  lang={language}
-                  tree={catalogs[item.key]}
-                  onNavigate={close}
-                />
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+                  {isExpanded && (
+                    <MegaMenuPanel
+                      id={panelId}
+                      label={item.label}
+                      href={item.route}
+                      lang={language}
+                      tree={catalogs[item.key]}
+                      onNavigate={close}
+                    />
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+        {trailing}
+      </div>
+    </div>
   );
 }

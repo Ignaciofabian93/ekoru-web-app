@@ -73,6 +73,27 @@ export const DEFAULT_COUNTRY: SupportedCountry = "CL";
  */
 export const COUNTRY_COOKIE = "ekoru_country";
 
+/**
+ * Cookie persisting the comuna the visitor is exploring, shown in the header's
+ * "Exploring in" picker. A cookie rather than localStorage so server-rendered
+ * listings can scope to it later, the same way they read the country.
+ */
+export const EXPLORE_LOCATION_COOKIE = "ekoru_location";
+
+/** Cookie persisting how far from that comuna the "near you" listings reach. */
+export const EXPLORE_RADIUS_COOKIE = "ekoru_radius";
+
+/**
+ * The radii a visitor can pick, in km. Distances are measured between comuna
+ * reference points, so the smallest step effectively means "my comuna only" in
+ * a city, and the largest stays under the backend's 100 km cap.
+ */
+export const EXPLORE_RADIUS_OPTIONS_KM = [2, 5, 10, 25, 50] as const;
+
+export type ExploreRadiusKm = (typeof EXPLORE_RADIUS_OPTIONS_KM)[number];
+
+export const DEFAULT_EXPLORE_RADIUS_KM: ExploreRadiusKm = 10;
+
 const ALL_COUNTRY_NAMES: Record<string, string> = {
   CL: "Chile",
   CA: "Canada",

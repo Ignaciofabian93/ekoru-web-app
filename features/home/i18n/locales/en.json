@@ -39,6 +39,35 @@
       }
     }
   },
+  "nearby": {
+    "title": "Near you",
+    "subtitle": "What's within {{radius}} km of {{county}}.",
+    "change": "Change district",
+    "radiusLabel": "Distance",
+    "radiusOption": "{{km}} km",
+    "prompt": {
+      "title": "Discover what's near you",
+      "text": "Share your location or choose your district to see products, stores and services in your area.",
+      "useLocation": "Use my location",
+      "choose": "Choose district"
+    },
+    "rails": {
+      "marketplace": "Marketplace",
+      "stores": "Stores",
+      "storeProducts": "Store products",
+      "services": "Services"
+    },
+    "railEmpty": "Nothing within {{radius}} km yet.",
+    "empty": {
+      "title": "Nothing within {{radius}} km of {{county}} yet",
+      "text": "Try a larger distance to see more.",
+      "textAtMax": "Check back soon: new products, stores and services join every day.",
+      "widen": "Widen to {{radius}} km"
+    },
+    "error": "We couldn't load what's near you. Please try again later.",
+    "scrollPrevious": "Scroll left",
+    "scrollNext": "Scroll right"
+  },
   "stats": {
     "title": "This is already happening",
     "subtitle": "An active community changing the way we consume.",

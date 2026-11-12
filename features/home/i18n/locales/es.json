@@ -39,6 +39,35 @@
       }
     }
   },
+  "nearby": {
+    "title": "Cerca de ti",
+    "subtitle": "Lo que hay a {{radius}} km de {{county}}.",
+    "change": "Cambiar comuna",
+    "radiusLabel": "Distancia",
+    "radiusOption": "{{km}} km",
+    "prompt": {
+      "title": "Descubre lo que hay cerca de ti",
+      "text": "Comparte tu ubicación o elige tu comuna para ver productos, tiendas y servicios de tu zona.",
+      "useLocation": "Usar mi ubicación",
+      "choose": "Elegir comuna"
+    },
+    "rails": {
+      "marketplace": "Marketplace",
+      "stores": "Tiendas",
+      "storeProducts": "Productos de tiendas",
+      "services": "Servicios"
+    },
+    "railEmpty": "Nada a {{radius}} km por ahora.",
+    "empty": {
+      "title": "Todavía no hay nada a {{radius}} km de {{county}}",
+      "text": "Prueba con una distancia mayor para ver más.",
+      "textAtMax": "Vuelve pronto: cada día se suman productos, tiendas y servicios.",
+      "widen": "Ampliar a {{radius}} km"
+    },
+    "error": "No pudimos cargar lo que hay cerca. Inténtalo de nuevo más tarde.",
+    "scrollPrevious": "Desplazar a la izquierda",
+    "scrollNext": "Desplazar a la derecha"
+  },
   "stats": {
     "title": "Esto ya está pasando",
     "subtitle": "Una comunidad activa cambiando la forma en que consumimos.",

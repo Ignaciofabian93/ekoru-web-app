@@ -6,12 +6,12 @@ import { MAIN_CONTENT_ID } from "../Layout/tokens";
 import { EkoruLogo } from "../Primitives/EkoruLogo";
 import SubHeader from "./Subheader";
 import ProfileDropdown from "./ProfileDropdown";
-import LanguageSwitcher from "./LanguageSwitcher";
 import { ShoppingCartButton } from "../Patterns/ShoppingCart";
 import { NotificationBanner } from "../Patterns/NotificationBanner";
 import { SearchBar } from "./SearchBar";
 import MenuButton from "./MenuButton";
-import { NotificationBell } from "@/features/notifications/ui/NotificationBell";
+import { LocationPicker } from "./LocationPicker";
+import { PublishButton } from "./PublishButton";
 import { FEATURES } from "@/constants/features";
 import { NAMESPACE } from "./i18n";
 import { useIsAuthenticated } from "@/store/useAuthStore";
@@ -24,7 +24,11 @@ export function NavBar() {
     <header
       id="header"
       aria-label={t("a11y.headerLabel")}
-      className="w-screen bg-linear-to-r from-primary/90 via-secondary-dark/90 to-primary/90"
+      className={clsx(
+        "w-full",
+        // "bg-linear-to-r from-primary/90 via-secondary-dark/90 to-primary/90",
+        "bg-white",
+      )}
     >
       <NotificationBanner message={t("banner.beta")} icon={FlaskConical} variant="info" />
 
@@ -41,13 +45,12 @@ export function NavBar() {
       </a>
       <nav
         aria-label={t("a11y.primaryNav")}
-        className="w-full max-w-4xl flex flex-col mx-auto pt-3 px-2"
+        className="w-full max-w-6xl flex flex-col mx-auto pt-4 pb-1 px-2"
       >
-        <div className="flex items-center justify-between px-2 mb-2">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-3 px-2 pb-3 md:flex-nowrap lg:gap-x-8">
           <EkoruLogo label={t("a11y.homeLink")} />
-          <div className="relative flex items-center justify-end gap-3">
-            <LanguageSwitcher />
-            <NotificationBell />
+          <SearchBar className="order-last w-full md:order-0 md:w-auto md:min-w-0 md:max-w-2xl md:flex-1" />
+          <div className="relative ml-auto flex shrink-0 items-center justify-end gap-2 lg:gap-3">
             {FEATURES.cart.available && isAuthenticated && (
               <ShoppingCartButton
                 label={t("a11y.cart")}
@@ -58,12 +61,14 @@ export function NavBar() {
             <div className="hidden md:flex">
               <ProfileDropdown />
             </div>
+            <PublishButton />
             <MenuButton className="md:hidden" />
           </div>
         </div>
-        <SearchBar />
       </nav>
-      <SubHeader />
+      <SubHeader
+        trailing={<LocationPicker className="ml-3 self-start md:ml-0 lg:self-auto" />}
+      />
     </header>
   );
 }

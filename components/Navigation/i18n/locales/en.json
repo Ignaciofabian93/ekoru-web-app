@@ -8,7 +8,30 @@
     "blog": "Blog"
   },
   "search": {
-    "placeholder": "Search in EKORU"
+    "placeholder": "Search in EKORU",
+    "submit": "Search"
+  },
+  "location": {
+    "exploring": "Exploring in:",
+    "choose": "Choose district",
+    "locating": "Locating…",
+    "dialogTitle": "Where are you exploring?",
+    "useMyLocation": "Use my current location",
+    "orChoose": "Or choose your district",
+    "region": "Region",
+    "city": "City",
+    "county": "District",
+    "selectPlaceholder": "Select…",
+    "searchOptions": "Search…",
+    "noResults": "No results",
+    "close": "Close",
+    "status": {
+      "locating": "Finding your location…",
+      "detected": "We placed you in {{county}}. If that is not right, choose another district below.",
+      "denied": "We do not have permission to see your location. Turn it on in your browser or choose your district below.",
+      "unsupported": "Your browser cannot share your location. Choose your district below.",
+      "error": "We could not detect your district. Try again or choose it below."
+    }
   },
   "banner": {
     "beta": "Beta version — some features are still being built."
@@ -45,14 +68,11 @@
     "sectionsNav": "Site sections",
     "homeLink": "EKORU, go to the home page",
     "searchLabel": "Search in EKORU",
-    "searchSubmit": "Search",
     "cart": "Shopping cart, empty",
     "cartWithOneItem": "Shopping cart, 1 item",
     "cartWithItems": "Shopping cart, {{count}} items",
     "openMenu": "Open menu",
     "accountMenu": "Account menu",
-    "openAccountMenu": "Open account menu",
-    "closeAccountMenu": "Close account menu",
     "languageTrigger": "Change language",
     "languageSelect": "Select your language"
   }

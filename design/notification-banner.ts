@@ -10,10 +10,8 @@ import { single } from "@/design/variants";
 const notificationBannerBaseClass = "w-full px-2 py-1.5";
 
 const notificationBannerVariantClass: Record<NotificationBannerVariant, string> = {
-  // Sits directly above the navbar's green gradient, so the default tone
-  // continues it rather than cutting across it with a second accent colour.
   neutral: "bg-primary-dark text-on-primary",
-  info: "bg-info text-white",
+  info: "bg-linear-90 from-secondary/90 via-secondary-dark/90 to-secondary/90 text-white",
   warning: "bg-accent text-primary-dark",
 };
 

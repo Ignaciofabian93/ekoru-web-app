@@ -7,8 +7,6 @@ import { NAMESPACE } from "../i18n";
 
 type SlideId = "marketplace" | "stores" | "services" | "recycle" | "community" | "blog";
 
-// Structural config only — copy lives in i18n (`hero.slides.*`). `path` is
-// joined with the active locale so the CTA links stay localized.
 const SLIDE_CONFIG: {
   id: SlideId;
   path: string;
@@ -38,7 +36,7 @@ export function HomeHero({ lang }: { lang: string }) {
   }));
 
   return (
-    <div className="mx-auto w-full">
+    <div className="mx-auto w-11/12 max-w-6xl mt-4 rounded-lg overflow-hidden">
       <HeroCarousel slides={slides} />
     </div>
   );

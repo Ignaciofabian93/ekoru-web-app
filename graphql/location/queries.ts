@@ -42,3 +42,31 @@ export const GET_COUNTIES_BY_CITY = gql`
     }
   }
 `;
+
+/**
+ * Comunas within `radiusKm` of the visitor (a picked comuna or a geolocated
+ * point), nearest first. Public; feeds the `countyIds` filter of the home
+ * page's "near you" rails.
+ */
+export const GET_COUNTIES_NEAR = gql`
+  query GetCountiesNear(
+    $radiusKm: Float!
+    $countyId: Int
+    $latitude: Float
+    $longitude: Float
+    $language: Language
+  ) {
+    countiesNear(
+      radiusKm: $radiusKm
+      countyId: $countyId
+      latitude: $latitude
+      longitude: $longitude
+      language: $language
+    ) {
+      id
+      county
+      cityId
+      distanceKm
+    }
+  }
+`;

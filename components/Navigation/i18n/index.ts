@@ -21,6 +21,36 @@ export type NavigationDictionary = {
   sections: Record<NavigationSection, string>;
   search: {
     placeholder: string;
+    /** Visible label of the submit button inside the search bar. */
+    submit: string;
+  };
+  /** The subheader's "Exploring in: <comuna>" picker and its dialog. */
+  location: {
+    /** Lead-in before the comuna name, e.g. "Explorando en:". */
+    exploring: string;
+    /** Shown in place of the comuna before one is set. */
+    choose: string;
+    /** Shown in place of the comuna while it is being detected. */
+    locating: string;
+    dialogTitle: string;
+    useMyLocation: string;
+    orChoose: string;
+    region: string;
+    city: string;
+    county: string;
+    selectPlaceholder: string;
+    searchOptions: string;
+    noResults: string;
+    close: string;
+    /** Live feedback on a "use my location" request. */
+    status: {
+      locating: string;
+      /** Interpolates `{{county}}`. */
+      detected: string;
+      denied: string;
+      unsupported: string;
+      error: string;
+    };
   };
   banner: {
     /** Site-wide beta notice shown above the navbar. */
@@ -56,15 +86,12 @@ export type NavigationDictionary = {
     sectionsNav: string;
     homeLink: string;
     searchLabel: string;
-    searchSubmit: string;
     cart: string;
     cartWithOneItem: string;
     /** Interpolates `{{count}}`. */
     cartWithItems: string;
     openMenu: string;
     accountMenu: string;
-    openAccountMenu: string;
-    closeAccountMenu: string;
     languageTrigger: string;
     languageSelect: string;
   };

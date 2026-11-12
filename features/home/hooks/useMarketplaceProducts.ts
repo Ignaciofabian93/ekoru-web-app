@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client/react";
 
 import {
   GET_EXCHANGEABLE_PRODUCTS_HOME,
+  GET_NEARBY_MARKETPLACE_PRODUCTS_HOME,
   GET_SALE_PRODUCTS_HOME,
 } from "@/graphql/home/queries";
 import type { Product } from "@/types/product";
@@ -14,6 +15,7 @@ interface Params {
   pageSize?: number;
   filter?: Record<string, unknown>;
   sort?: { field: string; direction: "ASC" | "DESC" };
+  skip?: boolean;
 }
 
 type Page = { nodes: Product[]; pageInfo: PageInfo };
@@ -29,10 +31,11 @@ type Page = { nodes: Product[]; pageInfo: PageInfo };
 function useProductRail<K extends string>(
   query: DocumentNode,
   root: K,
-  { page = 1, pageSize = 8, filter, sort }: Params,
+  { page = 1, pageSize = 8, filter, sort, skip = false }: Params,
 ) {
   const { data, loading, error, previousData } = useQuery<Record<K, Page>>(query, {
     variables: { page, pageSize, filter, sort },
+    skip,
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });
@@ -61,4 +64,20 @@ export function useExchangeableProducts(params: Params = {}) {
 /** Products listed for sale only — the ones the swap rail leaves out. */
 export function useSaleProducts(params: Params = {}) {
   return useProductRail(GET_SALE_PRODUCTS_HOME, "getProducts", params);
+}
+
+/**
+ * Swaps and sales alike from sellers in the given comunas, for the home page's
+ * "near you" rail. Skipped until the comunas are known: without countyIds
+ * the query would list the whole marketplace.
+ */
+export function useNearbyMarketplaceProducts({
+  countyIds,
+  ...params
+}: Omit<Params, "filter"> & { countyIds?: number[] }) {
+  return useProductRail(GET_NEARBY_MARKETPLACE_PRODUCTS_HOME, "getProducts", {
+    ...params,
+    filter: { countyIds },
+    skip: params.skip || !countyIds,
+  });
 }

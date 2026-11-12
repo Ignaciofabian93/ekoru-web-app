@@ -6,7 +6,16 @@ import type { Seller } from "@/types/user";
 import { BusinessType } from "@/graphql/enums/enums";
 import type { SupportedLanguage } from "@/constants/settings";
 
-export function useStoresHomeData({ language }: { language: SupportedLanguage }) {
+export function useStoresHomeData({
+  language,
+  countyIds,
+  skip = false,
+}: {
+  language: SupportedLanguage;
+  /** Only stores located in these comunas (the "near you" rail). */
+  countyIds?: number[];
+  skip?: boolean;
+}) {
   const { data, loading, error, previousData } = useQuery<{
     getSellers: { nodes: Seller[]; pageInfo: PageInfo };
   }>(GET_SELLERS, {
@@ -16,7 +25,9 @@ export function useStoresHomeData({ language }: { language: SupportedLanguage })
       pageSize: 20,
       isActive: true,
       businessType: BusinessType.RETAIL,
+      countyIds,
     },
+    skip,
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });

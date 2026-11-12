@@ -1,7 +1,7 @@
 "use client";
 import { useId } from "react";
 import { useRouter } from "next/navigation";
-import { LogOutIcon } from "lucide-react";
+import { LogOutIcon, UserRound } from "lucide-react";
 import Image from "next/image";
 import clsx from "clsx";
 import { useTranslation } from "@/i18n/context";
@@ -18,7 +18,6 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useDealsBadge } from "@/features/deals/hooks/useDealsBadge";
 import { useUnreadConversations } from "@/features/chat/hooks/useUnreadConversations";
 import { useNotificationsBadge } from "@/features/notifications/hooks/useNotificationsBadge";
-import { Avatar } from "../Primitives/Avatar";
 import { Text } from "@/components/Primitives/Text";
 import {
   DropdownItem,
@@ -91,17 +90,26 @@ export default function ProfileDropdown() {
 
   return (
     <div ref={containerRef} className="relative flex items-center justify-center">
-      <Avatar
+      {/* The visible "Account" label names the trigger; aria-expanded carries
+          whether the menu is open. */}
+      <button
         ref={triggerRef}
-        image={profileImage}
-        alt=""
-        size="sm"
-        ariaLabel={isOpen ? t("a11y.closeAccountMenu") : t("a11y.openAccountMenu")}
-        ariaControls={menuId}
-        ariaExpanded={isOpen}
-        ariaHasPopup="menu"
+        type="button"
+        aria-controls={menuId}
+        aria-expanded={isOpen}
+        aria-haspopup="menu"
         onClick={toggle}
-      />
+        className={clsx(
+          "flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full px-3",
+          "font-sans text-sm font-semibold text-foreground outline-none",
+          "transition-all duration-150 hover:bg-white/10 active:bg-white/20",
+          "focus-visible:ring-2 focus-visible:ring-white/80",
+          isOpen && "bg-white/10",
+        )}
+      >
+        <UserRound size={20} strokeWidth={1.8} aria-hidden />
+        <span>{t("dropdown.account")}</span>
+      </button>
 
       {/* keepMounted so the panel animates, staying inert (and out of the
           screen reader's reach) while collapsed. */}

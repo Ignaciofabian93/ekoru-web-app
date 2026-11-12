@@ -36,6 +36,7 @@ export const GET_SELLERS = gql`
     $isActive: Boolean
     $isVerified: Boolean
     $searchQuery: String
+    $countyIds: [Int!]
     $enablePreferences: Boolean = false
     $enableSellerLevel: Boolean = false
     $enablePagination: Boolean = true
@@ -49,6 +50,7 @@ export const GET_SELLERS = gql`
       isActive: $isActive
       isVerified: $isVerified
       searchQuery: $searchQuery
+      countyIds: $countyIds
     ) {
       nodes {
         id
@@ -181,4 +183,3 @@ export const GET_SELLER_LEVELS = gql`
     }
   }
 `;
-

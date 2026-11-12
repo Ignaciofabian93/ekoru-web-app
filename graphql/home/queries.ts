@@ -58,6 +58,37 @@ export const GET_EXCHANGEABLE_PRODUCTS_HOME = gql`
 `;
 
 /**
+ * The "near you" marketplace rail: swaps and sales alike, from sellers in the
+ * comunas `filter.countyIds` names. No default filter, so without countyIds it
+ * would list the whole marketplace.
+ */
+export const GET_NEARBY_MARKETPLACE_PRODUCTS_HOME = gql`
+  ${HOME_MARKETPLACE_PRODUCT_FIELDS_FRAGMENT}
+  query GetNearbyMarketplaceProducts(
+    $page: Int = 1
+    $pageSize: Int = 12
+    $filter: ProductFilterInput!
+    $sort: ProductSortInput
+  ) {
+    getProducts(page: $page, pageSize: $pageSize, filter: $filter, sort: $sort) {
+      nodes {
+        ...HomeMarketplaceProductFields
+      }
+      pageInfo {
+        currentPage
+        totalPages
+        totalCount
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+        pageSize
+      }
+    }
+  }
+`;
+
+/**
  * The sale-only rail. `getExchangeableProducts` cannot serve this one: it
  * overrides `filter.isExchangeable` with `true` server-side, so asking it for
  * `false` still returns swaps. `getProducts` honours the filter as given.

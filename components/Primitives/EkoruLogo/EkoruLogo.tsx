@@ -6,10 +6,6 @@ import { ekoruLogoImageClass, ekoruLogoLinkClass } from "@/design/ekoruLogo";
 import { useLanguage } from "@/hooks/useLanguage";
 
 interface EkoruLogoProps {
-  /**
-   * Accessible name of the home link. Pass a translated string — the wordmark
-   * image is decorative, so this is the only name screen readers announce.
-   */
   label?: string;
   className?: string;
   enableRedirection?: boolean;

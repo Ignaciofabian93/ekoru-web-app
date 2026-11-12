@@ -12,6 +12,7 @@ import { ServicesHighlight } from "../ui/ServicesHighlight";
 import { AdBannerSection } from "../ui/AdBannerSection";
 import { StoreProductsHighlight } from "../ui/StoreProductsHighlight";
 import { BlogHighlight } from "../ui/BlogHighlight";
+import { NearbySection } from "../ui/NearbySection";
 import { PageLayout } from "@/components/Layout";
 
 export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
@@ -25,6 +26,7 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
       dictionary={{ [NAMESPACE]: dict, [MARKETPLACE_NAMESPACE]: marketplaceDict }}
     >
       <PageLayout hero={<HomeHero lang={lang} />} width="wide">
+        <NearbySection lang={lang} />
         <AdBannerSection lang={lang} variant="green" domain="marketplace" />
         <MarketplaceHighlight lang={lang} />
         <AdBannerSection lang={lang} variant="sky" domain="stores" />
