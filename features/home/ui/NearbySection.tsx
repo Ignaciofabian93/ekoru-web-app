@@ -1,6 +1,6 @@
 "use client";
 import { LocateFixed, MapPin } from "lucide-react";
-import { useState, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import {
   MarketplaceCard,
   ServiceProviderCard,
@@ -9,10 +9,9 @@ import {
 } from "@/components/Cards";
 import { Section } from "@/components/Layout";
 import {
-  LocationDialog,
   locationStatusMessage,
-} from "@/components/Navigation/LocationDialog";
-import { useComunaDetection } from "@/components/Navigation/hooks/useComunaDetection";
+  useComunaDetection,
+} from "@/components/Navigation/hooks/useComunaDetection";
 import { NAMESPACE as NAVIGATION_NAMESPACE } from "@/components/Navigation/i18n";
 import { Button } from "@/components/Primitives/Button";
 import { Text } from "@/components/Primitives/Text";
@@ -23,6 +22,7 @@ import {
   type SupportedLanguage,
 } from "@/constants/settings";
 import { useExploreLocation, useExploreRadius } from "@/hooks/useExploreLocation";
+import { useToast } from "@/hooks/useToast";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { useNearbyMarketplaceProducts } from "../hooks/useMarketplaceProducts";
@@ -53,28 +53,33 @@ function useHydrated() {
  * "Near you": marketplace items, stores, store products and service providers
  * from the comunas within the visitor's chosen radius of where they explore.
  *
- * Without a location it asks for one instead: their position (the browser's
- * prompt) or a comuna picked by hand. The header's picker is the page's
- * background detector, so this one only detects on request.
+ * Without a location it asks for the visitor's position instead (the
+ * browser's prompt). The header's pill is the page's background detector, so
+ * this one only detects on request.
  */
 export function NearbySection({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
+  const { t: tNav } = useTranslation(NAVIGATION_NAMESPACE);
+  const notify = useToast();
   const hydrated = useHydrated();
   const [location] = useExploreLocation();
   const [radius, setRadius] = useExploreRadius();
   const { status, detect } = useComunaDetection(lang, { background: false });
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const nearby = useNearbyCounties({ location, radiusKm: radius, language: lang });
 
   const title = t("nearby.title");
-  const dialog = (
-    <LocationDialog
-      isOpen={isDialogOpen}
-      onClose={() => setIsDialogOpen(false)}
-      status={status}
-      onDetect={() => void detect()}
-    />
-  );
+  const locating = status === "locating";
+
+  /** Re-detects from the results view, where there is no inline status line. */
+  const refresh = async () => {
+    if (locating) return;
+    const result = await detect();
+    if (result !== "detected") {
+      notify.warning(locationStatusMessage(result, undefined, tNav), {
+        toastId: "explore-location",
+      });
+    }
+  };
 
   if (!hydrated) {
     return (
@@ -90,13 +95,7 @@ export function NearbySection({ lang }: { lang: SupportedLanguage }) {
   if (!location || !nearby.hasOrigin) {
     return (
       <Section ariaLabel={title}>
-        <NearbyPrompt
-          status={status}
-          county={location?.county}
-          onDetect={() => void detect()}
-          onChoose={() => setIsDialogOpen(true)}
-        />
-        {dialog}
+        <NearbyPrompt status={status} onDetect={() => void detect()} />
       </Section>
     );
   }
@@ -114,11 +113,11 @@ export function NearbySection({ lang }: { lang: SupportedLanguage }) {
             {t("nearby.subtitle", { radius: String(radius), county: location.county })}{" "}
             <button
               type="button"
-              onClick={() => setIsDialogOpen(true)}
-              aria-haspopup="dialog"
+              onClick={() => void refresh()}
+              aria-busy={locating}
               className="cursor-pointer rounded-sm font-semibold text-primary underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
-              {t("nearby.change")}
+              {locating ? tNav("location.locating") : t("nearby.refresh")}
             </button>
           </Text>
         </div>
@@ -139,22 +138,17 @@ export function NearbySection({ lang }: { lang: SupportedLanguage }) {
           widerRadius={widerRadius}
         />
       )}
-      {dialog}
     </Section>
   );
 }
 
-/** Asks for a location: the visitor's position, or a comuna picked by hand. */
+/** Asks for the visitor's position. */
 function NearbyPrompt({
   status,
-  county,
   onDetect,
-  onChoose,
 }: {
   status: ReturnType<typeof useComunaDetection>["status"];
-  county?: string;
   onDetect: () => void;
-  onChoose: () => void;
 }) {
   const { t } = useTranslation(NAMESPACE);
   const { t: tNav } = useTranslation(NAVIGATION_NAMESPACE);
@@ -174,20 +168,18 @@ function NearbyPrompt({
         <Text variant="p" size="sm" color="secondary">
           {t("nearby.prompt.text")}
         </Text>
-        {/* Says why the location didn't work (denied, unsupported…), so the
-            visitor knows to pick a comuna instead. */}
+        {/* Says why the location didn't work (denied, unsupported…). */}
         <p role="status" className="font-sans text-sm font-semibold text-primary-dark">
-          {status === "detected" ? "" : locationStatusMessage(status, county, tNav)}
+          {status === "detected" ? "" : locationStatusMessage(status, undefined, tNav)}
         </p>
       </div>
-      <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+      <div className="flex shrink-0">
         <Button
           text={t("nearby.prompt.useLocation")}
           leftIcon={LocateFixed}
           loading={status === "locating"}
           onPress={onDetect}
         />
-        <Button text={t("nearby.prompt.choose")} variant="outline" onPress={onChoose} />
       </div>
     </div>
   );

@@ -47,7 +47,7 @@ html {
   --color-info: #3b82f6;
 
   /* ── Background colors ──────────────────────────────────────── */
-  --color-background: #fdfffc;
+  --color-background: #f5f6f1;
   --color-background-secondary: #f9fafb;
   --color-background-tertiary: #f3f4f6;
 
@@ -231,4 +231,64 @@ body {
   transition:
     transform 500ms cubic-bezier(0.4, 0, 0.2, 1),
     visibility 0s linear 250ms;
+}
+
+/* In the components layer so utilities passed via className (px-6, bg-…)
+   can still override these. */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid transparent;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+
+  .btn-primary {
+    background-image: linear-gradient(
+      to right,
+      var(--color-primary-dark),
+      var(--color-primary),
+      var(--color-primary-light)
+    );
+    background-origin: border-box;
+    color: var(--color-on-primary);
+  }
+
+  .btn:hover {
+    filter: brightness(1.1);
+  }
+
+  .btn-secondary {
+    background-color: var(--color-surface);
+    color: var(--color-secondary-dark);
+    border-color: var(--color-secondary-dark);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    background-color: var(--color-background-secondary);
+    color: var(--color-foreground-secondary);
+    cursor: pointer;
+  }
+
+  .pill:hover {
+    background-color: var(--color-background-tertiary);
+  }
 }

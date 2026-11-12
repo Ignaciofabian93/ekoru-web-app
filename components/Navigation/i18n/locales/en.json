@@ -13,24 +13,16 @@
   },
   "location": {
     "exploring": "Exploring in:",
-    "choose": "Choose district",
     "locating": "Locating…",
-    "dialogTitle": "Where are you exploring?",
-    "useMyLocation": "Use my current location",
-    "orChoose": "Or choose your district",
-    "region": "Region",
-    "city": "City",
-    "county": "District",
-    "selectPlaceholder": "Select…",
-    "searchOptions": "Search…",
-    "noResults": "No results",
-    "close": "Close",
+    "useMyLocation": "Use my location",
+    "update": "Update with my current location",
     "status": {
       "locating": "Finding your location…",
-      "detected": "We placed you in {{county}}. If that is not right, choose another district below.",
-      "denied": "We do not have permission to see your location. Turn it on in your browser or choose your district below.",
-      "unsupported": "Your browser cannot share your location. Choose your district below.",
-      "error": "We could not detect your district. Try again or choose it below."
+      "detected": "We placed you in {{county}}.",
+      "denied": "We don't have permission to see your location. Allow it for this site in your browser and try again.",
+      "unavailable": "Your device isn't providing your location. Check that location is turned on in your system settings and try again.",
+      "unsupported": "Your browser can't share your location.",
+      "error": "We couldn't work out your district. Please try again."
     }
   },
   "banner": {

@@ -32,7 +32,6 @@ import {
   type DropdownMenuSection,
 } from "./constants/menuItems";
 
-/** Which menu rows carry a count, so the JSX stays one expression per row. */
 function BADGE_BY_ROUTE(
   route: string,
   counts: { dealsCount: number; notificationCount: number; messagesCount: number },
@@ -52,9 +51,7 @@ export default function ProfileDropdown() {
 
   const isAuthenticated = useIsAuthenticated();
   const dealsCount = useDealsBadge();
-  // The navbar bell already polls this on desktop; Apollo dedupes the two.
   const notificationCount = useNotificationsBadge();
-  // The navbar's messages icon polls the same query; Apollo dedupes the two.
   const messagesCount = useUnreadConversations();
   const profileImage = useProfileImage();
   const displayName = useDisplayName();
@@ -66,9 +63,6 @@ export default function ProfileDropdown() {
     DROPDOWN_SUPPORT_SECTION,
   ];
 
-  // Roving focus indexes one flat list, so each section continues the previous
-  // one's numbering and sign-out sits last. `offsets[i]` is where section `i`
-  // starts.
   const offsets = sections.reduce<number[]>(
     (acc, section, i) => [
       ...acc,
@@ -90,8 +84,6 @@ export default function ProfileDropdown() {
 
   return (
     <div ref={containerRef} className="relative flex items-center justify-center">
-      {/* The visible "Account" label names the trigger; aria-expanded carries
-          whether the menu is open. */}
       <button
         ref={triggerRef}
         type="button"
@@ -99,20 +91,12 @@ export default function ProfileDropdown() {
         aria-expanded={isOpen}
         aria-haspopup="menu"
         onClick={toggle}
-        className={clsx(
-          "flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full px-3",
-          "font-sans text-sm font-semibold text-foreground outline-none",
-          "transition-all duration-150 hover:bg-white/10 active:bg-white/20",
-          "focus-visible:ring-2 focus-visible:ring-white/80",
-          isOpen && "bg-white/10",
-        )}
+        className={clsx("btn btn-secondary")}
       >
         <UserRound size={20} strokeWidth={1.8} aria-hidden />
         <span>{t("dropdown.account")}</span>
       </button>
 
-      {/* keepMounted so the panel animates, staying inert (and out of the
-          screen reader's reach) while collapsed. */}
       <DropdownPanel
         id={menuId}
         isOpen={isOpen}

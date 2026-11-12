@@ -24,31 +24,26 @@ export type NavigationDictionary = {
     /** Visible label of the submit button inside the search bar. */
     submit: string;
   };
-  /** The subheader's "Exploring in: <comuna>" picker and its dialog. */
+  /** The subheader's "Exploring in: <comuna>" pill (geolocation only). */
   location: {
     /** Lead-in before the comuna name, e.g. "Explorando en:". */
     exploring: string;
-    /** Shown in place of the comuna before one is set. */
-    choose: string;
     /** Shown in place of the comuna while it is being detected. */
     locating: string;
-    dialogTitle: string;
+    /** The pill's whole label before a comuna is set. */
     useMyLocation: string;
-    orChoose: string;
-    region: string;
-    city: string;
-    county: string;
-    selectPlaceholder: string;
-    searchOptions: string;
-    noResults: string;
-    close: string;
+    /** Tooltip / description: what clicking the pill does. */
+    update: string;
     /** Live feedback on a "use my location" request. */
     status: {
       locating: string;
       /** Interpolates `{{county}}`. */
       detected: string;
       denied: string;
+      /** Permission granted but the device returned no position. */
+      unavailable: string;
       unsupported: string;
+      /** Position found, comuna name not. */
       error: string;
     };
   };

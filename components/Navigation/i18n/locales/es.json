@@ -13,24 +13,16 @@
   },
   "location": {
     "exploring": "Explorando en:",
-    "choose": "Elegir comuna",
     "locating": "Ubicando…",
-    "dialogTitle": "¿Dónde estás explorando?",
-    "useMyLocation": "Usar mi ubicación actual",
-    "orChoose": "O elige tu comuna",
-    "region": "Región",
-    "city": "Ciudad",
-    "county": "Comuna",
-    "selectPlaceholder": "Selecciona…",
-    "searchOptions": "Buscar…",
-    "noResults": "Sin resultados",
-    "close": "Cerrar",
+    "useMyLocation": "Usar mi ubicación",
+    "update": "Actualizar con mi ubicación actual",
     "status": {
       "locating": "Buscando tu ubicación…",
-      "detected": "Te ubicamos en {{county}}. Si no es correcto, elige otra comuna abajo.",
-      "denied": "No tenemos permiso para ver tu ubicación. Actívalo en tu navegador o elige tu comuna abajo.",
-      "unsupported": "Tu navegador no puede compartir tu ubicación. Elige tu comuna abajo.",
-      "error": "No pudimos detectar tu comuna. Inténtalo de nuevo o elígela abajo."
+      "detected": "Te ubicamos en {{county}}.",
+      "denied": "No tenemos permiso para ver tu ubicación. Actívalo para este sitio en tu navegador y vuelve a intentarlo.",
+      "unavailable": "Tu dispositivo no está entregando tu ubicación. Revisa que la ubicación esté activada en la configuración del sistema y vuelve a intentarlo.",
+      "unsupported": "Tu navegador no puede compartir tu ubicación.",
+      "error": "No pudimos identificar tu comuna. Inténtalo de nuevo."
     }
   },
   "banner": {

@@ -49,7 +49,7 @@ export function NavBar() {
       >
         <div className="flex flex-wrap items-center gap-x-4 gap-y-3 px-2 pb-3 md:flex-nowrap lg:gap-x-8">
           <EkoruLogo label={t("a11y.homeLink")} />
-          <SearchBar className="order-last w-full md:order-0 md:w-auto md:min-w-0 md:max-w-2xl md:flex-1" />
+          <SearchBar className="order-last w-full md:order-0 md:w-full" />
           <div className="relative ml-auto flex shrink-0 items-center justify-end gap-2 lg:gap-3">
             {FEATURES.cart.available && isAuthenticated && (
               <ShoppingCartButton
@@ -58,10 +58,10 @@ export function NavBar() {
                 labelWithItems={t("a11y.cartWithItems")}
               />
             )}
+            <PublishButton />
             <div className="hidden md:flex">
               <ProfileDropdown />
             </div>
-            <PublishButton />
             <MenuButton className="md:hidden" />
           </div>
         </div>

@@ -42,14 +42,13 @@
   "nearby": {
     "title": "Near you",
     "subtitle": "What's within {{radius}} km of {{county}}.",
-    "change": "Change district",
+    "refresh": "Update location",
     "radiusLabel": "Distance",
     "radiusOption": "{{km}} km",
     "prompt": {
       "title": "Discover what's near you",
-      "text": "Share your location or choose your district to see products, stores and services in your area.",
-      "useLocation": "Use my location",
-      "choose": "Choose district"
+      "text": "Share your location to see products, stores and services in your area.",
+      "useLocation": "Use my location"
     },
     "rails": {
       "marketplace": "Marketplace",

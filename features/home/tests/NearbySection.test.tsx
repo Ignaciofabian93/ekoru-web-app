@@ -36,6 +36,7 @@ const state = vi.hoisted(() => ({
     services: [] as Item[],
   },
   detect: vi.fn(),
+  warning: vi.fn(),
 }));
 
 vi.mock("../hooks/useNearbyCounties", () => ({
@@ -62,14 +63,13 @@ vi.mock("../hooks/useStoreProducts", () => ({
 vi.mock("../hooks/useServices", () => ({
   useServicesHomeData: () => ({ sellers: state.rails.services, loading: false }),
 }));
-vi.mock("@/components/Navigation/hooks/useComunaDetection", () => ({
+vi.mock("@/components/Navigation/hooks/useComunaDetection", async (importOriginal) => ({
+  // Keeps the real locationStatusMessage.
+  ...(await importOriginal<Record<string, unknown>>()),
   useComunaDetection: () => ({ status: "idle", detect: state.detect }),
 }));
-// The real dialog loads the region → comuna cascade over Apollo.
-vi.mock("@/components/Navigation/LocationDialog", () => ({
-  LocationDialog: ({ isOpen }: { isOpen: boolean }) =>
-    isOpen ? <div role="dialog" aria-label="Where are you exploring from?" /> : null,
-  locationStatusMessage: () => "",
+vi.mock("@/hooks/useToast", () => ({
+  useToast: () => ({ warning: state.warning }),
 }));
 vi.mock("@/components/Cards", () => {
   const Card = ({ name }: { name: string }) => <article>{name}</article>;
@@ -107,6 +107,7 @@ beforeEach(() => {
   state.nearbyCalls.length = 0;
   state.rails = { marketplace: [], stores: [], storeProducts: [], services: [] };
   state.detect.mockReset();
+  state.warning.mockReset();
 });
 
 function withLocation() {
@@ -130,9 +131,8 @@ describe("NearbySection", () => {
 
     await user.click(screen.getByRole("button", { name: "Use my location" }));
     expect(state.detect).toHaveBeenCalledTimes(1);
-
-    await user.click(screen.getByRole("button", { name: "Choose district" }));
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    // Location only: no comuna to pick by hand.
+    expect(screen.queryByRole("button", { name: /district/i })).not.toBeInTheDocument();
   });
 
   it("shows what is within the default radius of the chosen comuna", async () => {
@@ -181,13 +181,29 @@ describe("NearbySection", () => {
     expect(screen.getByRole("radio", { name: "25 km" })).toBeChecked();
   });
 
-  it("opens the comuna dialog from the change link", async () => {
+  it("re-detects the location from the update link", async () => {
     const user = userEvent.setup();
     withLocation();
     state.rails.stores = [{ id: 2, name: "Zero Waste Shop" }];
+    state.detect.mockResolvedValue("detected");
     renderSection();
 
-    await user.click(screen.getByRole("button", { name: "Change district" }));
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Update location" }));
+    expect(state.detect).toHaveBeenCalledTimes(1);
+    expect(state.warning).not.toHaveBeenCalled();
+  });
+
+  it("explains a refused permission in a toast", async () => {
+    const user = userEvent.setup();
+    withLocation();
+    state.rails.stores = [{ id: 2, name: "Zero Waste Shop" }];
+    state.detect.mockResolvedValue("denied");
+    renderSection();
+
+    await user.click(screen.getByRole("button", { name: "Update location" }));
+    expect(state.warning).toHaveBeenCalledWith(
+      navigationEn.location.status.denied,
+      expect.objectContaining({ toastId: "explore-location" }),
+    );
   });
 });

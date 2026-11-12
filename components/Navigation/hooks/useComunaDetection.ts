@@ -6,13 +6,19 @@ import { readExploreLocation, useExploreLocation } from "@/hooks/useExploreLocat
 /**
  * Where an explicit "use my location" request stands. Background detection
  * never reports here: it is invisible unless it succeeds.
+ *
+ * Location is only ever detected here. Picking a comuna by hand belongs to the
+ * signed-in user's profile address, not to browsing.
  */
 export type ComunaDetectionStatus =
   | "idle"
   | "locating"
   | "detected"
   | "denied"
+  /** Permission is fine but the device gave no position (OS location off, timeout). */
+  | "unavailable"
   | "unsupported"
+  /** We had a position but couldn't name its comuna. */
   | "error";
 
 type Outcome =
@@ -96,24 +102,42 @@ function getPosition(timeout: number): Promise<GeolocationPosition> {
   );
 }
 
+/** GeolocationPositionError.PERMISSION_DENIED. */
+const PERMISSION_DENIED = 1;
+
+/** Dev-only: which step failed and why, since the UI only shows a summary. */
+function logFailure(step: string, err: unknown) {
+  if (process.env.NODE_ENV === "production") return;
+  const { code, message } = (err ?? {}) as { code?: number; message?: string };
+  console.warn(`[location] ${step} failed`, { code, message: message ?? String(err) });
+}
+
 /** Asks the browser for a fix (prompting if needed) and names its comuna. */
 async function locateComuna(language: string): Promise<Outcome> {
   if (typeof navigator === "undefined" || !navigator.geolocation) {
     return { error: "unsupported" };
   }
+
+  let latitude: number;
+  let longitude: number;
   try {
     const timeout = (await isGranted()) ? GRANTED_TIMEOUT_MS : PROMPT_TIMEOUT_MS;
-    const { coords } = await getPosition(timeout);
-    const { latitude, longitude } = coords;
-    const county = await reverseGeocodeComuna(latitude, longitude, language);
-    return county ? { county, latitude, longitude } : { error: "error" };
+    ({ latitude, longitude } = (await getPosition(timeout)).coords);
   } catch (err) {
-    const denied =
-      typeof GeolocationPositionError !== "undefined" &&
-      err instanceof GeolocationPositionError &&
-      err.code === err.PERMISSION_DENIED;
-    return { error: denied ? "denied" : "error" };
+    logFailure("getCurrentPosition", err);
+    // getCurrentPosition only rejects with a GeolocationPositionError.
+    const code = (err as GeolocationPositionError | undefined)?.code;
+    return { error: code === PERMISSION_DENIED ? "denied" : "unavailable" };
   }
+
+  try {
+    const county = await reverseGeocodeComuna(latitude, longitude, language);
+    if (county) return { county, latitude, longitude };
+    logFailure("reverse geocoding", new Error("no comuna name in the response"));
+  } catch (err) {
+    logFailure("reverse geocoding", err);
+  }
+  return { error: "error" };
 }
 
 /**
@@ -147,15 +171,14 @@ export function useComunaDetection(
   const [, setLocation] = useExploreLocation();
   const [status, setStatus] = useState<ComunaDetectionStatus>("idle");
 
-  const detect = useCallback(async () => {
+  /** Resolves with where the request ended, so callers can react to failure. */
+  const detect = useCallback(async (): Promise<ComunaDetectionStatus> => {
     setStatus("locating");
     const outcome = await run(language);
-    if ("county" in outcome) {
-      setLocation({ ...outcome, source: "geolocation" });
-      setStatus("detected");
-    } else {
-      setStatus(outcome.error);
-    }
+    const next = "county" in outcome ? "detected" : outcome.error;
+    if ("county" in outcome) setLocation({ ...outcome, source: "geolocation" });
+    setStatus(next);
+    return next;
   }, [language, setLocation]);
 
   const detectInBackground = useCallback(async () => {
@@ -195,4 +218,28 @@ export function useComunaDetection(
   }, [background, detectInBackground]);
 
   return { status, detect };
+}
+
+/** What to announce for a detection status, from the navigation namespace. */
+export function locationStatusMessage(
+  status: ComunaDetectionStatus,
+  county: string | undefined,
+  t: (key: string, vars?: Record<string, string>) => string,
+): string {
+  switch (status) {
+    case "locating":
+      return t("location.status.locating");
+    case "detected":
+      return county ? t("location.status.detected", { county }) : "";
+    case "denied":
+      return t("location.status.denied");
+    case "unavailable":
+      return t("location.status.unavailable");
+    case "unsupported":
+      return t("location.status.unsupported");
+    case "error":
+      return t("location.status.error");
+    default:
+      return "";
+  }
 }

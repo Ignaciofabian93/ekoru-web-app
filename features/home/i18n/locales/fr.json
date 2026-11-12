@@ -42,14 +42,13 @@
   "nearby": {
     "title": "Près de chez vous",
     "subtitle": "Ce qui se trouve à {{radius}} km de {{county}}.",
-    "change": "Changer de commune",
+    "refresh": "Mettre à jour la position",
     "radiusLabel": "Distance",
     "radiusOption": "{{km}} km",
     "prompt": {
       "title": "Découvrez ce qui se trouve près de chez vous",
-      "text": "Partagez votre position ou choisissez votre commune pour voir les produits, boutiques et services de votre quartier.",
-      "useLocation": "Utiliser ma position",
-      "choose": "Choisir une commune"
+      "text": "Partagez votre position pour voir les produits, boutiques et services de votre quartier.",
+      "useLocation": "Utiliser ma position"
     },
     "rails": {
       "marketplace": "Marketplace",

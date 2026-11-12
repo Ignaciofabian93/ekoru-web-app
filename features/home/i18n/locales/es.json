@@ -42,14 +42,13 @@
   "nearby": {
     "title": "Cerca de ti",
     "subtitle": "Lo que hay a {{radius}} km de {{county}}.",
-    "change": "Cambiar comuna",
+    "refresh": "Actualizar ubicación",
     "radiusLabel": "Distancia",
     "radiusOption": "{{km}} km",
     "prompt": {
       "title": "Descubre lo que hay cerca de ti",
-      "text": "Comparte tu ubicación o elige tu comuna para ver productos, tiendas y servicios de tu zona.",
-      "useLocation": "Usar mi ubicación",
-      "choose": "Elegir comuna"
+      "text": "Comparte tu ubicación para ver productos, tiendas y servicios de tu zona.",
+      "useLocation": "Usar mi ubicación"
     },
     "rails": {
       "marketplace": "Marketplace",

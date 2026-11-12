@@ -13,24 +13,16 @@
   },
   "location": {
     "exploring": "Exploration à :",
-    "choose": "Choisir une commune",
     "locating": "Localisation…",
-    "dialogTitle": "Où explorez-vous ?",
-    "useMyLocation": "Utiliser ma position actuelle",
-    "orChoose": "Ou choisissez votre commune",
-    "region": "Région",
-    "city": "Ville",
-    "county": "Commune",
-    "selectPlaceholder": "Sélectionner…",
-    "searchOptions": "Rechercher…",
-    "noResults": "Aucun résultat",
-    "close": "Fermer",
+    "useMyLocation": "Utiliser ma position",
+    "update": "Mettre à jour avec ma position actuelle",
     "status": {
       "locating": "Recherche de votre position…",
-      "detected": "Nous vous avons situé à {{county}}. Si ce n’est pas correct, choisissez une autre commune ci-dessous.",
-      "denied": "Nous n’avons pas l’autorisation de voir votre position. Activez-la dans votre navigateur ou choisissez votre commune ci-dessous.",
-      "unsupported": "Votre navigateur ne peut pas partager votre position. Choisissez votre commune ci-dessous.",
-      "error": "Nous n’avons pas pu détecter votre commune. Réessayez ou choisissez-la ci-dessous."
+      "detected": "Nous vous avons situé à {{county}}.",
+      "denied": "Nous n’avons pas l’autorisation de voir votre position. Autorisez-la pour ce site dans votre navigateur, puis réessayez.",
+      "unavailable": "Votre appareil ne fournit pas votre position. Vérifiez que la localisation est activée dans les paramètres du système, puis réessayez.",
+      "unsupported": "Votre navigateur ne peut pas partager votre position.",
+      "error": "Nous n’avons pas pu identifier votre commune. Réessayez."
     }
   },
   "banner": {
