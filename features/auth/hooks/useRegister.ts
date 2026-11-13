@@ -11,6 +11,7 @@ import { useTranslation } from "@/i18n/context";
 import type { BusinessType, SellerType } from "@/types/enums";
 import { getCookie } from "@/utils/cookies";
 import { sanitizeOnSubmit } from "@/utils/inputValidations";
+import { safeRedirectPath } from "@/utils/safeRedirect";
 import { useMutation } from "@apollo/client/react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -27,9 +28,7 @@ export const APPLICATION_MESSAGE_MAX = 3000;
 function readSafeRedirect(): string | null {
   if (typeof window === "undefined") return null;
   const requested = new URLSearchParams(window.location.search).get("redirectTo");
-  return requested && requested.startsWith("/") && !requested.startsWith("//")
-    ? requested
-    : null;
+  return safeRedirectPath(requested);
 }
 
 export function useRegister() {

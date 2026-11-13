@@ -10,6 +10,7 @@ import { useNavigation } from "@/hooks/useNavigation";
 import { useToast } from "@/hooks/useToast";
 import useAuthStore from "@/store/useAuthStore";
 import type { Seller } from "@/types/user";
+import { safeRedirectPath } from "@/utils/safeRedirect";
 
 export function useLogin() {
   const { replace, refresh } = useNavigation();
@@ -45,10 +46,7 @@ export function useLogin() {
       const lang = params.lang ?? DEFAULT_LANGUAGE;
       // Only honor a same-origin relative path to avoid open-redirects.
       const requested = searchParams.get("redirectTo");
-      const safeRedirect =
-        requested && requested.startsWith("/") && !requested.startsWith("//")
-          ? requested
-          : `/${lang}/profile`;
+      const safeRedirect = safeRedirectPath(requested) ?? `/${lang}/profile`;
       replace({ route: safeRedirect });
       refresh();
     } catch (err) {

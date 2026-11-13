@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { GATEWAY_BASE_URL } from "@/config/endpoints";
 import { forwardSetCookies } from "@/lib/api/forwardCookies";
+import { gatewayFetch, gatewayHeaders } from "@/lib/api/gateway";
+import { refuseLargeBody } from "@/lib/api/requestLimits";
 
 // Forwards the login request to the gateway and re-emits its Set-Cookie
 // headers to the browser so the HttpOnly `token` / `refreshToken` cookies
@@ -8,14 +9,18 @@ import { forwardSetCookies } from "@/lib/api/forwardCookies";
 // the browser never needs it because every authenticated request carries
 // the cookie automatically.
 export async function POST(req: Request) {
+  const tooLarge = refuseLargeBody(req);
+  if (tooLarge) return tooLarge;
+
   const body = await req.text();
   const acceptLanguage = req.headers.get("accept-language") ?? "";
 
-  const gatewayRes = await fetch(`${GATEWAY_BASE_URL}/session/auth`, {
+  const gatewayRes = await gatewayFetch("/session/auth", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "Accept-Language": acceptLanguage,
+      ...gatewayHeaders(req),
     },
     body,
   });

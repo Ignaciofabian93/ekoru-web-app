@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { visitorAddress } from "@/lib/api/requestLimits";
 
 /** Largest report accepted; anything bigger is cut, not stored. */
 const MAX_BYTES = 8 * 1024;
@@ -15,8 +16,9 @@ const clip = (value: unknown, max: number) =>
  * to collect. Nothing is stored here and nothing is returned.
  */
 export async function POST(request: Request) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  // X-Real-IP, which nginx overwrites. The first X-Forwarded-For entry is the
+  // caller's own, so a new value per call went around this limit (WEB-27).
+  const ip = visitorAddress(request);
   const now = Date.now();
   const entry = recent.get(ip);
   if (!entry || now - entry.windowStart > 60_000) {

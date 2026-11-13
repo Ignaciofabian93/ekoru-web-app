@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-import { GATEWAY_BASE_URL } from "@/config/endpoints";
+import { gatewayFetch, gatewayHeaders } from "@/lib/api/gateway";
 import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE } from "@/constants/settings";
 
 /**
@@ -19,33 +19,37 @@ import { DEFAULT_LANGUAGE, LANGUAGE_COOKIE } from "@/constants/settings";
  */
 type Params = { provider: string };
 
-async function forward(req: Request, { params }: { params: Promise<Params> }, method: "GET" | "POST") {
+async function forward(
+  req: Request,
+  { params }: { params: Promise<Params> },
+  method: "GET" | "POST",
+) {
   const { provider } = await params;
   const cookieStore = await cookies();
   const lang = cookieStore.get(LANGUAGE_COOKIE)?.value || DEFAULT_LANGUAGE;
 
   const url = new URL(req.url);
-  const target = `${GATEWAY_BASE_URL}/payments/return/${provider}${url.search}`;
+  const target = `/payments/return/${encodeURIComponent(provider)}${url.search}`;
 
   const body = method === "POST" ? await req.text() : undefined;
   const contentType = req.headers.get("content-type");
 
   let gatewayRes: Response;
   try {
-    gatewayRes = await fetch(target, {
+    gatewayRes = await gatewayFetch(target, {
       method,
       headers: {
         ...(contentType ? { "Content-Type": contentType } : {}),
+        ...gatewayHeaders(req),
       },
       body,
       redirect: "manual",
     });
   } catch (err) {
     console.error("[checkout/return] gateway unreachable", err);
-    return NextResponse.redirect(
-      new URL(`/${lang}/cart/confirmation`, req.url),
-      { status: 303 },
-    );
+    return NextResponse.redirect(new URL(`/${lang}/cart/confirmation`, req.url), {
+      status: 303,
+    });
   }
 
   // Gateway should reply with JSON `{ paymentId }` (or include it in a redirect

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { GATEWAY_BASE_URL } from "@/config/endpoints";
 import { forwardSetCookies } from "@/lib/api/forwardCookies";
+import { gatewayFetch, gatewayHeaders } from "@/lib/api/gateway";
 import { SESSION_COOKIES } from "@/utils/cookies";
 
 /**
@@ -18,11 +18,12 @@ function isSecureRequest(req: Request): boolean {
 export async function POST(req: Request) {
   const cookieHeader = req.headers.get("cookie") ?? "";
 
-  const gatewayRes = await fetch(`${GATEWAY_BASE_URL}/session/logout`, {
+  const gatewayRes = await gatewayFetch("/session/logout", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Cookie: cookieHeader,
+      ...gatewayHeaders(req),
     },
     body: "{}",
   });

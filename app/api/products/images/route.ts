@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { GATEWAY_BASE_URL } from "@/config/endpoints";
+import { gatewayFetch, gatewayHeaders } from "@/lib/api/gateway";
 
 // Proxies a single product image upload to the gateway. The browser posts a
 // multipart body to this same-origin route; we read the HttpOnly `token`
@@ -26,10 +26,7 @@ export async function POST(req: Request) {
 
   const entityId = incoming.get("entityId");
   if (typeof entityId !== "string" || !entityId) {
-    return NextResponse.json(
-      { message: "entityId is required" },
-      { status: 400 },
-    );
+    return NextResponse.json({ message: "entityId is required" }, { status: 400 });
   }
 
   const forward = new FormData();
@@ -39,10 +36,13 @@ export async function POST(req: Request) {
 
   // Do NOT set Content-Type — fetch derives the multipart boundary from the
   // FormData body automatically.
-  const gatewayUrl = `${GATEWAY_BASE_URL}/api/images/upload/product`;
-  const gatewayRes = await fetch(gatewayUrl, {
+  const gatewayUrl = "/api/images/upload/product";
+  const gatewayRes = await gatewayFetch(gatewayUrl, {
     method: "POST",
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    headers: {
+      ...gatewayHeaders(req),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     body: forward,
   });
 
@@ -98,9 +98,13 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ message: "keys must be a list" }, { status: 400 });
   }
 
-  const gatewayRes = await fetch(`${GATEWAY_BASE_URL}/api/images/release`, {
+  const gatewayRes = await gatewayFetch("/api/images/release", {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    headers: {
+      ...gatewayHeaders(req),
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ keys: body.keys }),
   });
   const data = (await gatewayRes.json().catch(() => ({}))) as Record<string, unknown>;

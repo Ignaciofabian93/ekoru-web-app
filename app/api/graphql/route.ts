@@ -1,19 +1,33 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { GRAPHQL_URL } from "@/config/endpoints";
+import { gatewayFetch, gatewayHeaders } from "@/lib/api/gateway";
+import { MAX_JSON_BYTES, isJsonRequest, refuseLargeBody } from "@/lib/api/requestLimits";
 
 type GraphQLPayload = { data?: unknown; errors?: unknown };
 
 function isGraphQLPayload(value: unknown): value is GraphQLPayload {
   return (
-    typeof value === "object" &&
-    value !== null &&
-    ("data" in value || "errors" in value)
+    typeof value === "object" && value !== null && ("data" in value || "errors" in value)
   );
 }
 
 export async function POST(req: Request) {
+  // Only JSON is passed on (GW-6). A cross-site form can post text/plain with
+  // the visitor's cookies and no preflight; refusing it here keeps the
+  // gateway's own check against those posts from being bypassed.
+  if (!isJsonRequest(req)) {
+    return NextResponse.json(
+      { errors: [{ message: "Content-Type must be application/json" }] },
+      { status: 415 },
+    );
+  }
+  const tooLarge = refuseLargeBody(req);
+  if (tooLarge) return tooLarge;
+
   const body = await req.text();
+  if (body.length > MAX_JSON_BYTES) {
+    return NextResponse.json({ message: "Request body too large" }, { status: 413 });
+  }
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
@@ -31,10 +45,11 @@ export async function POST(req: Request) {
   // products, which are meant to be excluded — instead of raising an error.
   const cookieHeader = req.headers.get("cookie") ?? "";
 
-  const res = await fetch(GRAPHQL_URL, {
+  const res = await gatewayFetch("/graphql", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      ...gatewayHeaders(req),
       ...(cookieHeader ? { Cookie: cookieHeader } : {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },

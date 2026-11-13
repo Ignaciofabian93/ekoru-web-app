@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { GATEWAY_BASE_URL } from "@/config/endpoints";
+import { gatewayFetch, gatewayHeaders } from "@/lib/api/gateway";
 
 // Proxies a profile avatar upload to the gateway's POST /api/profile-image.
 // The gateway authenticates via the Bearer token, deletes the old R2 object,
@@ -20,9 +20,12 @@ export async function POST(req: Request) {
   const forward = new FormData();
   forward.append("file", file, file.name || "avatar.jpg");
 
-  const gatewayRes = await fetch(`${GATEWAY_BASE_URL}/api/profile-image`, {
+  const gatewayRes = await gatewayFetch("/api/profile-image", {
     method: "POST",
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    headers: {
+      ...gatewayHeaders(req),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
     body: forward,
   });
 
