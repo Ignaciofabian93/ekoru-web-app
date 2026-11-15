@@ -1,4 +1,5 @@
 import axios, { isAxiosError, type InternalAxiosRequestConfig } from "axios";
+import { refreshSession } from "./refreshSession";
 
 declare module "axios" {
   export interface InternalAxiosRequestConfig {
@@ -15,22 +16,6 @@ const api = axios.create({
   withCredentials: true,
 });
 
-let isRefreshing = false;
-let pendingRequests: Array<{
-  resolve: () => void;
-  reject: (error: unknown) => void;
-}> = [];
-
-const resolveAll = () => {
-  pendingRequests.forEach(({ resolve }) => resolve());
-  pendingRequests = [];
-};
-
-const rejectAll = (error: unknown) => {
-  pendingRequests.forEach(({ reject }) => reject(error));
-  pendingRequests = [];
-};
-
 api.interceptors.response.use(
   (response) => response,
   async (error: unknown) => {
@@ -41,36 +26,16 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (isRefreshing) {
-      return new Promise<void>((resolve, reject) => {
-        pendingRequests.push({ resolve, reject });
-      }).then(() => api(original));
-    }
-
     original._retry = true;
-    isRefreshing = true;
 
-    try {
-      // Use plain fetch instead of the `api` instance to keep the refresh
-      // call outside this interceptor — otherwise a 401 from /auth/refresh
-      // would recurse indefinitely.
-      const refresh = await fetch("/api/auth/refresh", {
-        method: "POST",
-        credentials: "include",
-      });
+    // One renewal for the whole tab, shared with the Apollo link (GW-8). It
+    // uses plain fetch, outside this interceptor, so a 401 from
+    // /auth/refresh can't recurse.
+    if (await refreshSession()) return api(original);
 
-      if (!refresh.ok) throw new Error("Refresh failed");
-
-      resolveAll();
-      return api(original);
-    } catch (refreshError) {
-      rejectAll(refreshError);
-      const { default: useAuthStore } = await import("@/store/useAuthStore");
-      useAuthStore.getState().logout();
-      return Promise.reject(error);
-    } finally {
-      isRefreshing = false;
-    }
+    const { default: useAuthStore } = await import("@/store/useAuthStore");
+    useAuthStore.getState().logout();
+    return Promise.reject(error);
   },
 );
 

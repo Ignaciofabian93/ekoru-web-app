@@ -1,19 +1,27 @@
-import { ApolloClient, CombinedGraphQLErrors, HttpLink, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  CombinedGraphQLErrors,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
 import { ErrorLink } from "@apollo/client/link/error";
 import { from, switchMap } from "rxjs";
+import { refreshSession } from "@/lib/api/refreshSession";
 import { UnauthorizedError, isUnauthorizedResponse } from "./errors";
 
 const httpLink = new HttpLink({ uri: "/api/graphql", credentials: "same-origin" });
 
-const errorLink = new ErrorLink(({ error, operation, forward }) => {
+// Queries that get a 401 together share one renewal (`refreshSession`), then
+// each retries once.
+export const errorLink = new ErrorLink(({ error, operation, forward }) => {
   if (CombinedGraphQLErrors.is(error)) {
     if (isUnauthorizedResponse(error) && !operation.getContext().refreshAttempted) {
       return from(
-        fetch("/api/auth/refresh", { method: "POST", credentials: "include" }).then((res) => {
+        refreshSession().then((renewed) => {
           // A failed refresh means there is no session to recover — surface it
           // as an auth error so screens can invite a sign-in rather than
           // reporting a generic failure.
-          if (!res.ok) throw new UnauthorizedError();
+          if (!renewed) throw new UnauthorizedError();
         }),
       ).pipe(
         switchMap(() => {

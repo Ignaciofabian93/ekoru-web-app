@@ -7,26 +7,19 @@ const isDev = process.env.NODE_ENV === "development";
  * Security headers (WEB-26). Kept in this file on purpose: the Dockerfile
  * copies only next.config.ts into the running image, so it can't import.
  *
- * Enforced today: nobody may put the web app in a frame (clickjacking), the
- * browser doesn't guess content types, other sites get only our origin as
- * referrer, and pages get the visitor's location only from this site, never
- * the camera or microphone.
+ * Nobody may put the web app in a frame (clickjacking), scripts, styles,
+ * images and calls load only from the sources listed below, the browser
+ * doesn't guess content types, other sites get only our origin as referrer,
+ * and pages get the visitor's location only from this site, never the camera
+ * or microphone.
+ *
+ * The content policy ran report-only until 2026-11-15, when a console pass of
+ * every page (signed out and in, staging and production) reported nothing.
+ * A new outside source (a script, an image host, an API called from the
+ * browser) must be added here, or the browser blocks it.
  */
-const SECURITY_HEADERS = [
-  { key: "X-Frame-Options", value: "DENY" },
-  { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self)" },
-];
-
-/**
- * The rest of the policy, in report-only mode: the browser lists in its console
- * what it would have blocked and blocks nothing. Once the console stays quiet
- * on every screen, move these directives into Content-Security-Policy above,
- * next to frame-ancestors, and delete this header (WEB-26 step 2).
- */
-const CSP_REPORT_ONLY = [
+const CSP = [
+  "frame-ancestors 'none'",
   "default-src 'self'",
   // Next's own inline bootstrap scripts need 'unsafe-inline' without nonces.
   // React's development build also uses eval; production never does.
@@ -45,19 +38,19 @@ const CSP_REPORT_ONLY = [
   "form-action 'self'",
 ].join("; ");
 
+const SECURITY_HEADERS = [
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "Content-Security-Policy", value: CSP },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self)" },
+];
+
 const nextConfig: NextConfig = {
   // No "x-powered-by: Next.js" on every response.
   poweredByHeader: false,
   headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          ...SECURITY_HEADERS,
-          { key: "Content-Security-Policy-Report-Only", value: CSP_REPORT_ONLY },
-        ],
-      },
-    ];
+    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
   },
   turbopack: {
     root: path.resolve(__dirname),
