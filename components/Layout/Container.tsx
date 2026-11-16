@@ -26,7 +26,7 @@ export function Container({
   children,
   width = "default",
   gap = RHYTHM.SECTION,
-  padded = false,
+  padded = true,
   paddingY = 6,
   as,
   className,
