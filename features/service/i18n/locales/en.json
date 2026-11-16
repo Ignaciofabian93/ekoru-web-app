@@ -88,9 +88,7 @@
   },
   "otherServices": {
     "title": "More services from this provider",
-    "empty": "This provider has no other published services right now.",
-    "scrollPrevious": "See previous services",
-    "scrollNext": "See more services"
+    "empty": "This provider has no other published services right now."
   },
   "booking": {
     "title": "Book this service",

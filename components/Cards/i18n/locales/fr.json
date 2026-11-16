@@ -10,25 +10,40 @@
     "FOR_PARTS": "Pour pièces"
   },
   "badges": {
-    "exchangeable": "Échangeable",
+    "acceptsExchange": "Accepte l'échange",
     "offer": "Promotion",
     "discount": "-{{value}} %",
     "soldOut": "Épuisé",
     "verified": "Vérifié"
   },
   "meta": {
-    "noBrand": "Sans marque",
     "noBusinessName": "Boutique sans nom",
-    "noBusinessType": "Boutique",
     "noDescription": "Cette annonce n'a pas encore de description."
   },
   "price": {
     "from": "À partir de"
   },
-  "businessType": {
-    "RETAIL": "Ventes",
-    "SERVICES": "Services",
-    "MIXED": "Ventes et services"
+  "count": {
+    "productsOne": "{{value}} produit",
+    "productsOther": "{{value}} produits",
+    "servicesOne": "{{value}} service",
+    "servicesOther": "{{value}} services"
+  },
+  "businessTag": {
+    "womanLed": "Dirigé par des femmes",
+    "zeroWaste": "Zéro déchet",
+    "recycledMaterials": "100% matériaux recyclés",
+    "plasticFree": "Sans plastique",
+    "locallyMade": "Fabriqué localement",
+    "handmade": "Fait main",
+    "vegan": "Végan",
+    "crueltyFree": "Sans cruauté",
+    "organic": "Biologique",
+    "fairTrade": "Commerce équitable",
+    "carbonNeutral": "Neutre en carbone",
+    "upcycled": "Surcyclé",
+    "refillable": "Rechargeable",
+    "biodegradable": "Biodégradable"
   },
   "stock": {
     "lowStock": "Plus que {{value}}",
@@ -48,20 +63,18 @@
     "unlike": "Retirer des favoris",
     "showImpact": "Voir l'impact environnemental",
     "showDetails": "Voir les détails",
-    "flipBack": "Retour au produit",
-    "added": "Ajouté"
+    "flipBack": "Retour au produit"
   },
   "cta": {
     "MARKETPLACE": "Voir les détails",
     "STORE": "Ajouter au panier",
     "SERVICE": "Réserver",
-    "BUSINESS": "Voir la boutique",
+    "BUSINESS": "Explorer la boutique",
     "PROVIDER": "Voir le prestataire",
     "EDIT": "Modifier l'annonce",
     "BROWSE": "Voir les détails"
   },
   "impact": {
-    "title": "Impact environnemental",
     "saved": "Impact évité",
     "viewImpact": "Voir l'impact",
     "composition": "Composition",
@@ -73,11 +86,8 @@
     "waterUnit": "L",
     "noMaterials": "Aucun matériau déclaré"
   },
-  "exchange": {
-    "trigger": "Voir les intérêts d'échange",
-    "title": "l'échange",
-    "anyOffer": "Ouvert à toute offre",
-    "propose": "Proposer un échange",
-    "close": "Fermer"
+  "scroller": {
+    "previous": "Voir les précédents",
+    "next": "Voir plus"
   }
 }

@@ -576,6 +576,21 @@ export const GET_STORE_PRODUCT_REVIEWS = gql`
   }
 `;
 
+/**
+ * Visible-product counts per business, for the store cards' footer. `Seller`
+ * carries no count, so the home rails join these onto `getSellers` by id. Ids
+ * only — no `seller` reference, so the gateway skips the users round trip.
+ * 50 is the subgraph's cap (MAX_STORE_SELLERS); a store past it shows no count.
+ */
+export const GET_STORE_SELLER_COUNTS = gql`
+  query GetStoreSellerCounts($limit: Int = 50) {
+    getStoreSellers(limit: $limit) {
+      sellerId
+      productCount
+    }
+  }
+`;
+
 /** The stores row on /stores: businesses with visible products, most first. */
 export const GET_STORE_SELLERS = gql`
   query GetStoreSellers($categoryId: ID, $limit: Int = 24) {

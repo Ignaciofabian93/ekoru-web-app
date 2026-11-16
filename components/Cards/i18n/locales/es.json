@@ -10,25 +10,40 @@
     "FOR_PARTS": "Para piezas"
   },
   "badges": {
-    "exchangeable": "Intercambiable",
+    "acceptsExchange": "Acepta intercambio",
     "offer": "Oferta",
     "discount": "-{{value}}%",
     "soldOut": "Agotado",
     "verified": "Verificado"
   },
   "meta": {
-    "noBrand": "Sin marca",
     "noBusinessName": "Tienda sin nombre",
-    "noBusinessType": "Tienda",
     "noDescription": "Esta publicación aún no tiene descripción."
   },
   "price": {
     "from": "Desde"
   },
-  "businessType": {
-    "RETAIL": "Ventas",
-    "SERVICES": "Servicios",
-    "MIXED": "Ventas y servicios"
+  "count": {
+    "productsOne": "{{value}} producto",
+    "productsOther": "{{value}} productos",
+    "servicesOne": "{{value}} servicio",
+    "servicesOther": "{{value}} servicios"
+  },
+  "businessTag": {
+    "womanLed": "Liderado por mujeres",
+    "zeroWaste": "Cero residuos",
+    "recycledMaterials": "100% materiales reciclados",
+    "plasticFree": "Sin plástico",
+    "locallyMade": "Hecho localmente",
+    "handmade": "Hecho a mano",
+    "vegan": "Vegano",
+    "crueltyFree": "Libre de crueldad",
+    "organic": "Orgánico",
+    "fairTrade": "Comercio justo",
+    "carbonNeutral": "Carbono neutral",
+    "upcycled": "Suprarreciclado",
+    "refillable": "Rellenable",
+    "biodegradable": "Biodegradable"
   },
   "stock": {
     "lowStock": "Solo quedan {{value}}",
@@ -48,20 +63,18 @@
     "unlike": "Quitar de favoritos",
     "showImpact": "Ver impacto ambiental",
     "showDetails": "Ver detalles",
-    "flipBack": "Volver al producto",
-    "added": "Añadido"
+    "flipBack": "Volver al producto"
   },
   "cta": {
     "MARKETPLACE": "Ver detalles",
     "STORE": "Añadir al carrito",
     "SERVICE": "Reservar ahora",
-    "BUSINESS": "Ver tienda",
+    "BUSINESS": "Explorar tienda",
     "PROVIDER": "Ver proveedor",
     "EDIT": "Editar",
     "BROWSE": "Ver detalles"
   },
   "impact": {
-    "title": "Impacto ambiental",
     "saved": "Impacto ahorrado",
     "viewImpact": "Ver impacto",
     "composition": "Composición",
@@ -73,11 +86,8 @@
     "waterUnit": "L",
     "noMaterials": "Sin materiales declarados"
   },
-  "exchange": {
-    "trigger": "Ver intereses de intercambio",
-    "title": "Intercambiar",
-    "anyOffer": "Abierto a cualquier oferta",
-    "propose": "Proponer un intercambio",
-    "close": "Cerrar"
+  "scroller": {
+    "previous": "Ver anteriores",
+    "next": "Ver más"
   }
 }

@@ -123,9 +123,7 @@
   "otherProducts": {
     "title": "More from this seller",
     "empty": "This seller has no other listings right now.",
-    "loading": "Loading other products…",
-    "scrollPrevious": "View previous products",
-    "scrollNext": "View more products"
+    "loading": "Loading other products…"
   },
   "exchange": {
     "title": "Propose an exchange",

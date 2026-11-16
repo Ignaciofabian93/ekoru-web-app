@@ -51,7 +51,8 @@
       "useLocation": "Use my location"
     },
     "rails": {
-      "marketplace": "Marketplace",
+      "marketplaceSale": "Second-hand for sale",
+      "marketplaceExchange": "Open to swaps",
       "stores": "Stores",
       "storeProducts": "Store products",
       "services": "Services"
@@ -95,9 +96,7 @@
     "seeAll": "See all",
     "addToCart": "Add to cart",
     "outOfStock": "Out of stock",
-    "noProducts": "No products available",
-    "scrollPrevious": "Scroll left",
-    "scrollNext": "Scroll right"
+    "noProducts": "No products available"
   },
   "services": {
     "title": "Eco Services",
@@ -118,9 +117,7 @@
       "subtitle": "Pre-loved items listed for sale near you",
       "empty": "No second-hand items are listed for sale right now."
     },
-    "seeAll": "See all",
-    "scrollPrevious": "Scroll left",
-    "scrollNext": "Scroll right"
+    "seeAll": "See all"
   },
   "blog": {
     "title": "From the blog",

@@ -13,7 +13,7 @@ import { CardScroller } from "@/components/Cards/CardScroller";
 
 export function ServicesHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
-  const { sellers } = useServicesHomeData({ language: lang });
+  const { sellers, serviceCounts } = useServicesHomeData({ language: lang });
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -70,7 +70,11 @@ export function ServicesHighlight({ lang }: { lang: SupportedLanguage }) {
         >
           {sellers.map((seller) => (
             <div key={seller.id} className="shrink-0 snap-start">
-              <ServiceProviderCard provider={seller} lang={lang} />
+              <ServiceProviderCard
+                provider={seller}
+                lang={lang}
+                serviceCount={serviceCounts[seller.id]}
+              />
             </div>
           ))}
         </CardScroller>

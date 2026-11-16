@@ -27,8 +27,6 @@ export function MarketplaceCard({
 
   return (
     <Card
-      orientation="vertical"
-      hasBackSide
       href={href}
       ariaLabel={product.name}
       actions={actions}
@@ -40,23 +38,18 @@ export function MarketplaceCard({
           imageAlt={product.name}
           priority={priority}
           condition={product.condition ?? undefined}
-          isExchangeable={product.isExchangeable ?? undefined}
-          isLikeEnabled
           isLiked={product.isLiked ?? undefined}
           itemId={product.id}
           favoriteSource="marketplace"
         />
         <Card.Body
           name={product.name}
-          isProduct
-          brand={product.brand ?? undefined}
           price={product.price}
+          location={product.seller?.county?.county}
           isExchangeable={product.isExchangeable ?? undefined}
-          interests={product.interests ?? undefined}
-          exchangeRedirectUrl={`${href}?mode=exchange`}
         />
         {/* In management mode the footer resolves to the Edit CTA itself. */}
-        <Card.Footer itemType="MARKETPLACE" url={href} />
+        <Card.Footer itemType="MARKETPLACE" />
       </Card.FrontSide>
       <Card.BackSide>
         <Card.BackHeader itemType="MARKETPLACE" itemName={product.name} />

@@ -14,7 +14,12 @@
  * same answer, and a disabled route can't be reached by typing its URL.
  */
 
-export type FeatureKey = "cart" | "storePurchase" | "serviceBooking" | "serviceQuotes";
+export type FeatureKey =
+  | "cart"
+  | "storePurchase"
+  | "cardAddToCart"
+  | "serviceBooking"
+  | "serviceQuotes";
 
 export type FeatureFlag = {
   /** Flip to `true` to ship the capability. */
@@ -34,10 +39,19 @@ export const FEATURES: Record<FeatureKey, FeatureFlag> = {
     surfaces:
       "Add-to-cart on the store product page and the quantity stepper on store product cards, which fall back to a browse-only CTA.",
   },
+  // Off by choice, not by beta: shoppers are not expected to fill a cart from
+  // many sellers at once, so adding happens on the product page, where the
+  // seller and the stock are in view. The card keeps the whole add-to-cart
+  // path wired (button, stepper, cart read-back) behind this flag.
+  cardAddToCart: {
+    available: false,
+    surfaces:
+      "The add-to-cart button and quantity stepper on store product cards. Off, the card shows its 'View details' link instead. Also needs `storePurchase`.",
+  },
   serviceBooking: {
     available: true,
     surfaces:
-      "The 'Book' button and booking dialog on a service, the service card's booking CTA, and the bookings link in the profile menu.",
+      "The 'Book' button and booking dialog on a service, and the bookings link in the profile menu.",
   },
   serviceQuotes: {
     available: true,

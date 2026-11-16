@@ -85,6 +85,7 @@ export const GET_SELLERS = gql`
             serviceArea
             yearsOfExperience
             certifications
+            tags
             travelRadius
             businessHours
             createdAt

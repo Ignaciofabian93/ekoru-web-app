@@ -7,6 +7,7 @@ import {
   StoreProductCard,
   StoresCard,
 } from "@/components/Cards";
+import { ProductScroller } from "@/components/Cards/ProductScroller";
 import { Section } from "@/components/Layout";
 import {
   locationStatusMessage,
@@ -30,7 +31,7 @@ import { useNearbyCounties } from "../hooks/useNearbyCounties";
 import { useServicesHomeData } from "../hooks/useServices";
 import { useStoreProductsHomeData } from "../hooks/useStoreProducts";
 import { useStoresHomeData } from "../hooks/useStores";
-import { NearbyRail } from "./NearbyRail";
+import { NearbyBusinessScroller, NearbyRail } from "./NearbyRail";
 import { RadiusPicker } from "./RadiusPicker";
 
 const noopSubscribe = () => () => {};
@@ -115,7 +116,7 @@ export function NearbySection({ lang }: { lang: SupportedLanguage }) {
               type="button"
               onClick={() => void refresh()}
               aria-busy={locating}
-              className="cursor-pointer rounded-sm font-semibold text-primary underline outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="cursor-pointer rounded-sm font-semibold text-secondary-dark underline outline-none"
             >
               {locating ? tNav("location.locating") : t("nearby.refresh")}
             </button>
@@ -207,21 +208,34 @@ function NearbyResults({
 }) {
   const { t } = useTranslation(NAMESPACE);
   const skip = !countyIds;
-  const marketplace = useNearbyMarketplaceProducts({ countyIds, pageSize: 12 });
+  // The marketplace splits in two rails, the way the home page's own
+  // highlights do: items only for sale, then items open to a swap.
+  const forSale = useNearbyMarketplaceProducts({
+    countyIds,
+    isExchangeable: false,
+    pageSize: 12,
+  });
+  const forExchange = useNearbyMarketplaceProducts({
+    countyIds,
+    isExchangeable: true,
+    pageSize: 12,
+  });
   const stores = useStoresHomeData({ language: lang, countyIds, skip });
   const storeProducts = useStoreProductsHomeData({ countyIds, skip });
   const services = useServicesHomeData({ language: lang, countyIds, skip });
 
   const waiting = skip;
   const rails = [
-    marketplace.products,
+    forSale.products,
+    forExchange.products,
     stores.sellers,
     storeProducts.storeProducts,
     services.sellers,
   ];
   const anyLoading =
     waiting ||
-    marketplace.loading ||
+    forSale.loading ||
+    forExchange.loading ||
     stores.loading ||
     storeProducts.loading ||
     services.loading;
@@ -247,50 +261,70 @@ function NearbyResults({
     );
   }
 
-  const emptyText = t("nearby.railEmpty", { radius: String(radius) });
+  const empty = (
+    <Text variant="p" size="sm" color="secondary">
+      {t("nearby.railEmpty", { radius: String(radius) })}
+    </Text>
+  );
 
   return (
     <div className="flex flex-col gap-8">
-      <NearbyRail
-        title={t("nearby.rails.marketplace")}
-        items={marketplace.products}
-        loading={waiting || marketplace.loading}
-        emptyText={emptyText}
-        skeletonClassName="aspect-3/4 w-44"
-        renderItem={(product, i) => (
-          <div className="w-44">
+      <NearbyRail title={t("nearby.rails.marketplaceSale")}>
+        <ProductScroller
+          items={forSale.products}
+          loading={waiting || forSale.loading}
+          empty={empty}
+          renderItem={(product, i) => (
             <MarketplaceCard priority={i < 4} product={product} lang={lang} />
-          </div>
-        )}
-      />
-      <NearbyRail
-        title={t("nearby.rails.stores")}
-        items={stores.sellers}
-        loading={waiting || stores.loading}
-        emptyText={emptyText}
-        skeletonClassName="h-56 w-64"
-        renderItem={(seller) => <StoresCard store={seller} lang={lang} />}
-      />
-      <NearbyRail
-        title={t("nearby.rails.storeProducts")}
-        items={storeProducts.storeProducts}
-        loading={waiting || storeProducts.loading}
-        emptyText={emptyText}
-        skeletonClassName="aspect-3/4 w-44"
-        renderItem={(product, i) => (
-          <div className="w-44">
+          )}
+        />
+      </NearbyRail>
+      <NearbyRail title={t("nearby.rails.marketplaceExchange")}>
+        <ProductScroller
+          items={forExchange.products}
+          loading={waiting || forExchange.loading}
+          empty={empty}
+          renderItem={(product) => <MarketplaceCard product={product} lang={lang} />}
+        />
+      </NearbyRail>
+      <NearbyRail title={t("nearby.rails.stores")}>
+        <NearbyBusinessScroller
+          items={stores.sellers}
+          loading={waiting || stores.loading}
+          empty={empty}
+          renderItem={(seller) => (
+            <StoresCard
+              store={seller}
+              lang={lang}
+              productCount={stores.productCounts[seller.id]}
+            />
+          )}
+        />
+      </NearbyRail>
+      <NearbyRail title={t("nearby.rails.storeProducts")}>
+        <ProductScroller
+          items={storeProducts.storeProducts}
+          loading={waiting || storeProducts.loading}
+          empty={empty}
+          renderItem={(product, i) => (
             <StoreProductCard product={product} lang={lang} priority={i < 2} />
-          </div>
-        )}
-      />
-      <NearbyRail
-        title={t("nearby.rails.services")}
-        items={services.sellers}
-        loading={waiting || services.loading}
-        emptyText={emptyText}
-        skeletonClassName="h-56 w-64"
-        renderItem={(seller) => <ServiceProviderCard provider={seller} lang={lang} />}
-      />
+          )}
+        />
+      </NearbyRail>
+      <NearbyRail title={t("nearby.rails.services")}>
+        <NearbyBusinessScroller
+          items={services.sellers}
+          loading={waiting || services.loading}
+          empty={empty}
+          renderItem={(seller) => (
+            <ServiceProviderCard
+              provider={seller}
+              lang={lang}
+              serviceCount={services.serviceCounts[seller.id]}
+            />
+          )}
+        />
+      </NearbyRail>
     </div>
   );
 }

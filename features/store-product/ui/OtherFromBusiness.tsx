@@ -1,11 +1,14 @@
 "use client";
-import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { ArrowUpRight, PackageSearch } from "lucide-react";
+import { StoreProductCard } from "@/components/Cards";
+import { ProductScroller } from "@/components/Cards/ProductScroller";
+import { EmptyState } from "@/components/Feedback/EmptyState";
+import { Section } from "@/components/Layout";
+import { SectionHeader } from "@/components/Patterns/SectionHeader";
+import { LinkButton } from "@/components/Primitives";
 import { useTranslation } from "@/i18n/context";
 import { useSellerProducts } from "../hooks/useSellerProducts";
 import { NAMESPACE } from "../i18n";
-import { Title } from "@/components/Primitives/Title";
-import { CardScroller, StoreProductCard } from "@/components/Cards";
 
 interface Props {
   lang: string;
@@ -13,99 +16,42 @@ interface Props {
   excludeProductId: number | string;
 }
 
+/** More from the same store, laid out like the product page's seller rail. */
 export function OtherFromBusiness({ lang, sellerId, excludeProductId }: Props) {
   const { t } = useTranslation(NAMESPACE);
-  const { products, loading } = useSellerProducts({
-    sellerId,
-    excludeProductId,
-  });
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-
-  const updateScrollState = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const { scrollLeft, scrollWidth, clientWidth } = el;
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
-  }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    updateScrollState();
-    el.addEventListener("scroll", updateScrollState, { passive: true });
-    const observer = new ResizeObserver(updateScrollState);
-    observer.observe(el);
-    return () => {
-      el.removeEventListener("scroll", updateScrollState);
-      observer.disconnect();
-    };
-  }, [updateScrollState, products.length]);
-
-  const handleScroll = (delta: number) => {
-    scrollRef.current?.scrollBy({ left: delta, behavior: "smooth" });
-  };
-
-  if (loading) {
-    return (
-      <section>
-        <h2 className="mb-3 text-lg font-semibold text-foreground">
-          {t("otherProducts.title")}
-        </h2>
-        <div className="flex gap-3 overflow-x-auto pb-2">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-background-secondary h-60 w-44 shrink-0 animate-pulse rounded-xl"
-            />
-          ))}
-        </div>
-      </section>
-    );
-  }
-
-  if (products.length === 0) {
-    return (
-      <section>
-        <h2 className="mb-3 text-lg font-semibold text-foreground">
-          {t("otherProducts.title")}
-        </h2>
-        <p className="text-sm text-foreground-secondary italic">
-          {t("otherProducts.empty")}
-        </p>
-      </section>
-    );
-  }
+  const { products, loading } = useSellerProducts({ sellerId, excludeProductId });
+  const isEmpty = !loading && products.length === 0;
 
   return (
-    <section>
-      <div className="mb-3 flex items-center justify-between px-2">
-        <Title level="h5" size="h5" weight="semibold">
-          {t("otherProducts.title")}
-        </Title>
-        <Link
-          href={`/${lang}/seller/${sellerId}`}
-          className="text-sm font-semibold text-primary underline"
-        >
-          {t("actions.viewAll")}
-        </Link>
-      </div>
-      <CardScroller
-        handleScroll={handleScroll}
-        scrollRef={scrollRef}
-        canScrollLeft={canScrollLeft}
-        canScrollRight={canScrollRight}
-        scrollNextAriaLabel={t("otherProducts.scrollNext")}
-        scrollPreviousAriaLabel={t("otherProducts.scrollPrevious")}
-      >
-        {products.map((product) => (
-          <div key={product.id} className="w-44 shrink-0 snap-start">
-            <StoreProductCard product={product} lang={lang} />
-          </div>
-        ))}
-      </CardScroller>
-    </section>
+    <Section ariaLabel={t("otherProducts.title")}>
+      <SectionHeader
+        align="start"
+        title={t("otherProducts.title")}
+        action={
+          isEmpty ? undefined : (
+            <LinkButton
+              href={`/${lang}/seller/${sellerId}`}
+              label={t("actions.viewAll")}
+              icon={ArrowUpRight}
+              iconPosition="right"
+              variant="ghost"
+            />
+          )
+        }
+      />
+
+      <ProductScroller
+        items={products}
+        loading={loading}
+        empty={
+          <EmptyState
+            variant="compact"
+            icon={PackageSearch}
+            title={t("otherProducts.empty")}
+          />
+        }
+        renderItem={(product) => <StoreProductCard product={product} lang={lang} />}
+      />
+    </Section>
   );
 }

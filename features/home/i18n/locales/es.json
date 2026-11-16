@@ -51,7 +51,8 @@
       "useLocation": "Usar mi ubicación"
     },
     "rails": {
-      "marketplace": "Marketplace",
+      "marketplaceSale": "Segunda mano en venta",
+      "marketplaceExchange": "Para intercambiar",
       "stores": "Tiendas",
       "storeProducts": "Productos de tiendas",
       "services": "Servicios"
@@ -95,9 +96,7 @@
     "seeAll": "Ver todos",
     "addToCart": "Agregar al carrito",
     "outOfStock": "Agotado",
-    "noProducts": "No hay productos disponibles",
-    "scrollPrevious": "Desplazar a la izquierda",
-    "scrollNext": "Desplazar a la derecha"
+    "noProducts": "No hay productos disponibles"
   },
   "services": {
     "title": "Eco Servicios",
@@ -118,9 +117,7 @@
       "subtitle": "Objetos usados publicados a la venta cerca de ti",
       "empty": "Por ahora no hay objetos de segunda mano publicados a la venta."
     },
-    "seeAll": "Ver todos",
-    "scrollPrevious": "Desplazar a la izquierda",
-    "scrollNext": "Desplazar a la derecha"
+    "seeAll": "Ver todos"
   },
   "blog": {
     "title": "Desde el blog",

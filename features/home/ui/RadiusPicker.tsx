@@ -35,7 +35,7 @@ export function RadiusPicker({
               "transition-colors duration-150",
               "has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-primary has-[input:focus-visible]:ring-offset-1",
               checked
-                ? "border-primary bg-primary font-semibold text-on-primary"
+                ? "border-primary bg-linear-90 from-primary-dark via-primary to-primary-light font-semibold text-on-primary"
                 : "border-border-light bg-white text-foreground-secondary hover:bg-background-tertiary",
             )}
           >

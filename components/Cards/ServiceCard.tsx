@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import type { ServiceCardService } from "./types/Card.types";
-import { FEATURES } from "@/constants/features";
 import { Card } from "./Card";
 
 interface ServiceCardProps {
@@ -32,8 +31,6 @@ export function ServiceCard({
 
   return (
     <Card
-      orientation="vertical"
-      hasBackSide
       href={target}
       ariaLabel={service.name}
       actions={actions}
@@ -44,7 +41,6 @@ export function ServiceCard({
           coverImageString={service.image ?? ""}
           imageAlt={service.name}
           priority={priority}
-          isLikeEnabled
           isLiked={service.isLiked}
           itemId={Number(service.id)}
           favoriteSource="service"
@@ -52,25 +48,18 @@ export function ServiceCard({
           flipTarget="details"
         />
         <Card.Body
-          isProduct
           name={service.name}
-          // The sub-category sits where a product shows its brand — it's the
-          // same "what kind of thing is this" line.
-          brand={service.category ?? undefined}
-          showNoBrand={false}
           price={service.price ?? undefined}
           isPriceFrom
-          duration={service.duration ?? undefined}
+          location={service.providerLocation}
           averageRating={service.averageRating ?? undefined}
           reviewsNumber={service.reviewsNumber ?? undefined}
+          duration={service.duration ?? undefined}
+          category={service.category ?? undefined}
         />
-        {/* The card only ever navigated; with booking off, the CTA stops
-            promising a booking it can't take. */}
-        <Card.Footer
-          itemType="SERVICE"
-          url={target}
-          browseOnly={!FEATURES.serviceBooking.available}
-        />
+        {/* Booking happens on the service page, so the card only ever links
+            there. */}
+        <Card.Footer itemType="SERVICE" />
       </Card.FrontSide>
       <Card.BackSide>
         <Card.BackHeader itemName={service.name} />

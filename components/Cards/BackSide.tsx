@@ -1,5 +1,4 @@
 import { useTranslation } from "@/i18n/context";
-import { useCard } from "./context/Card.context";
 import { NAMESPACE } from "./i18n";
 import type {
   CardBackBodyProps,
@@ -291,19 +290,14 @@ function Description({ description }: { description?: string | null }) {
  * control, reading as though they belonged to it.
  */
 export function BackHeader({ itemType, itemName }: CardBackHeaderProps) {
-  const { hasBackSide } = useCard();
   const { t } = useTranslation(NAMESPACE);
 
   const showImpactTitle = itemType === "MARKETPLACE" || itemType === "STORE";
 
   return (
     <>
-      <div
-        className={clsx(
-          "absolute top-2 right-2 z-20 flex items-center justify-end gap-1.5",
-        )}
-      >
-        {hasBackSide && <FlipButton label={t("actions.flipBack")} />}
+      <div className="absolute top-2 right-2">
+        <FlipButton label={t("actions.flipBack")} />
       </div>
 
       {(showImpactTitle || itemName) && (
@@ -420,7 +414,7 @@ export function BackFooter({ seller, name, imageUrl, subtitle }: CardBackFooterP
   if (!displayName && !secondLine) return null;
 
   return (
-    <div className="w-full shrink-0 px-2.5 pb-2.5 @min-[12rem]:px-3 @min-[12rem]:pb-3">
+    <div className="shrink-0 px-2.5 pb-2.5 @min-[12rem]:px-3 @min-[12rem]:pb-3">
       <div className="flex items-center gap-2 border-t border-slate-200 pt-2">
         <span
           aria-hidden

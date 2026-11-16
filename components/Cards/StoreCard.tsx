@@ -1,42 +1,36 @@
 import type { Seller } from "@/types/user";
-import { getBusinessProfile, getSellerLocation } from "@/utils/sellerInformation";
-import { Card } from "./Card";
-import { getInitials } from "./utils/initials";
+import { getBusinessProfile } from "@/utils/sellerInformation";
+import { BusinessCard } from "./BusinessCard";
 
-export function StoresCard({ store, lang }: { store: Seller; lang: string }) {
+interface StoresCardProps {
+  store: Seller;
+  lang: string;
+  /**
+   * Visible products, when the source knows it (`getStoreSellers`). `Seller`
+   * itself carries no count, so without this the footer shows the link alone.
+   */
+  productCount?: number;
+  priority?: boolean;
+}
+
+export function StoresCard({ store, lang, productCount, priority }: StoresCardProps) {
   const profile = getBusinessProfile(store);
-  const href = `/${lang}/seller/${store.id}`;
-  const businessName = profile?.businessName;
 
   return (
-    <Card
-      href={href}
-      orientation="horizontal"
-      hasBackSide={false}
-      ariaLabel={businessName}
-    >
-      <Card.FrontSide>
-        <Card.Header
-          coverImageString={profile?.logo ?? ""}
-          imageAlt={businessName ?? ""}
-          priority
-          isProduct={false}
-          isLikeEnabled={false}
-          isVerified={Boolean(store.isVerified)}
-          initials={getInitials(businessName)}
-          accent="secondary"
-        />
-        <div className="flex w-full min-w-0 flex-col">
-          <Card.Body
-            isProduct={false}
-            businessName={businessName}
-            businessType={profile?.businessType}
-            location={getSellerLocation(store)}
-            description={profile?.description ?? undefined}
-          />
-          <Card.Footer itemType="BUSINESS" url={href} />
-        </div>
-      </Card.FrontSide>
-    </Card>
+    <BusinessCard
+      href={`/${lang}/seller/${store.id}`}
+      itemType="BUSINESS"
+      name={profile?.businessName}
+      description={profile?.description}
+      coverImage={profile?.coverImage}
+      logo={profile?.logo}
+      tagId={profile?.tags?.[0]}
+      location={store.county?.county}
+      isVerified={Boolean(store.isVerified)}
+      count={productCount}
+      countKind="products"
+      accent="primary"
+      priority={priority}
+    />
   );
 }

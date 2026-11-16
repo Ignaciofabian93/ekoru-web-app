@@ -67,17 +67,19 @@ export function useSaleProducts(params: Params = {}) {
 }
 
 /**
- * Swaps and sales alike from sellers in the given comunas, for the home page's
- * "near you" rail. Skipped until the comunas are known: without countyIds
+ * Marketplace products from sellers in the given comunas, for the home page's
+ * "near you" rails — one for sale only, one open to swaps, picked by
+ * `isExchangeable`. Skipped until the comunas are known: without countyIds
  * the query would list the whole marketplace.
  */
 export function useNearbyMarketplaceProducts({
   countyIds,
+  isExchangeable,
   ...params
-}: Omit<Params, "filter"> & { countyIds?: number[] }) {
+}: Omit<Params, "filter"> & { countyIds?: number[]; isExchangeable: boolean }) {
   return useProductRail(GET_NEARBY_MARKETPLACE_PRODUCTS_HOME, "getProducts", {
     ...params,
-    filter: { countyIds },
+    filter: { countyIds, isExchangeable },
     skip: params.skip || !countyIds,
   });
 }

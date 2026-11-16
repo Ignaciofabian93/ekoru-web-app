@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
-import { useCardScroller } from "@/hooks/useCardScroller";
 import {
   useExchangeableProducts,
   useSaleProducts,
@@ -10,8 +9,8 @@ import {
 import { NAMESPACE } from "../i18n";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
-import { CardScroller } from "@/components/Cards/CardScroller";
 import { MarketplaceCard } from "@/components/Cards";
+import { ProductScroller } from "@/components/Cards/ProductScroller";
 import { Text } from "@/components/Primitives/Text";
 import type { Product } from "@/types/product";
 
@@ -61,23 +60,14 @@ interface ProductRowProps {
 }
 
 /**
- * One rail with its own heading. Each row owns a `useCardScroller` instance —
- * the two rails scroll independently, so the ref and the arrow state cannot be
- * hoisted into the parent.
- *
- * An empty row keeps its heading and says so, rather than disappearing: the two
- * rows are the shape of the section, and a home screen that shows one of them
- * on some visits and two on others reads as a bug. This is what the stores
- * sections do with `noStores` / `noProducts`.
+ * One rail with its own heading. An empty row keeps its heading and says so,
+ * rather than disappearing: the two rows are the shape of the section, and a
+ * home screen that shows one of them on some visits and two on others reads as
+ * a bug. This is what the stores sections do with `noStores` / `noProducts`.
  */
 function ProductRow({ lang, href, translationKey, products, loading }: ProductRowProps) {
   const { t } = useTranslation(NAMESPACE);
-  const { scrollRef, canScrollLeft, canScrollRight, handleScroll } = useCardScroller(
-    products.length,
-  );
-
   const title = t(`marketplace.${translationKey}.title`);
-  const pending = loading && products.length === 0;
 
   return (
     <Section ariaLabel={title}>
@@ -95,33 +85,18 @@ function ProductRow({ lang, href, translationKey, products, loading }: ProductRo
         }
       />
 
-      {pending || products.length > 0 ? (
-        <CardScroller
-          handleScroll={handleScroll}
-          scrollRef={scrollRef}
-          canScrollLeft={canScrollLeft}
-          canScrollRight={canScrollRight}
-          scrollPreviousAriaLabel={t("marketplace.scrollPrevious")}
-          scrollNextAriaLabel={t("marketplace.scrollNext")}
-        >
-          {pending
-            ? Array.from({ length: PAGE_SIZE }).map((_, i) => (
-                <div
-                  key={i}
-                  className="aspect-3/4 w-44 shrink-0 snap-start animate-pulse rounded-lg bg-background-secondary"
-                />
-              ))
-            : products.map((product, i) => (
-                <div key={product.id} className="w-44 shrink-0 snap-start">
-                  <MarketplaceCard priority={i < 4} product={product} lang={lang} />
-                </div>
-              ))}
-        </CardScroller>
-      ) : (
-        <Text variant="p" size="sm">
-          {t(`marketplace.${translationKey}.empty`)}
-        </Text>
-      )}
+      <ProductScroller
+        items={products}
+        loading={loading}
+        empty={
+          <Text variant="p" size="sm">
+            {t(`marketplace.${translationKey}.empty`)}
+          </Text>
+        }
+        renderItem={(product, i) => (
+          <MarketplaceCard priority={i < 4} product={product} lang={lang} />
+        )}
+      />
     </Section>
   );
 }

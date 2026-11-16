@@ -1,7 +1,6 @@
 "use client";
 import type { ReactNode } from "react";
 import { CardScroller } from "@/components/Cards/CardScroller";
-import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
 import { useCardScroller } from "@/hooks/useCardScroller";
 import { useTranslation } from "@/i18n/context";
@@ -11,26 +10,36 @@ const SKELETON_COUNT = 6;
 
 /**
  * One kind of thing near the visitor (marketplace items, stores…): a level-3
- * heading under the section's own, and a card rail. While its first page loads
- * it shows placeholder cards; with nothing nearby it keeps its heading and says
- * so, so the four rails keep their places as the radius changes.
- *
- * @param skeletonClassName Size of a placeholder card, matching the real ones.
+ * heading under the section's own, over its rail — a `ProductScroller` for
+ * products, a `NearbyBusinessScroller` for stores and providers. With nothing
+ * nearby the rail says so under its heading, so the rails keep their places as
+ * the radius changes.
  */
-export function NearbyRail<T extends { id: string | number }>({
-  title,
+export function NearbyRail({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-3">
+      <Title level="h3" size="h5" weight="semibold">
+        {title}
+      </Title>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * The business-card rail (stores, providers). Business cards set their own
+ * width, so unlike `ProductScroller` this only sizes the placeholders to them.
+ */
+export function NearbyBusinessScroller<T extends { id: string | number }>({
   items,
   loading,
-  emptyText,
+  empty,
   renderItem,
-  skeletonClassName,
 }: {
-  title: string;
   items: readonly T[];
   loading: boolean;
-  emptyText: string;
-  renderItem: (item: T, index: number) => ReactNode;
-  skeletonClassName: string;
+  empty: ReactNode;
+  renderItem: (item: T) => ReactNode;
 }) {
   const { t } = useTranslation(NAMESPACE);
   const { scrollRef, canScrollLeft, canScrollRight, handleScroll } = useCardScroller(
@@ -38,39 +47,30 @@ export function NearbyRail<T extends { id: string | number }>({
   );
   const pending = loading && items.length === 0;
 
+  if (!pending && items.length === 0) return empty;
+
   return (
-    <div className="flex flex-col gap-3">
-      <Title level="h3" size="h5" weight="semibold">
-        {title}
-      </Title>
-      {pending || items.length > 0 ? (
-        <CardScroller
-          handleScroll={handleScroll}
-          scrollRef={scrollRef}
-          canScrollLeft={canScrollLeft}
-          canScrollRight={canScrollRight}
-          scrollPreviousAriaLabel={t("nearby.scrollPrevious")}
-          scrollNextAriaLabel={t("nearby.scrollNext")}
-        >
-          {pending
-            ? Array.from({ length: SKELETON_COUNT }).map((_, i) => (
-                <div
-                  key={i}
-                  aria-hidden
-                  className={`shrink-0 snap-start animate-pulse rounded-lg bg-background-secondary ${skeletonClassName}`}
-                />
-              ))
-            : items.map((item, i) => (
-                <div key={item.id} className="shrink-0 snap-start">
-                  {renderItem(item, i)}
-                </div>
-              ))}
-        </CardScroller>
-      ) : (
-        <Text variant="p" size="sm" color="secondary">
-          {emptyText}
-        </Text>
-      )}
-    </div>
+    <CardScroller
+      handleScroll={handleScroll}
+      scrollRef={scrollRef}
+      canScrollLeft={canScrollLeft}
+      canScrollRight={canScrollRight}
+      scrollPreviousAriaLabel={t("nearby.scrollPrevious")}
+      scrollNextAriaLabel={t("nearby.scrollNext")}
+    >
+      {pending
+        ? Array.from({ length: SKELETON_COUNT }, (_, i) => (
+            <div
+              key={i}
+              aria-hidden
+              className="h-92 w-72 shrink-0 snap-start animate-pulse rounded-2xl bg-background-secondary sm:w-80"
+            />
+          ))
+        : items.map((item) => (
+            <div key={item.id} className="shrink-0 snap-start">
+              {renderItem(item)}
+            </div>
+          ))}
+    </CardScroller>
   );
 }

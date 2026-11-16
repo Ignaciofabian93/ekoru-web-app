@@ -1,12 +1,10 @@
-import type { BusinessType, ProductCondition } from "@/types/enums";
+import type { ProductCondition } from "@/types/enums";
 import type {
   EnvironmentalImpact,
   StoreProductMaterialComposition,
 } from "@/types/product";
 import type { Seller } from "@/types/user";
 import type { FavoriteSource } from "@/hooks/useToggleFavorite";
-
-export type Orientation = "horizontal" | "vertical";
 
 /**
  * Card projections: exactly the fields the cards read, nothing more.
@@ -87,24 +85,64 @@ export type ServiceCardService = {
  */
 export type ItemType = "MARKETPLACE" | "STORE" | "SERVICE" | "BUSINESS" | "PROVIDER";
 
-/** Brand tint for the seller-card panel — stores read teal, providers charcoal. */
+/**
+ * Brand tint for a business card's fallbacks — the cover gradient when the
+ * business has no cover photo, and the logo tile when it has no logo. Stores
+ * read lime, providers charcoal.
+ */
 export type BrandAccent = "primary" | "secondary" | "charcoal";
 
+/**
+ * A store or a service provider: cover, logo, name, blurb and location, with
+ * how much it lists and a link to its page. Presentational — `StoresCard` and
+ * `ServiceProviderCard` adapt a `Seller` into it.
+ */
+export interface BusinessCardProps {
+  href: string;
+  name?: string | null;
+  description?: string | null;
+  /** Raw image keys; the card resolves them through `resolveImageUrl`. */
+  coverImage?: string | null;
+  logo?: string | null;
+  /**
+   * Id of the business tag shown as a pill over the cover (`profile.tags[0]`).
+   * The card resolves the label; an id it has no copy for shows nothing.
+   */
+  tagId?: string | null;
+  location?: string | null;
+  isVerified?: boolean;
+  /**
+   * What the footer counts. Omit `count` when the source doesn't carry one —
+   * the footer then holds the link alone rather than claiming "0 products".
+   */
+  count?: number;
+  countKind: "products" | "services";
+  /** `BUSINESS` reads "explore the store", `PROVIDER` "see the provider". */
+  itemType: Extract<ItemType, "BUSINESS" | "PROVIDER">;
+  accent?: BrandAccent;
+  /** Eager-loads the cover. Only for the first cards in view. */
+  priority?: boolean;
+}
+
+/**
+ * The product card shell: a square photo over its details, turning over to a
+ * back face. Every product card has both faces — the flip control is always on
+ * the photo.
+ */
 export interface CardProps {
   children: React.ReactNode;
-  orientation?: Orientation;
-  hasBackSide?: boolean;
   href: string;
   /** Accessible name for the card's navigation link (usually the item name). */
   ariaLabel?: string;
   /**
-   * Owner controls (normally a `<ProductActionsMenu>`), rendered top-right over
-   * the front face so an open dropdown isn't clipped by the 3D transform.
+   * Owner controls (normally a `<ProductActionsMenu>`), rendered over the
+   * photo's bottom-right corner, outside the turning faces, so an open dropdown
+   * isn't clipped by the 3D transform.
    *
    * Passing this switches the card into **management mode**: the shopper
    * controls — favorite and the buy/book CTA — are hidden, because the viewer
    * owns the listing and manages it rather than buying it. The back face stays
-   * available; its flip control moves to the bottom-right corner.
+   * available; its flip control takes the heart's place in the photo's corner.
    */
   actions?: React.ReactNode;
   /**
@@ -116,8 +154,6 @@ export interface CardProps {
 }
 
 export interface CardBackHeaderProps {
-  /** Accessible name for the flip control. Pass a translated string. */
-  flipLabel?: string;
   /**
    * Titles the face. Flipped, the cover image is gone, so without this the back
    * never says which item the panel under it belongs to.
@@ -162,14 +198,12 @@ export interface CardHeaderProps {
   imageAlt: string;
   priority?: boolean;
   condition?: ProductCondition;
-  isExchangeable?: boolean;
   /** Shows the offer badge. Store products on promotion. */
   hasOffer?: boolean;
   /** When set, the offer badge reads "-N%" instead of the generic label. */
   discountPercent?: number;
   /** Dims the image and shows the sold-out badge. */
   isSoldOut?: boolean;
-  isLikeEnabled?: boolean;
   isLiked?: boolean;
   /**
    * Id of the item the heart favorites, with the catalog it belongs to. Both
@@ -179,95 +213,60 @@ export interface CardHeaderProps {
   itemId?: number;
   favoriteSource?: FavoriteSource;
   /**
-   * Which back face the flip leads to, so the control gets the right
-   * accessible name. Products reveal their impact panel; services reveal a
-   * description. The card resolves the copy itself — callers pass the variant,
-   * not a translated string.
+   * Which back face the flip control leads to, so it gets the right accessible
+   * name. Products reveal their impact panel; services reveal a description.
+   * The card resolves the copy itself — callers pass the variant, not a
+   * translated string.
    */
   flipTarget?: "impact" | "details";
-  /** Escape hatch: overrides the name `flipTarget` would resolve to. */
-  flipLabel?: string;
-  /** Accessible name for the favorite toggle. Pass a translated string. */
-  likeLabel?: string;
-  /**
-   * `false` switches the header from a product photo to the seller brand panel:
-   * a tinted backdrop with the logo on a light tile.
-   */
-  isProduct?: boolean;
-  /** Brand panel only — shows the verified pill. */
-  isVerified?: boolean;
-  /** Brand panel only — fallback shown when the seller has no logo. */
-  initials?: string;
-  /** Brand panel only. Defaults to `secondary`. */
-  accent?: BrandAccent;
 }
 
+/**
+ * The product front face below the photo: price, name, where it is, and a row
+ * of labels. Every label is derived from a semantic prop here — callers never
+ * pass label text, so the copy stays in the card's dictionary.
+ */
 export interface CardBodyProps {
-  isProduct?: boolean;
-  brand?: string;
-  /**
-   * Say "no brand" when `brand` is missing. Off for services, where that line
-   * holds the sub-category and "no brand" means nothing.
-   */
-  showNoBrand?: boolean;
   name?: string;
-  description?: string;
   price?: number;
   /** With `offerPrice`, strikes `price` through and shows the offer instead. */
   hasOffer?: boolean;
   offerPrice?: number;
-  isExchangeable?: boolean;
-  /** Free-text items the seller will consider swapping for (`product.interests`). */
-  interests?: string[];
-  exchangeRedirectUrl?: string;
-  /** 0–5. Omit (or pass 0) to hide the rating row entirely. */
-  averageRating?: number;
-  reviewsNumber?: number;
-  /** Service duration in minutes, shown beside a clock as "45 min" or "4 h". */
-  duration?: number;
   /** Prefixes the price with "From" — services are quoted, not priced. */
   isPriceFrom?: boolean;
-  /** Drives the stock line: sold out at 0, low when `isLowStock`. */
+  /** Rendered with a pin under the name. Hidden when empty. */
+  location?: string | null;
+  /** 0–5, shown beside the price. Omit (or pass 0) to hide it. */
+  averageRating?: number;
+  reviewsNumber?: number;
+  // Labels, in the order they render.
+  /** "Accepts exchange" label — marketplace items open to a swap. */
+  isExchangeable?: boolean;
+  /** Drives the stock label: sold out at 0, low when `isLowStock`. */
   stock?: number;
   isLowStock?: boolean;
-  // Business
-  businessName?: string;
-  businessType?: BusinessType;
-  /** "County, Region" — rendered with a pin beside the business name. */
-  location?: string | null;
+  /** Service duration in minutes, shown beside a clock as "45 min" or "4 h". */
+  duration?: number;
+  /** A neutral label for what kind of thing this is — a service's sub-category. */
+  category?: string;
 }
-
-/**
- * `added` flashes the post-add confirmation; `unavailable` disables the CTA.
- * The card resolves the copy for each, so callers never pass translated text.
- */
-export type CardFooterState = "default" | "added" | "unavailable";
 
 export interface CardFooterProps {
   itemType: ItemType;
-  url: string;
   /**
-   * Replaces the default "navigate to `url`" behavior — e.g. add to cart. The
-   * card stays presentational: the caller owns the action.
+   * An action button in place of the "view details" link — e.g. add to cart.
+   * Without it the footer shows the link, which is the card's own `href`. The
+   * card stays presentational: the caller owns the action, and decides whether
+   * there is one at all (see `FEATURES.cardAddToCart`).
    */
   onAction?: () => void;
-  state?: CardFooterState;
-  /**
-   * Strips the buy affordance: the CTA reads "view details" and navigates to
-   * `url` instead of acting, and the quantity stepper never appears. For a
-   * catalog that is browsable before it is transactable — see
-   * `constants/features.ts`. Stock still reports honestly, so a sold-out card
-   * keeps saying so.
-   */
-  browseOnly?: boolean;
-  /** Gates the CTA independently of `state` — e.g. an unresolved seller. */
-  disabled?: boolean;
-  loading?: boolean;
+  /** Disables the action and relabels it "Out of stock". */
+  isSoldOut?: boolean;
   /**
    * Units of this item the shopper already holds. Above zero — and paired with
-   * `onQuantityChange` and `maxQuantity` — the CTA is replaced in place by a
+   * `onQuantityChange` and `maxQuantity` — the action is replaced in place by a
    * quantity stepper, so the count is adjusted from the card itself. Back at
-   * zero the CTA returns, which is how the last unit is removed.
+   * zero the action returns, which is how the last unit is removed.
    */
   quantity?: number;
   onQuantityChange?: (next: number) => void;
@@ -275,15 +274,7 @@ export interface CardFooterProps {
   maxQuantity?: number;
 }
 
-export interface CardFrontSideProps {
-  children: React.ReactNode;
-}
-
-export interface CardBackSideProps {
-  children: React.ReactNode;
-}
-
 export interface CardFlipButtonProps {
-  label?: string;
-  className?: string;
+  /** Accessible name — the button is an icon alone. */
+  label: string;
 }

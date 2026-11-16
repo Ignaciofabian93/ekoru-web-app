@@ -88,7 +88,7 @@ export const EXPLORE_RADIUS_COOKIE = "ekoru_radius";
  * reference points, so the smallest step effectively means "my comuna only" in
  * a city, and the largest stays under the backend's 100 km cap.
  */
-export const EXPLORE_RADIUS_OPTIONS_KM = [2, 5, 10, 25, 50] as const;
+export const EXPLORE_RADIUS_OPTIONS_KM = [5, 10, 25, 50] as const;
 
 export type ExploreRadiusKm = (typeof EXPLORE_RADIUS_OPTIONS_KM)[number];
 

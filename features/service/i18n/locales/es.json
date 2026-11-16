@@ -88,9 +88,7 @@
   },
   "otherServices": {
     "title": "Más servicios de este prestador",
-    "empty": "Este prestador no tiene otros servicios publicados por ahora.",
-    "scrollPrevious": "Ver servicios anteriores",
-    "scrollNext": "Ver más servicios"
+    "empty": "Este prestador no tiene otros servicios publicados por ahora."
   },
   "booking": {
     "title": "Reservar este servicio",

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DictionaryProvider } from "@/i18n/context";
@@ -31,6 +31,7 @@ const state = vi.hoisted(() => ({
   nearbyCalls: [] as { radiusKm: number; location: unknown }[],
   rails: {
     marketplace: [] as Item[],
+    exchange: [] as Item[],
     stores: [] as Item[],
     storeProducts: [] as Item[],
     services: [] as Item[],
@@ -46,13 +47,17 @@ vi.mock("../hooks/useNearbyCounties", () => ({
   },
 }));
 vi.mock("../hooks/useMarketplaceProducts", () => ({
-  useNearbyMarketplaceProducts: () => ({
-    products: state.rails.marketplace,
+  useNearbyMarketplaceProducts: ({ isExchangeable }: { isExchangeable: boolean }) => ({
+    products: isExchangeable ? state.rails.exchange : state.rails.marketplace,
     loading: false,
   }),
 }));
 vi.mock("../hooks/useStores", () => ({
-  useStoresHomeData: () => ({ sellers: state.rails.stores, loading: false }),
+  useStoresHomeData: () => ({
+    sellers: state.rails.stores,
+    productCounts: {},
+    loading: false,
+  }),
 }));
 vi.mock("../hooks/useStoreProducts", () => ({
   useStoreProductsHomeData: () => ({
@@ -61,7 +66,11 @@ vi.mock("../hooks/useStoreProducts", () => ({
   }),
 }));
 vi.mock("../hooks/useServices", () => ({
-  useServicesHomeData: () => ({ sellers: state.rails.services, loading: false }),
+  useServicesHomeData: () => ({
+    sellers: state.rails.services,
+    serviceCounts: {},
+    loading: false,
+  }),
 }));
 vi.mock("@/components/Navigation/hooks/useComunaDetection", async (importOriginal) => ({
   // Keeps the real locationStatusMessage.
@@ -105,7 +114,13 @@ beforeEach(() => {
   clearCookie(EXPLORE_RADIUS_COOKIE);
   state.nearby = { hasOrigin: false, countyIds: undefined, error: undefined };
   state.nearbyCalls.length = 0;
-  state.rails = { marketplace: [], stores: [], storeProducts: [], services: [] };
+  state.rails = {
+    marketplace: [],
+    exchange: [],
+    stores: [],
+    storeProducts: [],
+    services: [],
+  };
   state.detect.mockReset();
   state.warning.mockReset();
 });
@@ -135,9 +150,24 @@ describe("NearbySection", () => {
     expect(screen.queryByRole("button", { name: /district/i })).not.toBeInTheDocument();
   });
 
+  it("splits nearby marketplace items into for-sale and open-to-swap rails", () => {
+    withLocation();
+    state.rails.marketplace = [{ id: 1, name: "Bike" }];
+    state.rails.exchange = [{ id: 4, name: "Camera" }];
+    renderSection();
+
+    const rail = (name: string) =>
+      within(screen.getByRole("heading", { level: 3, name }).parentElement!);
+    expect(rail("Second-hand for sale").getByText("Bike")).toBeInTheDocument();
+    expect(rail("Second-hand for sale").queryByText("Camera")).not.toBeInTheDocument();
+    expect(rail("Open to swaps").getByText("Camera")).toBeInTheDocument();
+    expect(rail("Open to swaps").queryByText("Bike")).not.toBeInTheDocument();
+  });
+
   it("shows what is within the default radius of the chosen comuna", async () => {
     withLocation();
     state.rails.marketplace = [{ id: 1, name: "Bike" }];
+    state.rails.exchange = [{ id: 4, name: "Camera" }];
     state.rails.stores = [{ id: 2, name: "Zero Waste Shop" }];
     const { container } = renderSection();
 

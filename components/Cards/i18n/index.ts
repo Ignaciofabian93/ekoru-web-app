@@ -1,5 +1,5 @@
 import type { SupportedLanguage } from "@/constants/settings";
-import type { BusinessType, ProductCondition } from "@/types/enums";
+import type { ProductCondition } from "@/types/enums";
 import type { ItemType } from "../types/Card.types";
 
 const loaders = {
@@ -17,19 +17,18 @@ export type CardsDictionary = {
   /** Keyed by ProductCondition so a new enum member fails to compile until translated. */
   condition: Record<ProductCondition, string>;
   badges: {
-    exchangeable: string;
+    /** Label under a product's name when the seller takes swaps. */
+    acceptsExchange: string;
     /** Generic promotion badge, used when no percentage is known. */
     offer: string;
     /** e.g. "-{{value}}%" — pass the whole-number discount as `value`. */
     discount: string;
     soldOut: string;
-    /** Pill on the seller brand panel. */
+    /** Accessible name of the check beside a verified business's name. */
     verified: string;
   };
   meta: {
-    noBrand: string;
     noBusinessName: string;
-    noBusinessType: string;
     /** Back-face fallback when a service carries no blurb. */
     noDescription: string;
   };
@@ -37,8 +36,22 @@ export type CardsDictionary = {
     /** Prefix on a "from" price, e.g. services quoted from a base rate. */
     from: string;
   };
-  /** Keyed by BusinessType so a new enum member fails to compile until translated. */
-  businessType: Record<BusinessType, string>;
+  /**
+   * Business card footer, e.g. "{{value}} products". Split by plural form
+   * rather than interpolated, since the noun agrees with the number.
+   */
+  count: {
+    productsOne: string;
+    productsOther: string;
+    servicesOne: string;
+    servicesOther: string;
+  };
+  /**
+   * The pill over a business card's cover, keyed by tag id. Mirrors
+   * `editProfile.tags.options` in the profile locales — the catalog is open
+   * (served by USR-11), so an id missing here simply shows no pill.
+   */
+  businessTag: Record<string, string>;
   stock: {
     /** e.g. "Only {{value}} left" — pass the remaining count as `value`. */
     lowStock: string;
@@ -65,14 +78,16 @@ export type CardsDictionary = {
     showDetails: string;
     /** Back → front flip control. */
     flipBack: string;
-    /** Confirmation flashed on the CTA after a successful add-to-cart. */
-    added: string;
   };
   /** Primary call-to-action label, chosen by the card's ItemType. */
   /** `BROWSE` is the neutral CTA a card falls back to when it can't transact. */
   cta: Record<ItemType | "BROWSE", string>;
+  /** Arrow buttons on a product rail (`ProductScroller`). */
+  scroller: {
+    previous: string;
+    next: string;
+  };
   impact: {
-    title: string;
     /** Titles the card's back face. Short: it shares a line with the flip control. */
     saved: string;
     /** Label on the link that opens the full impact modal. */
@@ -91,15 +106,6 @@ export type CardsDictionary = {
      */
     co2Unit: string;
     waterUnit: string;
-  };
-  exchange: {
-    /** aria-label on the trigger icon button. */
-    trigger: string;
-    title: string;
-    /** Shown when the seller listed no specific interests. */
-    anyOffer: string;
-    propose: string;
-    close: string;
   };
 };
 

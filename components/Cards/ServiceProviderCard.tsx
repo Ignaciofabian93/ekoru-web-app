@@ -1,49 +1,42 @@
 import type { Seller } from "@/types/user";
-import { getBusinessProfile, getSellerLocation } from "@/utils/sellerInformation";
-import { Card } from "./Card";
-import { getInitials } from "./utils/initials";
+import { getBusinessProfile } from "@/utils/sellerInformation";
+import { BusinessCard } from "./BusinessCard";
+
+interface ServiceProviderCardProps {
+  provider: Seller;
+  lang: string;
+  /**
+   * Active services, when the source knows it (`getServiceProviders`). `Seller`
+   * itself carries no count, so without this the footer shows the link alone.
+   */
+  serviceCount?: number;
+  priority?: boolean;
+}
 
 export function ServiceProviderCard({
   provider,
   lang,
-}: {
-  provider: Seller;
-  lang: string;
-}) {
+  serviceCount,
+  priority,
+}: ServiceProviderCardProps) {
   const profile = getBusinessProfile(provider);
-  const href = `/${lang}/seller/${provider.id}`;
-  const businessName = profile?.businessName;
 
   return (
-    <Card
-      href={href}
-      orientation="horizontal"
-      hasBackSide={false}
-      ariaLabel={businessName}
-    >
-      <Card.FrontSide>
-        <Card.Header
-          coverImageString={profile?.logo ?? ""}
-          imageAlt={businessName ?? ""}
-          priority
-          isProduct={false}
-          isLikeEnabled={false}
-          isVerified={Boolean(provider.isVerified)}
-          initials={getInitials(businessName)}
-          // Amber separates providers from stores at a glance.
-          accent="charcoal"
-        />
-        <div className="flex w-full min-w-0 flex-col">
-          <Card.Body
-            isProduct={false}
-            businessName={businessName}
-            businessType={profile?.businessType}
-            location={getSellerLocation(provider)}
-            description={profile?.description ?? undefined}
-          />
-          <Card.Footer itemType="PROVIDER" url={href} />
-        </div>
-      </Card.FrontSide>
-    </Card>
+    <BusinessCard
+      href={`/${lang}/seller/${provider.id}`}
+      itemType="PROVIDER"
+      name={profile?.businessName}
+      description={profile?.description}
+      coverImage={profile?.coverImage}
+      logo={profile?.logo}
+      tagId={profile?.tags?.[0]}
+      location={provider.county?.county}
+      isVerified={Boolean(provider.isVerified)}
+      count={serviceCount}
+      countKind="services"
+      // Charcoal separates providers from stores at a glance.
+      accent="charcoal"
+      priority={priority}
+    />
   );
 }

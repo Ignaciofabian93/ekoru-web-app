@@ -347,6 +347,21 @@ export const GET_SERVICE_REVIEWS = gql`
   }
 `;
 
+/**
+ * Active-service counts per provider, for the provider cards' footer. `Seller`
+ * carries no count, so the home rails join these onto `getSellers` by id. Ids
+ * only — no `seller` reference, so the gateway skips the users round trip.
+ * 50 is the subgraph's cap (MAX_SERVICE_PROVIDERS); past it, no count shows.
+ */
+export const GET_SERVICE_PROVIDER_COUNTS = gql`
+  query GetServiceProviderCounts($limit: Int = 50) {
+    getServiceProviders(limit: $limit) {
+      sellerId
+      serviceCount
+    }
+  }
+`;
+
 /** The providers row on /services: businesses with active services, most first. */
 export const GET_SERVICE_PROVIDERS = gql`
   query GetServiceProviders($categoryId: ID, $limit: Int = 24) {

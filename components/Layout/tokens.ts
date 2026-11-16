@@ -30,8 +30,8 @@ export type Width = "narrow" | "default" | "wide" | "full";
 
 export const MAX_WIDTH: Record<Width, string> = {
   narrow: "max-w-4xl", // forms, auth, profile
-  default: "max-w-6xl", // catalogs, listings, home
-  wide: "max-w-7xl", // seller storefront
+  default: "max-w-5xl", // catalogs, listings, home
+  wide: "max-w-6xl", // seller storefront
   full: "max-w-none",
 };
 

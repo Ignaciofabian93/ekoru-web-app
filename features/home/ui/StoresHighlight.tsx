@@ -13,7 +13,7 @@ import { StoresCard } from "@/components/Cards";
 
 export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
-  const { sellers } = useStoresHomeData({ language: lang });
+  const { sellers, productCounts } = useStoresHomeData({ language: lang });
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -70,7 +70,7 @@ export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
         >
           {sellers.map((seller) => (
             <div key={seller.id} className="shrink-0 snap-start">
-              <StoresCard store={seller} lang={lang} />
+              <StoresCard store={seller} lang={lang} productCount={productCounts[seller.id]} />
             </div>
           ))}
         </CardScroller>

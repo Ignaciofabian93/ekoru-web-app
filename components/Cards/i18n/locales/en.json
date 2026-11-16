@@ -10,25 +10,40 @@
     "FOR_PARTS": "For parts"
   },
   "badges": {
-    "exchangeable": "Exchangeable",
+    "acceptsExchange": "Accepts swaps",
     "offer": "Offer",
     "discount": "-{{value}}%",
     "soldOut": "Sold out",
     "verified": "Verified"
   },
   "meta": {
-    "noBrand": "No brand",
     "noBusinessName": "Unnamed store",
-    "noBusinessType": "Store",
     "noDescription": "This listing has no description yet."
   },
   "price": {
     "from": "From"
   },
-  "businessType": {
-    "RETAIL": "Retail",
-    "SERVICES": "Services",
-    "MIXED": "Retail & services"
+  "count": {
+    "productsOne": "{{value}} product",
+    "productsOther": "{{value}} products",
+    "servicesOne": "{{value}} service",
+    "servicesOther": "{{value}} services"
+  },
+  "businessTag": {
+    "womanLed": "Woman-led",
+    "zeroWaste": "Zero waste",
+    "recycledMaterials": "100% recycled materials",
+    "plasticFree": "Plastic-free",
+    "locallyMade": "Locally made",
+    "handmade": "Handmade",
+    "vegan": "Vegan",
+    "crueltyFree": "Cruelty-free",
+    "organic": "Organic",
+    "fairTrade": "Fair trade",
+    "carbonNeutral": "Carbon neutral",
+    "upcycled": "Upcycled",
+    "refillable": "Refillable",
+    "biodegradable": "Biodegradable"
   },
   "stock": {
     "lowStock": "Only {{value}} left",
@@ -48,20 +63,18 @@
     "unlike": "Remove from favorites",
     "showImpact": "Show environmental impact",
     "showDetails": "Show details",
-    "flipBack": "Back to product",
-    "added": "Added"
+    "flipBack": "Back to product"
   },
   "cta": {
     "MARKETPLACE": "View details",
     "STORE": "Add to cart",
     "SERVICE": "Book now",
-    "BUSINESS": "See store",
+    "BUSINESS": "Explore store",
     "PROVIDER": "See provider",
     "EDIT": "Edit listing",
     "BROWSE": "View details"
   },
   "impact": {
-    "title": "Environmental impact",
     "saved": "Impact saved",
     "viewImpact": "View impact",
     "composition": "Composition",
@@ -73,11 +86,8 @@
     "waterUnit": "L",
     "noMaterials": "No materials declared"
   },
-  "exchange": {
-    "trigger": "See exchange interests",
-    "title": "Exchange",
-    "anyOffer": "Open to any offer",
-    "propose": "Propose an exchange",
-    "close": "Close"
+  "scroller": {
+    "previous": "See previous",
+    "next": "See more"
   }
 }

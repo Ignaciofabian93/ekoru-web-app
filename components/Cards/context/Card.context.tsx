@@ -7,13 +7,10 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Orientation } from "../types/Card.types";
 
 interface CardContextValue {
-  orientation: Orientation;
   isFlipped: boolean;
   flip: () => void;
-  hasBackSide: boolean;
   href: string;
   ariaLabel?: string;
   /**
@@ -37,11 +34,8 @@ const CardContext = createContext<CardContextValue | null>(null);
 
 // Only `isFlipped` is state the card owns. Everything else is an input from the
 // caller of <Card>, so it arrives as a prop and is passed straight through —
-// storing those as state (as a first pass did) would freeze them at their
-// initial value and ignore prop changes.
+// storing those as state would freeze them at their initial value.
 export interface CardProviderProps {
-  orientation: Orientation;
-  hasBackSide: boolean;
   href: string;
   ariaLabel?: string;
   isManaged: boolean;
@@ -50,8 +44,6 @@ export interface CardProviderProps {
 }
 
 export function CardProvider({
-  orientation,
-  hasBackSide,
   href,
   ariaLabel,
   isManaged,
@@ -65,24 +57,15 @@ export function CardProvider({
   // Memoized so consumers re-render only when a value actually changes, not on
   // every render of the tree hosting the provider.
   const value = useMemo<CardContextValue>(
-    () => ({
-      orientation,
-      isFlipped,
-      flip,
-      hasBackSide,
-      href,
-      ariaLabel,
-      isManaged,
-      onEdit,
-    }),
-    [orientation, isFlipped, flip, hasBackSide, href, ariaLabel, isManaged, onEdit],
+    () => ({ isFlipped, flip, href, ariaLabel, isManaged, onEdit }),
+    [isFlipped, flip, href, ariaLabel, isManaged, onEdit],
   );
 
   return <CardContext.Provider value={value}>{children}</CardContext.Provider>;
 }
 
-// Throws when a Card slot (Card.Header, Card.FlipButton, …) is rendered outside
-// a <Card>, turning a silent no-op into an immediate, obvious error.
+// Throws when a card slot (Card.Header, FlipButton, …) is rendered outside a
+// <Card>, turning a silent no-op into an immediate, obvious error.
 export function useCard(): CardContextValue {
   const ctx = useContext(CardContext);
   if (!ctx) {

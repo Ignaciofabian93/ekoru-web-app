@@ -60,15 +60,16 @@ export function StoreProductCard({
   // (stepper included) come off the card.
   const isManaged = Boolean(actions || onEdit);
   const isShopper = !isOwnProduct && !isManaged;
-  // Beta: the store is browsable but not transactable, so a shopper's card
-  // keeps its footer and turns it into "view details". Own and managed cards
-  // are unaffected — they never had a buy CTA. See `constants/features.ts`.
-  // TRX-4: nor for a store that cannot be paid yet (no Mercado Pago account).
+  // Adding to the cart from the card is switched off (`cardAddToCart`): it
+  // happens on the product page, where the seller and stock are in view. With
+  // it off — or the store not transactable yet (`storePurchase`), or a store
+  // that cannot be paid (TRX-4, no Mercado Pago account) — the footer gets no
+  // action and shows "view details" instead. See `constants/features.ts`.
   const canBuy =
     isShopper &&
+    FEATURES.cardAddToCart.available &&
     FEATURES.storePurchase.available &&
     product.seller?.canReceivePayments !== false;
-  const browseOnly = isShopper && !canBuy;
 
   // A sold-out card keeps its "Out of stock" CTA even when units are already in
   // the cart: there is nothing left to add, and the line stays editable from
@@ -103,8 +104,6 @@ export function StoreProductCard({
 
   return (
     <Card
-      orientation="vertical"
-      hasBackSide
       href={href}
       ariaLabel={product.name}
       actions={actions}
@@ -118,37 +117,29 @@ export function StoreProductCard({
           hasOffer={onOffer}
           discountPercent={discountPercent}
           isSoldOut={isSoldOut}
-          isLikeEnabled
           isLiked={product.isLiked ?? undefined}
           itemId={product.id}
           favoriteSource="store"
         />
         <Card.Body
-          isProduct
           name={product.name}
-          brand={product.brand ?? undefined}
           price={product.price}
           hasOffer={product.hasOffer ?? undefined}
           offerPrice={product.offerPrice ?? undefined}
+          location={product.seller?.county?.county}
           averageRating={product.averageRating ?? undefined}
           reviewsNumber={product.reviewsNumber ?? undefined}
           stock={product.stock ?? undefined}
           isLowStock={product.isLowStock ?? undefined}
         />
-        {/* Managed cards still render the footer — it resolves to the owner's
-            Edit CTA rather than the add-to-cart button. */}
-        {(canBuy || browseOnly || isManaged) && (
-          <Card.Footer
-            itemType="STORE"
-            url={href}
-            browseOnly={browseOnly}
-            onAction={canBuy ? handleAddToCart : undefined}
-            state={isSoldOut ? "unavailable" : "default"}
-            quantity={canStep ? quantity : undefined}
-            onQuantityChange={canStep ? setQuantity : undefined}
-            maxQuantity={canStep ? stock : undefined}
-          />
-        )}
+        <Card.Footer
+          itemType="STORE"
+          onAction={canBuy ? handleAddToCart : undefined}
+          isSoldOut={isSoldOut}
+          quantity={canStep ? quantity : undefined}
+          onQuantityChange={canStep ? setQuantity : undefined}
+          maxQuantity={canStep ? stock : undefined}
+        />
       </Card.FrontSide>
       <Card.BackSide>
         <Card.BackHeader itemType="STORE" itemName={product.name} />

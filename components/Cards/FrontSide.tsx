@@ -1,280 +1,187 @@
-import { useTranslation } from "@/i18n/context";
-import { useCard } from "./context/Card.context";
-import type {
-  BrandAccent,
-  CardBodyProps,
-  CardFooterProps,
-  CardFooterState,
-  CardHeaderProps,
-  Orientation,
-} from "./types/Card.types";
-import { NAMESPACE } from "./i18n";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import clsx from "clsx";
 import Image from "next/image";
-import { BadgeCheck, Clock, ImageOff, MapPin, Pencil, Repeat, Star } from "lucide-react";
-import { useToggleFavorite } from "@/hooks/useToggleFavorite";
-import { resolveImageUrl } from "@/utils/resolveImage";
-import { FlipButton } from "./FlipButton";
-import { Button, ProductConditionBadge, ProductInfoBadge, Text } from "../Primitives";
+import {
+  ArrowRight,
+  Clock,
+  ImageOff,
+  MapPin,
+  Pencil,
+  Star,
+  type LucideIcon,
+} from "lucide-react";
 import { useFormatPrice } from "@/hooks/useFormatPrice";
-import { useNavigation } from "@/hooks/useNavigation";
-import { QuantityStepper } from "../Patterns";
+import { useToggleFavorite } from "@/hooks/useToggleFavorite";
+import { useTranslation } from "@/i18n/context";
 import { useIsAuthenticated } from "@/store/useAuthStore";
-import { LikeButton } from "./LikeButton";
 import { formatDuration } from "@/utils/formatters";
+import { resolveImageUrl } from "@/utils/resolveImage";
+import { QuantityStepper } from "../Patterns";
+import { Button, ProductConditionBadge, ProductInfoBadge, Text } from "../Primitives";
+import { useCard } from "./context/Card.context";
+import { FlipButton } from "./FlipButton";
+import { NAMESPACE } from "./i18n";
+import { LikeButton } from "./LikeButton";
+import type { CardBodyProps, CardFooterProps, CardHeaderProps } from "./types/Card.types";
 
-const HEADER_CLASS: Record<Orientation, string> = {
-  vertical: "w-full aspect-4/3",
-  horizontal: "h-full basis-2/5",
-};
-
-const ACCENT_PANEL: Record<BrandAccent, string> = {
-  primary: "bg-linear-to-br from-primary-dark to-primary",
-  secondary: "bg-linear-to-br from-secondary-dark to-secondary",
-  // Satin charcoal: neutral zinc so it takes no side against the lime and
-  // cyan the other two accents carry, with the mid stop lighter than both
-  // ends — that diagonal lift is what reads as sheen rather than flat grey.
-  charcoal: "bg-linear-to-br from-zinc-900 via-zinc-700 to-zinc-800",
-};
-
-const ACCENT_TEXT: Record<BrandAccent, string> = {
-  primary: "text-primary-dark",
-  secondary: "text-secondary-dark",
-  charcoal: "text-zinc-800",
-};
-
-function ProviderPanel({
-  logo,
-  imageAlt,
-  initials,
-  accent,
-  isVerified,
-  priority,
-}: {
-  logo?: string;
-  imageAlt: string;
-  initials?: string;
-  accent: BrandAccent;
-  isVerified: boolean;
-  priority?: boolean;
-}) {
-  const { orientation } = useCard();
-  const { t } = useTranslation(NAMESPACE);
-  const [logoError, setLogoError] = useState<boolean>(false);
-
-  return (
-    <figure
-      className={clsx(
-        "relative m-0 flex shrink-0 flex-col items-center justify-between overflow-hidden",
-        HEADER_CLASS[orientation],
-        ACCENT_PANEL[accent],
-      )}
-    >
-      {/* Soft depth, not content — kept out of the a11y tree. */}
-      <div
-        aria-hidden
-        className="absolute -top-6 -left-8 size-24 rounded-full bg-white/10"
-      />
-      <div
-        aria-hidden
-        className="absolute -right-6 bottom-2 size-16 rounded-full bg-white/10"
-      />
-
-      {/* The bottom inset only exists to clear the verified pill, which is
-          absolutely positioned over this panel. Without a pill there is nothing
-          to clear, and holding the padding anyway pushed the logo above centre. */}
-      <div
-        className={clsx(
-          "relative z-10 flex w-full flex-1 items-center justify-center px-4 py-4",
-          isVerified && "pb-8",
-        )}
-      >
-        <div className="flex size-20 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-black/5">
-          {logo && !logoError ? (
-            <Image
-              src={logo}
-              alt={imageAlt}
-              width={80}
-              height={80}
-              priority={priority}
-              onError={() => setLogoError(true)}
-              className="size-full object-cover"
-            />
-          ) : (
-            <span className={clsx("text-xl font-bold", ACCENT_TEXT[accent])}>
-              {initials}
-            </span>
-          )}
-        </div>
-      </div>
-
-      {isVerified && (
-        <div className="absolute inset-x-0 bottom-2 z-10 flex justify-center">
-          <span
-            className={clsx(
-              "inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-semibold shadow-md",
-              ACCENT_TEXT[accent],
-            )}
-          >
-            <BadgeCheck size={13} strokeWidth={2.5} aria-hidden />
-            {t("badges.verified")}
-          </span>
-        </div>
-      )}
-    </figure>
-  );
-}
-
+/**
+ * The photo, inset in the face — a `px-2 pt-2` gutter of card around it — with
+ * its own rounded corners rather than bleeding to the card's edge. The inset
+ * lives here, not on the face, so the back face keeps its own padding.
+ *
+ * The badges carry no z-index: the face's stretched link passes over them, so a
+ * tap on one still navigates, and the link is transparent so they show through.
+ * Only the buttons in the top-right corner lift above it.
+ */
 export function Header({
   coverImageString,
   imageAlt,
   priority,
   condition,
-  isExchangeable = false,
   hasOffer = false,
   discountPercent,
   isSoldOut = false,
-  isLikeEnabled = true,
   isLiked = false,
   itemId,
   favoriteSource = "marketplace",
   flipTarget = "impact",
-  flipLabel,
-  isProduct = true,
-  isVerified = false,
-  initials,
-  accent = "secondary",
 }: CardHeaderProps) {
-  const { orientation, hasBackSide, isManaged } = useCard();
+  const { isManaged } = useCard();
   const { t } = useTranslation(NAMESPACE);
   const { toggleFavorite } = useToggleFavorite();
-  const cover = resolveImageUrl(coverImageString);
-  const [imageError, setImageError] = useState<boolean>(false);
   const isAuthenticated = useIsAuthenticated();
+  const [imageError, setImageError] = useState(false);
+  const cover = resolveImageUrl(coverImageString);
 
-  const showLike = isLikeEnabled && !isManaged && typeof itemId === "number";
-
-  if (!isProduct) {
-    return (
-      <ProviderPanel
-        logo={cover}
-        imageAlt={imageAlt}
-        initials={initials}
-        accent={accent}
-        isVerified={isVerified}
-        priority={priority}
-      />
-    );
-  }
+  const showLike = isAuthenticated && !isManaged && typeof itemId === "number";
 
   return (
-    <div
-      className={clsx(
-        "relative shrink-0 overflow-hidden",
-        HEADER_CLASS[orientation],
-        "bg-slate-600",
-      )}
-    >
-      {cover && !imageError ? (
-        <Image
-          src={cover}
-          alt={imageAlt}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority={priority}
-          onError={() => setImageError(true)}
-          className={clsx(
-            "h-full w-full object-cover transition-transform duration-300",
-            isSoldOut && "opacity-45 saturate-50",
-          )}
-          loading="eager"
-        />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center">
-          <ImageOff size={36} strokeWidth={1.5} className="text-foreground-muted" />
-        </div>
-      )}
-
-      {/* Badges are decorative: `pointer-events-none` lets clicks fall through
-          to the stretched link beneath, so tapping over one still navigates.
-          `z-20` keeps them painted above that link. Position lives here rather
-          than in the badge — a badge that placed itself couldn't be stacked. */}
-      {condition && (
-        <div className="pointer-events-none absolute bottom-2 left-2 z-20">
-          <ProductConditionBadge
-            label={t(`condition.${condition}`)}
-            condition={condition}
+    <div className="shrink-0 px-2 pt-2">
+      <div className="relative aspect-square overflow-hidden rounded-xl bg-background-tertiary">
+        {cover && !imageError ? (
+          <Image
+            src={cover}
+            alt={imageAlt}
+            fill
+            sizes="(max-width: 640px) 50vw, 240px"
+            priority={priority}
+            loading="eager"
+            onError={() => setImageError(true)}
+            className={clsx(
+              "object-cover transition-transform duration-300 group-hover:scale-[1.03]",
+              isSoldOut && "opacity-45 saturate-50",
+            )}
           />
-        </div>
-      )}
-
-      {/* Stacked, so a listing can carry more than one status at once (an
-          exchangeable item on promotion, say) without the badges overlapping. */}
-      {(isExchangeable || hasOffer || isSoldOut) && (
-        <div className="pointer-events-none absolute top-2 left-2 z-20 flex flex-col items-start gap-1">
-          {hasOffer && (
-            <ProductInfoBadge
-              type="OFFER"
-              label={
-                discountPercent
-                  ? t("badges.discount", { value: String(Math.round(discountPercent)) })
-                  : t("badges.offer")
-              }
-            />
-          )}
-          {isSoldOut && <ProductInfoBadge type="SOLD_OUT" label={t("badges.soldOut")} />}
-          {isExchangeable && (
-            <ProductInfoBadge
-              type="EXCHANGEABLE"
-              label={t("badges.exchangeable")}
-              icon={Repeat}
-            />
-          )}
-        </div>
-      )}
-
-      <div className="absolute top-2 right-2 z-20 flex flex-col-reverse items-center gap-1.5">
-        {showLike && isAuthenticated && (
-          <LikeButton
-            ariaLabel={isLiked ? t("actions.unlike") : t("actions.like")}
-            onClick={() => toggleFavorite(itemId, isLiked, favoriteSource)}
-            isLiked={isLiked}
-          />
+        ) : (
+          <div className="flex size-full items-center justify-center">
+            <ImageOff size={36} strokeWidth={1.5} className="text-foreground-tertiary" />
+          </div>
         )}
-        {hasBackSide && (
+
+        {condition && (
+          <div className="absolute bottom-2 left-2">
+            <ProductConditionBadge
+              label={t(`condition.${condition}`)}
+              condition={condition}
+            />
+          </div>
+        )}
+
+        {/* Stacked, so a listing on promotion that also sold out shows both
+            without the badges overlapping. */}
+        {(hasOffer || isSoldOut) && (
+          <div className="absolute top-2 left-2 flex flex-col items-start gap-1">
+            {hasOffer && (
+              <ProductInfoBadge
+                type="OFFER"
+                label={
+                  discountPercent
+                    ? t("badges.discount", { value: String(Math.round(discountPercent)) })
+                    : t("badges.offer")
+                }
+              />
+            )}
+            {isSoldOut && (
+              <ProductInfoBadge type="SOLD_OUT" label={t("badges.soldOut")} />
+            )}
+          </div>
+        )}
+
+        {/* Favorite in the corner, the flip to the back face right under it.
+            Without the heart (signed out, or the owner managing the listing)
+            the flip moves up into the corner. */}
+        <div className="absolute top-2 right-2 z-20 flex flex-col items-center gap-1.5">
+          {showLike && (
+            <LikeButton
+              ariaLabel={isLiked ? t("actions.unlike") : t("actions.like")}
+              onClick={() => toggleFavorite(itemId, isLiked, favoriteSource)}
+              isLiked={isLiked}
+            />
+          )}
           <FlipButton
             label={
-              flipLabel ??
-              (flipTarget === "details"
+              flipTarget === "details"
                 ? t("actions.showDetails")
-                : t("actions.showImpact"))
+                : t("actions.showImpact")
             }
           />
-        )}
+        </div>
       </div>
     </div>
   );
 }
 
+type LabelTone = "success" | "warning" | "neutral";
+
+const LABEL_TONE: Record<LabelTone, string> = {
+  success: "bg-primary/15 text-primary-dark",
+  warning: "bg-amber-50 text-amber-800",
+  neutral: "bg-background-tertiary text-foreground-secondary",
+};
+
+/**
+ * A flat tag under the name — quieter than the photo badges, which have to hold
+ * their own over an image. Truncates rather than wrapping, so one long
+ * sub-category can't grow its card past its row-mates.
+ */
+function Label({
+  tone,
+  icon: Icon,
+  children,
+}: {
+  tone: LabelTone;
+  icon?: LucideIcon;
+  children: ReactNode;
+}) {
+  return (
+    <span
+      className={clsx(
+        "inline-flex h-6 max-w-full min-w-0 items-center gap-1 rounded-md px-2",
+        "text-xs leading-none font-semibold",
+        LABEL_TONE[tone],
+      )}
+    >
+      {Icon && <Icon size={12} strokeWidth={2.25} aria-hidden className="shrink-0" />}
+      <span className="truncate">{children}</span>
+    </span>
+  );
+}
+
+/** Price and rating, the name, where it is, and a row of labels. */
 export function Body({
-  isProduct = true,
-  brand,
-  showNoBrand = true,
   name,
   price,
   hasOffer = false,
   offerPrice,
+  isPriceFrom = false,
+  location,
   averageRating,
   reviewsNumber,
-  duration,
-  isPriceFrom = false,
+  isExchangeable = false,
   stock,
   isLowStock = false,
-  businessName,
-  businessType,
-  location,
-  description,
+  duration,
+  category,
 }: CardBodyProps) {
   const { t } = useTranslation(NAMESPACE);
   const formatPrice = useFormatPrice();
@@ -284,228 +191,192 @@ export function Body({
     typeof offerPrice === "number" &&
     typeof price === "number" &&
     offerPrice < price;
+  // A missing or zero price shows nothing rather than "$0".
+  const shownPrice = onOffer ? offerPrice : price;
   const hasRating = typeof averageRating === "number" && averageRating > 0;
+  // Sold out is already said twice over the photo (badge and dimmed image), so
+  // the label row only warns while there is still something left to buy.
   const isSoldOut = typeof stock === "number" && stock <= 0;
-
-  if (!isProduct) {
-    return (
-      <div className="flex flex-1 flex-col justify-start gap-1 px-3.5 py-2.5">
-        <Text variant="p" size="base" weight="bold" color="default" numberOfLines={1}>
-          {businessName ?? t("meta.noBusinessName")}
-        </Text>
-        <Text
-          variant="span"
-          size="xs"
-          weight="bold"
-          color="secondary"
-          className="uppercase"
-        >
-          {businessType ? t(`businessType.${businessType}`) : t("meta.noBusinessType")}
-        </Text>
-
-        {location && (
-          <div className="mt-0.5 flex items-center gap-1 text-foreground-secondary">
-            <MapPin size={13} strokeWidth={2} aria-hidden className="shrink-0" />
-            <Text variant="span" size="xs" color="secondary" numberOfLines={1}>
-              {location}
-            </Text>
-          </div>
-        )}
-
-        {description && (
-          <Text
-            variant="p"
-            size="sm"
-            color="secondary"
-            className="mt-1"
-            numberOfLines={2}
-          >
-            {description}
-          </Text>
-        )}
-      </div>
-    );
-  }
+  const showLowStock = isLowStock && !isSoldOut;
+  const hasLabels =
+    isExchangeable || showLowStock || Boolean(duration) || Boolean(category);
 
   return (
-    <div className="flex flex-1 flex-col justify-start gap-2 px-3 py-2">
-      <div>
-        <Text
-          variant="span"
-          size="xs"
-          weight="bold"
-          color="secondary"
-          className="uppercase"
-        >
-          {/* A non-breaking space keeps the line, so cards stay aligned. */}
-          {brand || (showNoBrand ? t("meta.noBrand") : " ")}
-        </Text>
-        <Text
-          variant="span"
-          size="sm"
-          weight="normal"
-          color="default"
-          className="line-clamp-1"
-        >
-          {name}
-        </Text>
-      </div>
-
-      {(hasRating || duration) && (
-        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-          {hasRating && (
-            <span className="flex items-center gap-1">
-              <Star
-                size={12}
-                strokeWidth={1.5}
-                aria-hidden
-                className="shrink-0 fill-amber-400 text-amber-400"
-              />
+    <div className="flex flex-1 flex-col gap-1 px-3 pt-2.5 pb-1.5">
+      <div className="flex min-h-7 items-center gap-2">
+        {shownPrice ? (
+          <div className="flex min-w-0 items-baseline gap-1.5">
+            {isPriceFrom && !onOffer && (
+              <Text variant="span" size="xs" color="tertiary" weight="bold">
+                {t("price.from")}
+              </Text>
+            )}
+            <span className="text-lg font-bold text-primary @min-[12rem]:text-xl">
+              {formatPrice(shownPrice)}
+            </span>
+            {onOffer && (
               <Text
                 variant="span"
                 size="xs"
-                weight="bold"
-                color="default"
-                aria-label={t("rating.label", { value: averageRating.toFixed(1) })}
+                color="tertiary"
+                className="truncate line-through"
               >
+                {formatPrice(price)}
+              </Text>
+            )}
+          </div>
+        ) : null}
+
+        {hasRating && (
+          <span className="ml-auto flex shrink-0 items-center gap-0.5">
+            {/* `Text` forwards no ARIA props, so the spoken form is its own
+                node and the star and bare figure are hidden from it. */}
+            <span className="sr-only">
+              {t("rating.label", { value: averageRating.toFixed(1) })}
+            </span>
+            <span aria-hidden className="flex items-center gap-0.5">
+              <Star
+                size={12}
+                strokeWidth={1.5}
+                className="fill-amber-400 text-amber-400"
+              />
+              <Text variant="span" size="xs" weight="bold">
                 {averageRating.toFixed(1)}
               </Text>
-              {typeof reviewsNumber === "number" && reviewsNumber > 0 && (
-                <Text variant="span" size="xs" color="tertiary">
-                  {t("rating.reviews", { value: String(reviewsNumber) })}
-                </Text>
-              )}
             </span>
-          )}
-          {duration && (
-            <span className="flex items-center gap-1">
-              <Clock
-                size={11}
-                strokeWidth={2}
-                aria-hidden
-                className="text-foreground-secondary shrink-0"
-              />
-              <Text variant="span" size="xs" color="secondary" numberOfLines={1}>
-                {formatDuration(duration)}
+            {typeof reviewsNumber === "number" && reviewsNumber > 0 && (
+              <Text
+                variant="span"
+                size="xs"
+                color="tertiary"
+                className="hidden @min-[12rem]:inline"
+              >
+                {t("rating.reviews", { value: String(reviewsNumber) })}
               </Text>
-            </span>
-          )}
+            )}
+          </span>
+        )}
+      </div>
+
+      {/* Two lines reserved whether the name needs them or not, so the
+          location and labels start at the same height across a row. */}
+      <Text
+        variant="p"
+        size="sm"
+        weight="semibold"
+        leading="normal"
+        numberOfLines={2}
+        className="min-h-[2lh] @min-[12rem]:text-base"
+      >
+        {name}
+      </Text>
+
+      {location && (
+        <div className="flex items-center gap-1 text-foreground-secondary">
+          <MapPin size={13} strokeWidth={2} aria-hidden className="shrink-0" />
+          <Text variant="span" size="xs" color="secondary" numberOfLines={1}>
+            {location}
+          </Text>
         </div>
       )}
 
-      {(isSoldOut || isLowStock) && (
-        <Text
-          variant="span"
-          size="xs"
-          weight="bold"
-          color={isSoldOut ? "error" : "warning"}
-        >
-          {isSoldOut
-            ? t("stock.outOfStock")
-            : t("stock.lowStock", { value: String(stock ?? 0) })}
-        </Text>
+      {hasLabels && (
+        <div className="mt-0.5 flex flex-wrap items-center gap-1">
+          {isExchangeable && <Label tone="success">{t("badges.acceptsExchange")}</Label>}
+          {showLowStock && (
+            <Label tone="warning">
+              {t("stock.lowStock", { value: String(stock ?? 0) })}
+            </Label>
+          )}
+          {duration ? (
+            <Label tone="neutral" icon={Clock}>
+              {formatDuration(duration)}
+            </Label>
+          ) : null}
+          {category && <Label tone="neutral">{category}</Label>}
+        </div>
       )}
-
-      <div className="flex h-8 w-full items-center justify-between gap-2">
-        {onOffer ? (
-          <div className="flex items-baseline gap-1.5">
-            <Text variant="span" size="lg" color="primary" weight="bold">
-              {formatPrice(offerPrice)}
-            </Text>
-            <Text variant="span" size="xs" color="tertiary" className="line-through">
-              {formatPrice(price)}
-            </Text>
-          </div>
-        ) : (
-          price && (
-            <div className="flex items-baseline gap-1">
-              {isPriceFrom && (
-                <Text variant="span" size="xs" color="tertiary" weight="bold">
-                  {t("price.from")}
-                </Text>
-              )}
-              <Text variant="span" size="lg" color="primary" weight="bold">
-                {formatPrice(price)}
-              </Text>
-            </div>
-          )
-        )}
-      </div>
     </div>
   );
 }
 
+/**
+ * The front face's last row: a rule, then the way in. In order of precedence
+ * that is the owner's Edit button, the caller's action (add to cart, behind
+ * `FEATURES.cardAddToCart`), or a "view details" link.
+ *
+ * That link is drawn, not wired. The whole face is already one link (the
+ * stretched anchor in `FrontSide`), so a second one here would be a duplicate
+ * tab stop with the same destination. The row stays *under* that anchor and a
+ * click on the text lands on it; only a real control lifts itself above.
+ */
 export function Footer({
   itemType,
-  url,
   onAction,
-  state = "default",
-  browseOnly = false,
-  disabled = false,
-  loading,
-  quantity,
+  isSoldOut = false,
+  quantity = 0,
   onQuantityChange,
   maxQuantity,
 }: CardFooterProps) {
   const { t } = useTranslation(NAMESPACE);
-  const { navigateTo } = useNavigation();
   const { isManaged, onEdit } = useCard();
 
+  // An owner card without an Edit action has no way in to offer.
+  if (isManaged && !onEdit) return null;
+
+  let control: ReactNode = null;
   if (isManaged) {
-    if (!onEdit) return null;
-    return (
-      <div className="relative z-20 mt-auto flex items-center gap-2 px-2 pb-2">
-        <Button
-          variant="primary"
-          text={t("cta.EDIT")}
-          leftIcon={Pencil}
-          fullWidth
-          size="sm"
-          onPress={onEdit}
-        />
-      </div>
+    control = (
+      <Button
+        variant="primary"
+        text={t("cta.EDIT")}
+        leftIcon={Pencil}
+        fullWidth
+        size="sm"
+        onPress={onEdit}
+      />
+    );
+  } else if (onAction && quantity > 0 && onQuantityChange && maxQuantity !== undefined) {
+    control = (
+      <QuantityStepper
+        value={quantity}
+        max={maxQuantity}
+        onChange={onQuantityChange}
+        size="sm"
+        fullWidth
+        label={t("quantity.label")}
+        decreaseLabel={t("quantity.decrease")}
+        increaseLabel={t("quantity.increase")}
+      />
+    );
+  } else if (onAction) {
+    control = (
+      <Button
+        variant="primary"
+        text={isSoldOut ? t("stock.outOfStock") : t(`cta.${itemType}`)}
+        fullWidth
+        size="sm"
+        disabled={isSoldOut}
+        onPress={onAction}
+      />
     );
   }
 
-  const LABEL: Record<CardFooterState, string> = {
-    // A browse-only card can't say "add to cart" or "book now" for something it
-    // won't do — the CTA becomes the navigation it actually performs.
-    default: browseOnly ? t("cta.BROWSE") : t(`cta.${itemType}`),
-    added: t("actions.added"),
-    unavailable: t("stock.outOfStock"),
-  };
-
-  // Browse-only is authoritative over whatever the caller passed, so a stale
-  // `onAction` can never smuggle the buy path back in.
-  const action = browseOnly ? undefined : onAction;
-
   return (
-    <div className="relative z-20 mt-auto flex items-center gap-2 px-2 pb-2">
-      {!browseOnly &&
-      typeof quantity === "number" &&
-      quantity > 0 &&
-      typeof maxQuantity === "number" &&
-      onQuantityChange ? (
-        <QuantityStepper
-          value={quantity}
-          max={maxQuantity}
-          onChange={onQuantityChange}
-          size="sm"
-          fullWidth
-          label={t("quantity.label")}
-          decreaseLabel={t("quantity.decrease")}
-          increaseLabel={t("quantity.increase")}
-        />
+    <div className="mx-3 mt-auto flex min-h-10 items-center border-t border-slate-200/80 py-1">
+      {control ? (
+        // Lifted over the face's stretched link so it takes its own clicks.
+        <div className="relative z-20 min-w-0 flex-1">{control}</div>
       ) : (
-        <Button
-          variant={state === "added" ? "success" : "primary"}
-          text={LABEL[state]}
-          fullWidth
-          size="sm"
-          disabled={disabled || state === "unavailable"}
-          loading={loading}
-          onPress={action ?? (() => navigateTo({ route: url }))}
-        />
+        <span
+          aria-hidden
+          className={clsx(
+            "ml-auto inline-flex min-w-0 items-center gap-1 text-sm font-bold text-primary-active",
+          )}
+        >
+          <span className="truncate">{t("cta.BROWSE")}</span>
+          <ArrowRight size={15} strokeWidth={2.25} className="shrink-0" />
+        </span>
       )}
     </div>
   );
