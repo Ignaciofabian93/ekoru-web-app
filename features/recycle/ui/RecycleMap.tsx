@@ -40,6 +40,8 @@ const userIcon = L.divIcon({
 interface Props {
   center: Coordinates;
   user: Coordinates | null;
+  /** Drawn as a circle around the user; the view fits it when it changes. */
+  radiusMeters: number;
   points: RecyclePoint[];
   onSelect: (point: RecyclePoint) => void;
   centerOnUserLabel: string;
@@ -56,6 +58,7 @@ interface Props {
 export default function RecycleMap({
   center,
   user,
+  radiusMeters,
   points,
   onSelect,
   centerOnUserLabel,
@@ -65,9 +68,12 @@ export default function RecycleMap({
   const mapRef = useRef<L.Map | null>(null);
   const pointsLayerRef = useRef<L.LayerGroup | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
+  const radiusCircleRef = useRef<L.Circle | null>(null);
+  const hasFittedRef = useRef(false);
 
   // The map centers on `center` once at creation; afterwards the user pans
-  // freely and we never snap back behind their back.
+  // freely and we never snap back behind their back. The one exception is
+  // picking a new radius, which asks to see that area.
   const initialCenter = useRef(center);
 
   useEffect(() => {
@@ -92,8 +98,40 @@ export default function RecycleMap({
       mapRef.current = null;
       pointsLayerRef.current = null;
       userMarkerRef.current = null;
+      radiusCircleRef.current = null;
+      hasFittedRef.current = false;
     };
   }, []);
+
+  // The search area, and a view that fits it: instantly on first load,
+  // animated when the visitor picks another radius. Leaflet draws circles in
+  // a pane below the markers, so the user dot and the points stay on top.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !user) return;
+    const at = L.latLng(user.lat, user.lng);
+
+    if (radiusCircleRef.current) {
+      radiusCircleRef.current.setLatLng(at).setRadius(radiusMeters);
+    } else {
+      radiusCircleRef.current = L.circle(at, {
+        radius: radiusMeters,
+        color: colors.primary,
+        weight: 1.5,
+        dashArray: "6 6",
+        fillColor: colors.primary,
+        fillOpacity: 0.06,
+        interactive: false,
+      }).addTo(map);
+    }
+
+    // `toBounds` takes the box's full side, so twice the radius.
+    map.fitBounds(at.toBounds(radiusMeters * 2), {
+      padding: [24, 24],
+      animate: hasFittedRef.current,
+    });
+    hasFittedRef.current = true;
+  }, [user, radiusMeters]);
 
   // Keep the user-location dot in sync with the coords.
   useEffect(() => {

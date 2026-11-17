@@ -6,10 +6,15 @@
   "map": {
     "locating": "Obteniendo ubicación…",
     "loadingPoints": "Cargando puntos…",
-    "count": "{{count}} punto en 5 km",
-    "countPlural": "{{count}} puntos en 5 km",
+    "loadingSlow": "Cargando los puntos de tu zona… la primera vez puede tardar hasta un minuto.",
+    "count": "{{count}} punto en {{radius}}",
+    "countPlural": "{{count}} puntos en {{radius}}",
     "centerOnMe": "Centrar en mi ubicación",
     "youAreHere": "Estás aquí"
+  },
+  "radius": {
+    "label": "Distancia",
+    "option": "{{km}} km"
   },
   "permission": {
     "title": "Permiso de ubicación requerido",
@@ -19,7 +24,9 @@
   "error": {
     "title": "No se pudo cargar el mapa",
     "hint": "Revisa tu conexión e intenta de nuevo.",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "pointsTitle": "No pudimos cargar los puntos",
+    "pointsHint": "El servicio de puntos de reciclaje no respondió. Suele ser momentáneo: intenta de nuevo en unos minutos."
   },
   "point": {
     "fallbackName": "Punto de reciclaje",

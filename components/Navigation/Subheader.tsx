@@ -13,6 +13,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useDropdown } from "@/components/Overlays/Dropdown";
+import { ComingSoonChip } from "@/components/Primitives/Chip";
+import { FEATURES } from "@/constants/features";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE, type NavigationSection } from "./i18n";
@@ -24,8 +26,8 @@ const SUBHEADER_LINKS: SubHeaderLink[] = [
   { key: "marketplace", path: "/marketplace", icon: Package },
   { key: "stores", path: "/stores", icon: Store },
   { key: "services", path: "/services", icon: ScanBarcode },
-  { key: "community", path: "/community", icon: UsersRound },
-  { key: "blog", path: "/blog", icon: Newspaper },
+  { key: "community", path: "/community", icon: UsersRound, feature: "community" },
+  { key: "blog", path: "/blog", icon: Newspaper, feature: "blog" },
 ];
 
 const pillClass = (isActive: boolean, isExpanded: boolean, isLast: boolean) =>
@@ -134,6 +136,7 @@ export default function SubHeader({ trailing }: { trailing?: React.ReactNode }) 
     ...item,
     route: `/${language}${item.path}`,
     label: t(`sections.${item.key}`),
+    available: !item.feature || FEATURES[item.feature].available,
   }));
 
   const activeIndex = links.findIndex(
@@ -169,6 +172,26 @@ export default function SubHeader({ trailing }: { trailing?: React.ReactNode }) 
               const isExpanded = expandedKey === item.key;
               const isLast = index === links.length - 1;
               const panelId = `${menuId}-${item.key}`;
+
+              // A switched-off section keeps its place in the row but leads
+              // nowhere: no link, no megamenu, no catalog request — just the
+              // coming-soon chip, like the unavailable rows in the menus.
+              if (!item.available) {
+                return (
+                  <li key={item.key} className="shrink-0">
+                    <span
+                      aria-disabled="true"
+                      className={clsx(
+                        pillClass(false, false, isLast),
+                        "flex cursor-not-allowed gap-1.5 opacity-60 hover:bg-white",
+                      )}
+                    >
+                      <PillContent icon={item.icon} label={item.label} isActive={false} />
+                      <ComingSoonChip label={t("soon")} />
+                    </span>
+                  </li>
+                );
+              }
 
               return (
                 <li key={item.key} className="shrink-0 md:relative">

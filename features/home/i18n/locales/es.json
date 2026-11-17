@@ -153,6 +153,11 @@
       "title": "Ideas que vale la pena compartir",
       "description": "Guías prácticas y consejos para un día a día más sostenible.",
       "cta": "Ir al blog"
+    },
+    "recycle": {
+      "title": "¿Dónde reciclar cerca de ti?",
+      "description": "Encuentra en el mapa los puntos de reciclaje de tu zona y qué materiales recibe cada uno.",
+      "cta": "Ver mapa de reciclaje"
     }
   }
 }

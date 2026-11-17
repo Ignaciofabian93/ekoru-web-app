@@ -30,9 +30,10 @@ const CSP = [
   // R2 images, and the recycling map's OpenStreetMap tiles.
   "img-src 'self' data: blob: https://images.ekoru.cl https://staging-images.ekoru.cl https://*.tile.openstreetmap.org",
   "font-src 'self' data:",
-  // The location lookup (Nominatim), the recycling map's points (Overpass) and
-  // where the analytics beacon may report.
-  `connect-src 'self' https://nominatim.openstreetmap.org https://overpass-api.de https://overpass.kumi.systems https://overpass.private.coffee https://cloudflareinsights.com${isDev ? " ws:" : ""}`,
+  // The location lookup (Nominatim) and where the analytics beacon may report.
+  // The recycling map's points come through our own /api/recycle-points, so
+  // the browser no longer calls Overpass.
+  `connect-src 'self' https://nominatim.openstreetmap.org https://cloudflareinsights.com${isDev ? " ws:" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",

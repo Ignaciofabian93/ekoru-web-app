@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import type { FeatureKey } from "@/constants/features";
 import type { NavigationSection } from "./i18n";
 
 /**
@@ -9,6 +10,8 @@ export interface SubHeaderLink {
   key: NavigationSection;
   path: string;
   icon: LucideIcon;
+  /** The switch the section sits behind; shown inert while it is off. */
+  feature?: FeatureKey;
 }
 
 /**

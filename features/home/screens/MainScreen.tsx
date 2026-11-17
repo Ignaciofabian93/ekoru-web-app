@@ -1,3 +1,4 @@
+import { FEATURES } from "@/constants/features";
 import { type SupportedLanguage } from "@/constants/settings";
 import { DictionaryProvider } from "@/i18n/context";
 import {
@@ -34,8 +35,15 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
         <StoreProductsHighlight lang={lang} />
         <AdBannerSection lang={lang} variant="charcoal" domain="services" />
         <ServicesHighlight lang={lang} />
-        <AdBannerSection lang={lang} variant="teal" domain="blog" />
-        <BlogHighlight lang={lang} />
+        {/* The recycling map has no section of its own on the home page, so
+            this banner is its way in besides the hero carousel. */}
+        <AdBannerSection lang={lang} variant="emerald" domain="recycle" />
+        {FEATURES.blog.available && (
+          <>
+            <AdBannerSection lang={lang} variant="teal" domain="blog" />
+            <BlogHighlight lang={lang} />
+          </>
+        )}
       </PageLayout>
     </DictionaryProvider>
   );

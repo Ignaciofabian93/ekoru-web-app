@@ -6,10 +6,15 @@
   "map": {
     "locating": "Localisation en cours…",
     "loadingPoints": "Chargement des points…",
-    "count": "{{count}} point dans un rayon de 5 km",
-    "countPlural": "{{count}} points dans un rayon de 5 km",
+    "loadingSlow": "Chargement des points de votre zone… la première fois, cela peut prendre jusqu’à une minute.",
+    "count": "{{count}} point dans un rayon de {{radius}}",
+    "countPlural": "{{count}} points dans un rayon de {{radius}}",
     "centerOnMe": "Centrer sur ma position",
     "youAreHere": "Vous êtes ici"
+  },
+  "radius": {
+    "label": "Distance",
+    "option": "{{km}} km"
   },
   "permission": {
     "title": "Autorisation de localisation requise",
@@ -19,7 +24,9 @@
   "error": {
     "title": "Impossible de charger la carte",
     "hint": "Vérifiez votre connexion et réessayez.",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "pointsTitle": "Impossible de charger les points",
+    "pointsHint": "Le service des points de recyclage n’a pas répondu. C’est généralement passager : réessayez dans quelques minutes."
   },
   "point": {
     "fallbackName": "Point de recyclage",

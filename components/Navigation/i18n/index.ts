@@ -19,6 +19,8 @@ export type NavigationSection =
 export type NavigationDictionary = {
   brand: string;
   sections: Record<NavigationSection, string>;
+  /** Chip on a subheader section that hasn't launched yet. Kept short: it sits in a pill. */
+  soon: string;
   search: {
     placeholder: string;
     /** Visible label of the submit button inside the search bar. */

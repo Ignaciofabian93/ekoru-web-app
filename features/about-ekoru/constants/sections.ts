@@ -7,6 +7,7 @@ import {
   Wrench,
   type LucideIcon,
 } from "lucide-react";
+import { FEATURES, type FeatureKey } from "@/constants/features";
 import type { NavCardTone } from "@/design/nav-card";
 
 /**
@@ -20,17 +21,29 @@ export type AboutFeature = {
   route: string;
   /** Tints the card's icon chip. Cycled so the rail doesn't read as one block. */
   tone: NavCardTone;
+  /** The switch the feature sits behind; its card is dropped while it is off. */
+  feature?: FeatureKey;
 };
 
-/** What the platform actually does, one card each. */
-export const ABOUT_FEATURES: readonly AboutFeature[] = [
+const ALL_FEATURES: readonly AboutFeature[] = [
   { key: "marketplace", icon: Store, route: "/marketplace", tone: "primary" },
   { key: "exchange", icon: Repeat, route: "/deals", tone: "secondary" },
   { key: "stores", icon: ScanBarcode, route: "/stores", tone: "accent" },
   { key: "services", icon: Wrench, route: "/services", tone: "primary" },
   { key: "recycle", icon: Recycle, route: "/recycle", tone: "secondary" },
-  { key: "community", icon: UsersRound, route: "/community", tone: "accent" },
-] as const;
+  {
+    key: "community",
+    icon: UsersRound,
+    route: "/community",
+    tone: "accent",
+    feature: "community",
+  },
+];
+
+/** What the platform actually does, one card each. */
+export const ABOUT_FEATURES: readonly AboutFeature[] = ALL_FEATURES.filter(
+  (item) => !item.feature || FEATURES[item.feature].available,
+);
 
 /** Manifesto lines, rendered as a single block. */
 export const ABOUT_BELIEFS: readonly string[] = [

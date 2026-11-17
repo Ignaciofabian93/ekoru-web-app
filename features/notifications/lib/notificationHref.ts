@@ -1,3 +1,4 @@
+import { FEATURES } from "@/constants/features";
 import type { AppNotification, NotificationType } from "../types";
 
 /**
@@ -29,9 +30,14 @@ const ROUTE_BY_TYPE: Partial<Record<NotificationType, string>> = {
 
   SECURITY_LOGIN_ALERT: "/profile/settings",
 
-  EVENT_REGISTRATION_RECEIVED: "/community",
-  EVENT_REGISTRATION_CANCELLED: "/community",
-  EVENT_CANCELLED: "/community",
+  // While community is off its routes redirect home, so these stay on the list.
+  ...(FEATURES.community.available
+    ? {
+        EVENT_REGISTRATION_RECEIVED: "/community",
+        EVENT_REGISTRATION_CANCELLED: "/community",
+        EVENT_CANCELLED: "/community",
+      }
+    : {}),
 
   MESSAGE_RECEIVED: "/profile/messages",
 };

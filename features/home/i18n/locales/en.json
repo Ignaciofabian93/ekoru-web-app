@@ -153,6 +153,11 @@
       "title": "Ideas worth sharing",
       "description": "Practical guides and tips for a more sustainable everyday life.",
       "cta": "Read the blog"
+    },
+    "recycle": {
+      "title": "Where can you recycle nearby?",
+      "description": "Find the recycling points around you on the map, and which materials each one takes.",
+      "cta": "View recycling map"
     }
   }
 }

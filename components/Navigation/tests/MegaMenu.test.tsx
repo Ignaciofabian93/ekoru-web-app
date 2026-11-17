@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DictionaryProvider } from "@/i18n/context";
 import { axe } from "@/test/axe";
+import type * as FeaturesModule from "@/constants/features";
 import en from "../i18n/locales/en.json";
 import { NAMESPACE, type NavigationSection } from "../i18n";
 import type { CatalogTree } from "../types";
@@ -13,6 +14,25 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/en",
   useRouter: () => ({ push: vi.fn() }),
 }));
+
+// Community and blog sit behind feature switches; the megamenu is tested with
+// them on, and the off state gets its own case below.
+const flags = vi.hoisted(() => ({ community: true, blog: true }));
+vi.mock("@/constants/features", async (importOriginal) => {
+  const actual = await importOriginal<typeof FeaturesModule>();
+  return {
+    ...actual,
+    FEATURES: {
+      ...actual.FEATURES,
+      get community() {
+        return { ...actual.FEATURES.community, available: flags.community };
+      },
+      get blog() {
+        return { ...actual.FEATURES.blog, available: flags.blog };
+      },
+    },
+  };
+});
 
 const MARKETPLACE: CatalogTree = {
   loading: false,
@@ -84,6 +104,8 @@ const link = (name: string) => screen.getByRole("link", { name });
 
 describe("SubHeader megamenu", () => {
   beforeEach(() => {
+    flags.community = true;
+    flags.blog = true;
     requestedLog.length = 0;
     catalogs = {
       marketplace: MARKETPLACE,
@@ -250,6 +272,20 @@ describe("SubHeader megamenu", () => {
     await user.hover(button("Community"));
 
     expect(requestedLog.at(-1)).toEqual(["community"]);
+  });
+
+  it("shows a switched-off section as an inert pill marked coming soon", async () => {
+    flags.community = false;
+    const user = userEvent.setup();
+    renderSubHeader();
+
+    expect(screen.queryByRole("button", { name: /Community/ })).toBeNull();
+    expect(screen.queryByRole("link", { name: /Community/ })).toBeNull();
+    const pill = screen.getByText("Community").closest("[aria-disabled='true']");
+    expect(pill).toHaveTextContent("Soon");
+
+    await user.hover(pill!);
+    expect(requestedLog.at(-1)).toEqual([]);
   });
 
   it("has no axe violations with every layer open", async () => {

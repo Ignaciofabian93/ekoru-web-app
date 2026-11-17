@@ -153,6 +153,11 @@
       "title": "Des idées à partager",
       "description": "Des guides pratiques et des astuces pour un quotidien plus durable.",
       "cta": "Lire le blog"
+    },
+    "recycle": {
+      "title": "Où recycler près de chez vous ?",
+      "description": "Trouvez sur la carte les points de recyclage autour de vous et les matériaux acceptés par chacun.",
+      "cta": "Voir la carte du recyclage"
     }
   }
 }

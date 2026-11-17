@@ -16,6 +16,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import clsx from "clsx";
 
+import { FEATURES } from "@/constants/features";
 import { DEFAULT_LANGUAGE } from "@/constants/settings";
 import { useDrawer } from "@/context/DrawerContext";
 import { useTranslation } from "@/i18n/context";
@@ -134,8 +135,11 @@ export default function Drawer() {
   const { items: marketplaceItems } = useDrawerMarketplace(hasOpened);
   const { items: storeItems } = useDrawerStores(hasOpened);
   const { items: serviceItems } = useDrawerServices(hasOpened);
-  const { items: communityItems } = useDrawerCommunity(hasOpened);
-  const { items: blogItems } = useDrawerBlogs(hasOpened);
+  // A switched-off section is never fetched: it renders as an inert row.
+  const { items: communityItems } = useDrawerCommunity(
+    hasOpened && FEATURES.community.available,
+  );
+  const { items: blogItems } = useDrawerBlogs(hasOpened && FEATURES.blog.available);
   // Same deferral: this one polls, so starting it before the drawer is ever
   // opened would double the avatar dropdown's background traffic on every page.
   const dealsCount = useDealsBadge(hasOpened);
@@ -144,7 +148,9 @@ export default function Drawer() {
   const notificationCount = useNotificationsBadge(hasOpened);
   const messagesCount = useUnreadConversations(hasOpened);
 
-  const accordionSections = useMemo((): AccordionSectionDef[] => {
+  const accordionSections = useMemo((): (AccordionSectionDef & {
+    available: boolean;
+  })[] => {
     // Empty rows carry no route, so handleNavigate ignores them. The copy comes
     // from the dictionary — it was hardcoded English, which showed through
     // untranslated in ES and FR whenever a catalog came back empty.
@@ -158,6 +164,7 @@ export default function Drawer() {
         icon: Package,
         baseRoute: "/marketplace",
         items: orEmpty(marketplaceItems),
+        available: true,
       },
       {
         key: "stores",
@@ -165,6 +172,7 @@ export default function Drawer() {
         icon: Store,
         baseRoute: "/stores",
         items: orEmpty(storeItems),
+        available: true,
       },
       {
         key: "services",
@@ -172,6 +180,7 @@ export default function Drawer() {
         icon: ScanBarcode,
         baseRoute: "/services",
         items: orEmpty(serviceItems),
+        available: true,
       },
       {
         key: "community",
@@ -179,6 +188,7 @@ export default function Drawer() {
         icon: MessageSquare,
         baseRoute: "/community",
         items: orEmpty(communityItems),
+        available: FEATURES.community.available,
       },
       {
         key: "blog",
@@ -186,6 +196,7 @@ export default function Drawer() {
         icon: BookOpen,
         baseRoute: "/blog",
         items: orEmpty(blogItems),
+        available: FEATURES.blog.available,
       },
     ];
   }, [marketplaceItems, storeItems, serviceItems, communityItems, blogItems, t]);
@@ -341,13 +352,25 @@ export default function Drawer() {
                 onPress={() => handleNavigate("/")}
                 hasBorder
               />
-              {accordionSections.map((section) => (
-                <Accordion
-                  key={section.key}
-                  section={section}
-                  onNavigate={handleNavigate}
-                />
-              ))}
+              {accordionSections.map((section) =>
+                section.available ? (
+                  <Accordion
+                    key={section.key}
+                    section={section}
+                    onNavigate={handleNavigate}
+                  />
+                ) : (
+                  <MenuRow
+                    key={section.key}
+                    icon={section.icon}
+                    label={section.label}
+                    onPress={() => {}}
+                    hasBorder
+                    disabled
+                    badge={<ComingSoonChip label={t("comingSoon")} />}
+                  />
+                ),
+              )}
               <MenuRow
                 icon={PackagePlus}
                 label={t("upload")}

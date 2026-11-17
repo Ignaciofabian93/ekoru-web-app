@@ -24,6 +24,8 @@ const DISABLED_PATTERNS: RegExp[] = [
         // return page), so it stays open while the rest of the cart is off.
         [/^\/cart\/?$/, /^\/cart\/checkout(\/|$)/]
       : [/^\/cart(\/|$)/]),
+  ...(FEATURES.community.available ? [] : [/^\/community(\/|$)/]),
+  ...(FEATURES.blog.available ? [] : [/^\/blog(\/|$)/]),
 ];
 
 // Patterns evaluated AFTER the leading `/[lang]` segment is stripped.

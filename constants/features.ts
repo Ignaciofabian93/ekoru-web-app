@@ -19,7 +19,9 @@ export type FeatureKey =
   | "storePurchase"
   | "cardAddToCart"
   | "serviceBooking"
-  | "serviceQuotes";
+  | "serviceQuotes"
+  | "community"
+  | "blog";
 
 export type FeatureFlag = {
   /** Flip to `true` to ship the capability. */
@@ -57,6 +59,18 @@ export const FEATURES: Record<FeatureKey, FeatureFlag> = {
     available: true,
     surfaces:
       "The 'Request a quote' button and quote dialog on a service, the quotes inbox link, 'Pay' on accepted quotes, and /cart/confirmation for their payment return (opened in proxy.ts even while the cart is off).",
+  },
+  // Both off until after the expo. The sections are fully built; switched off
+  // only so they don't go live yet.
+  community: {
+    available: false,
+    surfaces:
+      "The /community routes (blocked in proxy.ts), the Community pill in the subheader and section in the drawer (shown inert with a coming-soon chip while off), the home hero slide, the card on /about-ekoru, where event notifications link to, and the sitemap entry.",
+  },
+  blog: {
+    available: false,
+    surfaces:
+      "The /blog routes (blocked in proxy.ts), the Blog pill in the subheader and section in the drawer (shown inert with a coming-soon chip while off), the home hero slide, the home blog banner and 'From the blog' row, and the sitemap entry.",
   },
 };
 

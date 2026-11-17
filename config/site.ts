@@ -1,3 +1,4 @@
+import { FEATURES } from "@/constants/features";
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from "@/constants/settings";
 
 import { ENVIRONMENT } from "./environment";
@@ -36,21 +37,22 @@ export const OG_LOCALE: Record<string, string> = {
 /**
  * Public, indexable routes (relative to `/{lang}`). The empty string is the
  * locale home page. Private areas (auth, profile, cart) are intentionally
- * excluded from the sitemap and disallowed in robots.txt.
+ * excluded from the sitemap and disallowed in robots.txt. Sections behind a
+ * switched-off feature (`constants/features.ts`) are left out until it flips.
  */
-export const PUBLIC_PATHS = [
+export const PUBLIC_PATHS: readonly string[] = [
   "",
   "marketplace",
   "stores",
   "services",
   "publish",
-  "community",
-  "blog",
+  ...(FEATURES.community.available ? ["community"] : []),
+  ...(FEATURES.blog.available ? ["blog"] : []),
   "recycle",
   "contact",
   "about-ekoru",
   "terms-and-conditions",
-] as const;
+];
 
 /** Path segments that must never be indexed (matched per-language in robots). */
 export const PRIVATE_PATH_SEGMENTS = ["profile", "cart", "login", "register"] as const;

@@ -6,10 +6,15 @@
   "map": {
     "locating": "Getting your location…",
     "loadingPoints": "Loading points…",
-    "count": "{{count}} point within 5 km",
-    "countPlural": "{{count}} points within 5 km",
+    "loadingSlow": "Loading the points in your area… the first time can take up to a minute.",
+    "count": "{{count}} point within {{radius}}",
+    "countPlural": "{{count}} points within {{radius}}",
     "centerOnMe": "Center on my location",
     "youAreHere": "You are here"
+  },
+  "radius": {
+    "label": "Distance",
+    "option": "{{km}} km"
   },
   "permission": {
     "title": "Location permission required",
@@ -19,7 +24,9 @@
   "error": {
     "title": "Could not load the map",
     "hint": "Check your connection and try again.",
-    "retry": "Retry"
+    "retry": "Retry",
+    "pointsTitle": "We couldn’t load the points",
+    "pointsHint": "The recycling points service didn’t respond. It’s usually temporary: try again in a few minutes."
   },
   "point": {
     "fallbackName": "Recycling point",
