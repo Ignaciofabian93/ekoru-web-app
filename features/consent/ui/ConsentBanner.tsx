@@ -46,7 +46,7 @@ export function ConsentBanner({
           <p className="text-sm text-foreground-secondary">
             {t("consent.body")}{" "}
             <Link
-              href={`/${lang}/terms-and-conditions#clause-s6`}
+              href={`/${lang}/terms-and-conditions#clause-6`}
               className="font-semibold text-primary underline-offset-2 hover:underline"
             >
               {t("consent.privacy")}

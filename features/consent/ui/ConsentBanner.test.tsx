@@ -47,7 +47,7 @@ describe("ConsentBanner", () => {
     expect(screen.getByRole("heading", { name: "Tu privacidad" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Más información" })).toHaveAttribute(
       "href",
-      "/es/terms-and-conditions#clause-s6",
+      "/es/terms-and-conditions#clause-6",
     );
   });
 

@@ -1,5 +1,6 @@
 "use client";
 import { REGISTER_BUSINESS, REGISTER_PERSON } from "@/graphql/auth/register";
+import { CURRENT_TERMS_VERSION } from "@/graphql/legal/terms";
 import {
   DEFAULT_LANGUAGE,
   LANGUAGE_COOKIE,
@@ -12,7 +13,7 @@ import type { BusinessType, SellerType } from "@/types/enums";
 import { getCookie } from "@/utils/cookies";
 import { sanitizeOnSubmit } from "@/utils/inputValidations";
 import { safeRedirectPath } from "@/utils/safeRedirect";
-import { useMutation } from "@apollo/client/react";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
@@ -52,6 +53,16 @@ export function useRegister() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  // The version the checkbox accepts (LEG-1). The API refuses a sign-up whose
+  // version is no longer in force, so a form left open across a new version
+  // asks to reload rather than recording the wrong text.
+  const { data: termsData } = useQuery<{ currentTerms: { version: number } | null }>(
+    CURRENT_TERMS_VERSION,
+    { fetchPolicy: "network-only" },
+  );
+  const termsVersion = termsData?.currentTerms?.version ?? null;
 
   const [registerPerson, { loading: personLoading }] = useMutation(REGISTER_PERSON);
   const [registerBusiness, { loading: businessLoading }] = useMutation(REGISTER_BUSINESS);
@@ -68,6 +79,12 @@ export function useRegister() {
     const normalizedEmail = email.trim().toLowerCase();
     const normalizedPassword = password.trim();
 
+    if (!termsAccepted) {
+      toast.error(t("feedback.termsRequired"));
+      return false;
+    }
+    const acceptedTermsVersion = termsVersion ?? undefined;
+
     try {
       if (sellerType === "PERSON") {
         await registerPerson({
@@ -78,6 +95,7 @@ export function useRegister() {
               lastName: sanitizeOnSubmit(lastName),
               email: normalizedEmail,
               password: normalizedPassword,
+              acceptedTermsVersion,
             },
             language: storedLanguage?.toUpperCase() || "ES",
           },
@@ -94,6 +112,7 @@ export function useRegister() {
               applicationMessage: applicationMessage.trim(),
               email: normalizedEmail,
               password: normalizedPassword,
+              acceptedTermsVersion,
             },
             language: storedLanguage?.toUpperCase() || "ES",
           },
@@ -144,6 +163,8 @@ export function useRegister() {
     setPassword,
     confirmPassword,
     setConfirmPassword,
+    termsAccepted,
+    setTermsAccepted,
     loading,
     handleRegister,
   };

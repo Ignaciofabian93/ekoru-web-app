@@ -1,6 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { Button } from "@/components/Primitives/Button";
+import { Checkbox } from "@/components/Primitives/Checkbox";
 import { Input } from "@/components/Primitives/Inputs";
 import { LinkButton } from "@/components/Primitives/LinkButton";
 import { TextArea } from "@/components/Primitives/TextArea";
@@ -64,6 +65,8 @@ export function RegisterForm() {
     setPassword,
     confirmPassword,
     setConfirmPassword,
+    termsAccepted,
+    setTermsAccepted,
     loading,
     handleRegister,
   } = useRegister();
@@ -111,7 +114,7 @@ export function RegisterForm() {
       return;
     }
 
-    if (!passwordValid || !confirmValid) {
+    if (!passwordValid || !confirmValid || !termsAccepted) {
       setSubmitted(true);
       return;
     }
@@ -406,6 +409,36 @@ export function RegisterForm() {
                 errorMessage={t("feedback.passwordMismatch")}
                 isInvalid={(submitted || confirmPassword.length > 0) && !confirmValid}
               />
+              {/* LEG-1: required; the version accepted is recorded with the account. */}
+              <div className="flex flex-col gap-1">
+                <div className="flex items-start gap-3">
+                  <Checkbox
+                    checked={termsAccepted}
+                    onCheckedChange={setTermsAccepted}
+                    size="md"
+                    className="mt-0.5"
+                    ariaLabel={`${t("actions.termsAcceptLabel")} ${t("actions.termsAcceptLink")}`}
+                  />
+                  <Text variant="p" size="sm" color="secondary">
+                    {t("actions.termsAcceptLabel")}{" "}
+                    <a
+                      href={`/${params.lang ?? "es"}/terms-and-conditions`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-primary underline-offset-2 hover:underline"
+                    >
+                      {t("actions.termsAcceptLink")}
+                    </a>
+                  </Text>
+                </div>
+                {submitted && !termsAccepted && (
+                  <div role="alert">
+                    <Text variant="span" size="xs" color="error">
+                      {t("feedback.termsRequired")}
+                    </Text>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>

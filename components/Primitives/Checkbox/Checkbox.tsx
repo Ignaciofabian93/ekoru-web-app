@@ -32,6 +32,8 @@ export interface CheckboxProps {
   disabled?: boolean;
   style?: React.CSSProperties;
   className?: string;
+  /** Accessible name when the visible text sits outside the component (e.g. it holds a link). */
+  ariaLabel?: string;
   ref?: React.Ref<HTMLDivElement>;
 }
 
@@ -47,6 +49,7 @@ export function Checkbox({
   disabled = false,
   style,
   className,
+  ariaLabel,
   ref,
 }: CheckboxProps) {
   const handlePress = () => {
@@ -65,6 +68,7 @@ export function Checkbox({
         onClick={handlePress}
         disabled={disabled}
         aria-checked={checked}
+        aria-label={ariaLabel}
         role="checkbox"
         className={checkboxControlClass}
       >
