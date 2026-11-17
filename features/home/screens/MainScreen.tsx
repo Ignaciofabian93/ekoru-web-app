@@ -35,8 +35,6 @@ export async function MainScreen({ lang }: { lang: SupportedLanguage }) {
         <StoreProductsHighlight lang={lang} />
         <AdBannerSection lang={lang} variant="charcoal" domain="services" />
         <ServicesHighlight lang={lang} />
-        {/* The recycling map has no section of its own on the home page, so
-            this banner is its way in besides the hero carousel. */}
         <AdBannerSection lang={lang} variant="emerald" domain="recycle" />
         {FEATURES.blog.available && (
           <>

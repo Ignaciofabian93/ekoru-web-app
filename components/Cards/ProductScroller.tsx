@@ -11,7 +11,7 @@ import { NAMESPACE } from "./i18n";
  * is also the card's own cap (`max-w-60` in `Card`), so on desktop the card
  * fills its slot exactly. Change it here, not at a call site.
  */
-const ITEM_CLASS = "w-44 shrink-0 snap-start md:w-50 lg:w-60";
+const ITEM_CLASS = "w-46 shrink-0 snap-start md:w-50 lg:w-56";
 
 /** Enough placeholders to fill the widest rail. */
 const SKELETON_COUNT = 6;
@@ -38,7 +38,10 @@ function ProductCardSkeleton() {
   return (
     <div
       aria-hidden
-      className={clsx(ITEM_CLASS, "animate-pulse rounded-2xl bg-background-secondary p-2")}
+      className={clsx(
+        ITEM_CLASS,
+        "animate-pulse rounded-2xl bg-background-secondary p-2",
+      )}
     >
       <div className="aspect-square rounded-xl bg-background-tertiary" />
       <div className="h-44" />
@@ -79,7 +82,9 @@ export function ProductScroller<T extends { id: string | number }>({
       scrollNextAriaLabel={t("scroller.next")}
     >
       {pending
-        ? Array.from({ length: SKELETON_COUNT }, (_, i) => <ProductCardSkeleton key={i} />)
+        ? Array.from({ length: SKELETON_COUNT }, (_, i) => (
+            <ProductCardSkeleton key={i} />
+          ))
         : items.map((item, i) => (
             <div key={item.id} className={ITEM_CLASS}>
               {renderItem(item, i)}

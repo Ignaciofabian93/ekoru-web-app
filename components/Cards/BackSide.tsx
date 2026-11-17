@@ -4,6 +4,7 @@ import type {
   CardBackBodyProps,
   CardBackFooterProps,
   CardBackHeaderProps,
+  ItemType,
 } from "./types/Card.types";
 import clsx from "clsx";
 import { Text } from "../Primitives";
@@ -16,7 +17,10 @@ import {
 } from "@/hooks/useSellerData";
 import { formatInitials } from "@/utils/formatters";
 import { resolveImageUrl } from "@/utils/resolveImage";
-import type { EnvironmentalImpact, StoreProductMaterialComposition } from "@/types/product";
+import type {
+  EnvironmentalImpact,
+  StoreProductMaterialComposition,
+} from "@/types/product";
 import { useState } from "react";
 import Image from "next/image";
 import { ArrowRight, Droplets, Leaf, MapPin, type LucideIcon } from "lucide-react";
@@ -133,35 +137,34 @@ function SavingRow({
   );
 }
 
-/**
- * The product back face: what the item saved, what it is made of, and who is
- * selling it — the same facts the impact modal opens with, at the density a
- * card can hold.
- *
- * Height is deliberately fluid. The savings and the composition sit in a
- * `flex-1` band with `justify-between`, so a taller card spreads its surplus
- * between them rather than collecting it in one gap above the footer, and a
- * shorter one shrinks the composition (the only thing here that may clip)
- * instead of pushing the seller out of the card.
- */
-function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
+function ImpactInformation({
+  impact,
+  itemType,
+}: {
+  impact: EnvironmentalImpact | null;
+  itemType: ItemType;
+}) {
   const { t } = useTranslation(NAMESPACE);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const materials = topMaterials(impact);
+  const showImpactTitle = itemType === "MARKETPLACE" || itemType === "STORE";
 
-  // `pt-2` at every size: BackHeader has already ruled off above this, so this
-  // is the gap under that rule rather than the face's own top padding.
   return (
-    <div className="flex min-h-0 flex-1 flex-col px-2.5 pt-2 @min-[12rem]:px-3">
-      <div
-        className={clsx(
-          "flex min-h-0 flex-1 flex-col",
-          // With nothing to fill the middle, the savings centre instead of
-          // being pushed apart into a hole.
-          materials.length > 0 ? "justify-between gap-2" : "justify-center gap-3",
-        )}
-      >
-        <div className="flex shrink-0 flex-col gap-1.5">
+    <div className="flex min-h-0 flex-1 flex-col px-2.5 pt-3 @min-[12rem]:px-3">
+      {showImpactTitle && (
+        <Text
+          variant="span"
+          size="xs"
+          weight="bold"
+          color="secondary"
+          numberOfLines={1}
+          className="block uppercase tracking-[0.9px]"
+        >
+          {t(itemType === "STORE" ? "impact.composition" : "impact.saved")}
+        </Text>
+      )}
+      <div className={clsx("flex min-h-0 flex-1 flex-col pt-2 justify-start")}>
+        <div className="flex shrink-0 flex-col">
           <SavingRow
             icon={Leaf}
             tone={impactToneClass.co2}
@@ -181,7 +184,7 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
         </div>
 
         {materials.length > 0 && (
-          <div className="min-h-0 overflow-hidden border-t border-slate-200 pt-2">
+          <div className="min-h-0 overflow-hidden border-t border-slate-200 pt-3">
             <Text
               variant="span"
               size="xs"
@@ -191,14 +194,12 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
             >
               {t("impact.composition")}
             </Text>
-            <ul className="m-0 list-none p-0">
+            <ul className="m-0 list-none pt-2 gap-0.5 flex flex-col">
               {materials.map((material, index) => (
                 <li
                   key={material.key}
                   className={clsx(
                     "flex items-baseline leading-tight",
-                    // The third only earns its line on a card wide enough to
-                    // have shown the title too.
                     index === 2 && "hidden @min-[12rem]:flex",
                   )}
                 >
@@ -211,8 +212,6 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
                   >
                     {material.label}
                   </Text>
-                  {/* Leader rule. `self-center` keeps it off the baseline
-                      alignment it would otherwise stretch. */}
                   <span
                     aria-hidden
                     className="mx-1.5 min-w-2 flex-1 self-center border-b border-dotted border-border-strong"
@@ -227,10 +226,6 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
         )}
       </div>
 
-      {/* A link rather than a slab: the face is quiet enough that a filled
-          button would be the loudest thing on it. Still carries a 32px touch
-          target. Only rendered with impact data — without it the control had
-          no modal to open and did nothing. */}
       {impact && (
         <button
           type="button"
@@ -245,9 +240,6 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
         </button>
       )}
 
-      {/* Portals to <body>, so it escapes the card's transform-3d/perspective
-          and the back face's `inert` — it opens correctly from the flipped
-          side. Rendered only when impact data exists. */}
       {impact && (
         <ImpactModal
           isOpen={isModalOpen}
@@ -259,8 +251,6 @@ function ImpactInformation({ impact }: { impact: EnvironmentalImpact | null }) {
   );
 }
 
-// The non-product back face: a blurb rather than an impact panel. Services use
-// it, since there is no material composition to compute savings from.
 function Description({ description }: { description?: string | null }) {
   const { t } = useTranslation(NAMESPACE);
   return (
@@ -272,23 +262,6 @@ function Description({ description }: { description?: string | null }) {
   );
 }
 
-/**
- * Titles the back face: what it is showing, and which item it belongs to.
- *
- * Flipped, the cover image is gone and the name was the one thing the face
- * never carried. The eyebrow above it is impact copy, so only the two product
- * types get it — a service shows its name over a description, not a saving.
- *
- * The flip control keeps its own absolute box: it is pinned to the face's
- * corner rather than to this header, so it sits in the same place whichever
- * title is under it. `pr-10` reserves that corner, and both lines clamp to one
- * — on the narrow card that leaves them about 100px, so they truncate rather
- * than wrap and push the panel down.
- *
- * This renders at every card size on purpose. Hidden on the narrow card, its
- * height went with it and the savings underneath rode up level with the flip
- * control, reading as though they belonged to it.
- */
 export function BackHeader({ itemType, itemName }: CardBackHeaderProps) {
   const { t } = useTranslation(NAMESPACE);
 
@@ -302,30 +275,14 @@ export function BackHeader({ itemType, itemName }: CardBackHeaderProps) {
 
       {(showImpactTitle || itemName) && (
         <div className="shrink-0 px-2.5 pt-2.5 @min-[12rem]:px-3 @min-[12rem]:pt-3">
-          {/* `numberOfLines` guards both lines: a long name ellipses rather
-              than wrapping and shifting everything under it. */}
-          <div className="border-b border-slate-200 pr-10 pb-1.5">
-            {showImpactTitle && (
-              <Text
-                variant="span"
-                size="xs"
-                weight="bold"
-                color="secondary"
-                numberOfLines={1}
-                className="block uppercase tracking-[0.9px]"
-              >
-                {/* A store product is new: it shows what it is made of, not a
-                    saving (decision D3). */}
-                {t(itemType === "STORE" ? "impact.composition" : "impact.saved")}
-              </Text>
-            )}
+          <div className="border-b border-slate-200 pr-10 pb-3.5">
             {itemName && (
               <Text
                 variant="span"
                 size="sm"
                 weight="semibold"
                 numberOfLines={1}
-                className="block"
+                className="block pt-1"
               >
                 {itemName}
               </Text>
@@ -337,9 +294,14 @@ export function BackHeader({ itemType, itemName }: CardBackHeaderProps) {
   );
 }
 
-export function BackBody({ itemType, impact, materials, description }: CardBackBodyProps) {
+export function BackBody({
+  itemType,
+  impact,
+  materials,
+  description,
+}: CardBackBodyProps) {
   if (itemType === "MARKETPLACE") {
-    return <ImpactInformation impact={impact ?? null} />;
+    return <ImpactInformation impact={impact ?? null} itemType={itemType} />;
   }
   if (itemType === "STORE") {
     return <MaterialsInformation materials={materials ?? null} />;
@@ -362,15 +324,30 @@ function MaterialsInformation({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-2.5 pt-2 @min-[12rem]:px-3">
+      <Text
+        variant="span"
+        size="xs"
+        weight="bold"
+        color="secondary"
+        className="block uppercase tracking-[0.9px]"
+      >
+        {t("impact.composition")}
+      </Text>
       {rows.length === 0 ? (
         <Text variant="span" size="xs" color="secondary" className="m-auto text-center">
           {t("impact.noMaterials")}
         </Text>
       ) : (
-        <ul className="m-0 flex list-none flex-col gap-1 p-0">
+        <ul className="m-0 flex list-none flex-col gap-1 pt-2">
           {rows.map((material) => (
             <li key={material.materialType} className="flex items-baseline leading-tight">
-              <Text variant="span" size="xs" color="secondary" numberOfLines={1} className="min-w-0">
+              <Text
+                variant="span"
+                size="xs"
+                color="secondary"
+                numberOfLines={1}
+                className="min-w-0"
+              >
                 {material.label}
               </Text>
               <span

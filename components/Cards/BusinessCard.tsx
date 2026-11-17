@@ -77,7 +77,7 @@ export function BusinessCard({
   return (
     <article
       className={clsx(
-        "group relative flex h-full w-72 flex-col overflow-hidden rounded-2xl sm:w-80",
+        "group relative flex h-full w-72 flex-col overflow-hidden rounded-2xl sm:w-70",
         "border border-slate-200/80 bg-white shadow-sm shadow-slate-900/5",
         "transition duration-200",
       )}

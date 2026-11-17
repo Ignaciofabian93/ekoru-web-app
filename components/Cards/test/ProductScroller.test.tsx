@@ -31,10 +31,19 @@ function renderScroller(props: { items: Item[]; loading?: boolean }) {
 
 describe("ProductScroller", () => {
   it("gives every product the same slot, with arrows to move the rail", () => {
-    renderScroller({ items: [{ id: 1, name: "Bici" }, { id: 2, name: "Taza" }] });
+    renderScroller({
+      items: [
+        { id: 1, name: "Bici" },
+        { id: 2, name: "Taza" },
+      ],
+    });
 
     for (const name of ["Bici", "Taza"]) {
-      expect(screen.getByText(name).parentElement).toHaveClass("w-44", "md:w-50", "lg:w-60");
+      expect(screen.getByText(name).parentElement).toHaveClass(
+        "w-46",
+        "md:w-50",
+        "lg:w-56",
+      );
     }
     expect(screen.getByRole("button", { name: "Ver anteriores" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Ver más" })).toBeInTheDocument();

@@ -36,11 +36,11 @@ export function Container({
   return (
     <Component
       className={clsx(
-        "mx-auto flex w-full flex-col",
+        "mx-auto flex w-[95%] flex-col",
         MAX_WIDTH[width],
         // Padding scales with the viewport so the gutter never feels cramped on
         // phones or oversized on desktop.
-        padded && "px-4 sm:px-6",
+        padded && "px-4 md:px-0",
         className,
       )}
       style={{ gap: spacing[gap], paddingBlock: spacing[paddingY], ...style }}
