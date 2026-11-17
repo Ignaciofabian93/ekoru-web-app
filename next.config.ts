@@ -57,6 +57,11 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
   allowedDevOrigins: ["192.168.1.9"],
+  experimental: {
+    // Nudge coding agents when a published security advisory affects the
+    // installed Next.js version.
+    agentUpgrade: "security",
+  },
   images: {
     // All images are served from Cloudflare R2 via the ekoru-image-processor's
     // public CDN domains. See docs/R2_IMAGES_SETUP.md.
