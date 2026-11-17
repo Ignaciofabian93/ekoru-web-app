@@ -12,7 +12,8 @@ export async function Checkout({ lang }: { lang: SupportedLanguage }) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      <PageLayout contained={false}>
+      {/* The cart's shell, so the two pages share one column. */}
+      <PageLayout contained width="wide">
         <Suspense fallback={<CheckoutFallback />}>
           <CheckoutScreen lang={lang} />
         </Suspense>

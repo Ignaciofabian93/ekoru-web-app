@@ -1,6 +1,6 @@
 export { Avatar } from "./Avatar";
 export { Badge, ProductConditionBadge, ProductInfoBadge } from "./Badge";
-export { Button } from "./Button";
+export { Button, ButtonLink } from "./Button";
 export { Checkbox } from "./Checkbox";
 export { EkoruLogo } from "./EkoruLogo";
 export { FlagIcon } from "./Flag";
@@ -17,7 +17,12 @@ export { ComingSoonChip } from "./Chip";
 
 export type { AvatarProps } from "./Avatar/types";
 export type { BadgeProps, BadgeSize, BadgeVariant } from "./Badge";
-export type { ButtonProps, ButtonSize, ButtonVariant } from "./Button";
+export type {
+  ButtonLinkProps,
+  ButtonProps,
+  ButtonSize,
+  ButtonVariant,
+} from "./Button";
 export type { CheckboxProps, CheckboxSize, CheckboxVariant } from "./Checkbox";
 export type {
   IconButtonProps,

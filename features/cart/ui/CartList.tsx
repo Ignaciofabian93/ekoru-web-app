@@ -1,86 +1,114 @@
 "use client";
-import { Store, User } from "lucide-react";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import { ArrowRight, ArrowUpRight, Store, User } from "lucide-react";
 
-import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
-import { useFormatPrice } from "@/hooks/useFormatPrice";
+import { SectionCard } from "@/components/Patterns/SectionCard";
+import { ButtonLink } from "@/components/Primitives/Button";
+import { LinkButton } from "@/components/Primitives/LinkButton";
+import { type SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
-import { useCartGroups } from "@/store/useCartStore";
+import { type CartItem, useCartGroups } from "@/store/useCartStore";
 
 import { useCart } from "../hooks/useCart";
 import { CartItemRow } from "./CartItemRow";
+import { OrderSummary } from "./OrderSummary";
+
+const productHref = (lang: SupportedLanguage, item: CartItem) =>
+  item.source === "store"
+    ? `/${lang}/store-product/${item.productId}`
+    : `/${lang}/product/${item.productId}`;
 
 /**
- * Renders the cart as one card per seller/business. Each group is a self-
- * contained transaction: its own subtotal and Checkout button (linking to
- * `checkout?g=<groupId>`), because the backend orders one seller at a time.
+ * The cart as one block per seller/business, because each one is its own
+ * transaction — the backend orders one seller at a time. A block is the
+ * seller's items beside that seller's order summary and pay button (linking to
+ * `checkout?g=<groupId>`); there is deliberately no checkout for the whole
+ * cart. Below `lg` the summary drops under its items.
  */
-export function CartList() {
+export function CartList({ lang }: { lang: SupportedLanguage }) {
   const groups = useCartGroups();
   const { updateQuantity, removeItem } = useCart();
-  const formatPrice = useFormatPrice();
   const { t } = useTranslation("cart");
-  const params = useParams<{ lang?: SupportedLanguage }>();
-  const lang = params?.lang ?? DEFAULT_LANGUAGE;
+
+  const itemsLabel = (count: number) =>
+    count === 1
+      ? t("cart.itemCount", { count: "1" })
+      : t("cart.itemCountPlural", { count: String(count) });
 
   return (
-    <div className="flex flex-col gap-5" aria-label={t("a11y.cartSection")}>
+    <section aria-label={t("a11y.cartSection")} className="flex flex-col gap-10">
       {groups.map((group) => {
-        const SourceIcon = group.source === "store" ? Store : User;
-        const sellerLabel = group.sellerName ?? t(`group.${group.source}`);
+        const sourceLabel = t(`group.${group.source}`);
+        const sellerLabel = group.sellerName ?? sourceLabel;
+
         return (
-          <section
+          <div
             key={group.id}
-            aria-label={sellerLabel}
-            className="flex flex-col gap-3 rounded-xl border border-border-light bg-surface p-4"
+            className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start lg:gap-6"
           >
-            <header className="flex items-center gap-2 border-b border-border-light pb-3">
-              <SourceIcon size={16} strokeWidth={2} className="shrink-0 text-primary" />
-              <span className="truncate font-sans text-sm font-semibold text-foreground">
-                {sellerLabel}
-              </span>
-              <span className="ml-auto shrink-0 rounded-full bg-background-secondary px-2 py-0.5 font-sans text-[11px] font-medium text-foreground-secondary">
-                {t(`group.${group.source}`)}
-              </span>
-            </header>
-
-            <ul className="flex flex-col gap-3">
-              {group.items.map((item) => (
-                <CartItemRow
-                  key={`${item.source}-${item.productId}`}
-                  item={item}
-                  onIncrease={() =>
-                    updateQuantity(item.productId, item.source, item.quantity + 1)
+            <SectionCard
+              title={sellerLabel}
+              subtitle={`${sourceLabel} · ${itemsLabel(group.count)}`}
+              icon={group.source === "store" ? Store : User}
+              tone="primary"
+              headerRight={
+                <LinkButton
+                  href={`/${lang}/seller/${group.sellerId}`}
+                  icon={ArrowUpRight}
+                  iconPosition="right"
+                  variant="ghost"
+                  size="sm"
+                  label={
+                    group.source === "store"
+                      ? t("group.viewStore")
+                      : t("group.viewSeller")
                   }
-                  onDecrease={() =>
-                    updateQuantity(item.productId, item.source, item.quantity - 1)
-                  }
-                  onRemove={() => removeItem(item.productId, item.source)}
                 />
-              ))}
-            </ul>
-
-            <div className="flex items-baseline justify-between border-t border-border-light pt-3">
-              <span className="font-sans text-sm text-foreground-secondary">
-                {t("checkout.summary.subtotal")}
-              </span>
-              <span className="font-sans text-base font-bold text-foreground">
-                {formatPrice(group.subtotal, group.currency)}
-              </span>
-            </div>
-
-            <Link
-              href={`/${lang}/cart/checkout?g=${encodeURIComponent(group.id)}`}
-              className="block w-full rounded-xl bg-primary py-3 text-center font-sans font-semibold text-on-primary transition-opacity hover:opacity-90"
+              }
             >
-              {group.sellerName
-                ? t("group.checkoutSeller", { seller: group.sellerName })
-                : t("group.checkout")}
-            </Link>
-          </section>
+              <ul className="divide-y divide-border-light">
+                {group.items.map((item) => (
+                  <CartItemRow
+                    key={`${item.source}-${item.productId}`}
+                    item={item}
+                    href={productHref(lang, item)}
+                    onQuantityChange={(next) =>
+                      updateQuantity(item.productId, item.source, next)
+                    }
+                    onRemove={() => removeItem(item.productId, item.source)}
+                  />
+                ))}
+              </ul>
+            </SectionCard>
+
+            {/* Phone: full width under the items. Tablet: still under them, but
+                held to a summary's width at the end of the row, so labels and
+                amounts don't drift a whole screen apart. Desktop: the side
+                column, sticking beside a long list — only within its own
+                seller's block, since the grid row is its scroll boundary. */}
+            <div className="md:w-96 md:justify-self-end lg:sticky lg:top-6 lg:w-auto lg:justify-self-stretch">
+              <OrderSummary
+                itemCount={group.count}
+                subtotal={group.subtotal}
+                total={group.subtotal}
+                currency={group.currency}
+                label={t("a11y.sellerSummary", { seller: sellerLabel })}
+              >
+                <ButtonLink
+                  href={`/${lang}/cart/checkout?g=${encodeURIComponent(group.id)}`}
+                  text={
+                    group.sellerName
+                      ? t("group.checkoutSeller", { seller: group.sellerName })
+                      : t("group.checkout")
+                  }
+                  rightIcon={ArrowRight}
+                  size="md"
+                  fullWidth
+                />
+              </OrderSummary>
+            </div>
+          </div>
         );
       })}
-    </div>
+    </section>
   );
 }

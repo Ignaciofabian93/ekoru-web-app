@@ -3,6 +3,9 @@
     "title": "Votre panier",
     "itemCount": "{{count}} article",
     "itemCountPlural": "{{count}} articles",
+    "sellerCount": "{{count}} vendeur",
+    "sellerCountPlural": "{{count}} vendeurs",
+    "splitNotice": "Votre panier contient des articles de {{count}} vendeurs. Chaque vendeur est payé séparément, avec son propre bouton de paiement.",
     "empty": {
       "title": "Votre panier est vide",
       "subtitle": "Parcourez la marketplace et ajoutez des produits pour commencer.",
@@ -14,8 +17,9 @@
       "unitPrice": "Prix unitaire",
       "increase": "Augmenter la quantité",
       "decrease": "Diminuer la quantité",
-      "soldBy": "Vendu par {{seller}}",
-      "singleUnit": "Article unique"
+      "singleUnit": "Article unique",
+      "each": "{{price}} l'unité",
+      "maxStock": "Maximum disponible"
     },
     "actions": {
       "clear": "Vider le panier",
@@ -34,7 +38,9 @@
     "store": "Boutique",
     "marketplace": "Marketplace",
     "checkout": "Payer",
-    "checkoutSeller": "Payer · {{seller}}"
+    "checkoutSeller": "Payer · {{seller}}",
+    "viewStore": "Voir la boutique",
+    "viewSeller": "Voir le vendeur"
   },
   "checkout": {
     "title": "Paiement",
@@ -102,14 +108,17 @@
       "title": "Résumé de la commande",
       "subtotal": "Sous-total",
       "shipping": "Livraison",
+      "shippingAtCheckout": "Choisie au paiement",
       "tax": "Taxes",
       "total": "Total",
+      "item": "1 article dans votre commande",
       "items": "{{count}} articles dans votre commande"
     },
     "actions": {
       "pay": "Payer {{amount}}",
       "paying": "Traitement...",
-      "continue": "Continuer"
+      "continue": "Continuer",
+      "previous": "Étape précédente"
     },
     "errors": {
       "missingAddress": "Complétez l'adresse avant de continuer.",
@@ -159,7 +168,9 @@
   "a11y": {
     "cartSection": "Articles dans le panier",
     "summarySection": "Résumé de la commande",
+    "sellerSummary": "Résumé de la commande de {{seller}}",
     "checkoutForm": "Formulaire de paiement",
+    "checkoutSteps": "Étapes du paiement",
     "loading": "Chargement, veuillez patienter"
   }
 }

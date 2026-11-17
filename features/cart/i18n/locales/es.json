@@ -3,6 +3,9 @@
     "title": "Tu carrito",
     "itemCount": "{{count}} producto",
     "itemCountPlural": "{{count}} productos",
+    "sellerCount": "{{count}} vendedor",
+    "sellerCountPlural": "{{count}} vendedores",
+    "splitNotice": "Tu carrito tiene productos de {{count}} vendedores. Cada vendedor se paga por separado, con su propio botón de pago.",
     "empty": {
       "title": "Tu carrito está vacío",
       "subtitle": "Explora el marketplace y agrega productos para comenzar.",
@@ -14,8 +17,9 @@
       "unitPrice": "Precio unitario",
       "increase": "Aumentar cantidad",
       "decrease": "Disminuir cantidad",
-      "soldBy": "Vendido por {{seller}}",
-      "singleUnit": "Artículo único"
+      "singleUnit": "Artículo único",
+      "each": "{{price}} c/u",
+      "maxStock": "Máximo disponible"
     },
     "actions": {
       "clear": "Vaciar carrito",
@@ -34,7 +38,9 @@
     "store": "Tienda",
     "marketplace": "Marketplace",
     "checkout": "Pagar",
-    "checkoutSeller": "Pagar · {{seller}}"
+    "checkoutSeller": "Pagar · {{seller}}",
+    "viewStore": "Ver tienda",
+    "viewSeller": "Ver vendedor"
   },
   "checkout": {
     "title": "Pago",
@@ -102,14 +108,17 @@
       "title": "Resumen del pedido",
       "subtotal": "Subtotal",
       "shipping": "Envío",
+      "shippingAtCheckout": "Se elige en el pago",
       "tax": "Impuestos",
       "total": "Total",
+      "item": "1 producto en tu pedido",
       "items": "{{count}} productos en tu pedido"
     },
     "actions": {
       "pay": "Pagar {{amount}}",
       "paying": "Procesando...",
-      "continue": "Continuar"
+      "continue": "Continuar",
+      "previous": "Paso anterior"
     },
     "errors": {
       "missingAddress": "Completa la dirección antes de continuar.",
@@ -159,7 +168,9 @@
   "a11y": {
     "cartSection": "Productos en el carrito",
     "summarySection": "Resumen del pedido",
+    "sellerSummary": "Resumen del pedido de {{seller}}",
     "checkoutForm": "Formulario de pago",
+    "checkoutSteps": "Pasos del pago",
     "loading": "Cargando, por favor espera"
   }
 }

@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Lock } from "lucide-react";
+import { ArrowLeft, ArrowRight, ClipboardCheck, Lock } from "lucide-react";
 
+import { SectionCard } from "@/components/Patterns/SectionCard";
 import { Button } from "@/components/Primitives/Button";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
@@ -20,6 +21,11 @@ import { PaymentMethodPicker } from "./PaymentMethodPicker";
 import { ShippingAddressForm } from "./ShippingAddressForm";
 import { ShippingMethodPicker } from "./ShippingMethodPicker";
 
+/**
+ * Laid out like the cart, so moving from one to the other keeps everything in
+ * place: the step on the left, the order summary on the right, and the step's
+ * actions inside the summary box — where the cart has its pay button.
+ */
 export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation("cart");
   const formatPrice = useFormatPrice();
@@ -47,7 +53,7 @@ export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
   const isMidPoint = checkout.shippingMethod === "IN_MID_POINT_PICKUP";
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-6">
+    <div className="flex flex-1 flex-col gap-6 md:gap-8">
       <header className="flex flex-col gap-3">
         <Link
           href={`/${lang}/cart`}
@@ -69,17 +75,19 @@ export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
         <CheckoutStepper current={checkout.step} />
       </header>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start lg:gap-6">
         <div className="flex flex-col gap-6">
           {checkout.step === "shipping" ? (
             <>
               <ShippingMethodPicker
                 value={checkout.shippingMethod}
                 onChange={checkout.setShippingMethod}
-              />
-              {isMidPoint ? (
-                <MidPointNotice onContactSeller={checkout.goToMidPointChat} />
-              ) : showAddressForm ? (
+              >
+                {isMidPoint ? (
+                  <MidPointNotice onContactSeller={checkout.goToMidPointChat} />
+                ) : null}
+              </ShippingMethodPicker>
+              {showAddressForm ? (
                 <ShippingAddressForm
                   value={checkout.address}
                   onChange={checkout.updateAddressField}
@@ -97,10 +105,11 @@ export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
           ) : null}
 
           {checkout.step === "review" ? (
-            <section className="flex flex-col gap-3 rounded-xl border border-border-light bg-surface p-4">
-              <Title level="h2" size="h5" weight="semibold">
-                {t("checkout.steps.review")}
-              </Title>
+            <SectionCard
+              title={t("checkout.steps.review")}
+              icon={ClipboardCheck}
+              tone="primary"
+            >
               <Text variant="small" color="secondary">
                 {t("checkout.payment.redirectNotice", {
                   provider: checkout.provider
@@ -108,60 +117,62 @@ export function CheckoutScreen({ lang }: { lang: SupportedLanguage }) {
                     : "",
                 })}
               </Text>
-            </section>
+            </SectionCard>
           ) : null}
-
-          <nav className="flex items-center justify-between gap-3">
-            {checkout.step !== "shipping" ? (
-              <Button
-                variant="outline"
-                size="md"
-                text={t("checkout.back")}
-                leftIcon={ArrowLeft}
-                onPress={checkout.goBack}
-              />
-            ) : (
-              <span />
-            )}
-
-            {checkout.step !== "review" ? (
-              <Button
-                variant="primary"
-                size="md"
-                text={t("checkout.actions.continue")}
-                rightIcon={ArrowRight}
-                onPress={checkout.goNext}
-                disabled={
-                  (checkout.step === "shipping" && !checkout.isShippingValid) ||
-                  (checkout.step === "payment" && !checkout.isPaymentValid)
-                }
-              />
-            ) : (
-              <Button
-                variant="primary"
-                size="md"
-                text={t("checkout.actions.pay", {
-                  amount: formatPrice(checkout.total, checkout.currency),
-                })}
-                loadingText={t("checkout.actions.paying")}
-                loading={checkout.loading}
-                leftIcon={Lock}
-                onPress={checkout.pay}
-                disabled={!checkout.isShippingValid || !checkout.isPaymentValid}
-              />
-            )}
-          </nav>
         </div>
 
-        <aside className="lg:sticky lg:top-6 lg:self-start">
+        {/* Same column and breakpoints as the cart's summary (`CartList`). */}
+        <div className="md:w-96 md:justify-self-end lg:sticky lg:top-6 lg:w-auto lg:justify-self-stretch">
           <OrderSummary
             itemCount={count}
             subtotal={checkout.subtotal}
             shipping={checkout.shippingQuote}
             total={checkout.total}
             currency={checkout.currency}
-          />
-        </aside>
+          >
+            <nav aria-label={t("a11y.checkoutSteps")} className="flex flex-col gap-2">
+              {checkout.step !== "review" ? (
+                <Button
+                  variant="primary"
+                  size="md"
+                  fullWidth
+                  text={t("checkout.actions.continue")}
+                  rightIcon={ArrowRight}
+                  onPress={checkout.goNext}
+                  disabled={
+                    (checkout.step === "shipping" && !checkout.isShippingValid) ||
+                    (checkout.step === "payment" && !checkout.isPaymentValid)
+                  }
+                />
+              ) : (
+                <Button
+                  variant="primary"
+                  size="md"
+                  fullWidth
+                  text={t("checkout.actions.pay", {
+                    amount: formatPrice(checkout.total, checkout.currency),
+                  })}
+                  loadingText={t("checkout.actions.paying")}
+                  loading={checkout.loading}
+                  leftIcon={Lock}
+                  onPress={checkout.pay}
+                  disabled={!checkout.isShippingValid || !checkout.isPaymentValid}
+                />
+              )}
+
+              {checkout.step !== "shipping" ? (
+                <Button
+                  variant="ghost"
+                  size="md"
+                  fullWidth
+                  text={t("checkout.actions.previous")}
+                  leftIcon={ArrowLeft}
+                  onPress={checkout.goBack}
+                />
+              ) : null}
+            </nav>
+          </OrderSummary>
+        </div>
       </div>
     </div>
   );

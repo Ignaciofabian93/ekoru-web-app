@@ -22,7 +22,10 @@ import type {
 import { submitWebpayForm } from "@/lib/webpay";
 
 import { availableProvidersFor, paymentReturnUrl } from "../constants/paymentProviders";
-import { shippingMethodById } from "../constants/shippingMethods";
+import {
+  AVAILABLE_SHIPPING_METHODS,
+  shippingMethodById,
+} from "../constants/shippingMethods";
 import { useShippingQuote } from "./useShippingQuote";
 
 export type CheckoutStep = "shipping" | "payment" | "review";
@@ -79,6 +82,9 @@ export function useCheckout() {
 
   const isShippingValid = useMemo(() => {
     if (!shippingMethod) return false;
+    // The picker only lists offered methods; this keeps a switched-off one
+    // (home delivery, courier) from ever reaching createOrder regardless.
+    if (!AVAILABLE_SHIPPING_METHODS.some((m) => m.id === shippingMethod)) return false;
     const meta = shippingMethodById(shippingMethod);
     if (!meta.payable) return false; // mid-point flows out of the payable funnel.
     if (!meta.requiresAddress) return true;

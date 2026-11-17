@@ -10,8 +10,7 @@ export async function Cart({ lang }: { lang: SupportedLanguage }) {
 
   return (
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
-      {/* CartScreen centers itself at max-w-2xl, so the shell stays uncontained. */}
-      <PageLayout contained={false}>
+      <PageLayout contained width="wide">
         <CartScreen lang={lang} />
       </PageLayout>
     </DictionaryProvider>

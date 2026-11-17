@@ -17,6 +17,8 @@
 export type FeatureKey =
   | "cart"
   | "storePurchase"
+  | "homeDelivery"
+  | "courierShipping"
   | "cardAddToCart"
   | "serviceBooking"
   | "serviceQuotes"
@@ -40,6 +42,19 @@ export const FEATURES: Record<FeatureKey, FeatureFlag> = {
     available: true,
     surfaces:
       "Add-to-cart on the store product page and the quantity stepper on store product cards, which fall back to a browse-only CTA.",
+  },
+  // Delivery is undecided: no logistics provider yet, and it is still open
+  // whether the store or Ekoru ships. Until then checkout offers only store
+  // pickup and a meeting point arranged with the seller.
+  homeDelivery: {
+    available: false,
+    surfaces:
+      "The 'Envío a domicilio' option in checkout's shipping step, with its delivery-address form and the placeholder flat rate in useShippingQuote (replace it with the seller's real rate first).",
+  },
+  courierShipping: {
+    available: false,
+    surfaces:
+      "The courier (Chilexpress / Starken) option in checkout's shipping step, with its delivery-address form. Needs a real quote in useShippingQuote first; today it answers 'unavailable'.",
   },
   // Off by choice, not by beta: shoppers are not expected to fill a cart from
   // many sellers at once, so adding happens on the product page, where the

@@ -3,6 +3,9 @@
     "title": "Your cart",
     "itemCount": "{{count}} item",
     "itemCountPlural": "{{count}} items",
+    "sellerCount": "{{count}} seller",
+    "sellerCountPlural": "{{count}} sellers",
+    "splitNotice": "Your cart has items from {{count}} sellers. Each seller is paid separately, with its own checkout button.",
     "empty": {
       "title": "Your cart is empty",
       "subtitle": "Browse the marketplace and add products to get started.",
@@ -14,8 +17,9 @@
       "unitPrice": "Unit price",
       "increase": "Increase quantity",
       "decrease": "Decrease quantity",
-      "soldBy": "Sold by {{seller}}",
-      "singleUnit": "Single item"
+      "singleUnit": "Single item",
+      "each": "{{price}} each",
+      "maxStock": "Maximum available"
     },
     "actions": {
       "clear": "Clear cart",
@@ -34,7 +38,9 @@
     "store": "Store",
     "marketplace": "Marketplace",
     "checkout": "Checkout",
-    "checkoutSeller": "Checkout · {{seller}}"
+    "checkoutSeller": "Checkout · {{seller}}",
+    "viewStore": "View store",
+    "viewSeller": "View seller"
   },
   "checkout": {
     "title": "Checkout",
@@ -102,14 +108,17 @@
       "title": "Order summary",
       "subtotal": "Subtotal",
       "shipping": "Shipping",
+      "shippingAtCheckout": "Chosen at checkout",
       "tax": "Taxes",
       "total": "Total",
+      "item": "1 item in your order",
       "items": "{{count}} items in your order"
     },
     "actions": {
       "pay": "Pay {{amount}}",
       "paying": "Processing...",
-      "continue": "Continue"
+      "continue": "Continue",
+      "previous": "Previous step"
     },
     "errors": {
       "missingAddress": "Please complete the address before continuing.",
@@ -159,7 +168,9 @@
   "a11y": {
     "cartSection": "Items in cart",
     "summarySection": "Order summary",
+    "sellerSummary": "Order summary for {{seller}}",
     "checkoutForm": "Checkout form",
+    "checkoutSteps": "Checkout steps",
     "loading": "Loading, please wait"
   }
 }
