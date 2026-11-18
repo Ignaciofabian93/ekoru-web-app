@@ -44,7 +44,7 @@ export function PageLayout({
   className,
 }: PageLayoutProps) {
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex min-h-screen flex-col">
       {nav}
       <main id={MAIN_CONTENT_ID} tabIndex={-1} className="flex w-full flex-1 flex-col">
         {hero}

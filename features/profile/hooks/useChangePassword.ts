@@ -52,8 +52,11 @@ export function useChangePassword() {
       setConfirmPassword("");
       setSubmitted(false);
       // Without a new session this one ends within minutes: ask for the new
-      // password now instead of failing on the next click.
+      // password now instead of failing on the next click. A full load, not
+      // `router.push`: it drops the signed-in seller, Apollo cache and router
+      // cache, which a client navigation would carry onto the login page.
       if (!signedIn) {
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
         window.location.assign(`/${params.lang ?? DEFAULT_LANGUAGE}/login`);
       }
     } catch (err) {

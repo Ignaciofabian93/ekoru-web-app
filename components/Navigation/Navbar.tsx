@@ -6,19 +6,19 @@ import { MAIN_CONTENT_ID } from "../Layout/tokens";
 import { EkoruLogo } from "../Primitives/EkoruLogo";
 import SubHeader from "./Subheader";
 import ProfileDropdown from "./ProfileDropdown";
-import { ShoppingCartButton } from "../Patterns/ShoppingCart";
+import { ShoppingCartSlot } from "../Patterns/ShoppingCart";
 import { NotificationBanner } from "../Patterns/NotificationBanner";
 import { SearchBar } from "./SearchBar";
 import MenuButton from "./MenuButton";
 import { LocationPicker } from "./LocationPicker";
 import { PublishButton } from "./PublishButton";
-import { FEATURES } from "@/constants/features";
 import { NAMESPACE } from "./i18n";
-import { useIsAuthenticated } from "@/store/useAuthStore";
+import useAuthStore, { useIsAuthenticated } from "@/store/useAuthStore";
 
 export function NavBar() {
   const { t } = useTranslation(NAMESPACE);
   const isAuthenticated = useIsAuthenticated();
+  const isAuthHydrated = useAuthStore((s) => s.isHydrated);
 
   return (
     <header
@@ -45,17 +45,17 @@ export function NavBar() {
       >
         <div className="flex flex-wrap items-center gap-x-4 gap-y-3 px-2 pb-3 lg:flex-nowrap lg:gap-x-8">
           <EkoruLogo label={t("a11y.homeLink")} />
-          <SearchBar className="order-last w-full lg:order-0 lg:w-[60%]" />
+          <SearchBar className="order-last w-full lg:order-0 lg:w-[50%]" />
           <div className="relative ml-auto flex shrink-0 items-center justify-end gap-2 lg:gap-3">
+            <ShoppingCartSlot
+              loading={!isAuthHydrated}
+              visible={isAuthenticated}
+              text={t("dropdown.cart")}
+              label={t("a11y.cart")}
+              labelWithOneItem={t("a11y.cartWithOneItem")}
+              labelWithItems={t("a11y.cartWithItems")}
+            />
             <PublishButton />
-            {FEATURES.cart.available && isAuthenticated && (
-              <ShoppingCartButton
-                text={t("dropdown.cart")}
-                label={t("a11y.cart")}
-                labelWithOneItem={t("a11y.cartWithOneItem")}
-                labelWithItems={t("a11y.cartWithItems")}
-              />
-            )}
             <div className="hidden md:flex">
               <ProfileDropdown />
             </div>

@@ -31,6 +31,7 @@ import {
   DROPDOWN_SUPPORT_SECTION,
   type DropdownMenuSection,
 } from "./constants/menuItems";
+import { Button } from "../Primitives";
 
 function BADGE_BY_ROUTE(
   route: string,
@@ -151,15 +152,14 @@ export default function ProfileDropdown() {
               navigates, this one ends the session, so it reads as its own block
               rather than one more row in the list. */}
           {isAuthenticated && (
-            <DropdownItem
+            <Button
               ref={itemRef(itemCount - 1)}
-              icon={LogOutIcon}
-              label={t("dropdown.signOut")}
-              tone="danger"
-              highlighted
-              className="mt-2 rounded-lg"
-              onSelect={handleLogout}
-              onKeyDown={(e) => handleKeyDown(e, itemCount - 1)}
+              leftIcon={LogOutIcon}
+              text={t("dropdown.signOut")}
+              variant="error"
+              size="sm"
+              className="mt-2 w-full"
+              onClick={handleLogout}
             />
           )}
         </div>

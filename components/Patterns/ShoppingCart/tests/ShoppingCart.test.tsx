@@ -1,13 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { axe } from "@/test/axe";
-import { ShoppingCartButton } from "./ShoppingCart";
+import { ShoppingCartButton } from "../ShoppingCart";
 
 const state = vi.hoisted(() => ({ count: 0 }));
 
 vi.mock("next/navigation", () => ({ useParams: () => ({ lang: "es" }) }));
 vi.mock("@/store/useCartStore", () => ({
-  default: (select: (s: { isHydrated: boolean }) => unknown) => select({ isHydrated: true }),
+  default: (select: (s: { isHydrated: boolean }) => unknown) =>
+    select({ isHydrated: true }),
   useCartCount: () => state.count,
 }));
 

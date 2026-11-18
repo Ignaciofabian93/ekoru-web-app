@@ -37,7 +37,9 @@ export function useLogout() {
       // `proxy.ts` answered that refresh with a redirect to `/login` and the
       // user landed there instead of home. Leaving the document entirely also
       // drops the router cache, which holds the signed-in render of every page
-      // already visited.
+      // already visited. That full load is the point, so the lint rule (which
+      // assumes `router.push` would do) is off for this line.
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.assign(`/${lang}`);
     }
   }, [clearSeller, client, params.lang, clearCart]);

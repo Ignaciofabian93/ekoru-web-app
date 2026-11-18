@@ -22,7 +22,7 @@ export { ReviewsPanel } from "./ReviewsPanel";
 export { SectionCard } from "./SectionCard";
 export { SectionHeader } from "./SectionHeader";
 export { SellerCard } from "./SellerCard";
-export { ShoppingCartButton } from "./ShoppingCart";
+export { ShoppingCartButton, ShoppingCartSkeleton, ShoppingCartSlot } from "./ShoppingCart";
 export { RadiusPicker } from "./RadiusPicker";
 export { StatTile } from "./StatTile";
 export { Tabs } from "./Tabs";

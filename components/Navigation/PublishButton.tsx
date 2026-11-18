@@ -11,7 +11,6 @@ export function PublishButton({ className }: { className?: string }) {
   const { t } = useTranslation(NAMESPACE);
 
   return (
-    // Icon-only below `sm`: square, like the cart and menu buttons beside it.
     <Link
       href={`/${language}/publish`}
       className={clsx("btn btn-primary px-2 sm:px-4", className)}
