@@ -7,7 +7,7 @@
 import clsx from "clsx";
 import type { SkeletonRadius } from "@/components/Primitives/Skeleton/Skeleton";
 
-const skeletonBaseClass = "animate-pulse bg-background-secondary";
+const skeletonBaseClass = "animate-pulse bg-slate-200/70";
 
 const skeletonRadiusClass: Record<SkeletonRadius, string> = {
   none: "rounded-none",

@@ -71,6 +71,7 @@ export function SearchBar({
             "h-full shrink-0 cursor-pointer rounded-r-md px-5",
             "bg-linear-90 from-primary-dark via-primary to-primary-light",
             "font-sans text-sm font-semibold text-on-primary",
+            "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1",
             "hover:brightness-110",
             "transition-all duration-200 ease-in-out",
           )}

@@ -65,7 +65,6 @@ export function Header({
             fill
             sizes="(max-width: 640px) 50vw, 240px"
             priority={priority}
-            loading="eager"
             onError={() => setImageError(true)}
             className={clsx(
               "object-cover transition-transform duration-300 group-hover:scale-[1.03]",

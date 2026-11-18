@@ -2,8 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { EKORU_LOGO } from "@/constants/images";
-import { ekoruLogoImageClass, ekoruLogoLinkClass } from "@/design/ekoruLogo";
 import { useLanguage } from "@/hooks/useLanguage";
+import { ekoruLogoClass, ekoruLogoLinkClass } from "./styles";
 
 interface EkoruLogoProps {
   label?: string;
@@ -26,7 +26,7 @@ export function EkoruLogo({
           width={4096}
           height={996}
           priority
-          className={className ?? ekoruLogoImageClass}
+          className={className ?? ekoruLogoClass}
         />
       </Link>
     );
@@ -38,7 +38,7 @@ export function EkoruLogo({
       width={4096}
       height={996}
       priority
-      className={className ?? ekoruLogoImageClass}
+      className={className ?? ekoruLogoClass}
     />
   );
 }
