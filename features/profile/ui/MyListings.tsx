@@ -301,7 +301,6 @@ export function MyListings() {
                   <MarketplaceCard
                     product={p}
                     lang={lang}
-                    priority
                     actions={
                       <ProductActionsMenu
                         ariaLabel={isSold ? menuLabel : editMenuLabel}

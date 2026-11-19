@@ -64,9 +64,7 @@
       "textAtMax": "Check back soon: new products, stores and services join every day.",
       "widen": "Widen to {{radius}} km"
     },
-    "error": "We couldn't load what's near you. Please try again later.",
-    "scrollPrevious": "Scroll left",
-    "scrollNext": "Scroll right"
+    "error": "We couldn't load what's near you. Please try again later."
   },
   "stats": {
     "title": "This is already happening",
@@ -85,8 +83,6 @@
     "subtitle": "Verified sustainable shops",
     "seeAll": "See all",
     "noStores": "No stores available",
-    "scrollPrevious": "Scroll left",
-    "scrollNext": "Scroll right",
     "seeStore": "See store",
     "verified": "Verified"
   },
@@ -102,9 +98,7 @@
     "title": "Eco Services",
     "subtitle": "Repair, rent & swap providers",
     "seeAll": "See all",
-    "noServices": "No services available",
-    "scrollPrevious": "Scroll left",
-    "scrollNext": "Scroll right"
+    "noServices": "No services available"
   },
   "marketplace": {
     "exchange": {

@@ -6,12 +6,13 @@ import { GET_BLOG_CATALOG } from "@/graphql/blog/queries";
 
 import type { BlogCatalogCategory, Language } from "../types";
 
-export function useBlogCatalog(language: Language) {
+export function useBlogCatalog(language: Language, { skip = false }: { skip?: boolean } = {}) {
   const { data, loading, error } = useQuery<{
     getBlogCatalog: BlogCatalogCategory[];
   }>(GET_BLOG_CATALOG, {
     variables: { language },
     fetchPolicy: "cache-first",
+    skip,
   });
 
   const categories = useMemo<BlogCatalogCategory[]>(

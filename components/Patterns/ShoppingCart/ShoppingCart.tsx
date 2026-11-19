@@ -3,6 +3,7 @@ import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Text } from "@/components/Primitives/Text";
+import { useIsAuthenticated } from "@/store/useAuthStore";
 import useCartStore, { useCartCount } from "@/store/useCartStore";
 import {
   shoppingCartBadgeClass,
@@ -46,8 +47,14 @@ export function ShoppingCartButton({
   const lang = (params?.lang as string) ?? "es";
   const count = useCartCount();
   const isHydrated = useCartStore((s) => s.isHydrated);
+  const isAuthenticated = useIsAuthenticated();
 
   const itemCount = isHydrated ? count : 0;
+  const cartHref = `/${lang}/cart`;
+  // Signed out, it goes through login and back, as the publish button does.
+  const href = isAuthenticated
+    ? cartHref
+    : `/${lang}/login?redirectTo=${encodeURIComponent(cartHref)}`;
 
   const accessibleName =
     itemCount === 0
@@ -58,7 +65,7 @@ export function ShoppingCartButton({
 
   return (
     <Link
-      href={`/${lang}/cart`}
+      href={href}
       aria-label={accessibleName}
       className={shoppingCartButtonClass}
     >

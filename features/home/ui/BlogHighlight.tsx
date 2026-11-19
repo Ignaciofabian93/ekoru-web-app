@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useTranslation } from "@/i18n/context";
 import { useCardScroller } from "@/hooks/useCardScroller";
+import { useNearViewport } from "@/hooks/useNearViewport";
 import { useBlogCatalog } from "@/features/blog/hooks/useBlogCatalog";
 import { resolveCategoryIcon } from "@/features/blog/constants/icons";
 import type { Language } from "@/features/blog/types";
@@ -17,15 +18,19 @@ const SKELETON_COUNT = 4;
 
 export function BlogHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
-  const { categories: topics, loading } = useBlogCatalog(lang.toUpperCase() as Language);
+  // Last on the page: nothing is fetched until the visitor scrolls toward it.
+  const [sectionRef, near] = useNearViewport<HTMLElement>();
+  const { categories: topics, loading } = useBlogCatalog(lang.toUpperCase() as Language, {
+    skip: !near,
+  });
   const { scrollRef, canScrollLeft, canScrollRight, handleScroll } = useCardScroller(
     topics.length,
   );
 
-  const pending = loading && topics.length === 0;
+  const pending = (!near || loading) && topics.length === 0;
 
   return (
-    <Section ariaLabel={t("blog.title")}>
+    <Section ref={sectionRef} ariaLabel={t("blog.title")}>
       <SectionHeader
         align="start"
         title={t("blog.title")}

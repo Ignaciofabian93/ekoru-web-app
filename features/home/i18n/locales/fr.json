@@ -64,9 +64,7 @@
       "textAtMax": "Revenez bientôt : de nouveaux produits, boutiques et services arrivent chaque jour.",
       "widen": "Élargir à {{radius}} km"
     },
-    "error": "Impossible de charger ce qui se trouve près de chez vous. Réessayez plus tard.",
-    "scrollPrevious": "Défiler vers la gauche",
-    "scrollNext": "Défiler vers la droite"
+    "error": "Impossible de charger ce qui se trouve près de chez vous. Réessayez plus tard."
   },
   "stats": {
     "title": "C'est déjà en cours",
@@ -85,8 +83,6 @@
     "subtitle": "Boutiques durables vérifiées",
     "seeAll": "Voir tout",
     "noStores": "Aucune boutique disponible",
-    "scrollPrevious": "Défiler vers la gauche",
-    "scrollNext": "Défiler vers la droite",
     "seeStore": "Voir la boutique",
     "verified": "Vérifiée"
   },
@@ -102,9 +98,7 @@
     "title": "Éco Services",
     "subtitle": "Réparation, location et échange",
     "seeAll": "Voir tout",
-    "noServices": "Aucun service disponible",
-    "scrollPrevious": "Défiler vers la gauche",
-    "scrollNext": "Défiler vers la droite"
+    "noServices": "Aucun service disponible"
   },
   "marketplace": {
     "exchange": {

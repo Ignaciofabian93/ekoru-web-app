@@ -32,5 +32,3 @@ export const shoppingCartSlotClass = "grid";
 export const shoppingCartSlotLayerClass = "col-start-1 row-start-1 flex";
 
 export const shoppingCartFadeInClass = "animate-fade-in";
-
-export const shoppingCartFadeOutClass = "animate-fade-out";

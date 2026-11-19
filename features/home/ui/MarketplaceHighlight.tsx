@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
+import type { Ref } from "react";
 import { type SupportedLanguage } from "@/constants/settings";
+import { useNearViewport } from "@/hooks/useNearViewport";
 import { useTranslation } from "@/i18n/context";
 import {
   useExchangeableProducts,
@@ -27,30 +29,34 @@ const PAGE_SIZE = 8;
  * and each keeps its own heading at the same level as every other highlight.
  */
 export function MarketplaceHighlight({ lang }: { lang: SupportedLanguage }) {
-  const exchange = useExchangeableProducts({ pageSize: PAGE_SIZE });
-  const sale = useSaleProducts({ pageSize: PAGE_SIZE });
+  // Below the fold: both rows wait until the visitor scrolls toward the first.
+  const [sectionRef, near] = useNearViewport<HTMLElement>();
+  const exchange = useExchangeableProducts({ pageSize: PAGE_SIZE, skip: !near });
+  const sale = useSaleProducts({ pageSize: PAGE_SIZE, skip: !near });
 
   return (
     <>
       <ProductRow
+        sectionRef={sectionRef}
         lang={lang}
         translationKey="exchange"
         href={`/${lang}/marketplace?exchangeable=true`}
         products={exchange.products}
-        loading={exchange.loading}
+        loading={!near || exchange.loading}
       />
       <ProductRow
         lang={lang}
         translationKey="forSale"
         href={`/${lang}/marketplace`}
         products={sale.products}
-        loading={sale.loading}
+        loading={!near || sale.loading}
       />
     </>
   );
 }
 
 interface ProductRowProps {
+  sectionRef?: Ref<HTMLElement>;
   lang: SupportedLanguage;
   href: string;
   /** Names the copy block under `marketplace.` for this row. */
@@ -65,12 +71,19 @@ interface ProductRowProps {
  * home screen that shows one of them on some visits and two on others reads as
  * a bug. This is what the stores sections do with `noStores` / `noProducts`.
  */
-function ProductRow({ lang, href, translationKey, products, loading }: ProductRowProps) {
+function ProductRow({
+  sectionRef,
+  lang,
+  href,
+  translationKey,
+  products,
+  loading,
+}: ProductRowProps) {
   const { t } = useTranslation(NAMESPACE);
   const title = t(`marketplace.${translationKey}.title`);
 
   return (
-    <Section ariaLabel={title}>
+    <Section ref={sectionRef} ariaLabel={title}>
       <SectionHeader
         align="start"
         title={title}
@@ -93,7 +106,7 @@ function ProductRow({ lang, href, translationKey, products, loading }: ProductRo
             {t(`marketplace.${translationKey}.empty`)}
           </Text>
         }
-        renderItem={(product, _i) => <MarketplaceCard product={product} lang={lang} />}
+        renderItem={(product) => <MarketplaceCard product={product} lang={lang} />}
       />
     </Section>
   );

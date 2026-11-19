@@ -1,7 +1,7 @@
 "use client";
 import { LocateFixed, MapPin } from "lucide-react";
 import { useSyncExternalStore } from "react";
-import { ServiceProviderCard, StoreCard } from "@/components/BusinessCards";
+import { BusinessScroller, ServiceProviderCard, StoreCard } from "@/components/BusinessCards";
 import { MarketplaceCard, ProductCard, ProductScroller } from "@/components/ProductCards";
 import { Section } from "@/components/Layout";
 import {
@@ -17,6 +17,7 @@ import {
   type ExploreRadiusKm,
   type SupportedLanguage,
 } from "@/constants/settings";
+import { skeletonClass } from "@/design/skeleton";
 import { useExploreLocation, useExploreRadius } from "@/hooks/useExploreLocation";
 import { useToast } from "@/hooks/useToast";
 import { useTranslation } from "@/i18n/context";
@@ -26,7 +27,7 @@ import { useNearbyCounties } from "../hooks/useNearbyCounties";
 import { useServicesHomeData } from "../hooks/useServices";
 import { useStoreProductsHomeData } from "../hooks/useStoreProducts";
 import { useStoresHomeData } from "../hooks/useStores";
-import { NearbyBusinessScroller, NearbyRail } from "./NearbyRail";
+import { NearbyRail } from "./NearbyRail";
 import { RadiusPicker } from "./RadiusPicker";
 
 const noopSubscribe = () => () => {};
@@ -78,12 +79,15 @@ export function NearbySection({ lang }: { lang: SupportedLanguage }) {
   };
 
   if (!hydrated) {
+    // The prompt itself, invisible, sizes the skeleton: whatever the screen
+    // width, the placeholder is exactly as tall as what a new visitor gets.
     return (
       <Section ariaLabel={title}>
-        <div
-          aria-hidden
-          className="h-36 animate-pulse rounded-xl bg-background-secondary"
-        />
+        <div aria-hidden inert className={skeletonClass.xl}>
+          <div className="invisible">
+            <NearbyPrompt status="idle" onDetect={() => {}} />
+          </div>
+        </div>
       </Section>
     );
   }
@@ -269,9 +273,7 @@ function NearbyResults({
           items={forSale.products}
           loading={waiting || forSale.loading}
           empty={empty}
-          renderItem={(product, i) => (
-            <MarketplaceCard priority={i < 4} product={product} lang={lang} />
-          )}
+          renderItem={(product) => <MarketplaceCard product={product} lang={lang} />}
         />
       </NearbyRail>
       <NearbyRail title={t("nearby.rails.marketplaceExchange")}>
@@ -283,7 +285,7 @@ function NearbyResults({
         />
       </NearbyRail>
       <NearbyRail title={t("nearby.rails.stores")}>
-        <NearbyBusinessScroller
+        <BusinessScroller
           items={stores.sellers}
           loading={waiting || stores.loading}
           empty={empty}
@@ -301,13 +303,11 @@ function NearbyResults({
           items={storeProducts.storeProducts}
           loading={waiting || storeProducts.loading}
           empty={empty}
-          renderItem={(product, i) => (
-            <ProductCard product={product} lang={lang} priority={i < 2} />
-          )}
+          renderItem={(product) => <ProductCard product={product} lang={lang} />}
         />
       </NearbyRail>
       <NearbyRail title={t("nearby.rails.services")}>
-        <NearbyBusinessScroller
+        <BusinessScroller
           items={services.sellers}
           loading={waiting || services.loading}
           empty={empty}

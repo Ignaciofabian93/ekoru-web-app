@@ -1,51 +1,26 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import { useStoresHomeData } from "../hooks/useStores";
 import type { SupportedLanguage } from "@/constants/settings";
+import { useNearViewport } from "@/hooks/useNearViewport";
 import { Text } from "@/components/Primitives/Text";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
-import { CardScroller } from "@/components/Patterns/CardScroller";
-import { StoreCard } from "@/components/BusinessCards";
+import { BusinessScroller, StoreCard } from "@/components/BusinessCards";
 
 export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
-  const { sellers, productCounts } = useStoresHomeData({ language: lang });
-
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-
-  const updateScrollState = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const { scrollLeft, scrollWidth, clientWidth } = el;
-    setCanScrollLeft(scrollLeft > 0);
-    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
-  }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    updateScrollState();
-    el.addEventListener("scroll", updateScrollState, { passive: true });
-    const observer = new ResizeObserver(updateScrollState);
-    observer.observe(el);
-    return () => {
-      el.removeEventListener("scroll", updateScrollState);
-      observer.disconnect();
-    };
-  }, [updateScrollState, sellers.length]);
-
-  const handleScroll = (delta: number) => {
-    scrollRef.current?.scrollBy({ left: delta, behavior: "smooth" });
-  };
+  // Below the fold: nothing is fetched until the visitor scrolls toward it.
+  const [sectionRef, near] = useNearViewport<HTMLElement>();
+  const { sellers, productCounts, loading } = useStoresHomeData({
+    language: lang,
+    skip: !near,
+  });
 
   return (
-    <Section ariaLabel={t("stores.title")}>
+    <Section ref={sectionRef} ariaLabel={t("stores.title")}>
       <SectionHeader
         align="start"
         title={t("stores.title")}
@@ -59,26 +34,18 @@ export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
           </Link>
         }
       />
-      {sellers && sellers.length > 0 ? (
-        <CardScroller
-          handleScroll={handleScroll}
-          scrollRef={scrollRef}
-          canScrollLeft={canScrollLeft}
-          canScrollRight={canScrollRight}
-          scrollPreviousAriaLabel={t("stores.scrollPrevious")}
-          scrollNextAriaLabel={t("stores.scrollNext")}
-        >
-          {sellers.map((seller) => (
-            <div key={seller.id} className="shrink-0 snap-start">
-              <StoreCard store={seller} lang={lang} productCount={productCounts[seller.id]} />
-            </div>
-          ))}
-        </CardScroller>
-      ) : (
-        <Text variant="p" size="sm">
-          {t("stores.noStores")}
-        </Text>
-      )}
+      <BusinessScroller
+        items={sellers}
+        loading={!near || loading}
+        empty={
+          <Text variant="p" size="sm">
+            {t("stores.noStores")}
+          </Text>
+        }
+        renderItem={(seller) => (
+          <StoreCard store={seller} lang={lang} productCount={productCounts[seller.id]} />
+        )}
+      />
     </Section>
   );
 }

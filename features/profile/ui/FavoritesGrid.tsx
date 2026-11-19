@@ -116,7 +116,7 @@ export function FavoritesGrid() {
                   key={product.id}
                   product={product}
                   lang={lang}
-                  priority={i < 4}
+                  priority={i < 2}
                 />
               ))}
             {tab === "stores" &&

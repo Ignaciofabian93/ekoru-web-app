@@ -64,9 +64,7 @@
       "textAtMax": "Vuelve pronto: cada día se suman productos, tiendas y servicios.",
       "widen": "Ampliar a {{radius}} km"
     },
-    "error": "No pudimos cargar lo que hay cerca. Inténtalo de nuevo más tarde.",
-    "scrollPrevious": "Desplazar a la izquierda",
-    "scrollNext": "Desplazar a la derecha"
+    "error": "No pudimos cargar lo que hay cerca. Inténtalo de nuevo más tarde."
   },
   "stats": {
     "title": "Esto ya está pasando",
@@ -85,8 +83,6 @@
     "subtitle": "Tiendas sostenibles verificadas",
     "seeAll": "Ver todas",
     "noStores": "No hay tiendas disponibles",
-    "scrollPrevious": "Desplazar a la izquierda",
-    "scrollNext": "Desplazar a la derecha",
     "seeStore": "Ver tienda",
     "verified": "Verificada"
   },
@@ -102,9 +98,7 @@
     "title": "Eco Servicios",
     "subtitle": "Reparación, alquiler e intercambio",
     "seeAll": "Ver todos",
-    "noServices": "No hay servicios disponibles",
-    "scrollPrevious": "Desplazar a la izquierda",
-    "scrollNext": "Desplazar a la derecha"
+    "noServices": "No hay servicios disponibles"
   },
   "marketplace": {
     "exchange": {

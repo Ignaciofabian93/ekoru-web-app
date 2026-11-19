@@ -2,7 +2,6 @@
 import { useCallback, useState } from "react";
 import { useParams } from "next/navigation";
 import { useApolloClient } from "@apollo/client/react";
-import { Logout } from "@/lib/api/auth";
 import useAuthStore from "@/store/useAuthStore";
 import { DEFAULT_LANGUAGE, type SupportedLanguage } from "@/constants/settings";
 import useCartStore from "@/store/useCartStore";
@@ -19,7 +18,11 @@ export function useLogout() {
     try {
       // Best-effort: even if the server call fails (network, already expired),
       // we still drop local state and route home so the user isn't stuck.
-      await Logout().catch(() => undefined);
+      // Loaded here, not at the top: the navbar and the terms prompt use this
+      // hook on every page, and axios isn't needed until someone signs out.
+      await import("@/lib/api/auth")
+        .then(({ Logout }) => Logout())
+        .catch(() => undefined);
     } finally {
       clearSeller();
       clearCart();

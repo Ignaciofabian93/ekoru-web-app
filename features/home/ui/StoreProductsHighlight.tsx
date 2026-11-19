@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import type { SupportedLanguage } from "@/constants/settings";
+import { useNearViewport } from "@/hooks/useNearViewport";
 import { useStoreProductsHomeData } from "../hooks/useStoreProducts";
 import { ProductCard, ProductScroller } from "@/components/ProductCards";
 import { Text } from "@/components/Primitives/Text";
@@ -11,10 +12,12 @@ import { SectionHeader } from "@/components/Patterns/SectionHeader";
 
 export function StoreProductsHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
-  const { storeProducts, loading } = useStoreProductsHomeData();
+  // Below the fold: nothing is fetched until the visitor scrolls toward it.
+  const [sectionRef, near] = useNearViewport<HTMLElement>();
+  const { storeProducts, loading } = useStoreProductsHomeData({ skip: !near });
 
   return (
-    <Section ariaLabel={t("storeProducts.title")}>
+    <Section ref={sectionRef} ariaLabel={t("storeProducts.title")}>
       <SectionHeader
         align="start"
         title={t("storeProducts.title")}
@@ -30,15 +33,13 @@ export function StoreProductsHighlight({ lang }: { lang: SupportedLanguage }) {
       />
       <ProductScroller
         items={storeProducts}
-        loading={loading}
+        loading={!near || loading}
         empty={
           <Text variant="p" size="sm">
             {t("storeProducts.noProducts")}
           </Text>
         }
-        renderItem={(product, i) => (
-          <ProductCard product={product} lang={lang} priority={i < 2} />
-        )}
+        renderItem={(product) => <ProductCard product={product} lang={lang} />}
       />
     </Section>
   );

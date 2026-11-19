@@ -5,48 +5,37 @@ import { ShoppingCartButton, type ShoppingCartButtonProps } from "./ShoppingCart
 import { ShoppingCartSkeleton } from "./ShoppingCartSkeleton";
 import {
   shoppingCartFadeInClass,
-  shoppingCartFadeOutClass,
   shoppingCartSlotClass,
   shoppingCartSlotLayerClass,
 } from "./styles";
 
 interface ShoppingCartSlotProps extends ShoppingCartButtonProps {
+  /** Auth or the saved cart is still hydrating. */
   loading: boolean;
-  visible: boolean;
 }
 
-export function ShoppingCartSlot({
-  loading,
-  visible,
-  ...buttonProps
-}: ShoppingCartSlotProps) {
-  const showSkeleton = loading && !visible;
-
-  const [skeletonMounted, setSkeletonMounted] = useState(showSkeleton);
-  if (showSkeleton && !skeletonMounted) setSkeletonMounted(true);
+/**
+ * The skeleton holds the button's place while loading; the button then fades
+ * in over it in the same grid cell, and the skeleton leaves once the fade ends.
+ */
+export function ShoppingCartSlot({ loading, ...buttonProps }: ShoppingCartSlotProps) {
+  const [skeletonMounted, setSkeletonMounted] = useState(loading);
+  if (loading && !skeletonMounted) setSkeletonMounted(true);
 
   const removeSkeleton = (event: AnimationEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) setSkeletonMounted(false);
   };
 
-  if (!skeletonMounted && !visible) return null;
-
   return (
     <div className={shoppingCartSlotClass}>
       {skeletonMounted && (
-        <div
-          className={clsx(
-            shoppingCartSlotLayerClass,
-            !showSkeleton && !visible && shoppingCartFadeOutClass,
-          )}
-          onAnimationEnd={removeSkeleton}
-        >
+        <div className={shoppingCartSlotLayerClass}>
           <ShoppingCartSkeleton text={buttonProps.text} />
         </div>
       )}
-      {visible && (
+      {!loading && (
         <div
-          className={clsx(shoppingCartSlotLayerClass, shoppingCartFadeInClass)}
+          className={clsx(shoppingCartSlotLayerClass, skeletonMounted && shoppingCartFadeInClass)}
           onAnimationEnd={removeSkeleton}
         >
           <ShoppingCartButton {...buttonProps} />

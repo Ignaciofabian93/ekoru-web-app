@@ -54,6 +54,10 @@ export const frontStyles = {
   cta: "inline-flex shrink-0 items-center gap-1 text-sm font-bold text-primary-active",
 };
 
+export const scrollerStyles = {
+  item: "shrink-0 snap-start",
+};
+
 export const skeletonStyles = {
   card: cardShell,
   cover: "aspect-2/1 w-full shrink-0",

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, ReactNode, Ref } from "react";
 import { RHYTHM, spacing, type Gap } from "./tokens";
 
 interface SectionProps {
@@ -15,6 +15,7 @@ interface SectionProps {
   ariaLabelledBy?: string;
   className?: string;
   style?: CSSProperties;
+  ref?: Ref<HTMLElement>;
 }
 
 /**
@@ -29,9 +30,11 @@ export function Section({
   ariaLabelledBy,
   className,
   style,
+  ref,
 }: SectionProps) {
   return (
     <section
+      ref={ref}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
       className={clsx("flex w-full flex-col", className)}

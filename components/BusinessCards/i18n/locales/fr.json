@@ -30,5 +30,9 @@
   "cta": {
     "store": "Explorer la boutique",
     "provider": "Voir le prestataire"
+  },
+  "scroller": {
+    "previous": "Voir les précédents",
+    "next": "Voir plus"
   }
 }

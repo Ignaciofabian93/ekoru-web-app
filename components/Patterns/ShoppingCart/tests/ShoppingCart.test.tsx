@@ -3,9 +3,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { axe } from "@/test/axe";
 import { ShoppingCartButton } from "../ShoppingCart";
 
-const state = vi.hoisted(() => ({ count: 0 }));
+const state = vi.hoisted(() => ({ count: 0, signedIn: true }));
 
 vi.mock("next/navigation", () => ({ useParams: () => ({ lang: "es" }) }));
+vi.mock("@/store/useAuthStore", () => ({ useIsAuthenticated: () => state.signedIn }));
 vi.mock("@/store/useCartStore", () => ({
   default: (select: (s: { isHydrated: boolean }) => unknown) =>
     select({ isHydrated: true }),
@@ -21,6 +22,7 @@ const copy = {
 
 beforeEach(() => {
   state.count = 0;
+  state.signedIn = true;
 });
 
 describe("ShoppingCartButton", () => {
@@ -32,6 +34,16 @@ describe("ShoppingCartButton", () => {
     expect(link).toHaveClass("btn", "btn-secondary");
     expect(link).toHaveTextContent("Mi carro");
     expect((await axe(container)).violations).toEqual([]);
+  });
+
+  it("sends a guest through login and back to the cart", () => {
+    state.signedIn = false;
+    render(<ShoppingCartButton {...copy} />);
+
+    expect(screen.getByRole("link", { name: "Mi carro, vacío" })).toHaveAttribute(
+      "href",
+      "/es/login?redirectTo=%2Fes%2Fcart",
+    );
   });
 
   it("names the item count and shows it in the badge", () => {

@@ -34,7 +34,7 @@ export function ServiceList({ services, lang }: Props) {
           key={service.id}
           service={toCardService(service)}
           lang={lang}
-          priority={i < 4}
+          priority={i < 2}
         />
       ))}
     </div>

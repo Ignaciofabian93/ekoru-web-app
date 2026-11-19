@@ -13,12 +13,13 @@ import MenuButton from "./MenuButton";
 import { LocationPicker } from "./LocationPicker";
 import { PublishButton } from "./PublishButton";
 import { NAMESPACE } from "./i18n";
-import useAuthStore, { useIsAuthenticated } from "@/store/useAuthStore";
+import useAuthStore from "@/store/useAuthStore";
+import useCartStore from "@/store/useCartStore";
 
 export function NavBar() {
   const { t } = useTranslation(NAMESPACE);
-  const isAuthenticated = useIsAuthenticated();
   const isAuthHydrated = useAuthStore((s) => s.isHydrated);
+  const isCartHydrated = useCartStore((s) => s.isHydrated);
 
   return (
     <header
@@ -48,8 +49,7 @@ export function NavBar() {
           <SearchBar className="order-last w-full lg:order-0 lg:w-[50%]" />
           <div className="relative ml-auto flex shrink-0 items-center justify-end gap-2 lg:gap-3">
             <ShoppingCartSlot
-              loading={!isAuthHydrated}
-              visible={isAuthenticated}
+              loading={!isAuthHydrated || !isCartHydrated}
               text={t("dropdown.cart")}
               label={t("a11y.cart")}
               labelWithOneItem={t("a11y.cartWithOneItem")}

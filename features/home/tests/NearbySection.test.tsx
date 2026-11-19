@@ -85,7 +85,8 @@ vi.mock("@/components/ProductCards", async (importOriginal) => ({
   MarketplaceCard: ({ product }: { product: Item }) => <article>{product.name}</article>,
   ProductCard: ({ product }: { product: Item }) => <article>{product.name}</article>,
 }));
-vi.mock("@/components/BusinessCards", () => ({
+vi.mock("@/components/BusinessCards", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
   StoreCard: ({ store }: { store: Item }) => <article>{store.name}</article>,
   ServiceProviderCard: ({ provider }: { provider: Item }) => <article>{provider.name}</article>,
 }));

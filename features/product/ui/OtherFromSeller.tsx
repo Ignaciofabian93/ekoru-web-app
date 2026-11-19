@@ -51,9 +51,7 @@ export function OtherFromSeller({ lang, sellerId, excludeProductId }: Props) {
             title={t("otherProducts.empty")}
           />
         }
-        renderItem={(product, i) => (
-          <MarketplaceCard priority={i < 4} product={product} lang={lang} />
-        )}
+        renderItem={(product) => <MarketplaceCard product={product} lang={lang} />}
       />
     </Section>
   );
