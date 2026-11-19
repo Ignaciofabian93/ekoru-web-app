@@ -3,7 +3,7 @@ import { useTranslation } from "@/i18n/context";
 import type { SupportedLanguage } from "@/constants/settings";
 import type { Product } from "@/types/product";
 import { NAMESPACE } from "../i18n";
-import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/ProductCards/i18n";
 import { Title } from "@/components/Primitives/Title";
 import { Text } from "@/components/Primitives/Text";
 import { DataList } from "@/components/Patterns";

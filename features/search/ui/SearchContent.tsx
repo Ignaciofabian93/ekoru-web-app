@@ -13,7 +13,7 @@ import type { ProductCondition } from "@/types/enums";
 import { useSearch } from "../hooks/useSearch";
 import { useSearchFilters } from "../hooks/useSearchFilters";
 import { NAMESPACE } from "../i18n";
-import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/ProductCards/i18n";
 import { countConditions, countSources, narrowItems } from "../narrow";
 import { SEARCH_PAGE_SIZE, type SearchSource, type SearchTypeFilter } from "../types";
 import { SearchActiveFilters } from "./SearchActiveFilters";

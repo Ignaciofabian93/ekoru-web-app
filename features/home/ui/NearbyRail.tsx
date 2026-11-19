@@ -1,6 +1,6 @@
 "use client";
 import type { ReactNode } from "react";
-import { CardScroller } from "@/components/Cards/CardScroller";
+import { CardScroller } from "@/components/Patterns/CardScroller";
 import { Title } from "@/components/Primitives/Title";
 import { useCardScroller } from "@/hooks/useCardScroller";
 import { useTranslation } from "@/i18n/context";

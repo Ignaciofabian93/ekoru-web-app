@@ -10,7 +10,7 @@ import type { ProductCondition } from "@/types/enums";
 import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { NAMESPACE } from "../i18n";
-import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/ProductCards/i18n";
 import {
   EMPTY_FILTERS,
   type ProductFilters as ProductFiltersState,

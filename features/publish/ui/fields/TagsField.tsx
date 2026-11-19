@@ -48,7 +48,15 @@ export function TagsField({
   const removeAt = (index: number) => onChange(value.filter((_, i) => i !== index));
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" || e.key === ",") {
+    // Japanese, Chinese and Korean input confirm a candidate with Enter and may
+    // type a comma ("、"); those keystrokes belong to the IME, not to adding a
+    // tag. Safari can report `isComposing` false, so 229 is checked too.
+    const composing = e.nativeEvent.isComposing || e.keyCode === 229;
+    if (e.key === "Enter") {
+      // Always: Enter would otherwise submit the surrounding form.
+      e.preventDefault();
+      if (!composing) commit();
+    } else if (e.key === "," && !composing) {
       e.preventDefault();
       commit();
     } else if (e.key === "Backspace" && draft === "" && value.length > 0) {

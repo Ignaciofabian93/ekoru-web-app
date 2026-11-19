@@ -80,17 +80,15 @@ vi.mock("@/components/Navigation/hooks/useComunaDetection", async (importOrigina
 vi.mock("@/hooks/useToast", () => ({
   useToast: () => ({ warning: state.warning }),
 }));
-vi.mock("@/components/Cards", () => {
-  const Card = ({ name }: { name: string }) => <article>{name}</article>;
-  return {
-    MarketplaceCard: ({ product }: { product: Item }) => <Card name={product.name} />,
-    StoreProductCard: ({ product }: { product: Item }) => <Card name={product.name} />,
-    StoresCard: ({ store }: { store: Item }) => <Card name={store.name} />,
-    ServiceProviderCard: ({ provider }: { provider: Item }) => (
-      <Card name={provider.name} />
-    ),
-  };
-});
+vi.mock("@/components/ProductCards", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
+  MarketplaceCard: ({ product }: { product: Item }) => <article>{product.name}</article>,
+  ProductCard: ({ product }: { product: Item }) => <article>{product.name}</article>,
+}));
+vi.mock("@/components/BusinessCards", () => ({
+  StoreCard: ({ store }: { store: Item }) => <article>{store.name}</article>,
+  ServiceProviderCard: ({ provider }: { provider: Item }) => <article>{provider.name}</article>,
+}));
 
 const setCookie = (name: string, value: string) => {
   document.cookie = `${name}=${value};path=/`;

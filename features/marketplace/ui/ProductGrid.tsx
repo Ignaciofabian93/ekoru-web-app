@@ -1,6 +1,6 @@
 "use client";
 import { ShoppingCart } from "lucide-react";
-import { MarketplaceCard } from "@/components/Cards/MarketplaceCard";
+import { MarketplaceCard } from "@/components/ProductCards";
 import { ResultsGrid } from "@/components/Patterns/ResultsGrid";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";

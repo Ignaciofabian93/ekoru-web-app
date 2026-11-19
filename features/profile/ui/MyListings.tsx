@@ -37,9 +37,9 @@ import { Tabs } from "@/components/Patterns/Tabs";
 import {
   MarketplaceCard,
   ServiceCard,
-  StoreProductCard,
+  ProductCard,
   type ServiceCardService,
-} from "@/components/Cards";
+} from "@/components/ProductCards";
 
 /** Which catalog a listing row belongs to. A seller sees one or more of these
  *  depending on their account: PERSON → marketplace; business → store and/or
@@ -138,6 +138,7 @@ export function MyListings() {
   const [deleteTarget, setDeleteTarget] = useState<DeleteTarget | null>(null);
 
   const menuLabel = t("dashboard.listings.actions.menu");
+  const editMenuLabel = t("dashboard.listings.actions.menuEdit");
 
   /**
    * The owner menu for one listing. `onView`, `onEdit` and `onToggle` are
@@ -301,14 +302,9 @@ export function MyListings() {
                     product={p}
                     lang={lang}
                     priority
-                    onEdit={
-                      isSold
-                        ? undefined
-                        : () => setEditTarget({ kind: "marketplace", item: p })
-                    }
                     actions={
                       <ProductActionsMenu
-                        ariaLabel={menuLabel}
+                        ariaLabel={isSold ? menuLabel : editMenuLabel}
                         actions={buildActions({
                           isActive,
                           onView: () => router.push(`/${lang}/product/${p.id}`),
@@ -358,14 +354,13 @@ export function MyListings() {
             renderItem={(p) => {
               const isActive = p.isActive !== false;
               return (
-                <StoreProductCard
+                <ProductCard
                   key={p.id}
                   product={p}
                   lang={lang}
-                  onEdit={() => setEditTarget({ kind: "store", item: p })}
                   actions={
                     <ProductActionsMenu
-                      ariaLabel={menuLabel}
+                      ariaLabel={editMenuLabel}
                       actions={buildActions({
                         isActive,
                         onView: () => router.push(`/${lang}/store-product/${p.id}`),
@@ -410,10 +405,9 @@ export function MyListings() {
                   key={s.id}
                   service={serviceToCardService(s)}
                   lang={lang}
-                  onEdit={() => setEditTarget({ kind: "service", item: s })}
                   actions={
                     <ProductActionsMenu
-                      ariaLabel={menuLabel}
+                      ariaLabel={editMenuLabel}
                       actions={buildActions({
                         isActive,
                         onEdit: () => setEditTarget({ kind: "service", item: s }),

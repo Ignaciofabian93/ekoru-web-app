@@ -1,4 +1,4 @@
-import type { ServiceCardService } from "@/components/Cards";
+import type { ServiceCardService } from "@/components/ProductCards";
 import { getBusinessProfile } from "@/utils/sellerInformation";
 
 import type { ServiceDetail } from "./types";

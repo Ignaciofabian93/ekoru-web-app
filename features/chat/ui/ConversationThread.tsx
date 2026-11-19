@@ -69,6 +69,10 @@ export function ConversationThread({ conversationId, lang, onBack }: Props) {
   const onKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
+      // Japanese, Chinese and Korean input confirm a candidate with Enter; that
+      // keystroke belongs to the IME, not to sending. Safari can report
+      // `isComposing` false on it, so the IME key code (229) is checked too.
+      if (event.nativeEvent.isComposing || event.keyCode === 229) return;
       void submit();
     }
   };
@@ -321,7 +325,7 @@ function MessageBubble({
     >
       <div
         className={clsx(
-          "max-w-[80%] whitespace-pre-wrap break-words rounded-2xl px-3.5 py-2 text-sm",
+          "max-w-[80%] whitespace-pre-wrap wrap-break-words rounded-2xl px-3.5 py-2 text-sm",
           message.mine
             ? "rounded-br-sm bg-primary text-on-primary"
             : "rounded-bl-sm border border-border-light bg-surface text-foreground",

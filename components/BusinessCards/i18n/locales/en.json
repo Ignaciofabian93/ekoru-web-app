@@ -1,0 +1,34 @@
+{
+  "badges": {
+    "verified": "Verified"
+  },
+  "meta": {
+    "noBusinessName": "Unnamed store"
+  },
+  "count": {
+    "productsOne": "{{value}} product",
+    "productsOther": "{{value}} products",
+    "servicesOne": "{{value}} service",
+    "servicesOther": "{{value}} services"
+  },
+  "businessTag": {
+    "womanLed": "Woman-led",
+    "zeroWaste": "Zero waste",
+    "recycledMaterials": "100% recycled materials",
+    "plasticFree": "Plastic-free",
+    "locallyMade": "Locally made",
+    "handmade": "Handmade",
+    "vegan": "Vegan",
+    "crueltyFree": "Cruelty-free",
+    "organic": "Organic",
+    "fairTrade": "Fair trade",
+    "carbonNeutral": "Carbon neutral",
+    "upcycled": "Upcycled",
+    "refillable": "Refillable",
+    "biodegradable": "Biodegradable"
+  },
+  "cta": {
+    "store": "Explore store",
+    "provider": "See provider"
+  }
+}

@@ -13,7 +13,7 @@ import {
 import { useTranslation } from "@/i18n/context";
 import type { ProductCondition } from "@/types/enums";
 import { NAMESPACE } from "../i18n";
-import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/ProductCards/i18n";
 import { PRODUCT_CONDITIONS, SEARCH_SOURCES } from "../narrow";
 import type { SearchFacets as Facets, SearchFilters, SearchSource } from "../types";
 

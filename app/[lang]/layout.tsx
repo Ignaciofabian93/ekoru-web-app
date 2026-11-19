@@ -28,7 +28,14 @@ import {
   getNavigationDictionary,
   NAMESPACE as NAVIGATION_NAMESPACE,
 } from "@/components/Navigation/i18n";
-import { getCardsDictionary, NAMESPACE as CARD_NAMESPACE } from "@/components/Cards/i18n";
+import {
+  getProductCardsDictionary,
+  NAMESPACE as PRODUCT_CARDS_NAMESPACE,
+} from "@/components/ProductCards/i18n";
+import {
+  getBusinessCardsDictionary,
+  NAMESPACE as BUSINESS_CARDS_NAMESPACE,
+} from "@/components/BusinessCards/i18n";
 import {
   getFooterDictionary,
   NAMESPACE as FOOTER_NAMESPACE,
@@ -158,7 +165,8 @@ export default async function RootLayout({
     dict,
     drawerDict,
     navigationDict,
-    cardsDict,
+    productCardsDict,
+    businessCardsDict,
     footerDict,
     notificationsDict,
     termsDict,
@@ -166,7 +174,8 @@ export default async function RootLayout({
     getDictionary(lang),
     getDrawerDictionary(lang),
     getNavigationDictionary(lang),
-    getCardsDictionary(lang),
+    getProductCardsDictionary(lang),
+    getBusinessCardsDictionary(lang),
     getFooterDictionary(lang),
     getNotificationsDictionary(lang),
     getTermsAndConditionsDictionary(lang),
@@ -184,7 +193,8 @@ export default async function RootLayout({
               dictionary={{
                 [DRAWER_NAMESPACE]: drawerDict,
                 [NAVIGATION_NAMESPACE]: navigationDict,
-                [CARD_NAMESPACE]: cardsDict,
+                [PRODUCT_CARDS_NAMESPACE]: productCardsDict,
+                [BUSINESS_CARDS_NAMESPACE]: businessCardsDict,
                 [FOOTER_NAMESPACE]: footerDict,
                 [NOTIFICATIONS_NAMESPACE]: notificationsDict,
                 [TERMS_NAMESPACE]: termsDict,

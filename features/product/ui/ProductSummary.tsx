@@ -4,7 +4,7 @@ import { useTranslation } from "@/i18n/context";
 import type { SupportedLanguage } from "@/constants/settings";
 import type { Product } from "@/types/product";
 import { NAMESPACE } from "../i18n";
-import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/ProductCards/i18n";
 import { formatDate } from "../utils/formatDate";
 import { ProductBadges } from "./ProductBadges";
 import { Text } from "@/components/Primitives/Text";

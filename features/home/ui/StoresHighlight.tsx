@@ -8,8 +8,8 @@ import type { SupportedLanguage } from "@/constants/settings";
 import { Text } from "@/components/Primitives/Text";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
-import { CardScroller } from "@/components/Cards/CardScroller";
-import { StoresCard } from "@/components/Cards";
+import { CardScroller } from "@/components/Patterns/CardScroller";
+import { StoreCard } from "@/components/BusinessCards";
 
 export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
@@ -70,7 +70,7 @@ export function StoresHighlight({ lang }: { lang: SupportedLanguage }) {
         >
           {sellers.map((seller) => (
             <div key={seller.id} className="shrink-0 snap-start">
-              <StoresCard store={seller} lang={lang} productCount={productCounts[seller.id]} />
+              <StoreCard store={seller} lang={lang} productCount={productCounts[seller.id]} />
             </div>
           ))}
         </CardScroller>

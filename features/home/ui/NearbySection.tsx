@@ -1,13 +1,8 @@
 "use client";
 import { LocateFixed, MapPin } from "lucide-react";
 import { useSyncExternalStore } from "react";
-import {
-  MarketplaceCard,
-  ServiceProviderCard,
-  StoreProductCard,
-  StoresCard,
-} from "@/components/Cards";
-import { ProductScroller } from "@/components/Cards/ProductScroller";
+import { ServiceProviderCard, StoreCard } from "@/components/BusinessCards";
+import { MarketplaceCard, ProductCard, ProductScroller } from "@/components/ProductCards";
 import { Section } from "@/components/Layout";
 import {
   locationStatusMessage,
@@ -293,7 +288,7 @@ function NearbyResults({
           loading={waiting || stores.loading}
           empty={empty}
           renderItem={(seller) => (
-            <StoresCard
+            <StoreCard
               store={seller}
               lang={lang}
               productCount={stores.productCounts[seller.id]}
@@ -307,7 +302,7 @@ function NearbyResults({
           loading={waiting || storeProducts.loading}
           empty={empty}
           renderItem={(product, i) => (
-            <StoreProductCard product={product} lang={lang} priority={i < 2} />
+            <ProductCard product={product} lang={lang} priority={i < 2} />
           )}
         />
       </NearbyRail>

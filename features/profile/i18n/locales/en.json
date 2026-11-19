@@ -68,6 +68,7 @@
       },
       "actions": {
         "menu": "Product actions",
+        "menuEdit": "Edit or manage listing",
         "edit": "Quick edit",
         "activate": "Publish",
         "deactivate": "Move to drafts",

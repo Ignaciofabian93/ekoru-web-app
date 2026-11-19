@@ -5,8 +5,7 @@ import { NAMESPACE } from "../i18n";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
 import { EmptyState } from "@/components/Feedback/EmptyState";
-import { MarketplaceCard } from "@/components/Cards";
-import { ProductScroller } from "@/components/Cards/ProductScroller";
+import { MarketplaceCard, ProductScroller } from "@/components/ProductCards";
 import { ArrowUpRight, PackageSearch } from "lucide-react";
 import { LinkButton } from "@/components/Primitives";
 

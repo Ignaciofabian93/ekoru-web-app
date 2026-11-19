@@ -9,10 +9,10 @@ import {
 import { NAMESPACE } from "../i18n";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
-import { MarketplaceCard } from "@/components/Cards";
-import { ProductScroller } from "@/components/Cards/ProductScroller";
+import { ProductScroller } from "@/components/ProductCards";
 import { Text } from "@/components/Primitives/Text";
 import type { Product } from "@/types/product";
+import MarketplaceCard from "@/components/ProductCards/MarketplaceCard";
 
 const PAGE_SIZE = 8;
 
@@ -93,9 +93,7 @@ function ProductRow({ lang, href, translationKey, products, loading }: ProductRo
             {t(`marketplace.${translationKey}.empty`)}
           </Text>
         }
-        renderItem={(product, i) => (
-          <MarketplaceCard priority={i < 4} product={product} lang={lang} />
-        )}
+        renderItem={(product, _i) => <MarketplaceCard product={product} lang={lang} />}
       />
     </Section>
   );

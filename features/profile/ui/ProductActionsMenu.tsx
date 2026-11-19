@@ -1,4 +1,5 @@
 "use client";
+import clsx from "clsx";
 import {
   Eye,
   MoreVertical,
@@ -32,6 +33,9 @@ export function ProductActionsMenu({ actions, ariaLabel }: ProductActionsMenuPro
   const { isOpen, close, toggle, containerRef, triggerRef } =
     useDropdown<HTMLButtonElement>();
   const { itemRef, handleKeyDown } = useRovingFocus(isOpen, actions.length, close);
+  // A pen when the menu holds the edit action; plain dots otherwise (e.g. a sold listing).
+  const editable = actions.some((action) => action.key === "edit");
+  const TriggerIcon = editable ? Pencil : MoreVertical;
 
   return (
     <div ref={containerRef} className="relative">
@@ -47,9 +51,15 @@ export function ProductActionsMenu({ actions, ariaLabel }: ProductActionsMenuPro
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-label={ariaLabel}
-        className="flex h-7 w-7 items-center justify-center rounded-full bg-white/95 text-foreground shadow-sm transition-transform hover:scale-105"
+        className={clsx(
+          "flex size-8 cursor-pointer items-center justify-center rounded-full shadow-sm transition",
+          "outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+          editable
+            ? "bg-primary-active text-on-primary hover:bg-primary-dark"
+            : "bg-white/95 text-foreground hover:scale-105",
+        )}
       >
-        <MoreVertical size={14} color="currentColor" strokeWidth={2} aria-hidden />
+        <TriggerIcon size={15} strokeWidth={editable ? 2.5 : 2} aria-hidden />
       </button>
 
       <DropdownPanel isOpen={isOpen} width="w-44" className="py-1">

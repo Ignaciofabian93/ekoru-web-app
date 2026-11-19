@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { CardScroller } from "@/components/Cards/CardScroller";
+import { CardScroller } from "../CardScroller";
 import { Avatar } from "@/components/Primitives/Avatar";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";

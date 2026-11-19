@@ -4,8 +4,7 @@ import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import type { SupportedLanguage } from "@/constants/settings";
 import { useStoreProductsHomeData } from "../hooks/useStoreProducts";
-import { StoreProductCard } from "@/components/Cards";
-import { ProductScroller } from "@/components/Cards/ProductScroller";
+import { ProductCard, ProductScroller } from "@/components/ProductCards";
 import { Text } from "@/components/Primitives/Text";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
@@ -38,7 +37,7 @@ export function StoreProductsHighlight({ lang }: { lang: SupportedLanguage }) {
           </Text>
         }
         renderItem={(product, i) => (
-          <StoreProductCard product={product} lang={lang} priority={i < 2} />
+          <ProductCard product={product} lang={lang} priority={i < 2} />
         )}
       />
     </Section>

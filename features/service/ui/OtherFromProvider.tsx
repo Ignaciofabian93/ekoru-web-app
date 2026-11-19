@@ -1,7 +1,6 @@
 "use client";
 import { ArrowUpRight, SearchX } from "lucide-react";
-import { ServiceCard } from "@/components/Cards";
-import { ProductScroller } from "@/components/Cards/ProductScroller";
+import { ServiceCard, ProductScroller } from "@/components/ProductCards";
 import { EmptyState } from "@/components/Feedback/EmptyState";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";

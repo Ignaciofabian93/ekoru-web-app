@@ -20,7 +20,7 @@ import {
   SellerLoading,
   SellerNotFound,
 } from "./SellerStatus";
-import { MarketplaceCard, ServiceCard, StoreProductCard } from "@/components/Cards";
+import { MarketplaceCard, ServiceCard, ProductCard } from "@/components/ProductCards";
 import { Container, RHYTHM, Section, Stack } from "@/components/Layout";
 
 interface Props {
@@ -139,7 +139,7 @@ export function SellerContent({ id, lang }: Props) {
             products={store.products}
             loading={store.loading}
             getKey={(p) => p.id}
-            renderProduct={(p) => <StoreProductCard product={p} lang={lang} />}
+            renderProduct={(p) => <ProductCard product={p} lang={lang} />}
           />
         ) : (
           <SellerCatalog

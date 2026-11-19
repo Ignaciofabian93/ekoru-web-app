@@ -68,6 +68,7 @@
       },
       "actions": {
         "menu": "Acciones del producto",
+        "menuEdit": "Editar o gestionar publicación",
         "edit": "Edición rápida",
         "activate": "Publicar",
         "deactivate": "Mover a borradores",

@@ -4,12 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/i18n/context";
 import { NAMESPACE } from "../i18n";
 import type { SupportedLanguage } from "@/constants/settings";
-import { ServiceProviderCard } from "@/components/Cards";
+import { ServiceProviderCard } from "@/components/BusinessCards";
 import { useServicesHomeData } from "../hooks/useServices";
 import { Text } from "@/components/Primitives/Text";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
-import { CardScroller } from "@/components/Cards/CardScroller";
+import { CardScroller } from "@/components/Patterns/CardScroller";
 
 export function ServicesHighlight({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);

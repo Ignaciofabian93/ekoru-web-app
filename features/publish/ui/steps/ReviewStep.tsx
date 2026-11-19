@@ -1,7 +1,7 @@
 "use client";
 import { Text } from "@/components/Primitives/Text";
 import { useTranslation } from "@/i18n/context";
-import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/ProductCards/i18n";
 
 import {
   CONDITION_OPTIONS,

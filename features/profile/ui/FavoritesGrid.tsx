@@ -14,9 +14,9 @@ import { serviceCategoryName } from "@/features/services/categoryName";
 import {
   MarketplaceCard,
   ServiceCard,
-  StoreProductCard,
+  ProductCard,
   type ServiceCardService,
-} from "@/components/Cards";
+} from "@/components/ProductCards";
 
 const PAGE_SIZE = 12;
 
@@ -121,7 +121,7 @@ export function FavoritesGrid() {
               ))}
             {tab === "stores" &&
               storeProducts.map((product) => (
-                <StoreProductCard key={product.id} product={product} lang={lang} />
+                <ProductCard key={product.id} product={product} lang={lang} />
               ))}
             {tab === "services" &&
               services.map((service) => (

@@ -1,7 +1,6 @@
 "use client";
 import { ArrowUpRight, PackageSearch } from "lucide-react";
-import { StoreProductCard } from "@/components/Cards";
-import { ProductScroller } from "@/components/Cards/ProductScroller";
+import { ProductCard, ProductScroller } from "@/components/ProductCards";
 import { EmptyState } from "@/components/Feedback/EmptyState";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
@@ -50,7 +49,7 @@ export function OtherFromBusiness({ lang, sellerId, excludeProductId }: Props) {
             title={t("otherProducts.empty")}
           />
         }
-        renderItem={(product) => <StoreProductCard product={product} lang={lang} />}
+        renderItem={(product) => <ProductCard product={product} lang={lang} />}
       />
     </Section>
   );

@@ -68,6 +68,7 @@
       },
       "actions": {
         "menu": "Actions du produit",
+        "menuEdit": "Modifier ou gérer l'annonce",
         "edit": "Édition rapide",
         "activate": "Publier",
         "deactivate": "Déplacer aux brouillons",

@@ -1,7 +1,7 @@
 "use client";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { CardScroller } from "@/components/Cards/CardScroller";
+import { CardScroller } from "../CardScroller";
 import { Text } from "@/components/Primitives/Text";
 import { Title } from "@/components/Primitives/Title";
 import {

@@ -4,7 +4,7 @@ import { useTranslation } from "@/i18n/context";
 import type { ProductCondition } from "@/types/enums";
 
 import { CONDITION_OPTIONS } from "../../constants/options";
-import { NAMESPACE as CARDS_NAMESPACE } from "@/components/Cards/i18n";
+import { NAMESPACE as CARDS_NAMESPACE } from "@/components/ProductCards/i18n";
 
 export function ConditionField({
   value,

@@ -38,21 +38,21 @@ export function Footer() {
     },
   ];
 
-  const PLATFORM_LINKS = [
-    { key: "howItWorks" },
-    { key: "forPeople" },
-    { key: "forShops" },
-    { key: "forCompanies" },
-    { key: "ourImpact" },
-  ] as const;
+  // const PLATFORM_LINKS = [
+  //   { key: "howItWorks" },
+  //   { key: "forPeople" },
+  //   { key: "forShops" },
+  //   { key: "forCompanies" },
+  //   { key: "ourImpact" },
+  // ] as const;
 
-  const RESOURCE_LINKS = [
-    { key: "blog" },
-    { key: "guides" },
-    { key: "faq" },
-    { key: "helpCenter" },
-    { key: "community" },
-  ] as const;
+  // const RESOURCE_LINKS = [
+  //   { key: "blog" },
+  //   { key: "guides" },
+  //   { key: "faq" },
+  //   { key: "helpCenter" },
+  //   { key: "community" },
+  // ] as const;
 
   const LEGAL_LINKS = [
     { key: "termsAndPolicies", route: "/terms-and-conditions" },
@@ -69,8 +69,18 @@ export function Footer() {
       )}
     >
       <div className="mx-auto w-full max-w-7xl">
-        <div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-          <div className="flex flex-col items-center gap-6 md:items-start">
+        <div
+          className={clsx(
+            "mb-16 grid grid-cols-1 gap-12",
+            // "md:grid-cols-2 lg:grid-cols-3"
+          )}
+        >
+          <div
+            className={clsx(
+              "flex flex-col items-center gap-6",
+              // "md:items-start"
+            )}
+          >
             <Image
               src={EKORU_LOGO}
               alt={t("a11y.logoAlt")}
@@ -108,7 +118,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="flex flex-col items-center gap-4 text-center md:items-start md:text-start">
+          {/* <div className="flex flex-col items-center gap-4 text-center md:items-start md:text-start">
             <Text variant="p" size="lg" color="white" weight="bold">
               {t("platform.title")}
             </Text>
@@ -133,9 +143,9 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
-          <div className="flex flex-col items-center gap-4 text-center md:items-start md:text-start">
+          {/* <div className="flex flex-col items-center gap-4 text-center md:items-start md:text-start">
             <Text variant="p" size="lg" color="white" weight="bold">
               {t("resources.title")}
             </Text>
@@ -159,7 +169,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* <div className="flex flex-col items-center gap-4 text-center md:items-start md:text-start">
             <Text variant="p" size="lg" color="white" weight="bold">

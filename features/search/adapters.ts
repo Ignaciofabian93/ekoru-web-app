@@ -2,7 +2,7 @@ import type {
   MarketplaceCardProduct,
   ServiceCardService,
   StoreProductCardProduct,
-} from "@/components/Cards";
+} from "@/components/ProductCards";
 import type { Seller } from "@/types/user";
 
 import type {

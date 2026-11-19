@@ -9,8 +9,8 @@ import type { Language } from "@/features/blog/types";
 import { NAMESPACE } from "../i18n";
 import { Section } from "@/components/Layout";
 import { SectionHeader } from "@/components/Patterns/SectionHeader";
-import { CardScroller } from "@/components/Cards/CardScroller";
-import { BlogTopicCard } from "@/components/Cards";
+import { CardScroller } from "@/components/Patterns/CardScroller";
+import { BlogTopicCard } from "./BlogTopicCard";
 import { Text } from "@/components/Primitives/Text";
 
 const SKELETON_COUNT = 4;

@@ -1,5 +1,5 @@
 "use client";
-import { ServiceCard, type ServiceCardService } from "@/components/Cards";
+import { ServiceCard, type ServiceCardService } from "@/components/ProductCards";
 
 import type { ServiceNode } from "../types";
 import { serviceCategoryName } from "../categoryName";

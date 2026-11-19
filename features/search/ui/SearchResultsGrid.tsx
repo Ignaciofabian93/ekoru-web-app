@@ -10,7 +10,7 @@ import {
 import { NAMESPACE } from "../i18n";
 import type { SearchResultItem } from "../types";
 import { trackSearchClick } from "@/features/tracking/track";
-import { MarketplaceCard, ServiceCard, StoreProductCard } from "@/components/Cards";
+import { MarketplaceCard, ServiceCard, ProductCard } from "@/components/ProductCards";
 
 interface Props {
   items: SearchResultItem[];
@@ -39,7 +39,7 @@ const renderItemCard = (item: SearchResultItem, lang: string) => {
       );
     case "STORE_PRODUCT":
       return (
-        <StoreProductCard
+        <ProductCard
           key={key}
           product={toStoreProductCardProduct(item)}
           lang={lang}

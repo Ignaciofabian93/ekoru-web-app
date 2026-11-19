@@ -1,0 +1,55 @@
+{
+  "condition": {
+    "NEW": "Neuf",
+    "LIKE_NEW": "Comme neuf",
+    "OPEN_BOX": "Boîte ouverte",
+    "REFURBISHED": "Reconditionné",
+    "GOOD": "Bon",
+    "FAIR": "Correct",
+    "POOR": "Médiocre",
+    "FOR_PARTS": "Pour pièces"
+  },
+  "badges": {
+    "acceptsExchange": "Accepte l'échange",
+    "discount": "-{{value}} %",
+    "soldOut": "Épuisé"
+  },
+  "meta": {
+    "noDescription": "Cette annonce n'a pas encore de description."
+  },
+  "price": {
+    "from": "À partir de"
+  },
+  "stock": {
+    "lowStock": "Plus que {{value}}"
+  },
+  "rating": {
+    "label": "{{value}} sur 5",
+    "reviews": "({{value}})"
+  },
+  "actions": {
+    "like": "Ajouter aux favoris",
+    "showImpact": "Voir l'impact environnemental",
+    "showDetails": "Voir les détails",
+    "flipBack": "Retour au produit"
+  },
+  "cta": {
+    "BROWSE": "Voir les détails"
+  },
+  "impact": {
+    "saved": "Impact évité",
+    "viewImpact": "Voir l'impact",
+    "composition": "Composition",
+    "co2": "CO₂ économisé",
+    "water": "Eau économisée",
+    "co2Short": "CO₂",
+    "waterShort": "Eau",
+    "co2Unit": "kg",
+    "waterUnit": "L",
+    "noMaterials": "Aucun matériau déclaré"
+  },
+  "scroller": {
+    "previous": "Voir les précédents",
+    "next": "Voir plus"
+  }
+}
