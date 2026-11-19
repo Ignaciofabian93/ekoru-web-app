@@ -86,7 +86,8 @@ export function Footer() {
               alt={t("a11y.logoAlt")}
               width={4096}
               height={996}
-              loading="eager"
+              // Picks a ~160px file instead of the 3840px rendition.
+              sizes="160px"
               style={{ width: 160, height: "auto" }}
             />
             <Text

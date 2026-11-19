@@ -5,60 +5,24 @@ import {
   DEFAULT_EXPLORE_RADIUS_KM,
   EXPLORE_LOCATION_COOKIE,
   EXPLORE_RADIUS_COOKIE,
-  EXPLORE_RADIUS_OPTIONS_KM,
   type ExploreRadiusKm,
 } from "@/constants/settings";
+import { useExploreLocationSeed } from "@/context/ExploreLocationContext";
 import { useCookieState } from "@/hooks/useCookieState";
 import { getCookie, setCookie } from "@/utils/cookies";
+import {
+  isExploreRadius,
+  parseExploreLocation,
+  type ExploreLocation,
+} from "@/utils/exploreLocation";
 
-/**
- * The comuna the visitor is exploring, shown in the header's "Exploring in"
- * picker and persisted in a cookie.
- *
- * `countyId` is only known when the comuna was picked from the backend's
- * region → city → comuna cascade: a geolocated comuna comes from a reverse
- * geocoder that knows names, not our ids. It carries the visitor's position
- * instead, which the backend's `countiesNear` takes as an origin just as well.
- */
-export type ExploreLocation = {
-  /** Comuna name, as shown in the header. */
-  county: string;
-  countyId?: number;
-  /** The visitor's position, when the comuna came from geolocation. */
-  latitude?: number;
-  longitude?: number;
-  /** How it was set — a detected comuna never overrides one picked by hand. */
-  source: "geolocation" | "manual";
-};
+export type { ExploreLocation };
 
 const listeners = new Set<() => void>();
 
 function subscribe(listener: () => void): () => void {
   listeners.add(listener);
   return () => listeners.delete(listener);
-}
-
-const finite = (value: unknown) =>
-  typeof value === "number" && Number.isFinite(value) ? value : undefined;
-
-function parse(raw: string | null): ExploreLocation | null {
-  if (!raw) return null;
-  try {
-    const value = JSON.parse(raw) as Partial<ExploreLocation>;
-    if (typeof value.county !== "string" || !value.county) return null;
-    const latitude = finite(value.latitude);
-    const longitude = finite(value.longitude);
-    const hasPoint = latitude !== undefined && longitude !== undefined;
-    return {
-      county: value.county,
-      countyId: finite(value.countyId),
-      latitude: hasPoint ? latitude : undefined,
-      longitude: hasPoint ? longitude : undefined,
-      source: value.source === "manual" ? "manual" : "geolocation",
-    };
-  } catch {
-    return null;
-  }
 }
 
 // `useSyncExternalStore` needs the same reference back while nothing changed,
@@ -71,24 +35,23 @@ export function readExploreLocation(): ExploreLocation | null {
   const raw = getCookie(EXPLORE_LOCATION_COOKIE);
   if (raw !== cachedRaw) {
     cachedRaw = raw;
-    cachedValue = parse(raw);
+    cachedValue = parseExploreLocation(raw);
   }
   return cachedValue;
-}
-
-// SSR renders the "choose a comuna" state; the cookie takes over after hydration.
-function getServerSnapshot(): ExploreLocation | null {
-  return null;
 }
 
 export function useExploreLocation(): [
   ExploreLocation | null,
   (location: ExploreLocation) => void,
 ] {
+  // The server has no `document.cookie`: it renders the comuna the page read
+  // from the request (`ExploreLocationSeedProvider`), or none, and hydration
+  // starts from the same value before the cookie takes over.
+  const seed = useExploreLocationSeed();
   const location = useSyncExternalStore(
     subscribe,
     readExploreLocation,
-    getServerSnapshot,
+    () => seed?.location ?? null,
   );
 
   const changeLocation = useCallback((next: ExploreLocation) => {
@@ -99,18 +62,17 @@ export function useExploreLocation(): [
   return [location, changeLocation];
 }
 
-const isRadiusOption = (value: string) =>
-  (EXPLORE_RADIUS_OPTIONS_KM as readonly number[]).includes(Number(value));
-
 /**
  * How far from the explored comuna the "near you" listings reach, in km. Kept
  * apart from the location so picking another comuna keeps the visitor's radius.
  */
 export function useExploreRadius(): [ExploreRadiusKm, (km: ExploreRadiusKm) => void] {
+  const seed = useExploreLocationSeed();
   const [raw, setRaw] = useCookieState(
     EXPLORE_RADIUS_COOKIE,
     String(DEFAULT_EXPLORE_RADIUS_KM),
-    isRadiusOption,
+    isExploreRadius,
+    seed ? String(seed.radius) : undefined,
   );
   const setRadius = useCallback((km: ExploreRadiusKm) => setRaw(String(km)), [setRaw]);
   return [Number(raw) as ExploreRadiusKm, setRadius];

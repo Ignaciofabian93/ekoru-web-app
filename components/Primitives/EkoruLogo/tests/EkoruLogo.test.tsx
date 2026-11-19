@@ -116,6 +116,26 @@ describe("EkoruLogo", () => {
       expect(logo).toHaveAttribute("height", "996");
     });
 
+    it("asks for a file the size it is shown at, not the 3840px original", () => {
+      render(<EkoruLogo enableRedirection={enableRedirection} />);
+
+      // `sizes` turns the srcset into widths the browser chooses from.
+      expect(getLogo()).toHaveAttribute("sizes", "104px");
+      expect(getLogo().getAttribute("srcset")).toMatch(/ 128w/);
+    });
+
+    it("takes the rendered width along with a resizing className", () => {
+      render(
+        <EkoruLogo
+          enableRedirection={enableRedirection}
+          className="w-50"
+          sizes="200px"
+        />,
+      );
+
+      expect(getLogo()).toHaveAttribute("sizes", "200px");
+    });
+
     it("replaces the default size with a custom className", () => {
       render(<EkoruLogo enableRedirection={enableRedirection} className="h-10 w-40" />);
 

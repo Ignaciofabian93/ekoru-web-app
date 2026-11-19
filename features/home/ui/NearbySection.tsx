@@ -1,7 +1,10 @@
 "use client";
 import { LocateFixed, MapPin } from "lucide-react";
-import { useSyncExternalStore } from "react";
-import { BusinessScroller, ServiceProviderCard, StoreCard } from "@/components/BusinessCards";
+import {
+  BusinessScroller,
+  ServiceProviderCard,
+  StoreCard,
+} from "@/components/BusinessCards";
 import { MarketplaceCard, ProductCard, ProductScroller } from "@/components/ProductCards";
 import { Section } from "@/components/Layout";
 import {
@@ -17,7 +20,6 @@ import {
   type ExploreRadiusKm,
   type SupportedLanguage,
 } from "@/constants/settings";
-import { skeletonClass } from "@/design/skeleton";
 import { useExploreLocation, useExploreRadius } from "@/hooks/useExploreLocation";
 import { useToast } from "@/hooks/useToast";
 import { useTranslation } from "@/i18n/context";
@@ -30,22 +32,6 @@ import { useStoresHomeData } from "../hooks/useStores";
 import { NearbyRail } from "./NearbyRail";
 import { RadiusPicker } from "./RadiusPicker";
 
-const noopSubscribe = () => () => {};
-
-/**
- * False on the server and the first client paint, true after hydration. The
- * location lives in a cookie only the client reads, so rendering either branch
- * before then would flash the "choose your comuna" prompt at visitors who
- * already chose one.
- */
-function useHydrated() {
-  return useSyncExternalStore(
-    noopSubscribe,
-    () => true,
-    () => false,
-  );
-}
-
 /**
  * "Near you": marketplace items, stores, store products and service providers
  * from the comunas within the visitor's chosen radius of where they explore.
@@ -53,12 +39,16 @@ function useHydrated() {
  * Without a location it asks for the visitor's position instead (the
  * browser's prompt). The header's pill is the page's background detector, so
  * this one only detects on request.
+ *
+ * The home page reads the location cookie on the server
+ * (`ExploreLocationSeedProvider`), so the first HTML already holds the right
+ * branch: the prompt for a new visitor, the rails (loading) for one who chose
+ * a comuna. Nothing swaps in after hydration to push the page down.
  */
 export function NearbySection({ lang }: { lang: SupportedLanguage }) {
   const { t } = useTranslation(NAMESPACE);
   const { t: tNav } = useTranslation(NAVIGATION_NAMESPACE);
   const notify = useToast();
-  const hydrated = useHydrated();
   const [location] = useExploreLocation();
   const [radius, setRadius] = useExploreRadius();
   const { status, detect } = useComunaDetection(lang, { background: false });
@@ -77,20 +67,6 @@ export function NearbySection({ lang }: { lang: SupportedLanguage }) {
       });
     }
   };
-
-  if (!hydrated) {
-    // The prompt itself, invisible, sizes the skeleton: whatever the screen
-    // width, the placeholder is exactly as tall as what a new visitor gets.
-    return (
-      <Section ariaLabel={title}>
-        <div aria-hidden inert className={skeletonClass.xl}>
-          <div className="invisible">
-            <NearbyPrompt status="idle" onDetect={() => {}} />
-          </div>
-        </div>
-      </Section>
-    );
-  }
 
   if (!location || !nearby.hasOrigin) {
     return (
@@ -273,7 +249,11 @@ function NearbyResults({
           items={forSale.products}
           loading={waiting || forSale.loading}
           empty={empty}
-          renderItem={(product) => <MarketplaceCard product={product} lang={lang} />}
+          // Right under the hero for a returning visitor: the first cards are
+          // the page's largest paint, so they skip lazy loading.
+          renderItem={(product, i) => (
+            <MarketplaceCard product={product} lang={lang} priority={i < 2} />
+          )}
         />
       </NearbyRail>
       <NearbyRail title={t("nearby.rails.marketplaceExchange")}>

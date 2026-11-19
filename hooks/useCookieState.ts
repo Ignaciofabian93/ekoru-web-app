@@ -12,14 +12,16 @@ function subscribe(listener: () => void): () => void {
 
 /**
  * Cookie-backed state that survives reloads and is readable server-side.
- * Renders `fallback` on the server and first client paint to avoid hydration
- * mismatches, then resolves to the cookie value. `validate` rejects stale or
- * tampered values.
+ * Renders `serverValue` (the `fallback` unless the page read the cookie on the
+ * server) on the server and first client paint to avoid hydration mismatches,
+ * then resolves to the cookie value. `validate` rejects stale or tampered
+ * values.
  */
 export function useCookieState(
   name: string,
   fallback: string,
-  validate: (value: string) => boolean = () => true
+  validate: (value: string) => boolean = () => true,
+  serverValue: string = fallback,
 ): [string, (value: string) => void] {
   const value = useSyncExternalStore(
     subscribe,
@@ -27,7 +29,7 @@ export function useCookieState(
       const stored = getCookie(name);
       return stored && validate(stored) ? stored : fallback;
     },
-    () => fallback
+    () => serverValue,
   );
 
   const set = useCallback(
@@ -35,7 +37,7 @@ export function useCookieState(
       setCookie(name, next);
       listeners.forEach((listener) => listener());
     },
-    [name]
+    [name],
   );
 
   return [value, set];

@@ -14,7 +14,7 @@ export async function ReapplyBusiness({ lang }: { lang: SupportedLanguage }) {
     <DictionaryProvider dictionary={{ [NAMESPACE]: dict }}>
       <AuthShell
         lang={lang}
-        logo={<EkoruLogo className="w-50" enableRedirection={false} />}
+        logo={<EkoruLogo className="w-50" sizes="200px" enableRedirection={false} />}
         subtitleKey="page.reapplySubtitle"
         footer={{
           textKey: "actions.hasAccount",

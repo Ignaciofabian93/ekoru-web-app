@@ -1,6 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { renderToString } from "react-dom/server";
+import { beforeEach, describe, expect, it, onTestFinished, vi } from "vitest";
+import { ExploreLocationSeedProvider } from "@/context/ExploreLocationContext";
 import { DictionaryProvider } from "@/i18n/context";
 import { axe } from "@/test/axe";
 import { EXPLORE_LOCATION_COOKIE } from "@/constants/settings";
@@ -40,6 +42,25 @@ beforeEach(() => {
 });
 
 describe("LocationPicker", () => {
+  it("names the comuna in the server's HTML when the page read the cookie", () => {
+    const container = document.body.appendChild(document.createElement("div"));
+    onTestFinished(() => container.remove());
+    container.innerHTML = renderToString(
+      <ExploreLocationSeedProvider
+        seed={{ location: { county: "Ñuñoa", source: "geolocation" }, radius: 10 }}
+      >
+        <DictionaryProvider dictionary={{ [NAMESPACE]: en }}>
+          <LocationPicker />
+        </DictionaryProvider>
+      </ExploreLocationSeedProvider>,
+    );
+
+    // Same text as after hydration, so the pill doesn't change width.
+    expect(
+      within(container).getByRole("button", { name: "Exploring in: Ñuñoa" }),
+    ).toBeInTheDocument();
+  });
+
   it("asks for the location on click, with no dialog", async () => {
     const user = userEvent.setup();
     state.detect.mockResolvedValue("detected");

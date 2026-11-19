@@ -1,6 +1,11 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { renderToString } from "react-dom/server";
+import { beforeEach, describe, expect, it, onTestFinished, vi } from "vitest";
+import {
+  ExploreLocationSeedProvider,
+  type ExploreLocationSeed,
+} from "@/context/ExploreLocationContext";
 import { DictionaryProvider } from "@/i18n/context";
 import { axe } from "@/test/axe";
 import navigationEn from "@/components/Navigation/i18n/locales/en.json";
@@ -88,7 +93,9 @@ vi.mock("@/components/ProductCards", async (importOriginal) => ({
 vi.mock("@/components/BusinessCards", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   StoreCard: ({ store }: { store: Item }) => <article>{store.name}</article>,
-  ServiceProviderCard: ({ provider }: { provider: Item }) => <article>{provider.name}</article>,
+  ServiceProviderCard: ({ provider }: { provider: Item }) => (
+    <article>{provider.name}</article>
+  ),
 }));
 
 const setCookie = (name: string, value: string) => {
@@ -234,5 +241,66 @@ describe("NearbySection", () => {
       navigationEn.location.status.denied,
       expect.objectContaining({ toastId: "explore-location" }),
     );
+  });
+});
+
+/**
+ * The server's HTML, parsed: `renderToString` renders from the seed the page
+ * read from the request, never from `document.cookie`.
+ */
+function renderOnServer(seed?: ExploreLocationSeed) {
+  const section = (
+    <DictionaryProvider
+      dictionary={{ [NAMESPACE]: en, [NAVIGATION_NAMESPACE]: navigationEn }}
+    >
+      <NearbySection lang="en" />
+    </DictionaryProvider>
+  );
+  const container = document.body.appendChild(document.createElement("div"));
+  onTestFinished(() => container.remove());
+  container.innerHTML = renderToString(
+    seed ? (
+      <ExploreLocationSeedProvider seed={seed}>{section}</ExploreLocationSeedProvider>
+    ) : (
+      section
+    ),
+  );
+  return within(container);
+}
+
+describe("NearbySection's first HTML", () => {
+  it("already holds a returning visitor's rails, so nothing grows in after hydration", () => {
+    // What the server knows: the comuna, not yet the comunas around it.
+    state.nearby = { hasOrigin: true, countyIds: undefined, error: undefined };
+    const html = renderOnServer({
+      location: { county: "Ñuñoa", countyId: 10, source: "manual" },
+      radius: 25,
+    });
+
+    expect(html.getByRole("heading", { level: 2, name: "Near you" })).toBeInTheDocument();
+    expect(html.getByText(/What's within 25 km of Ñuñoa\./)).toBeInTheDocument();
+    expect(html.getByRole("radio", { name: "25 km" })).toBeChecked();
+    expect(
+      html.getByRole("heading", { level: 3, name: "Second-hand for sale" }),
+    ).toBeInTheDocument();
+    expect(html.queryByText("Discover what's near you")).not.toBeInTheDocument();
+  });
+
+  it("asks a new visitor for their location", () => {
+    const html = renderOnServer({ location: null, radius: 10 });
+
+    expect(
+      html.getByRole("heading", { name: "Discover what's near you" }),
+    ).toBeInTheDocument();
+  });
+
+  it("asks for the location when the page didn't read the cookie", () => {
+    // A comuna in the browser's cookie is invisible to the server.
+    withLocation();
+    const html = renderOnServer();
+
+    expect(
+      html.getByRole("heading", { name: "Discover what's near you" }),
+    ).toBeInTheDocument();
   });
 });
